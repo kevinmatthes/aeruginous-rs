@@ -1,5 +1,5 @@
 [package]
-name = "aeruginous-rs"
+name = "aeruginous"
 version = "0.0.0"
 edition = "2021"
 authors = ["Kevin Matthes <aeruginous.rs@gmail.com>"]
