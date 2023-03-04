@@ -9,7 +9,13 @@ Added
 
 - README:  CI badge
 
+- README:  information about the meaning of "aeruginous"
+
 - README:  license badge
+
+- README:  license information section
+
+- README:  table of contents
 
 .. Changed
 .. .......
