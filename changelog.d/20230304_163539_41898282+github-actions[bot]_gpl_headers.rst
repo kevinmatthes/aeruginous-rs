@@ -2,11 +2,19 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- Cargo.lock:  creation
+
+- Cargo.toml:  add GPL header
+
+- .gitignore:  add GPL header
+
+- main source file:  add GPL header
+
+- README:  add GPL header
+
 .. Changed
 .. .......
 ..
