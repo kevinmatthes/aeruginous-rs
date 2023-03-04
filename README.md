@@ -32,6 +32,10 @@
 
 ## Summary
 
+[![](https://bors.tech/images/badge_small.svg)](https://app.bors.tech/repositories/63092)
+[![](https://github.com/kevinmatthes/aeruginous-rs/workflows/ci/badge.svg)](https://github.com/kevinmatthes/aeruginous-rs/workflows/ci)
+[![](https://img.shields.io/github/license/kevinmatthes/aeruginous-rs)](https://github.com/kevinmatthes/aeruginous-rs)
+
 Yet another time tracking CLI, written in Rust.
 
 <!----------------------------------------------------------------------------->
