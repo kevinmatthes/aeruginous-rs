@@ -67,7 +67,18 @@ jobs:
     name: rust
     runs-on: ubuntu-latest
     steps:
-      - name: setup
-        run: rustup --version
+      - name: checkout
+        uses: actions/checkout@v3.3.0
+        with:
+          persist-credentials: false
+
+      - name: check
+        run: cargo c
+
+      - name: test
+        run: cargo t
+
+      - name: build
+        run: cargo b
 
 ################################################################################
