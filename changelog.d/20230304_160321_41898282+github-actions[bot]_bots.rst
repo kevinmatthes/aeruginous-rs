@@ -7,6 +7,8 @@ Added
 
 - Bors:  configuration
 
+- CODEOWNERS:  creation
+
 - Dependabot:  GitHub Action setup
 
 - Dependabot:  Rust setup
