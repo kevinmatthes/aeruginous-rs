@@ -7,6 +7,12 @@ Added
 
 - CFF:  creation
 
+- CI:  Bors invocation job
+
+- CI:  CFF validation
+
+- GitHub Action workflow:  CI
+
 .. Changed
 .. .......
 ..
