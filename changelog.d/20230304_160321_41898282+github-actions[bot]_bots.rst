@@ -7,6 +7,10 @@ Added
 
 - Bors:  configuration
 
+- Dependabot:  GitHub Action setup
+
+- Dependabot:  Rust setup
+
 .. Changed
 .. .......
 ..
