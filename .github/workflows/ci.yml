@@ -43,6 +43,7 @@ jobs:
     name: bors
     needs:
       - cffconvert
+      - rust
     runs-on: ubuntu-latest
     steps:
       - name: success
@@ -61,5 +62,23 @@ jobs:
         uses: citation-file-format/cffconvert-github-action@2.0.0
         with:
           args: --validate
+
+  rust:
+    name: rust
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3.3.0
+        with:
+          persist-credentials: false
+
+      - name: check
+        run: cargo c
+
+      - name: test
+        run: cargo t
+
+      - name: build
+        run: cargo b
 
 ################################################################################
