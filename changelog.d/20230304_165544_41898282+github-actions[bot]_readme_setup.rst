@@ -2,11 +2,15 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- README:  Bors badge
+
+- README:  CI badge
+
+- README:  license badge
+
 .. Changed
 .. .......
 ..
