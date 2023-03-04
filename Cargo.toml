@@ -1,0 +1,13 @@
+[package]
+name = "aeruginous-rs"
+version = "0.0.0"
+edition = "2021"
+authors = ["Kevin Matthes <aeruginous.rs@gmail.com>"]
+description = "Yet another time tracking CLI, written in Rust."
+readme = "README.md"
+homepage = "https://github.com/kevinmatthes/aeruginous-rs"
+license = "GPL-3.0"
+rust-version = "1.67"
+include = ["/src"]
+
+[dependencies]
