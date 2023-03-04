@@ -43,6 +43,7 @@ jobs:
     name: bors
     needs:
       - cffconvert
+      - rust
     runs-on: ubuntu-latest
     steps:
       - name: success
@@ -61,5 +62,12 @@ jobs:
         uses: citation-file-format/cffconvert-github-action@2.0.0
         with:
           args: --validate
+
+  rust:
+    name: rust
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup
+        run: rustup --version
 
 ################################################################################
