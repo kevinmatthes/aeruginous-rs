@@ -39,6 +39,7 @@
 Yet another time tracking CLI, written in Rust.
 
 1. [License](#license)
+1. [Meaning of the Name](#meaning-of-the-name)
 
 ## License
 
@@ -62,5 +63,13 @@ version is as follows:
 >
 > You should have received a copy of the GNU General Public License
 > along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+## Meaning of the Name
+
+When searching a name for this project, one main requirement was to reflect both
+the purpose of tracking time as well as the coding language this CLI is written
+in, Rust.  The adjective *aeruginous* fulfills both criterions as it means that
+the described noun has patina, a special form of rust which appears after a
+certain period of time has passed.
 
 <!----------------------------------------------------------------------------->
