@@ -1,0 +1,51 @@
+######################## GNU General Public License 3.0 ########################
+##                                                                            ##
+## Copyright (C) 2023 Kevin Matthes                                           ##
+##                                                                            ##
+## This program is free software: you can redistribute it and/or modify       ##
+## it under the terms of the GNU General Public License as published by       ##
+## the Free Software Foundation, either version 3 of the License, or          ##
+## (at your option) any later version.                                        ##
+##                                                                            ##
+## This program is distributed in the hope that it will be useful,            ##
+## but WITHOUT ANY WARRANTY; without even the implied warranty of             ##
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the              ##
+## GNU General Public License for more details.                               ##
+##                                                                            ##
+## You should have received a copy of the GNU General Public License          ##
+## along with this program.  If not, see <https://www.gnu.org/licenses/>.     ##
+##                                                                            ##
+################################################################################
+
+################################################################################
+##
+##  AUTHOR      Kevin Matthes
+##  BRIEF       Citation settings for the Git repository.
+##  COPYRIGHT   GPL-3.0
+##  DATE        2023
+##  FILE        CITATION.cff
+##  NOTE        See `LICENSE' for full license.
+##              See `README.md' for project details.
+##
+################################################################################
+
+# Parser settings.
+cff-version: 1.2.0
+message: Please cite this software using these information.
+
+# Version information.
+date-released: 2023-03-04
+version: 0.0.0
+
+# Project information.
+abstract: Yet another time tracking CLI, written in Rust.
+authors:
+  - alias: kevinmatthes
+    family-names: Matthes
+    given-names: Kevin
+license: GPL-3.0
+repository-code: https://github.com/kevinmatthes/aeruginous-rs
+title: aeruginous-rs
+url: https://github.com/kevinmatthes/aeruginous-rs
+
+################################################################################
