@@ -25,9 +25,6 @@
 //! of `aeruginous` should change the interfaces and requirements concerning the
 //! time frame interaction.
 
-/// This crate's version.
-pub const CRATE_VERSION: &str = "0.0.0";
-
 /// The version information data structure.
 ///
 /// It is going to be dumped into the configuration directory of `aeruginous` in
