@@ -21,11 +21,11 @@
 //!
 //! This is the place where the UI related utilities are defined.
 
-use crate::CRATE_VERSION;
+use crate::{CRATE_VERSION, SELF_DESCRIPTION};
 
 /// The greeting message.
 pub fn greeter() {
-  println!("This is the Aeruginous Time Tracker, v{CRATE_VERSION}.");
+  println!("This is the {SELF_DESCRIPTION}, v{CRATE_VERSION}.");
 }
 
 /******************************************************************************/
