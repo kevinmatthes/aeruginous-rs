@@ -7,6 +7,8 @@ Added
 
 - library source file:  creation
 
+- rustfmt:  configuration
+
 - version utilities:  creation
 
 Changed
