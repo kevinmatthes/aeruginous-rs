@@ -33,12 +33,14 @@
 //! means that the described noun has patina, a special form of rust which
 //! appears after certain period of time has passed.
 
+mod constants;
 mod ui;
 mod version;
 
 pub use crate::{
+  constants::{CRATE_NAME, CRATE_VERSION, SELF_DESCRIPTION},
   ui::greeter,
-  version::{Version, VersionParsingError, CRATE_VERSION},
+  version::{Version, VersionParsingError},
 };
 
 /******************************************************************************/
