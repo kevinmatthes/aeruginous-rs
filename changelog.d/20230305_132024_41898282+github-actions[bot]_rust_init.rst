@@ -2,16 +2,20 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Added
+.....
+
+- library source file:  creation
+
+- version utilities:  creation
+
+Changed
+.......
+
+- bump2version:  sort tracked files by ASCII codes of their paths
+
+- bump2version:  track Cargo.lock
+
 .. Deprecated
 .. ..........
 ..
