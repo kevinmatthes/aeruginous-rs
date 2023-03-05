@@ -31,7 +31,7 @@ pub const CRATE_VERSION: &str = "0.0.0";
 /// The version information data structure.
 ///
 /// It is going to be dumped into the configuration directory of `aeruginous` in
-/// order to indicate the version of the application which was used last to
+/// order to indicate the version of the application which was recently used to
 /// modify the data.
 pub struct Version {
   /// The major version.
