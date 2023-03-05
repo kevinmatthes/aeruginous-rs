@@ -178,6 +178,21 @@ impl Version {
   pub fn get_patch(&self) -> usize {
     self.patch
   }
+
+  /// Modify the major version of this version instance.
+  pub fn set_major(&mut self, major: usize) {
+    self.major = major;
+  }
+
+  /// Modify the minor version of this version instance.
+  pub fn set_minor(&mut self, minor: usize) {
+    self.minor = minor;
+  }
+
+  /// Modify the patch level of this version instance.
+  pub fn set_patch(&mut self, patch: usize) {
+    self.patch = patch;
+  }
 }
 
 #[cfg(test)]
@@ -221,6 +236,50 @@ mod getter {
       .get_patch(),
       3
     );
+  }
+}
+
+#[cfg(test)]
+mod setter {
+  use crate::Version;
+
+  #[test]
+  fn major() {
+    let mut version = Version {
+      major: 1,
+      minor: 2,
+      patch: 3,
+    };
+    version.set_major(0);
+    let version = version;
+
+    assert_eq!(version.get_major(), 0);
+  }
+
+  #[test]
+  fn minor() {
+    let mut version = Version {
+      major: 1,
+      minor: 2,
+      patch: 3,
+    };
+    version.set_minor(0);
+    let version = version;
+
+    assert_eq!(version.get_minor(), 0);
+  }
+
+  #[test]
+  fn patch() {
+    let mut version = Version {
+      major: 1,
+      minor: 2,
+      patch: 3,
+    };
+    version.set_patch(0);
+    let version = version;
+
+    assert_eq!(version.get_patch(), 0);
   }
 }
 
