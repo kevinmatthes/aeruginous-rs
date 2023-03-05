@@ -17,10 +17,30 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::greeter;
+//! # `aeruginous`
+//!
+//! ## Introduction
+//!
+//! `aeruginous` is a time tracking CLI, written in Rust.  Its main purpose is
+//! to create and maintain working hours, stored in fragments named "time
+//! frames".
+//!
+//! ## Meaning of the Name
+//!
+//! When searching a name for this project, one main requirement was to reflect
+//! both the puspose of tracking time as well as the coding language this CLI is
+//! written in, Rust.  The adjective *aeruginous* fulfills both criterions as it
+//! means that the described noun has patina, a special form of rust which
+//! appears after certain period of time has passed.
 
-fn main() {
-  greeter();
-}
+mod constants;
+mod ui;
+mod version;
+
+pub use crate::{
+  constants::{CRATE_NAME, CRATE_VERSION, SELF_DESCRIPTION},
+  ui::greeter,
+  version::{Version, VersionParsingError},
+};
 
 /******************************************************************************/

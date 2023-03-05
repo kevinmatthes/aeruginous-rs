@@ -17,10 +17,15 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::greeter;
+//! # User Interface
+//!
+//! This is the place where the UI related utilities are defined.
 
-fn main() {
-  greeter();
+use crate::{CRATE_VERSION, SELF_DESCRIPTION};
+
+/// The greeting message.
+pub fn greeter() {
+  println!("This is the {SELF_DESCRIPTION}, v{CRATE_VERSION}.");
 }
 
 /******************************************************************************/
