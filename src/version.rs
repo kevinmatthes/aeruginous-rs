@@ -33,6 +33,7 @@ pub const CRATE_VERSION: &str = "0.0.0";
 /// It is going to be dumped into the configuration directory of `aeruginous` in
 /// order to indicate the version of the application which was recently used to
 /// modify the data.
+#[derive(Debug)]
 pub struct Version {
   /// The major version.
   major: usize,
@@ -48,6 +49,7 @@ pub struct Version {
 ///
 /// An instance of `Version` can be constructed from a given string slice.  In
 /// case that the parsing should fail, an appropriate error type is required.
+#[derive(Debug, PartialEq)]
 pub struct VersionParsingError;
 
 impl Version {
@@ -64,6 +66,16 @@ impl Version {
   /// Retrieve the patch level of this version instance.
   pub fn get_patch(&self) -> usize {
     self.patch
+  }
+}
+
+impl PartialEq for Version {
+  /// Two version instances are equal if all of their parts are equal to each
+  /// other.
+  fn eq(&self, other: &Self) -> bool {
+    self.major == other.major
+      && self.minor == other.minor
+      && self.patch == other.patch
   }
 }
 
@@ -91,6 +103,87 @@ impl std::str::FromStr for Version {
       }),
       _ => Err(VersionParsingError),
     }
+  }
+}
+
+#[cfg(test)]
+mod from_str {
+  use crate::{Version, VersionParsingError};
+  use std::str::FromStr;
+
+  #[test]
+  fn invalid_empty_slice() {
+    assert_eq!(Version::from_str(""), Err(VersionParsingError));
+  }
+
+  #[test]
+  fn invalid_empty_string() {
+    assert_eq!(Version::from_str(&String::new()), Err(VersionParsingError));
+  }
+
+  #[test]
+  fn invalid_only_letters() {
+    assert_eq!(Version::from_str("abc"), Err(VersionParsingError));
+  }
+
+  #[test]
+  fn valid_1_part() {
+    assert_eq!(
+      Ok(Version {
+        major: 1,
+        minor: 0,
+        patch: 0
+      }),
+      Version::from_str("1")
+    );
+  }
+
+  #[test]
+  fn valid_2_parts() {
+    assert_eq!(
+      Ok(Version {
+        major: 1,
+        minor: 2,
+        patch: 0
+      }),
+      Version::from_str("1.2")
+    );
+  }
+
+  #[test]
+  fn valid_3_parts() {
+    assert_eq!(
+      Ok(Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      }),
+      Version::from_str("1.2.3")
+    );
+  }
+
+  #[test]
+  fn valid_4_parts() {
+    assert_eq!(
+      Ok(Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      }),
+      Version::from_str("1.2.3.4")
+    );
+  }
+
+  #[test]
+  fn valid_4th_part_letter() {
+    assert_eq!(
+      Ok(Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      }),
+      Version::from_str("1.2.3.x")
+    );
   }
 }
 
