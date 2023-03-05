@@ -33,7 +33,7 @@ pub const CRATE_VERSION: &str = "0.0.0";
 /// It is going to be dumped into the configuration directory of `aeruginous` in
 /// order to indicate the version of the application which was recently used to
 /// modify the data.
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Version {
   /// The major version.
   major: usize,
@@ -43,6 +43,117 @@ pub struct Version {
 
   /// The patch level.
   patch: usize,
+}
+
+#[cfg(test)]
+mod eq {
+  use crate::Version;
+
+  #[test]
+  fn equal() {
+    assert_eq!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      },
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      }
+    );
+  }
+
+  #[test]
+  fn unequal() {
+    assert_ne!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      },
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 0
+      }
+    );
+    assert_ne!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      },
+      Version {
+        major: 1,
+        minor: 0,
+        patch: 3
+      }
+    );
+    assert_ne!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      },
+      Version {
+        major: 0,
+        minor: 2,
+        patch: 3
+      }
+    );
+
+    assert_ne!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      },
+      Version {
+        major: 0,
+        minor: 0,
+        patch: 3
+      }
+    );
+    assert_ne!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      },
+      Version {
+        major: 0,
+        minor: 2,
+        patch: 0
+      }
+    );
+    assert_ne!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      },
+      Version {
+        major: 1,
+        minor: 0,
+        patch: 0
+      }
+    );
+
+    assert_ne!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      },
+      Version {
+        major: 0,
+        minor: 0,
+        patch: 0
+      }
+    );
+  }
 }
 
 /// The parsing error type for this struct.
@@ -69,13 +180,47 @@ impl Version {
   }
 }
 
-impl PartialEq for Version {
-  /// Two version instances are equal if all of their parts are equal to each
-  /// other.
-  fn eq(&self, other: &Self) -> bool {
-    self.major == other.major
-      && self.minor == other.minor
-      && self.patch == other.patch
+#[cfg(test)]
+mod getter {
+  use crate::Version;
+
+  #[test]
+  fn major() {
+    assert_eq!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      }
+      .get_major(),
+      1
+    );
+  }
+
+  #[test]
+  fn minor() {
+    assert_eq!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      }
+      .get_minor(),
+      2
+    );
+  }
+
+  #[test]
+  fn patch() {
+    assert_eq!(
+      Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      }
+      .get_patch(),
+      3
+    );
   }
 }
 
