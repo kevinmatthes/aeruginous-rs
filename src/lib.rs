@@ -28,10 +28,10 @@
 //! ## Meaning of the Name
 //!
 //! When searching a name for this project, one main requirement was to reflect
-//! both the puspose of tracking time as well as the coding language this CLI is
+//! both the purpose of tracking time as well as the coding language this CLI is
 //! written in, Rust.  The adjective *aeruginous* fulfills both criterions as it
 //! means that the described noun has patina, a special form of rust which
-//! appears after certain period of time has passed.
+//! appears after a certain period of time has passed.
 
 mod constants;
 mod ui;
