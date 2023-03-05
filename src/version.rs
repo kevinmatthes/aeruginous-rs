@@ -314,7 +314,6 @@ mod from_str {
   #[test]
   fn invalid_introduced_but_empty_parts() {
     assert_eq!(Version::from_str(""), Err(VersionParsingError));
-    assert_eq!(Version::from_str(&String::new()), Err(VersionParsingError));
 
     assert_eq!(Version::from_str("."), Err(VersionParsingError));
     assert_eq!(Version::from_str("1."), Err(VersionParsingError));
