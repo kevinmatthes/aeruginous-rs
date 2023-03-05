@@ -35,6 +35,6 @@
 
 mod version;
 
-pub use crate::version::{Version, CRATE_VERSION};
+pub use crate::version::{Version, VersionParsingError, CRATE_VERSION};
 
 /******************************************************************************/
