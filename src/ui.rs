@@ -26,7 +26,7 @@ use sysexits::ExitCode;
 
 /// The greeting message.
 pub fn greeter() -> ExitCode {
-  println!("This is the {SELF_DESCRIPTION}, v{CRATE_VERSION}.");
+  println!("This is the {SELF_DESCRIPTION}, {CRATE_VERSION}.");
   ExitCode::Ok
 }
 
