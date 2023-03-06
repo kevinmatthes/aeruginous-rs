@@ -7,6 +7,8 @@ Added
 
 - Clippy:  configuration
 
+- version utilities:  implement ``Display`` trait
+
 Changed
 .......
 
