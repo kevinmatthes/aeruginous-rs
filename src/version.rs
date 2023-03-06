@@ -280,6 +280,58 @@ mod setter {
   }
 }
 
+impl std::fmt::Display for Version {
+  /// The string representation of a version instance.
+  ///
+  /// The given version instance will be formatted into a string using the
+  /// format `v<major>.<minor>.<patch>`.
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    write!(f, "v{}.{}.{}", self.major, self.minor, self.patch)
+  }
+}
+
+#[cfg(test)]
+mod fmt {
+  use crate::{Version, CRATE_VERSION};
+  use std::str::FromStr;
+
+  #[test]
+  fn crate_version_constant() {
+    assert_eq!(
+      CRATE_VERSION,
+      format!("{}", Version::from_str(CRATE_VERSION).unwrap())
+    );
+  }
+
+  #[test]
+  fn from_string() {
+    assert_eq!("v1.0.0", format!("{}", Version::from_str("1").unwrap()));
+    assert_eq!("v1.0.0", format!("{}", Version::from_str("v1").unwrap()));
+    assert_eq!("v1.2.0", format!("{}", Version::from_str("1.2").unwrap()));
+    assert_eq!("v1.2.0", format!("{}", Version::from_str("v1.2").unwrap()));
+    assert_eq!("v1.2.3", format!("{}", Version::from_str("1.2.3").unwrap()));
+    assert_eq!(
+      "v1.2.3",
+      format!("{}", Version::from_str("v1.2.3").unwrap())
+    );
+  }
+
+  #[test]
+  fn simple_test() {
+    assert_eq!(
+      "v1.2.3",
+      format!(
+        "{}",
+        Version {
+          major: 1,
+          minor: 2,
+          patch: 3
+        }
+      )
+    );
+  }
+}
+
 impl std::str::FromStr for Version {
   type Err = VersionParsingError;
 
