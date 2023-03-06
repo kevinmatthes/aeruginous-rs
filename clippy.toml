@@ -20,28 +20,16 @@
 ################################################################################
 ##
 ##  AUTHOR      Kevin Matthes
-##  BRIEF       Settings for Cargo.
+##  BRIEF       Settings for Clippy.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
-##  FILE        Cargo.toml
+##  FILE        clippy.toml
 ##  NOTE        See `LICENSE' for full license.
 ##              See `README.md' for project details.
 ##
 ################################################################################
 
-[package]
-name = "aeruginous"
-version = "0.0.0"
-edition = "2021"
-authors = ["Kevin Matthes <aeruginous.rs@gmail.com>"]
-description = "Yet another time tracking CLI, written in Rust."
-readme = "README.md"
-homepage = "https://github.com/kevinmatthes/aeruginous-rs"
-license = "GPL-3.0"
-rust-version = "1.67.1"
-include = ["/src"]
-
-[dependencies]
-sysexits = "0.4.1"
+# The minimal supported Rust version.
+msrv = "1.67.1"
 
 ################################################################################
