@@ -18,9 +18,9 @@ Added
 Changed
 .......
 
-- main source file:  make application quit with a ``ExitCode``
+- main source file:  make application quit with an ``ExitCode``
 
-- UI:  make ``greeter`` function return a ``ExitCode``
+- UI:  make ``greeter`` function return an ``ExitCode``
 
 .. Deprecated
 .. ..........
