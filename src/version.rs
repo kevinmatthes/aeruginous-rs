@@ -294,7 +294,8 @@ impl std::str::FromStr for Version {
   /// 1. `minor`
   /// 1. `patch`
   ///
-  /// Each part must be decimal.  Other representations are not allowed.
+  /// Each part must be decimal.  Other representations are not allowed.  The
+  /// first part is allowed to be prefixed `v`.
   ///
   /// If the string slice should be empty, the parsing will fail.  If at least
   /// one part should be introduced but empty, the parsing will fail.  If at
@@ -303,7 +304,13 @@ impl std::str::FromStr for Version {
   ///
   /// If the parsing fails, `Err(VersionParsingError)` will be returned.
   fn from_str(string: &str) -> Result<Self, Self::Err> {
-    let parts: Vec<&str> = string.split('.').collect();
+    let parts: Vec<&str> = if string.starts_with('v') {
+      string.strip_prefix('v').unwrap()
+    } else {
+      string
+    }
+    .split('.')
+    .collect();
     let (major_version, minor_version, patch_level) = match parts.len() {
       1 => (parts[0].parse::<usize>(), Ok(0), Ok(0)),
       2 => (parts[0].parse::<usize>(), parts[1].parse::<usize>(), Ok(0)),
@@ -463,6 +470,34 @@ mod from_str {
   fn valid_4th_part_letter() {
     assert_eq!(
       Version::from_str("1.2.3.x"),
+      Ok(Version {
+        major: 1,
+        minor: 2,
+        patch: 3
+      })
+    );
+  }
+
+  #[test]
+  fn valid_v_prefix() {
+    assert_eq!(
+      Version::from_str("v1"),
+      Ok(Version {
+        major: 1,
+        minor: 0,
+        patch: 0
+      })
+    );
+    assert_eq!(
+      Version::from_str("v1.2"),
+      Ok(Version {
+        major: 1,
+        minor: 2,
+        patch: 0
+      })
+    );
+    assert_eq!(
+      Version::from_str("v1.2.3"),
       Ok(Version {
         major: 1,
         minor: 2,
