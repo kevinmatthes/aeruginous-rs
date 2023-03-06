@@ -12,6 +12,8 @@ Changed
 
 - Cargo.toml:  set minimal supported Rust version to 1.67.1
 
+- CRATE_VERSION:  add ``v`` prefix
+
 - version utilities:  allow ``v`` prefix for construction string slice
 
 .. Deprecated
