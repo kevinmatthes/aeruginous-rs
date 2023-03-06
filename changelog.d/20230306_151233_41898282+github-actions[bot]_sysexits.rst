@@ -2,16 +2,24 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Added
+.....
+
+- dependency:  Rust crate ``sysexits``
+
+- documentation:  create directory for license copies of software dependencies
+
+- documentation:  software licenses of ``sysexits``
+
+- README:  document new directory ``LICENSEs/``
+
+Changed
+.......
+
+- main source file:  make application quit with ``ExitCode``s
+
+- UI:  make ``greeter`` function return ``ExitCode``s
+
 .. Deprecated
 .. ..........
 ..
