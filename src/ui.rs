@@ -22,10 +22,12 @@
 //! This is the place where the UI related utilities are defined.
 
 use crate::{CRATE_VERSION, SELF_DESCRIPTION};
+use sysexits::ExitCode;
 
 /// The greeting message.
-pub fn greeter() {
+pub fn greeter() -> ExitCode {
   println!("This is the {SELF_DESCRIPTION}, v{CRATE_VERSION}.");
+  ExitCode::Ok
 }
 
 /******************************************************************************/
