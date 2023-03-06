@@ -5,11 +5,13 @@
 Added
 .....
 
+- CFF:  cite ``sysexits`` crate
+
 - dependency:  Rust crate ``sysexits``
 
 - documentation:  create directory for license copies of software dependencies
 
-- documentation:  software licenses of ``sysexits``
+- documentation:  software licenses of ``sysexits`` crate
 
 - README:  document new directory ``LICENSEs/``
 
