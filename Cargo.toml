@@ -38,7 +38,7 @@ description = "Yet another time tracking CLI, written in Rust."
 readme = "README.md"
 homepage = "https://github.com/kevinmatthes/aeruginous-rs"
 license = "GPL-3.0"
-rust-version = "1.67"
+rust-version = "1.67.1"
 include = ["/src"]
 
 [dependencies]
