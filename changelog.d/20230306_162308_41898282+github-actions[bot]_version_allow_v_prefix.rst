@@ -2,16 +2,18 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Added
+.....
+
+- Clippy:  configuration
+
+Changed
+.......
+
+- Cargo.toml:  set minimal supported Rust version to 1.67.1
+
+- version utilities:  allow ``v`` prefix for construction string slice
+
 .. Deprecated
 .. ..........
 ..
