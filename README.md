@@ -64,6 +64,9 @@ version is as follows:
 > You should have received a copy of the GNU General Public License
 > along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+License information about the dependencies this software requires to work
+can be found in [`LICENSEs`](LICENSEs).
+
 ## Meaning of the Name
 
 When searching a name for this project, one main requirement was to reflect both

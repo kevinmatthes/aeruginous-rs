@@ -5,3 +5,12 @@ version = 3
 [[package]]
 name = "aeruginous"
 version = "0.0.0"
+dependencies = [
+ "sysexits",
+]
+
+[[package]]
+name = "sysexits"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c02b4068e6e6551e290df467a3c5984fc5d37060e9ff796493e16ecd8fb6e822"
