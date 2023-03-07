@@ -31,6 +31,9 @@
 
 .. -------------------------------------------------------------------------- ..
 ..
+.. _chrono:  https://github.com/chronotope/chrono
+.. _chronotope/chrono/LICENSE:  chronotope/chrono/LICENSE
+..
 .. _sorairolake/sysexits-rs/LICENSE-Apache-2.0:  sorairolake/sysexits-rs/LICENSE-Apache-2.0
 .. _sorairolake/sysexits-rs/LICENSE-MIT:  sorairolake/sysexits-rs/LICENSE-MIT
 .. _sysexits:  https://github.com/sorairolake/sysexits-rs
@@ -49,6 +52,13 @@ location of a copy being stored in this repository.
 
 Rust Crates
 -----------
+
+`chrono`_
+.........
+
+- local copy:  `chronotope/chrono/LICENSE`_
+
+- original license:  https://github.com/chronotope/chrono/blob/main/LICENSE.txt
 
 `sysexits`_
 ...........
