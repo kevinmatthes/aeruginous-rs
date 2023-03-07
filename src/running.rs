@@ -17,32 +17,31 @@
 |                                                                              |
 \******************************************************************************/
 
-//! # `aeruginous`
+//! # Running Time Frames
 //!
-//! ## Introduction
-//!
-//! `aeruginous` is a time tracking CLI, written in Rust.  Its main purpose is
-//! to create and maintain working hours, stored in fragments named "time
-//! frames".
-//!
-//! ## Meaning of the Name
-//!
-//! When searching a name for this project, one main requirement was to reflect
-//! both the purpose of tracking time as well as the coding language this CLI is
-//! written in, Rust.  The adjective *aeruginous* fulfills both criterions as it
-//! means that the described noun has patina, a special form of rust which
-//! appears after a certain period of time has passed.
+//! `aeruginous` saves the starting point of time of the current time tracking
+//! session in a configuration file which will be removed when the tracking
+//! session is ended.
 
-mod constants;
-mod running;
-mod ui;
-mod version;
+use chrono::{DateTime, Local};
 
-pub use crate::{
-  constants::{CRATE_NAME, CRATE_VERSION, SELF_DESCRIPTION},
-  running::Running,
-  ui::greeter,
-  version::{Version, VersionParsingError},
-};
+/// The data type for an ongoing time tracking session.
+pub struct Running {
+  begin: DateTime<Local>,
+}
+
+impl Running {
+  /// Construct a new running instance.
+  pub fn create() -> Self {
+    Running {
+      begin: Local::now(),
+    }
+  }
+
+  /// Retrieve the creation time.
+  pub fn get(&self) -> &DateTime<Local> {
+    &self.begin
+  }
+}
 
 /******************************************************************************/
