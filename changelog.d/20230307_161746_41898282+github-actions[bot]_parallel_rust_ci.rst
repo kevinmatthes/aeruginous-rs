@@ -2,11 +2,13 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- CI:  dedicated job for ``cargo c``
+
+- CI:  dedicated job for ``cargo t``
+
 .. Changed
 .. .......
 ..
@@ -22,11 +24,11 @@
 ..
 .. - A bullet item for the Fixed category.
 ..
-.. Removed
-.. .......
-..
-.. - A bullet item for the Removed category.
-..
+Removed
+.......
+
+- CI:  job ``rust``
+
 .. Security
 .. ........
 ..
