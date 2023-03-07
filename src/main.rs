@@ -17,11 +17,13 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::greeter;
+use aeruginous::{greeter, Running};
 use sysexits::ExitCode;
 
 fn main() -> ExitCode {
-  greeter()
+  greeter();
+  println!("The current time is {}.", Running::create().get());
+  ExitCode::Ok
 }
 
 /******************************************************************************/
