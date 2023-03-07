@@ -43,7 +43,8 @@ jobs:
     name: bors
     needs:
       - cffconvert
-      - rust
+      - check
+      - test
     runs-on: ubuntu-latest
     steps:
       - name: success
@@ -63,8 +64,8 @@ jobs:
         with:
           args: --validate
 
-  rust:
-    name: rust
+  check:
+    name: check
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -72,13 +73,19 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: check
+      - name: cargo
         run: cargo c
 
-      - name: test
-        run: cargo t
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3.3.0
+        with:
+          persist-credentials: false
 
-      - name: build
-        run: cargo b
+      - name: cargo
+        run: cargo t
 
 ################################################################################
