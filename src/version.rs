@@ -17,19 +17,16 @@
 |                                                                              |
 \******************************************************************************/
 
-//! # Version
-//!
-//! This module not only contains the version information of this CLI but also
-//! defines utilities to encode, decode and compare the version information.
-//! This is required in order to update the stored time frames if a new release
-//! of `aeruginous` should change the interfaces and requirements concerning the
-//! time frame interaction.
+//! The version information management utilities.
 
 /// The version information data structure.
 ///
-/// It is going to be dumped into the configuration directory of `aeruginous` in
-/// order to indicate the version of the application which was recently used to
-/// modify the data.  The format is `<major>.<minor>.<patch>`.
+/// Future releases of `aeruginous` might introduce changes due to which the
+/// respective previous version's data would become invalid.  In order to offer
+/// the possibility of an automatic conversion, the version information of the
+/// application need to be stored together with the time frames.  If a
+/// conversion should be necessary, `aeruginous` will take care about the
+/// required adjustments.
 #[derive(Debug, PartialEq)]
 pub struct Version {
   /// The major version.
