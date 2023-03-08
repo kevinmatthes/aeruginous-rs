@@ -43,6 +43,7 @@ include = ["/src"]
 
 [dependencies]
 chrono = "0.4.23"
+clap = { version = "4.1.8", features = ["derive"] }
 sysexits = "0.4.1"
 
 ################################################################################
