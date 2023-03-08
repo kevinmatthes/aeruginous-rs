@@ -17,13 +17,10 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::{greeter, Running};
-use sysexits::ExitCode;
+use clap::Parser;
 
-fn main() -> ExitCode {
-  greeter();
-  println!("The current time is {}.", Running::create().get());
-  ExitCode::Ok
+fn main() -> sysexits::ExitCode {
+  aeruginous::Clap::parse().action().run()
 }
 
 /******************************************************************************/
