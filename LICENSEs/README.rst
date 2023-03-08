@@ -33,6 +33,9 @@
 ..
 .. _chrono:  https://github.com/chronotope/chrono
 .. _chronotope/chrono/LICENSE:  chronotope/chrono/LICENSE
+.. _clap:  https://github.com/clap-rs/clap
+.. _clap-rs/clap/LICENSE-Apache-2.0:  clap-rs/clap/LICENSE-Apache-2.0
+.. _clap-rs/clap/LICENSE-MIT:  clap-rs/clap/LICENSE-MIT
 ..
 .. _sorairolake/sysexits-rs/LICENSE-Apache-2.0:  sorairolake/sysexits-rs/LICENSE-Apache-2.0
 .. _sorairolake/sysexits-rs/LICENSE-MIT:  sorairolake/sysexits-rs/LICENSE-MIT
@@ -59,6 +62,21 @@ Rust Crates
 - local copy:  `chronotope/chrono/LICENSE`_
 
 - original license:  https://github.com/chronotope/chrono/blob/main/LICENSE.txt
+
+`clap`_
+.......
+
+- local copies:
+
+  - Apache-2.0:  `clap-rs/clap/LICENSE-Apache-2.0`_
+
+  - MIT:  `clap-rs/clap/LICENSE-MIT`_
+
+- original licenses:
+
+  - Apache-2.0:  https://github.com/clap-rs/clap/blob/master/LICENSE-APACHE
+
+  - MIT:  https://github.com/clap-rs/clap/blob/master/LICENSE-MIT
 
 `sysexits`_
 ...........
