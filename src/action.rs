@@ -17,11 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-//! # Application Subcommands
-//!
-//! Depending on the given command line arguments, `aeruginous` will show a
-//! different behaviour.  The given subcommand, named "action" in the following,
-//! will have the greatest influence on the application.
+//! The application's subcommands.
 
 use crate::{CRATE_VERSION, SELF_DESCRIPTION};
 use chrono::Local;
@@ -29,6 +25,9 @@ use clap::Subcommand;
 use sysexits::ExitCode;
 
 /// The supported application modes.
+///
+/// Depending on the given command line arguments, `aeruginous` will show a
+/// different behaviour.
 #[derive(Subcommand)]
 pub enum Action {
   /// Show some information on this application.
