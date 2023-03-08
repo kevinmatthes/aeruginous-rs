@@ -1,0 +1,46 @@
+.. A new scriv changelog fragment.
+..
+.. Uncomment the header that is right (remove the leading dots).
+..
+Added
+.....
+
+- Action:  creation
+
+- Clap:  creation
+
+- CLI:  command for application information
+
+- CLI:  command for current time
+
+- CLI:  initial command line argument configuration
+
+- dependency:  Rust crate ``clap``
+
+- documentation:  software licenses of ``clap`` crate
+
+Changed
+.......
+
+- documentation:  enhance documentation comments
+
+.. Deprecated
+.. ..........
+..
+.. - A bullet item for the Deprecated category.
+..
+.. Fixed
+.. .....
+..
+.. - A bullet item for the Fixed category.
+..
+Removed
+.......
+
+- UI module
+
+.. Security
+.. ........
+..
+.. - A bullet item for the Security category.
+..

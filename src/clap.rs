@@ -17,17 +17,28 @@
 |                                                                              |
 \******************************************************************************/
 
-//! # User Interface
-//!
-//! This is the place where the UI related utilities are defined.
+//! The settings for `clap`.
 
-use crate::{CRATE_VERSION, SELF_DESCRIPTION};
-use sysexits::ExitCode;
+use crate::Action;
+use clap::Parser;
 
-/// The greeting message.
-pub fn greeter() -> ExitCode {
-  println!("This is the {SELF_DESCRIPTION}, {CRATE_VERSION}.");
-  ExitCode::Ok
+/// The command line argument configuration.
+///
+/// `aeruginous` employs `clap` to parse the passed command line arguments.  The
+/// possible ones are configured by this struct.
+#[derive(Parser)]
+#[clap(about, version)]
+pub struct Clap {
+  /// The action to perform.
+  #[clap(subcommand)]
+  action: Action,
+}
+
+impl Clap {
+  /// Retrieve the selected action.
+  pub fn action(&self) -> &Action {
+    &self.action
+  }
 }
 
 /******************************************************************************/

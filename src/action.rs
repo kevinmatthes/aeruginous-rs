@@ -17,13 +17,46 @@
 |                                                                              |
 \******************************************************************************/
 
-//! The main source file and binary crate root.
+//! The application's subcommands.
 
-use clap::Parser;
+use crate::{CRATE_VERSION, SELF_DESCRIPTION};
+use chrono::Local;
+use clap::Subcommand;
+use sysexits::ExitCode;
 
-/// The main function controlling the application's behaviour.
-fn main() -> sysexits::ExitCode {
-  aeruginous::Clap::parse().action().run()
+/// The supported application modes.
+///
+/// Depending on the given command line arguments, `aeruginous` will show a
+/// different behaviour.
+#[derive(Subcommand)]
+pub enum Action {
+  /// Show some information on this application.
+  Info,
+
+  /// Show the current time.
+  Now,
+}
+
+impl Action {
+  /// Show some information on this application.
+  fn info() -> ExitCode {
+    println!("This is the {SELF_DESCRIPTION}, {CRATE_VERSION}.");
+    ExitCode::Ok
+  }
+
+  /// Show the current time.
+  fn now() -> ExitCode {
+    println!("{}", Local::now());
+    ExitCode::Ok
+  }
+
+  /// Execute the selected action.
+  pub fn run(&self) -> ExitCode {
+    match self {
+      Self::Info => Self::info(),
+      Self::Now => Self::now(),
+    }
+  }
 }
 
 /******************************************************************************/
