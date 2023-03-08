@@ -34,6 +34,7 @@
 //! appears after a certain period of time has passed.
 
 mod action;
+mod clap;
 mod constants;
 mod running;
 mod ui;
@@ -41,6 +42,7 @@ mod version;
 
 pub use crate::{
   action::Action,
+  clap::Clap,
   constants::{CRATE_NAME, CRATE_VERSION, SELF_DESCRIPTION},
   running::Running,
   ui::greeter,
