@@ -17,8 +17,11 @@
 |                                                                              |
 \******************************************************************************/
 
+//! The main source file and binary crate root.
+
 use clap::Parser;
 
+/// The main function controlling the application's behaviour.
 fn main() -> sysexits::ExitCode {
   aeruginous::Clap::parse().action().run()
 }
