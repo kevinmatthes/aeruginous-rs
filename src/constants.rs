@@ -17,10 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-//! # Constants
-//!
-//! This is the place where constants related to this crate are stored
-//! centrally.
+//! The central constant storage.
 
 /// This crate's name.
 pub const CRATE_NAME: &str = "aeruginous";
