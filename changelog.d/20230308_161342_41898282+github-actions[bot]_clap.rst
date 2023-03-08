@@ -2,16 +2,28 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Added
+.....
+
+- Action:  creation
+
+- Clap:  creation
+
+- CLI:  command for application information
+
+- CLI:  command for current time
+
+- CLI:  initial command line argument configuration
+
+- dependency:  Rust crate ``clap``
+
+- documentation:  software licenses of ``clap`` crate
+
+Changed
+.......
+
+- documentation:  enhance documentation comments
+
 .. Deprecated
 .. ..........
 ..
@@ -22,11 +34,11 @@
 ..
 .. - A bullet item for the Fixed category.
 ..
-.. Removed
-.. .......
-..
-.. - A bullet item for the Removed category.
-..
+Removed
+.......
+
+- UI module
+
 .. Security
 .. ........
 ..
