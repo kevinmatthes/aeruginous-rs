@@ -17,15 +17,15 @@
 |                                                                              |
 \******************************************************************************/
 
-//! # Clap Settings
-//!
-//! `aeruginous` employs `clap` to parse the passed command line arguments.
-//! This module defines the possible command line arguments.
+//! The settings for `clap`.
 
 use crate::Action;
 use clap::Parser;
 
 /// The command line argument configuration.
+///
+/// `aeruginous` employs `clap` to parse the passed command line arguments.  The
+/// possible ones are configured by this struct.
 #[derive(Parser)]
 #[clap(about, version)]
 pub struct Clap {
