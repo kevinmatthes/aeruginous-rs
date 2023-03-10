@@ -20,53 +20,46 @@
 ################################################################################
 ##
 ##  AUTHOR      Kevin Matthes
-##  BRIEF       Citation settings for the Git repository.
+##  BRIEF       Update the README when changing `src/lib.rs`.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
-##  FILE        CITATION.cff
+##  FILE        automirror.yml
 ##  NOTE        See `LICENSE' for full license.
 ##              See `README.md' for project details.
 ##
 ################################################################################
 
-# Parser settings.
-cff-version: 1.2.0
-message: Please cite this software using these information.
+name: automirror
 
-# Version information.
-date-released: 2023-03-04
-version: 0.0.0
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/lib.rs
 
-# Project information.
-abstract: The Aeruginous Open Source Development Toolbox.
-authors:
-  - alias: kevinmatthes
-    family-names: Matthes
-    given-names: Kevin
-license: GPL-3.0
-repository-code: https://github.com/kevinmatthes/aeruginous-rs
-title: aeruginous-rs
-url: https://github.com/kevinmatthes/aeruginous-rs
+permissions:
+  contents: write
 
-# References.
-references:
-  - type: software
-    date-released: 2023-01-28
-    version: 0.4.1
-    abstract: The system exit codes as defined by <sysexits.h> for Rust
-    authors:
-      - alias: sorairolake
-        family-names: Sakai
-        given-names: Shun
-      - alias: kevinmatthes
-        family-names: Matthes
-        given-names: Kevin
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/sysexits
-    repository-code: https://github.com/sorairolake/sysexits-rs
-    title: sysexits-rs
-    url: https://docs.rs/sysexits
+jobs:
+  readme:
+    name: readme
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3.3.0
+
+      - name: user
+        uses: fregante/setup-git-user@v2.0.1
+
+      - name: update
+        run: |
+          cargo r -- rs2md -i src/lib.rs --outer true -o README.md \
+          && git add README.md \
+          && git commit -m \
+                 "`git config --list \
+                 | grep user\.name \
+                 | cut -d= -f2`:  Mirror README.md from src/lib.rs" \
+          && git push
 
 ################################################################################

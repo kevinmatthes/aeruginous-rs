@@ -19,9 +19,12 @@
 
 //! The application's subcommands.
 
-use crate::{CRATE_VERSION, SELF_DESCRIPTION};
-use chrono::Local;
 use clap::Subcommand;
+use std::{
+  fs::File,
+  io::{stdin, BufRead, BufReader, Write},
+  path::PathBuf,
+};
 use sysexits::ExitCode;
 
 /// The supported application modes.
@@ -30,31 +33,128 @@ use sysexits::ExitCode;
 /// different behaviour.
 #[derive(Subcommand)]
 pub enum Action {
-  /// Show some information on this application.
-  Info,
+  /// Extract Markdown code from Rust documentation comments.
+  Rs2md {
+    /// Whether to extract Rust documentation line comments starting with `///`.
+    #[arg(long = "inner")]
+    extract_inner: Option<bool>,
 
-  /// Show the current time.
-  Now,
+    /// Whether to extract Rust documentation line comments starting with `//!`.
+    #[arg(long = "outer")]
+    extract_outer: Option<bool>,
+
+    /// The Rust files to read from or `stdin`, if omitted.
+    #[arg(short = 'i')]
+    input_files: Vec<PathBuf>,
+
+    /// The Markdown file to write to or `stdout`, if omitted.
+    #[arg(short = 'o')]
+    output_file: Option<PathBuf>,
+  },
 }
 
 impl Action {
-  /// Show some information on this application.
-  fn info() -> ExitCode {
-    println!("This is the {SELF_DESCRIPTION}, {CRATE_VERSION}.");
-    ExitCode::Ok
-  }
+  /// Extract Markdown code from Rust documentation comments.
+  fn rs2md(
+    extract_inner: &Option<bool>,
+    extract_outer: &Option<bool>,
+    input_files: &Vec<PathBuf>,
+    output_file: &Option<PathBuf>,
+  ) -> ExitCode {
+    let mut lines = Vec::<u8>::new();
 
-  /// Show the current time.
-  fn now() -> ExitCode {
-    println!("{}", Local::now());
-    ExitCode::Ok
+    if !input_files.is_empty() {
+      for file in input_files {
+        match File::open(file) {
+          Ok(file) => match BufReader::new(file).fill_buf() {
+            Ok(string) => {
+              lines.append(&mut string.to_vec());
+            }
+            Err(error) => {
+              eprintln!("{error}");
+              return ExitCode::IoErr;
+            }
+          },
+          Err(error) => {
+            eprintln!("{error}");
+            return ExitCode::NoInput;
+          }
+        }
+      }
+    } else {
+      loop {
+        let mut line = String::new();
+
+        match stdin().read_line(&mut line) {
+          Ok(0) => {
+            break;
+          }
+          Ok(_) => lines.append(&mut line.as_bytes().to_vec()),
+          Err(error) => {
+            eprintln!("{error}");
+            return ExitCode::IoErr;
+          }
+        }
+      }
+    }
+
+    match String::from_utf8(lines) {
+      Ok(lines) => {
+        let lines = lines
+          .lines()
+          .map(|l| l.trim_start())
+          .filter(|l| {
+            (match extract_inner {
+              Some(boolean) => *boolean,
+              None => false,
+            } && l.starts_with("///"))
+              || (match extract_outer {
+                Some(boolean) => *boolean,
+                None => false,
+              } && l.starts_with("//!"))
+          })
+          .map(|l| {
+            String::from(l.chars().skip(4).collect::<String>().trim_end())
+              + "\n"
+          })
+          .collect::<String>();
+
+        match output_file {
+          Some(path) => match File::create(path) {
+            Ok(mut file) => match file.write(lines.as_bytes()) {
+              Ok(_) => ExitCode::Ok,
+              Err(error) => {
+                eprintln!("{error}");
+                ExitCode::IoErr
+              }
+            },
+            Err(error) => {
+              eprintln!("{error}");
+              ExitCode::CantCreat
+            }
+          },
+          None => {
+            print!("{lines}");
+            ExitCode::Ok
+          }
+        }
+      }
+      Err(error) => {
+        eprintln!("{error}");
+        ExitCode::DataErr
+      }
+    }
   }
 
   /// Execute the selected action.
   pub fn run(&self) -> ExitCode {
     match self {
-      Self::Info => Self::info(),
-      Self::Now => Self::now(),
+      Self::Rs2md {
+        extract_inner,
+        extract_outer,
+        input_files,
+        output_file,
+      } => Self::rs2md(extract_inner, extract_outer, input_files, output_file),
     }
   }
 }
