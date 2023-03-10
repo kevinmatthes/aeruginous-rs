@@ -38,7 +38,7 @@ date-released: 2023-03-04
 version: 0.0.0
 
 # Project information.
-abstract: Yet another time tracking CLI, written in Rust.
+abstract: The Aeruginous Open Source Development Toolbox.
 authors:
   - alias: kevinmatthes
     family-names: Matthes
