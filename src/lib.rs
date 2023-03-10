@@ -43,10 +43,10 @@
 //! 1. [License](#license)
 //! 1. [Introduction](#introduction)
 //! 1. [Meaning of the Name](#meaning-of-the-name)
+//! 1. [Supported Subcommands](#supported-subcommands)
+//!    1. [`rs2md`](#rs2md)
 //!
 //! ## License
-//!
-//! ![[][lcns]][repository]
 //!
 //! This project's license is **GPL-3.0**.  The whole license text can be found
 //! in [`LICENSE`][gpl3] in the repository root.  The brief version is as
@@ -94,6 +94,17 @@
 //! fulfills both criterions as it means that the described noun has patina, a
 //! special form of rust which appears after a certain period of time has
 //! passed.
+//!
+//! ## Supported Subcommands
+//!
+//! ### `rs2md`
+//!
+//! Source code should always be documented.  Rust's documentation system
+//! supports Markdown syntax in documentation comments.  Thus, it is a
+//! convenient decision to create a Rust project's README file from the crate
+//! root's documentation.
+//!
+//! This command is also helpful to check the documentation comments for typos.
 //!
 //! <!------------------------------------------------------------------------->
 
