@@ -37,7 +37,7 @@ impl Running {
   /// Construct a new running instance.
   #[must_use]
   pub fn create() -> Self {
-    Running {
+    Self {
       begin: Local::now(),
     }
   }
