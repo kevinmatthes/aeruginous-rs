@@ -113,8 +113,12 @@ impl Action {
           })
           .collect::<String>();
 
-        match output_file {
-          Some(path) => match File::create(path) {
+        output_file.as_ref().map_or_else(
+          || {
+            print!("{lines}");
+            ExitCode::Ok
+          },
+          |path| match File::create(path) {
             Ok(mut file) => match file.write(lines.as_bytes()) {
               Ok(_) => ExitCode::Ok,
               Err(error) => {
@@ -127,11 +131,7 @@ impl Action {
               ExitCode::CantCreat
             }
           },
-          None => {
-            print!("{lines}");
-            ExitCode::Ok
-          }
-        }
+        )
       }
       Err(error) => {
         eprintln!("{error}");
