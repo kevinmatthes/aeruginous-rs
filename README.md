@@ -19,7 +19,7 @@
 [![][ci]][ci-url]
 [![][lcns]][repository]
 
-Yet another time tracking CLI, written in Rust.
+The Aeruginous Open Source Development Toolbox.
 
 1. [License](#license)
 1. [Introduction](#introduction)
@@ -53,16 +53,27 @@ can be found in [`LICENSEs`][lcnss].
 
 ## Introduction
 
-`aeruginous` is a time tracking CLI, written in Rust.  Its main purpose is
-to create and maintain working hours, stored in fragments named "time
-frames".
+`aeruginous` is a Rust application providing several development utilities.
+
+Originally, it was planned to be a time tracking CLI but during the
+development of the first stable version, certain common tasks needed to be
+fulfilled repeatedly.  Since the application already had a somehow stable
+calling interface, the solutions to these tasks were added as subcommands
+to `aeruginous` in order to provide a convenient and time efficient
+automation.  One major advantage of doing is the reduced maintenance effort
+and overall setup overhead because there is only one project to maintain
+instead multiple ones.
+
+This is how the idea arose to design `aeruginous` to be toolbox instead of
+just a time tracker.
 
 ## Meaning of the Name
 
 When searching a name for this project, one main requirement was to reflect
-both the purpose of tracking time as well as the coding language this CLI is
-written in, Rust.  The adjective *aeruginous* fulfills both criterions as it
-means that the described noun has patina, a special form of rust which
-appears after a certain period of time has passed.
+both the originally intended main purpose of tracking time as well as the
+coding language this CLI is written in, Rust.  The adjective *aeruginous*
+fulfills both criterions as it means that the described noun has patina, a
+special form of rust which appears after a certain period of time has
+passed.
 
 <!------------------------------------------------------------------------->
