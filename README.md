@@ -64,8 +64,8 @@ automation.  One major advantage of doing is the reduced maintenance effort
 and overall setup overhead because there is only one project to maintain
 instead multiple ones.
 
-This is how the idea arose to design `aeruginous` to be toolbox instead of
-just a time tracker.
+This is how the idea arose to design `aeruginous` to be a toolbox instead
+of only a time tracker.
 
 ## Meaning of the Name
 
@@ -83,8 +83,17 @@ passed.
 Source code should always be documented.  Rust's documentation system
 supports Markdown syntax in documentation comments.  Thus, it is a
 convenient decision to create a Rust project's README file from the crate
-root's documentation.
+root's documentation.  This command is also helpful to check the
+documentation comments for typos.
 
-This command is also helpful to check the documentation comments for typos.
+When called, the subcommand accepts a list of input files to read from.  If
+no input file is given, `rs2md` will read from `stdin`.
+
+At option, an output file can be specified where the results will be written
+to.  If omitted, the results will be written to `stdout`.
+
+Users are free to choose whether they would like to extract Rust comments
+starting with `//!` (outer comments) or comments starting with `///` (inner
+comments).  If neither option is given, nothing will be extracted.
 
 <!------------------------------------------------------------------------->
