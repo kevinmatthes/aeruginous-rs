@@ -33,7 +33,8 @@ pub struct Clap {
 
 impl Clap {
   /// Retrieve the selected action.
-  pub fn action(&self) -> &Action {
+  #[must_use]
+  pub const fn action(&self) -> &Action {
     &self.action
   }
 }

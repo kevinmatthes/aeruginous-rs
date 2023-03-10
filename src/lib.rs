@@ -108,6 +108,18 @@
 //!
 //! <!------------------------------------------------------------------------->
 
+#![deny(
+  clippy::all,
+  clippy::cargo,
+  clippy::complexity,
+  clippy::correctness,
+  clippy::nursery,
+  clippy::pedantic,
+  clippy::perf,
+  clippy::suspicious,
+  clippy::style
+)]
+
 mod action;
 mod clap;
 mod constants;
@@ -119,7 +131,7 @@ pub use crate::{
   clap::Clap,
   constants::{CRATE_NAME, CRATE_VERSION, SELF_DESCRIPTION},
   running::Running,
-  version::{Version, VersionParsingError},
+  version::{ParsingError as VersionParsingError, Version},
 };
 
 /******************************************************************************/

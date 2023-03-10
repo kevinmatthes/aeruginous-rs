@@ -35,14 +35,16 @@ pub struct Running {
 
 impl Running {
   /// Construct a new running instance.
+  #[must_use]
   pub fn create() -> Self {
-    Running {
+    Self {
       begin: Local::now(),
     }
   }
 
   /// Retrieve the creation time.
-  pub fn get(&self) -> &DateTime<Local> {
+  #[must_use]
+  pub const fn get(&self) -> &DateTime<Local> {
     &self.begin
   }
 }

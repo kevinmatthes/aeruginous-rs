@@ -40,6 +40,15 @@ homepage = "https://github.com/kevinmatthes/aeruginous-rs"
 license = "GPL-3.0"
 rust-version = "1.67.1"
 include = ["/src"]
+keywords = ["aeruginous", "rs2md"]
+repository = "https://github.com/kevinmatthes/aeruginous-rs"
+categories = [
+  "command-line-utilities",
+  "config",
+  "development-tools",
+  "rust-patterns",
+  "template-engine"
+]
 
 [dependencies]
 chrono = "0.4.23"
