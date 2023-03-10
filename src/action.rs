@@ -56,14 +56,29 @@ pub enum Action {
 impl Action {
   /// Extract Markdown code from Rust documentation comments.
   fn rs2md(
-    extract_inner: &Option<bool>,
-    extract_outer: &Option<bool>,
+    extract_inner: Option<bool>,
+    extract_outer: Option<bool>,
     input_files: &Vec<PathBuf>,
     output_file: &Option<PathBuf>,
   ) -> ExitCode {
     let mut lines = Vec::<u8>::new();
 
-    if !input_files.is_empty() {
+    if input_files.is_empty() {
+      loop {
+        let mut line = String::new();
+
+        match stdin().read_line(&mut line) {
+          Ok(0) => {
+            break;
+          }
+          Ok(_) => lines.append(&mut line.as_bytes().to_vec()),
+          Err(error) => {
+            eprintln!("{error}");
+            return ExitCode::IoErr;
+          }
+        }
+      }
+    } else {
       for file in input_files {
         match File::open(file) {
           Ok(file) => match BufReader::new(file).fill_buf() {
@@ -81,37 +96,16 @@ impl Action {
           }
         }
       }
-    } else {
-      loop {
-        let mut line = String::new();
-
-        match stdin().read_line(&mut line) {
-          Ok(0) => {
-            break;
-          }
-          Ok(_) => lines.append(&mut line.as_bytes().to_vec()),
-          Err(error) => {
-            eprintln!("{error}");
-            return ExitCode::IoErr;
-          }
-        }
-      }
     }
 
     match String::from_utf8(lines) {
       Ok(lines) => {
         let lines = lines
           .lines()
-          .map(|l| l.trim_start())
+          .map(str::trim_start)
           .filter(|l| {
-            (match extract_inner {
-              Some(boolean) => *boolean,
-              None => false,
-            } && l.starts_with("///"))
-              || (match extract_outer {
-                Some(boolean) => *boolean,
-                None => false,
-              } && l.starts_with("//!"))
+            (extract_inner.unwrap_or(false) && l.starts_with("///"))
+              || (extract_outer.unwrap_or(false) && l.starts_with("//!"))
           })
           .map(|l| {
             String::from(l.chars().skip(4).collect::<String>().trim_end())
@@ -147,6 +141,7 @@ impl Action {
   }
 
   /// Execute the selected action.
+  #[must_use]
   pub fn run(&self) -> ExitCode {
     match self {
       Self::Rs2md {
@@ -154,7 +149,9 @@ impl Action {
         extract_outer,
         input_files,
         output_file,
-      } => Self::rs2md(extract_inner, extract_outer, input_files, output_file),
+      } => {
+        Self::rs2md(*extract_inner, *extract_outer, input_files, output_file)
+      }
     }
   }
 }
