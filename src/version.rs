@@ -23,7 +23,7 @@
 ///
 /// An instance of `Version` can be constructed from a given string slice.  In
 /// case that the parsing should fail, an appropriate error type is required.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct ParsingError;
 
 /// The version information data structure.
@@ -34,7 +34,7 @@ pub struct ParsingError;
 /// application need to be stored together with the time frames.  If a
 /// conversion should be necessary, `aeruginous` will take care about the
 /// required adjustments.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Version {
   /// The major version.
   major: usize,
@@ -160,19 +160,19 @@ mod eq {
 impl Version {
   /// Retrieve the major version of this version instance.
   #[must_use]
-  pub fn get_major(&self) -> usize {
+  pub const fn get_major(&self) -> usize {
     self.major
   }
 
   /// Retrieve the minor version of this version instance.
   #[must_use]
-  pub fn get_minor(&self) -> usize {
+  pub const fn get_minor(&self) -> usize {
     self.minor
   }
 
   /// Retrieve the patch level of this version instance.
   #[must_use]
-  pub fn get_patch(&self) -> usize {
+  pub const fn get_patch(&self) -> usize {
     self.patch
   }
 
