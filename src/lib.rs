@@ -120,15 +120,13 @@
   clippy::style
 )]
 
-mod action;
-mod clap;
+mod application;
 mod constants;
 mod running;
 mod version;
 
 pub use crate::{
-  action::Action,
-  clap::Clap,
+  application::Clap as Application,
   constants::{CRATE_NAME, CRATE_VERSION, SELF_DESCRIPTION},
   running::Running,
   version::{ParsingError as VersionParsingError, Version},
