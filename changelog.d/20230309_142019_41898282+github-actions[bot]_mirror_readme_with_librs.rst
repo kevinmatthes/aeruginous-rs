@@ -33,7 +33,7 @@ Changed
 Removed
 .......
 
-- src/aciton.rs:  subcommand ``info``
+- src/action.rs:  subcommand ``info``
 
 - src/action.rs:  subcommand ``now``
 
