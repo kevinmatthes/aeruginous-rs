@@ -83,8 +83,8 @@
 //! and overall setup overhead because there is only one project to maintain
 //! instead multiple ones.
 //!
-//! This is how the idea arose to design `aeruginous` to be toolbox instead of
-//! just a time tracker.
+//! This is how the idea arose to design `aeruginous` to be a toolbox instead
+//! of only a time tracker.
 //!
 //! ## Meaning of the Name
 //!
