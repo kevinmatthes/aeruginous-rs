@@ -2,11 +2,17 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- Cargo.toml:  project keywords
+
+- CFF:  project keywords
+
+- CI:  ``cargo clippy``
+
+- src/lib.rs:  very strict Clippy linting settings
+
 .. Changed
 .. .......
 ..
@@ -17,11 +23,13 @@
 ..
 .. - A bullet item for the Deprecated category.
 ..
-.. Fixed
-.. .....
-..
-.. - A bullet item for the Fixed category.
-..
+Fixed
+.....
+
+- CI:  edge case when mirroring src/lib.rs to README.md
+
+- source code:  Clippy complaints
+
 .. Removed
 .. .......
 ..
