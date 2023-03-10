@@ -22,7 +22,7 @@
 use clap::Subcommand;
 use std::{
   fs::File,
-  io::{BufRead, BufReader, Write},
+  io::{stdin, BufRead, BufReader, Write},
   path::PathBuf,
 };
 use sysexits::ExitCode;
