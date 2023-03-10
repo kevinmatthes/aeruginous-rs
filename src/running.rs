@@ -44,7 +44,7 @@ impl Running {
 
   /// Retrieve the creation time.
   #[must_use]
-  pub fn get(&self) -> &DateTime<Local> {
+  pub const fn get(&self) -> &DateTime<Local> {
     &self.begin
   }
 }
