@@ -114,7 +114,8 @@ impl Action {
               } && l.starts_with("//!"))
           })
           .map(|l| {
-            String::from(l.chars().skip(3).collect::<String>().trim()) + "\n"
+            String::from(l.chars().skip(4).collect::<String>().trim_end())
+              + "\n"
           })
           .collect::<String>();
 
