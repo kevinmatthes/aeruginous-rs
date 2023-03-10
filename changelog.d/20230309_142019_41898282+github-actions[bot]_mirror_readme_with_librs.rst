@@ -2,16 +2,24 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Added
+.....
+
+- GitHub Action workflow:  README creation from ``src/lib.rs``
+
+- src/action.rs:  subcommand ``rs2md``
+
+Changed
+.......
+
+- Cargo.toml:  change project description
+
+- CFF:  change project abstract
+
+- src/clap.rs:  shorten documentation
+
+- src/lib.rs:  enhance documentation
+
 .. Deprecated
 .. ..........
 ..
@@ -22,11 +30,13 @@
 ..
 .. - A bullet item for the Fixed category.
 ..
-.. Removed
-.. .......
-..
-.. - A bullet item for the Removed category.
-..
+Removed
+.......
+
+- src/aciton.rs:  subcommand ``info``
+
+- src/action.rs:  subcommand ``now``
+
 .. Security
 .. ........
 ..
