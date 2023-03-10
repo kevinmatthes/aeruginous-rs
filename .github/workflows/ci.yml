@@ -44,6 +44,7 @@ jobs:
     needs:
       - cffconvert
       - check
+      - clippy
       - test
     runs-on: ubuntu-latest
     steps:
@@ -75,6 +76,18 @@ jobs:
 
       - name: cargo
         run: cargo c
+
+  clippy:
+    name: clippy
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3.3.0
+        with:
+          persist-credentials: false
+
+      - name: cargo
+        run: cargo clippy
 
   test:
     name: test
