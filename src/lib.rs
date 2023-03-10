@@ -108,7 +108,17 @@
 //!
 //! <!------------------------------------------------------------------------->
 
-#![deny(clippy::cargo, clippy::pedantic)]
+#![deny(
+  clippy::all,
+  clippy::cargo,
+  clippy::complexity,
+  clippy::correctness,
+  clippy::nursery,
+  clippy::pedantic,
+  clippy::perf,
+  clippy::suspicious,
+  clippy::style
+)]
 
 mod action;
 mod clap;
