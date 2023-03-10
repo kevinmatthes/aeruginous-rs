@@ -63,20 +63,37 @@ impl Action {
   ) -> ExitCode {
     let mut lines = Vec::<u8>::new();
 
-    for file in input_files {
-      match File::open(file) {
-        Ok(file) => match BufReader::new(file).fill_buf() {
-          Ok(string) => {
-            lines.append(&mut string.to_vec());
+    if !input_files.is_empty() {
+      for file in input_files {
+        match File::open(file) {
+          Ok(file) => match BufReader::new(file).fill_buf() {
+            Ok(string) => {
+              lines.append(&mut string.to_vec());
+            }
+            Err(error) => {
+              eprintln!("{error}");
+              return ExitCode::IoErr;
+            }
+          },
+          Err(error) => {
+            eprintln!("{error}");
+            return ExitCode::NoInput;
           }
+        }
+      }
+    } else {
+      loop {
+        let mut line = String::new();
+
+        match stdin().read_line(&mut line) {
+          Ok(0) => {
+            break;
+          }
+          Ok(_) => lines.append(&mut line.as_bytes().to_vec()),
           Err(error) => {
             eprintln!("{error}");
             return ExitCode::IoErr;
           }
-        },
-        Err(error) => {
-          eprintln!("{error}");
-          return ExitCode::NoInput;
         }
       }
     }
