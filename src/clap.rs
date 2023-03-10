@@ -34,7 +34,7 @@ pub struct Clap {
 impl Clap {
   /// Retrieve the selected action.
   #[must_use]
-  pub fn action(&self) -> &Action {
+  pub const fn action(&self) -> &Action {
     &self.action
   }
 }
