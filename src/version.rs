@@ -19,6 +19,13 @@
 
 //! The version information management utilities.
 
+/// The parsing error type for this struct.
+///
+/// An instance of `Version` can be constructed from a given string slice.  In
+/// case that the parsing should fail, an appropriate error type is required.
+#[derive(Debug, PartialEq)]
+pub struct ParsingError;
+
 /// The version information data structure.
 ///
 /// Future releases of `aeruginous` might introduce changes due to which the
@@ -150,25 +157,21 @@ mod eq {
   }
 }
 
-/// The parsing error type for this struct.
-///
-/// An instance of `Version` can be constructed from a given string slice.  In
-/// case that the parsing should fail, an appropriate error type is required.
-#[derive(Debug, PartialEq)]
-pub struct VersionParsingError;
-
 impl Version {
   /// Retrieve the major version of this version instance.
+  #[must_use]
   pub fn get_major(&self) -> usize {
     self.major
   }
 
   /// Retrieve the minor version of this version instance.
+  #[must_use]
   pub fn get_minor(&self) -> usize {
     self.minor
   }
 
   /// Retrieve the patch level of this version instance.
+  #[must_use]
   pub fn get_patch(&self) -> usize {
     self.patch
   }
@@ -330,7 +333,7 @@ mod fmt {
 }
 
 impl std::str::FromStr for Version {
-  type Err = VersionParsingError;
+  type Err = ParsingError;
 
   /// Create a new version instance from a string slice.
   ///
@@ -376,7 +379,7 @@ impl std::str::FromStr for Version {
         minor,
         patch,
       }),
-      _ => Err(VersionParsingError),
+      _ => Err(ParsingError),
     }
   }
 }
