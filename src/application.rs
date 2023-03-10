@@ -19,7 +19,7 @@
 
 //! The application's subcommands.
 
-use clap::Subcommand;
+use clap::{Parser, Subcommand};
 use std::{
   fs::File,
   io::{stdin, BufRead, BufReader, Write},
@@ -153,6 +153,23 @@ impl Action {
         Self::rs2md(*extract_inner, *extract_outer, input_files, output_file)
       }
     }
+  }
+}
+
+/// The command line argument configuration.
+#[derive(Parser)]
+#[clap(about, version)]
+pub struct Clap {
+  /// The action to perform.
+  #[clap(subcommand)]
+  action: Action,
+}
+
+impl Clap {
+  /// Retrieve the selected action.
+  #[must_use]
+  pub const fn action(&self) -> &Action {
+    &self.action
   }
 }
 
