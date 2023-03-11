@@ -19,12 +19,9 @@
 
 //! The application's subcommands.
 
+use crate::{read_from_input_files_or_stdin, write_to_output_file_or_stdout};
 use clap::{Parser, Subcommand};
-use std::{
-  fs::File,
-  io::{stdin, BufRead, BufReader, Write},
-  path::PathBuf,
-};
+use std::path::PathBuf;
 use sysexits::ExitCode;
 
 /// The supported application modes.
@@ -33,6 +30,17 @@ use sysexits::ExitCode;
 /// different behaviour.
 #[derive(Subcommand)]
 pub enum Action {
+  /// Extract the citation information from a given and valid CFF file.
+  Cffreference {
+    /// The CFF file to read from, defaulting to `stdin`, if omitted.
+    #[arg(short = 'i')]
+    input_file: Option<PathBuf>,
+
+    /// The CFF file to write to, defaulting to `stdout`, if omitted.
+    #[arg(short = 'o')]
+    output_file: Option<PathBuf>,
+  },
+
   /// Extract Markdown code from Rust documentation comments.
   Rs2md {
     /// Whether to extract Rust documentation line comments starting with `///`.
@@ -43,17 +51,32 @@ pub enum Action {
     #[arg(long = "outer")]
     extract_outer: Option<bool>,
 
-    /// The Rust files to read from or `stdin`, if omitted.
+    /// The Rust files to read from, defaulting to `stdin`, if omitted.
     #[arg(short = 'i')]
     input_files: Vec<PathBuf>,
 
-    /// The Markdown file to write to or `stdout`, if omitted.
+    /// The Markdown file to write to, defaulting to `stdout`, if omitted.
     #[arg(short = 'o')]
     output_file: Option<PathBuf>,
   },
 }
 
 impl Action {
+  /// Extract the citation information from a given and valid CFF file.
+  fn cffreference(
+    input_file: &Option<PathBuf>,
+    output_file: &Option<PathBuf>,
+  ) -> ExitCode {
+    input_file
+      .as_ref()
+      .map_or_else(|| println!("stdin"), |file| println!("{}", file.display()));
+    output_file.as_ref().map_or_else(
+      || println!("stdout"),
+      |file| println!("{}", file.display()),
+    );
+    ExitCode::Ok
+  }
+
   /// Extract Markdown code from Rust documentation comments.
   fn rs2md(
     extract_inner: Option<bool>,
@@ -61,82 +84,29 @@ impl Action {
     input_files: &Vec<PathBuf>,
     output_file: &Option<PathBuf>,
   ) -> ExitCode {
-    let mut lines = Vec::<u8>::new();
-
-    if input_files.is_empty() {
-      loop {
-        let mut line = String::new();
-
-        match stdin().read_line(&mut line) {
-          Ok(0) => {
-            break;
-          }
-          Ok(_) => lines.append(&mut line.as_bytes().to_vec()),
-          Err(error) => {
-            eprintln!("{error}");
-            return ExitCode::IoErr;
-          }
+    match read_from_input_files_or_stdin(input_files) {
+      Ok(lines) => match String::from_utf8(lines) {
+        Ok(lines) => write_to_output_file_or_stdout(
+          output_file,
+          &lines
+            .lines()
+            .map(str::trim_start)
+            .filter(|l| {
+              (extract_inner.unwrap_or(false) && l.starts_with("///"))
+                || (extract_outer.unwrap_or(false) && l.starts_with("//!"))
+            })
+            .map(|l| {
+              String::from(l.chars().skip(4).collect::<String>().trim_end())
+                + "\n"
+            })
+            .collect::<String>(),
+        ),
+        Err(error) => {
+          eprintln!("{error}");
+          ExitCode::DataErr
         }
-      }
-    } else {
-      for file in input_files {
-        match File::open(file) {
-          Ok(file) => match BufReader::new(file).fill_buf() {
-            Ok(string) => {
-              lines.append(&mut string.to_vec());
-            }
-            Err(error) => {
-              eprintln!("{error}");
-              return ExitCode::IoErr;
-            }
-          },
-          Err(error) => {
-            eprintln!("{error}");
-            return ExitCode::NoInput;
-          }
-        }
-      }
-    }
-
-    match String::from_utf8(lines) {
-      Ok(lines) => {
-        let lines = lines
-          .lines()
-          .map(str::trim_start)
-          .filter(|l| {
-            (extract_inner.unwrap_or(false) && l.starts_with("///"))
-              || (extract_outer.unwrap_or(false) && l.starts_with("//!"))
-          })
-          .map(|l| {
-            String::from(l.chars().skip(4).collect::<String>().trim_end())
-              + "\n"
-          })
-          .collect::<String>();
-
-        output_file.as_ref().map_or_else(
-          || {
-            print!("{lines}");
-            ExitCode::Ok
-          },
-          |path| match File::create(path) {
-            Ok(mut file) => match file.write(lines.as_bytes()) {
-              Ok(_) => ExitCode::Ok,
-              Err(error) => {
-                eprintln!("{error}");
-                ExitCode::IoErr
-              }
-            },
-            Err(error) => {
-              eprintln!("{error}");
-              ExitCode::CantCreat
-            }
-          },
-        )
-      }
-      Err(error) => {
-        eprintln!("{error}");
-        ExitCode::DataErr
-      }
+      },
+      Err(code) => code,
     }
   }
 
@@ -144,6 +114,10 @@ impl Action {
   #[must_use]
   pub fn run(&self) -> ExitCode {
     match self {
+      Self::Cffreference {
+        input_file,
+        output_file,
+      } => Self::cffreference(input_file, output_file),
       Self::Rs2md {
         extract_inner,
         extract_outer,
