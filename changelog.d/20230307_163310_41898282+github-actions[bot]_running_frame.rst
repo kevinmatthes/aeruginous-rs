@@ -5,7 +5,7 @@
 Added
 .....
 
-- time tracking:  create struct for ongoing tracking session
+- src/running.rs:  creation
 
 .. Changed
 .. .......
