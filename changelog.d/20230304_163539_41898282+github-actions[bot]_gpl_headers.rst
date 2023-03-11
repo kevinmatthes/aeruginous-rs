@@ -7,13 +7,13 @@ Added
 
 - Cargo.lock:  creation
 
-- Cargo.toml:  add GPL header
+- Cargo.toml:  GPL header
 
-- .gitignore:  add GPL header
+- .gitignore:  GPL header
 
-- main source file:  add GPL header
+- README:  GPL header
 
-- README:  add GPL header
+- src/main.rs:  GPL header
 
 .. Changed
 .. .......
