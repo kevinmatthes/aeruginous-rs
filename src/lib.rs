@@ -144,7 +144,7 @@ mod version;
 pub use crate::{
   application::Clap as Application,
   io::{
-    process_input_files_or_stdin, read_from_input_files_or_stdin,
+    process_input_files_or_stdin_to_output_file_or_stdout, read_from_input_files_or_stdin,
     write_to_output_file_or_stdout,
   },
   running::Running,
