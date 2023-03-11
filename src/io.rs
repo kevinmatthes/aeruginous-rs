@@ -40,11 +40,11 @@ use sysexits::ExitCode;
 /// ## `sysexits::ExitCode::IoErr`
 ///
 /// An error occured while reading from the given stream.  One reason might be
-/// that it did not contain valid UTF-8 characters.
+/// that it contained invalid UTF-8 characters.
 ///
 /// ## `sysexits::ExitCode::NoInput`
 ///
-/// It was not possible to read from the given file.  It either did not exis or
+/// It was not possible to read from the given file.  It either did not exist or
 /// reading from it is not allowed for some reasons.
 pub fn read_from_input_files_or_stdin(
   input_files: &Vec<PathBuf>,
