@@ -7,18 +7,12 @@ Added
 
 - GitHub Action workflow:  README creation from ``src/lib.rs``
 
-- src/action.rs:  subcommand ``rs2md``
+- rs2md:  creation
 
 Changed
 .......
 
 - Cargo.toml:  change project description
-
-- CFF:  change project abstract
-
-- src/clap.rs:  shorten documentation
-
-- src/lib.rs:  enhance documentation
 
 .. Deprecated
 .. ..........
@@ -30,13 +24,6 @@ Changed
 ..
 .. - A bullet item for the Fixed category.
 ..
-Removed
-.......
-
-- src/action.rs:  subcommand ``info``
-
-- src/action.rs:  subcommand ``now``
-
 .. Security
 .. ........
 ..
