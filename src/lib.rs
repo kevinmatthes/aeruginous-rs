@@ -147,13 +147,13 @@ pub use crate::{
 };
 
 /// This crate's name.
-pub const CRATE_NAME: &str = "aeruginous";
+pub const NAME: &str = "aeruginous";
 
-/// This crate's version.
-pub const CRATE_VERSION: &str = "v0.0.0";
-
-/// This crate's self description.
+/// This crate's self-description.
 pub const SELF_DESCRIPTION: &str =
   "The Aeruginous Open Source Development Toolbox";
+
+/// This crate's version.
+pub const VERSION: &str = "v0.0.0";
 
 /******************************************************************************/
