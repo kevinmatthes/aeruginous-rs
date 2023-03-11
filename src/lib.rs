@@ -23,9 +23,13 @@
 //! [bors-url]:  https://app.bors.tech/repositories/63092
 //! [ci]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci/badge.svg
 //! [ci-url]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci
+//! [crates-io]:  https://img.shields.io/crates/v/aeruginous
+//! [crates-io-url]:  https://crates.io/crates/aeruginous
+//! [downloads]:  https://img.shields.io/crates/d/aeruginous
 //! [gpl3]:  https://github.com/kevinmatthes/aeruginous-rs/blob/main/LICENSE
 //! [lcns]:  https://img.shields.io/github/license/kevinmatthes/aeruginous-rs
 //! [lcnss]:  https://github.com/kevinmatthes/aeruginous-rs/tree/main/LICENSEs
+//! [lst]:  https://img.shields.io/github/last-commit/kevinmatthes/aeruginous-rs
 //! [repository]:  https://github.com/kevinmatthes/aeruginous-rs
 //!
 //! <!------------------------------------------------------------------------->
@@ -36,6 +40,9 @@
 //!
 //! [![][bors]][bors-url]
 //! [![][ci]][ci-url]
+//! [![][crates-io]][crates-io-url]
+//! [![][downloads]][crates-io-url]
+//! [![][lst]][repository]
 //! [![][lcns]][repository]
 //!
 //! The Aeruginous Open Source Development Toolbox.
@@ -130,15 +137,23 @@
 )]
 
 mod application;
-mod constants;
 mod running;
 mod version;
 
 pub use crate::{
   application::Clap as Application,
-  constants::{CRATE_NAME, CRATE_VERSION, SELF_DESCRIPTION},
   running::Running,
   version::{ParsingError as VersionParsingError, Version},
 };
+
+/// This crate's name.
+pub const NAME: &str = "aeruginous";
+
+/// This crate's self-description.
+pub const SELF_DESCRIPTION: &str =
+  "The Aeruginous Open Source Development Toolbox";
+
+/// This crate's version.
+pub const VERSION: &str = "v0.0.0";
 
 /******************************************************************************/

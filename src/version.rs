@@ -292,15 +292,12 @@ impl std::fmt::Display for Version {
 
 #[cfg(test)]
 mod fmt {
-  use crate::{Version, CRATE_VERSION};
+  use crate::{Version, VERSION};
   use std::str::FromStr;
 
   #[test]
   fn crate_version_constant() {
-    assert_eq!(
-      CRATE_VERSION,
-      format!("{}", Version::from_str(CRATE_VERSION).unwrap())
-    );
+    assert_eq!(VERSION, format!("{}", Version::from_str(VERSION).unwrap()));
   }
 
   #[test]
