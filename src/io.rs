@@ -26,6 +26,29 @@ use std::{
 };
 use sysexits::ExitCode;
 
+/// Process given input in a given way and write the output to the given place.
+pub fn process_input_files_or_stdin<T>(
+  input_files: &Vec<PathBuf>,
+  output_file: &Option<PathBuf>,
+  instructions: T,
+) -> ExitCode
+where
+  T: Fn(String) -> String,
+{
+  match read_from_input_files_or_stdin(input_files) {
+    Ok(lines) => match String::from_utf8(lines) {
+      Ok(lines) => {
+        write_to_output_file_or_stdout(output_file, &instructions(lines))
+      }
+      Err(error) => {
+        eprintln!("{error}");
+        ExitCode::DataErr
+      }
+    },
+    Err(code) => code,
+  }
+}
+
 /// Read the contents of multiple files or `stdin` to one buffer.
 ///
 /// This function will read each of the given input files and return their
