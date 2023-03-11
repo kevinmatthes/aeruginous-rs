@@ -154,6 +154,6 @@ pub const SELF_DESCRIPTION: &str =
   "The Aeruginous Open Source Development Toolbox";
 
 /// This crate's version.
-pub const VERSION: &str = "v0.0.0";
+pub const VERSION: &str = "v0.1.0";
 
 /******************************************************************************/
