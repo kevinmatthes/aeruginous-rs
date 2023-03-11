@@ -19,7 +19,7 @@
 
 //! The application's subcommands.
 
-use crate::process_input_files_or_stdin;
+use crate::process_input_files_or_stdin_to_output_file_or_stdout;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 use sysexits::ExitCode;
@@ -84,7 +84,7 @@ impl Action {
     input_files: &Vec<PathBuf>,
     output_file: &Option<PathBuf>,
   ) -> ExitCode {
-    process_input_files_or_stdin(input_files, output_file, |s| {
+    process_input_files_or_stdin_to_output_file_or_stdout(input_files, output_file, |s| {
       s.lines()
         .map(str::trim_start)
         .filter(|l| {
