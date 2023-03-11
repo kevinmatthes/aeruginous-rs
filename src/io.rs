@@ -27,7 +27,7 @@ use std::{
 use sysexits::ExitCode;
 
 /// Process given input in a given way and write the output to the given place.
-pub fn process_input_files_or_stdin<T>(
+pub fn process_input_files_or_stdin_to_output_file_or_stdout<T>(
   input_files: &Vec<PathBuf>,
   output_file: &Option<PathBuf>,
   instructions: T,
