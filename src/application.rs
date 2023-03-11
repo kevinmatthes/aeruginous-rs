@@ -19,7 +19,7 @@
 
 //! The application's subcommands.
 
-use crate::{read_from_input_files_or_stdin, write_to_output_file_or_stdout};
+use crate::process_input_files_or_stdin;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 use sysexits::ExitCode;
@@ -84,30 +84,18 @@ impl Action {
     input_files: &Vec<PathBuf>,
     output_file: &Option<PathBuf>,
   ) -> ExitCode {
-    match read_from_input_files_or_stdin(input_files) {
-      Ok(lines) => match String::from_utf8(lines) {
-        Ok(lines) => write_to_output_file_or_stdout(
-          output_file,
-          &lines
-            .lines()
-            .map(str::trim_start)
-            .filter(|l| {
-              (extract_inner.unwrap_or(false) && l.starts_with("///"))
-                || (extract_outer.unwrap_or(false) && l.starts_with("//!"))
-            })
-            .map(|l| {
-              String::from(l.chars().skip(4).collect::<String>().trim_end())
-                + "\n"
-            })
-            .collect::<String>(),
-        ),
-        Err(error) => {
-          eprintln!("{error}");
-          ExitCode::DataErr
-        }
-      },
-      Err(code) => code,
-    }
+    process_input_files_or_stdin(input_files, output_file, |s| {
+      s.lines()
+        .map(str::trim_start)
+        .filter(|l| {
+          (extract_inner.unwrap_or(false) && l.starts_with("///"))
+            || (extract_outer.unwrap_or(false) && l.starts_with("//!"))
+        })
+        .map(|l| {
+          String::from(l.chars().skip(4).collect::<String>().trim_end()) + "\n"
+        })
+        .collect::<String>()
+    })
   }
 
   /// Execute the selected action.
