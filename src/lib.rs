@@ -137,11 +137,13 @@
 )]
 
 mod application;
+mod io;
 mod running;
 mod version;
 
 pub use crate::{
   application::Clap as Application,
+  io::{read_from_input_files_or_stdin, write_to_output_file_or_stdout},
   running::Running,
   version::{ParsingError as VersionParsingError, Version},
 };
