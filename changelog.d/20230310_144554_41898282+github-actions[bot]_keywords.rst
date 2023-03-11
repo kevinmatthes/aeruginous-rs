@@ -7,8 +7,6 @@ Added
 
 - Cargo.toml:  project keywords
 
-- CFF:  project keywords
-
 - src/lib.rs:  very strict Clippy linting settings
 
 .. Changed
