@@ -11,12 +11,6 @@ Added
 
 - README:  last commit badge
 
-- src/lib.rs:  public constant (crate name)
-
-- src/lib.rs:  public constant (crate self-description)
-
-- src/lib.rs:  public constant (crate version)
-
 .. Changed
 .. .......
 ..

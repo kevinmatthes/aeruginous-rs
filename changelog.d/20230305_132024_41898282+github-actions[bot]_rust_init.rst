@@ -5,24 +5,16 @@
 Added
 .....
 
-- constants storage:  creation
-
-- library source file:  creation
-
 - rustfmt:  configuration
 
-- UI utilities:  creation
+- src/lib.rs:  creation
 
-- version utilities:  creation
+- src/version.rs:  creation
 
 Changed
 .......
 
-- bump2version:  sort tracked files by ASCII codes of their paths
-
-- bump2version:  track Cargo.lock
-
-- main source file:  show greeting message
+- src/main.rs:  ``aeruginous::Application::parse().action().run()``
 
 .. Deprecated
 .. ..........

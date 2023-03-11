@@ -5,11 +5,11 @@
 Added
 .....
 
-- CI:  Rust build
+- CI:  ``cargo c``
 
-- CI:  Rust check
+- CI:  ``cargo clippy``
 
-- CI:  Rust tests
+- CI:  ``cargo t``
 
 .. Changed
 .. .......

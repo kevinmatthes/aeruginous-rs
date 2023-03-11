@@ -7,10 +7,6 @@ Added
 
 - Cargo.toml:  project keywords
 
-- CFF:  project keywords
-
-- CI:  ``cargo clippy``
-
 - src/lib.rs:  very strict Clippy linting settings
 
 .. Changed
@@ -23,13 +19,6 @@ Added
 ..
 .. - A bullet item for the Deprecated category.
 ..
-Fixed
-.....
-
-- CI:  edge case when mirroring src/lib.rs to README.md
-
-- source code:  Clippy complaints
-
 .. Removed
 .. .......
 ..

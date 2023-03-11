@@ -17,11 +17,11 @@
 ..
 .. - A bullet item for the Deprecated category.
 ..
-Fixed
-.....
-
-- src/lib.rs:  typos
-
+.. Fixed
+.. .....
+..
+.. - A bullet item for the Fixed category.
+..
 .. Removed
 .. .......
 ..

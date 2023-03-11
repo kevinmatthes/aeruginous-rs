@@ -5,24 +5,13 @@
 Added
 .....
 
-- Action:  creation
-
-- Clap:  creation
-
-- CLI:  command for application information
-
-- CLI:  command for current time
-
-- CLI:  initial command line argument configuration
-
 - dependency:  Rust crate ``clap``
+
+- documentation:  documentation comments
 
 - documentation:  software licenses of ``clap`` crate
 
-Changed
-.......
-
-- documentation:  enhance documentation comments
+- src/application.rs:  creation
 
 .. Deprecated
 .. ..........
@@ -34,11 +23,6 @@ Changed
 ..
 .. - A bullet item for the Fixed category.
 ..
-Removed
-.......
-
-- UI module
-
 .. Security
 .. ........
 ..

@@ -5,7 +5,7 @@
 Added
 .....
 
-- CFF:  cite ``sysexits`` crate
+- CFF:  cite Rust crate ``sysexits``
 
 - dependency:  Rust crate ``sysexits``
 
@@ -18,9 +18,7 @@ Added
 Changed
 .......
 
-- main source file:  make application quit with an ``ExitCode``
-
-- UI:  make ``greeter`` function return an ``ExitCode``
+- src/main.rs:  make application quit with a ``sysexits::ExitCode``
 
 .. Deprecated
 .. ..........
