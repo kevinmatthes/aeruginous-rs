@@ -58,16 +58,16 @@ All pending changelog entries are stored in `changelog.d`_.
 Added
 .....
 
+- Cargo.toml:  creation
+
 - .gitignore:  creation
 
-- license:  GPL-3.0
+- LICENSE:  GPL-3.0
 
 - README:  creation
 
 - repository:  creation
 
-- Rust:  manifest
-
-- src:  main source file
+- src/main.rs:  creation
 
 .. -------------------------------------------------------------------------- ..
