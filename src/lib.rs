@@ -138,6 +138,7 @@
 
 mod application;
 mod io;
+mod pattern_reader;
 mod running;
 mod version;
 
@@ -145,8 +146,9 @@ pub use crate::{
   application::Clap as Application,
   io::{
     process_input_files_or_stdin_to_output_file_or_stdout,
-    read_from_input_files_or_stdin, write_to_output_file_or_stdout,
+    write_to_output_file_or_stdout,
   },
+  pattern_reader::PatternReader,
   running::Running,
   version::{ParsingError as VersionParsingError, Version},
 };
