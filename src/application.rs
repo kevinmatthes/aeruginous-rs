@@ -67,7 +67,72 @@ impl Action {
     input_file: &Option<PathBuf>,
     output_file: &Option<PathBuf>,
   ) -> ExitCode {
-    |s: String| -> String { s }.process(input_file, output_file, true)
+    |s: String| -> String {
+      let mut buffer = String::new();
+      let mut has_preferred_citation = false;
+      let mut has_type = false;
+      let mut references = false;
+
+      for line in s.lines() {
+        if references {
+          match line.chars().next() {
+            Some(' ' | '-') => {}
+            _ => {
+              references = false;
+            }
+          }
+        }
+
+        if !line.is_empty()
+          && !line.starts_with('#')
+          && !line.starts_with("---")
+          && !line.starts_with("...")
+          && !line.starts_with("cff-version:")
+          && !line.starts_with("message:")
+          && !line.starts_with("references:")
+          && !references
+        {
+          if line.starts_with("preferred-citation:") {
+            has_preferred_citation = true;
+          } else if line.starts_with("type:") {
+            has_type = true;
+          }
+
+          buffer.push_str(&(String::from(line) + "\n"));
+        } else if line.starts_with("references:") {
+          references = true;
+        }
+      }
+
+      if has_preferred_citation {
+        let mut preferred_citation_reached = false;
+        let mut result = String::new();
+
+        for line in buffer.lines() {
+          if preferred_citation_reached && line.starts_with(' ') {
+            result.push_str(&(String::from("  ") + line + "\n"));
+          } else if preferred_citation_reached {
+            preferred_citation_reached = false;
+          }
+
+          if line.starts_with("preferred-citation:") {
+            preferred_citation_reached = true;
+          }
+        }
+
+        String::from("  -\n") + &result
+      } else {
+        String::from(if has_type {
+          "  -\n"
+        } else {
+          "  - type: software\n"
+        }) + &buffer
+          .lines()
+          .map(|l| String::from("    ") + l.trim_end() + "\n")
+          .collect::<String>()
+      }
+    }
+    .process(input_file, output_file, true)
   }
 
   /// Extract Markdown code from Rust documentation comments.
