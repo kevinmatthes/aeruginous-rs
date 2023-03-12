@@ -32,7 +32,9 @@ pub trait PatternWriter {
   ///
   /// As errors might occur during IO actions, the returned `sysexits::ExitCode`
   /// indicates whether the operation succeeded.  Implementations should return
-  /// values according to the following conventions.
+  /// values according to the following conventions.  Furthermore, an
+  /// appropriate error message can be written to `stderr`, if activated by the
+  /// last parameter.
   ///
   /// # Errors
   ///
