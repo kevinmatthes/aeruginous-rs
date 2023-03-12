@@ -67,14 +67,7 @@ impl Action {
     input_file: &Option<PathBuf>,
     output_file: &Option<PathBuf>,
   ) -> ExitCode {
-    input_file
-      .as_ref()
-      .map_or_else(|| println!("stdin"), |file| println!("{}", file.display()));
-    output_file.as_ref().map_or_else(
-      || println!("stdout"),
-      |file| println!("{}", file.display()),
-    );
-    ExitCode::Ok
+    |s: String| -> String { s }.process(input_file, output_file, true)
   }
 
   /// Extract Markdown code from Rust documentation comments.
