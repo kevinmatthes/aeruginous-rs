@@ -37,7 +37,7 @@ pub trait PatternReader {
   /// is not limited to be a file, implementations should also consider possible
   /// input from `stdin`.
   ///
-  /// In case of an error, the second parameter controls whether to write an
+  /// In case of an error, the Boolean parameter controls whether to write an
   /// appropriate error message to `stderr`.
   ///
   /// # Errors
