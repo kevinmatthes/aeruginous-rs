@@ -19,8 +19,8 @@
 
 //! Various IO utilities.
 
-use crate::PatternReader;
-use std::{fs::File, io::Write, path::PathBuf};
+use crate::{PatternReader, PatternWriter};
+use std::path::PathBuf;
 use sysexits::ExitCode;
 
 /// Process given input in a given way and write the output to the given place.
@@ -33,55 +33,9 @@ where
   T: Fn(String) -> String,
 {
   match input_files.read_string(true) {
-    Ok(lines) => {
-      write_to_output_file_or_stdout(output_file, &instructions(lines))
-    }
+    Ok(lines) => output_file.write_string(&instructions(lines), true),
     Err(code) => code,
   }
-}
-
-/// Write a buffer's content to either an output file or `stdout`.
-///
-/// The content of the given buffer will be written to the named output file.
-/// If no output file is given, the content will be written to `stdout` instead.
-///
-/// The return value indicates whether the writing process was successful, i.e.,
-/// the output file, if given, could be created, there was no loss of data, and
-/// no writing error occured.
-#[must_use]
-pub fn write_to_output_file_or_stdout(
-  output_file: &Option<PathBuf>,
-  buffer: &str,
-) -> ExitCode {
-  output_file.as_ref().map_or_else(
-    || {
-      print!("{buffer}");
-      ExitCode::Ok
-    },
-    |path| match File::create(path) {
-      Ok(mut file) => {
-        let buffer = buffer.as_bytes();
-        match file.write(buffer) {
-          Ok(count) => {
-            if count == buffer.len() {
-              ExitCode::Ok
-            } else {
-              eprintln!("Writing the buffer did not create an exact copy!");
-              ExitCode::IoErr
-            }
-          }
-          Err(error) => {
-            eprintln!("{error}");
-            ExitCode::IoErr
-          }
-        }
-      }
-      Err(error) => {
-        eprintln!("{error}");
-        ExitCode::CantCreat
-      }
-    },
-  )
 }
 
 /******************************************************************************/
