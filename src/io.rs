@@ -19,11 +19,8 @@
 
 //! Various IO utilities.
 
-use std::{
-  fs::File,
-  io::{stdin, BufRead, BufReader, Write},
-  path::PathBuf,
-};
+use crate::PatternReader;
+use std::{fs::File, io::Write, path::PathBuf};
 use sysexits::ExitCode;
 
 /// Process given input in a given way and write the output to the given place.
@@ -35,74 +32,12 @@ pub fn process_input_files_or_stdin_to_output_file_or_stdout<T>(
 where
   T: Fn(String) -> String,
 {
-  match read_from_input_files_or_stdin(input_files) {
-    Ok(lines) => match String::from_utf8(lines) {
-      Ok(lines) => {
-        write_to_output_file_or_stdout(output_file, &instructions(lines))
-      }
-      Err(error) => {
-        eprintln!("{error}");
-        ExitCode::DataErr
-      }
-    },
+  match input_files.read_string(true) {
+    Ok(lines) => {
+      write_to_output_file_or_stdout(output_file, &instructions(lines))
+    }
     Err(code) => code,
   }
-}
-
-/// Read the contents of multiple files or `stdin` to one buffer.
-///
-/// This function will read each of the given input files and return their
-/// contents as a single `Vec<u8>`.  If no input file should be given, it is
-/// attempted to read from `stdin`.  In case that the reading should fail for
-/// some reasons, the function will return a `sysexits::ExitCode`, describing
-/// the cause in further detail.  Furthermore, an appropriate error message will
-/// be written `stderr`.
-///
-/// # Errors
-///
-/// ## `sysexits::ExitCode::IoErr`
-///
-/// An error occured while reading from the given stream.  One reason might be
-/// that it contained invalid UTF-8 characters.
-///
-/// ## `sysexits::ExitCode::NoInput`
-///
-/// It was not possible to read from the given file.  It either did not exist or
-/// reading from it is not allowed for some reasons.
-pub fn read_from_input_files_or_stdin(
-  input_files: &Vec<PathBuf>,
-) -> Result<Vec<u8>, ExitCode> {
-  let mut result = Vec::<u8>::new();
-
-  if input_files.is_empty() {
-    for line in stdin().lines() {
-      match line {
-        Ok(string) => result.append(&mut string.as_bytes().to_vec()),
-        Err(error) => {
-          eprintln!("{error}");
-          return Err(ExitCode::IoErr);
-        }
-      }
-    }
-  } else {
-    for file in input_files {
-      match File::open(file) {
-        Ok(file) => match BufReader::new(file).fill_buf() {
-          Ok(buffer) => result.append(&mut buffer.to_vec()),
-          Err(error) => {
-            eprintln!("{error}");
-            return Err(ExitCode::IoErr);
-          }
-        },
-        Err(error) => {
-          eprintln!("{error}");
-          return Err(ExitCode::NoInput);
-        }
-      }
-    }
-  }
-
-  Ok(result)
 }
 
 /// Write a buffer's content to either an output file or `stdout`.
