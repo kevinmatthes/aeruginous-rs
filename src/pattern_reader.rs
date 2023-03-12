@@ -60,9 +60,9 @@ pub trait PatternReader {
 
   /// Fill a string buffer with the information from the given stream.
   ///
-  /// This method behaves just like `read_bytes` but returns a `String` instead
-  /// of a `Vec<u8>`.  In addition, there are further recommendations for error
-  /// conditions.
+  /// This method behaves just like [`read_bytes`][PatternReader::read_bytes]
+  /// but returns a `String` instead of a `Vec<u8>`.  In addition, there are
+  /// further recommendations for error conditions.
   ///
   /// # Errors
   ///
