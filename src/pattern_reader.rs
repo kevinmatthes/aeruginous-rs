@@ -81,8 +81,102 @@ pub trait PatternReader {
   fn read_string(&self, show_error_messages: bool) -> Result<String, ExitCode>;
 }
 
+impl PatternReader for &Option<PathBuf> {
+  fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>, ExitCode> {
+    self.as_ref().map_or_else(
+      || {
+        let mut result = Vec::<u8>::new();
+
+        for line in stdin().lines() {
+          match line {
+            Ok(string) => result.append(&mut string.as_bytes().to_vec()),
+            Err(error) => {
+              if show_error_messages {
+                eprintln!("{error}");
+              }
+
+              return Err(ExitCode::IoErr);
+            }
+          }
+        }
+
+        Ok(result)
+      },
+      |path| match File::open(path) {
+        Ok(file) => match BufReader::new(file).fill_buf() {
+          Ok(buffer) => Ok(buffer.to_vec()),
+          Err(error) => {
+            if show_error_messages {
+              eprintln!("{error}");
+            }
+
+            Err(ExitCode::IoErr)
+          }
+        },
+        Err(error) => {
+          if show_error_messages {
+            eprintln!("{error}");
+          }
+
+          Err(ExitCode::NoInput)
+        }
+      },
+    )
+  }
+
+  fn read_string(&self, show_error_messages: bool) -> Result<String, ExitCode> {
+    self.as_ref().map_or_else(
+      || {
+        let mut result = String::new();
+
+        for line in stdin().lines() {
+          match line {
+            Ok(string) => result.push_str(&string),
+            Err(error) => {
+              if show_error_messages {
+                eprintln!("{error}");
+              }
+
+              return Err(ExitCode::IoErr);
+            }
+          }
+        }
+
+        Ok(result)
+      },
+      |path| match File::open(path) {
+        Ok(file) => match BufReader::new(file).fill_buf() {
+          Ok(buffer) => match String::from_utf8(buffer.to_vec()) {
+            Ok(string) => Ok(string),
+            Err(error) => {
+              if show_error_messages {
+                eprintln!("{error}");
+              }
+
+              Err(ExitCode::DataErr)
+            }
+          },
+          Err(error) => {
+            if show_error_messages {
+              eprintln!("{error}");
+            }
+
+            Err(ExitCode::IoErr)
+          }
+        },
+        Err(error) => {
+          if show_error_messages {
+            eprintln!("{error}");
+          }
+
+          Err(ExitCode::NoInput)
+        }
+      },
+    )
+  }
+}
+
 impl PatternReader for &Vec<PathBuf> {
-  /// Read from multiple input files or `stdin`, if there is not any file.
   fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>, ExitCode> {
     let mut result = Vec::<u8>::new();
 
@@ -126,7 +220,6 @@ impl PatternReader for &Vec<PathBuf> {
     Ok(result)
   }
 
-  /// Read from multiple input files or `stdin`, if there is not any file.
   fn read_string(&self, show_error_messages: bool) -> Result<String, ExitCode> {
     let mut result = String::new();
 
