@@ -120,15 +120,23 @@ impl Action {
           }
         }
 
-        String::from("  -\n") + &result
+        let mut lines = result.lines();
+
+        lines
+          .next()
+          .map_or_else(String::new, |l| String::from("  - ") + l.trim() + "\n")
+          + &lines.map(|l| String::from(l) + "\n").collect::<String>()
       } else {
-        String::from(if has_type {
-          "  -\n"
+        let mut lines = buffer.lines();
+
+        (if has_type {
+          lines.next().map_or_else(String::new, |l| {
+            String::from("  - ") + l.trim() + "\n"
+          })
         } else {
-          "  - type: software\n"
-        }) + &buffer
-          .lines()
-          .map(|l| String::from("    ") + l.trim_end() + "\n")
+          String::from("  - type: software\n")
+        }) + &lines
+          .map(|l| String::from("    ") + l + "\n")
           .collect::<String>()
       }
     }
