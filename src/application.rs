@@ -19,7 +19,7 @@
 
 //! The application's subcommands.
 
-use crate::process_input_files_or_stdin_to_output_file_or_stdout;
+use crate::PatternIOProcessor;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 use sysexits::ExitCode;
@@ -84,23 +84,19 @@ impl Action {
     input_files: &Vec<PathBuf>,
     output_file: &Option<PathBuf>,
   ) -> ExitCode {
-    process_input_files_or_stdin_to_output_file_or_stdout(
-      input_files,
-      output_file,
-      |s| {
-        s.lines()
-          .map(str::trim_start)
-          .filter(|l| {
-            (extract_inner.unwrap_or(false) && l.starts_with("///"))
-              || (extract_outer.unwrap_or(false) && l.starts_with("//!"))
-          })
-          .map(|l| {
-            String::from(l.chars().skip(4).collect::<String>().trim_end())
-              + "\n"
-          })
-          .collect::<String>()
-      },
-    )
+    |s: String| -> String {
+      s.lines()
+        .map(str::trim_start)
+        .filter(|l| {
+          (extract_inner.unwrap_or(false) && l.starts_with("///"))
+            || (extract_outer.unwrap_or(false) && l.starts_with("//!"))
+        })
+        .map(|l| {
+          String::from(l.chars().skip(4).collect::<String>().trim_end()) + "\n"
+        })
+        .collect::<String>()
+    }
+    .process(input_files, output_file, true)
   }
 
   /// Execute the selected action.
