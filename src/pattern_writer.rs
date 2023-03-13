@@ -17,8 +17,6 @@
 |                                                                              |
 \******************************************************************************/
 
-//! Convenient implementations of common IO writing patterns.
-
 use std::{fs::File, io::Write, path::PathBuf};
 use sysexits::ExitCode;
 
