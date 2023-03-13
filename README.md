@@ -68,9 +68,9 @@ development of the first stable version, certain common tasks needed to be
 fulfilled repeatedly.  Since the application already had a somehow stable
 calling interface, the solutions to these tasks were added as subcommands
 to `aeruginous` in order to provide a convenient and time efficient
-automation.  One major advantage of doing is the reduced maintenance effort
-and overall setup overhead because there is only one project to maintain
-instead multiple ones.
+automation.  One major advantage of doing so is the reduced maintenance
+effort and overall setup overhead because there is only one project to
+maintain instead multiple ones.
 
 This is how the idea arose to design `aeruginous` to be a toolbox instead
 of only a time tracker.
@@ -96,8 +96,8 @@ This subcommand grabs the citation information of the named source CFF file
 and pastes it at the end of the given output file.
 
 If the input file is omitted, the input information are attemted to be read
-from `stdin`.  Likewise, the omitting the output file will cause
-`cffreference` to write to `stdout`.
+from `stdin`.  Likewise, omitting the output file will cause `cffreference`
+to write to `stdout`.
 
 ### `rs2md`
 
@@ -117,3 +117,4 @@ starting with `//!` (outer comments) or comments starting with `///` (inner
 comments).  If neither option is given, nothing will be extracted.
 
 <!------------------------------------------------------------------------->
+
