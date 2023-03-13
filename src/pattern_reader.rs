@@ -17,8 +17,6 @@
 |                                                                              |
 \******************************************************************************/
 
-//! Convenient implementations of common IO reading patterns.
-
 use std::{
   fs::File,
   io::{stdin, BufRead, BufReader},
