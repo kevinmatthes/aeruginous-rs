@@ -52,8 +52,8 @@ pub trait PatternWriter {
   /// ## `sysexits::ExitCode::IoErr`
   ///
   /// The data could not be written to the intended destination.  Information
-  /// might be lost or were invalid UTF-8 characters which caused the operation
-  /// to fail.
+  /// might be lost or contained invalid UTF-8 characters which caused the
+  /// operation to fail.
   fn write_bytes(
     &self,
     buffer: &[u8],
