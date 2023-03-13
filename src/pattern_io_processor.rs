@@ -17,8 +17,6 @@
 |                                                                              |
 \******************************************************************************/
 
-//! Convenient implementations of common IO processing patterns.
-
 use crate::{PatternReader, PatternWriter};
 use sysexits::ExitCode;
 
