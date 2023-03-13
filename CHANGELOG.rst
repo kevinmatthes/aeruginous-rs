@@ -58,6 +58,8 @@ All pending changelog entries are stored in `changelog.d`_.
 Added
 .....
 
+- README:  document rs2md
+
 - CHANGELOG:  creation
 
 - GitHub Action workflow:  Scriv fragment creation
