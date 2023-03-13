@@ -17,8 +17,6 @@
 |                                                                              |
 \******************************************************************************/
 
-//! The time frame of the ongoing time tracking session.
-
 use chrono::{DateTime, Local};
 
 /// The data type for an ongoing time tracking session.
