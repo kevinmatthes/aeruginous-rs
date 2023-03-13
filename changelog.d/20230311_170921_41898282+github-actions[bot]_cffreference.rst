@@ -18,7 +18,7 @@ Added
 Changed
 .......
 
-- src/application.rs:  apply new Rust pattern inspired traits
+- src/application.rs:  apply new Rust coding pattern inspired traits
 
 .. Deprecated
 .. ..........
