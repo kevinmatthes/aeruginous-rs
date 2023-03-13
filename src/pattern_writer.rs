@@ -54,16 +54,31 @@ pub trait PatternWriter {
   /// The data could not be written to the intended destination.  Information
   /// might be lost or were invalid UTF-8 characters which caused the operation
   /// to fail.
-  fn write_bytes(&self, buffer: &[u8], show_error_messages: bool) -> ExitCode;
+  fn write_bytes(
+    &self,
+    buffer: &[u8],
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode;
 
   /// Write the given buffer's contents to the given output stream.
   ///
   /// See [`write_bytes`][PatternWriter::write_bytes] for details.
-  fn write_string(&self, buffer: &str, show_error_messages: bool) -> ExitCode;
+  fn write_string(
+    &self,
+    buffer: &str,
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode;
 }
 
 impl PatternWriter for &Option<PathBuf> {
-  fn write_bytes(&self, buffer: &[u8], show_error_messages: bool) -> ExitCode {
+  fn write_bytes(
+    &self,
+    buffer: &[u8],
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode {
     self.as_ref().map_or_else(
       || match String::from_utf8(buffer.to_vec()) {
         Ok(string) => {
@@ -78,7 +93,12 @@ impl PatternWriter for &Option<PathBuf> {
           ExitCode::DataErr
         }
       },
-      |path| match File::create(path) {
+      |path| match File::options()
+        .append(append)
+        .create(true)
+        .write(true)
+        .open(path)
+      {
         Ok(mut file) => match file.write(buffer) {
           Ok(count) => {
             if count == buffer.len() {
@@ -110,13 +130,23 @@ impl PatternWriter for &Option<PathBuf> {
     )
   }
 
-  fn write_string(&self, buffer: &str, show_error_messages: bool) -> ExitCode {
+  fn write_string(
+    &self,
+    buffer: &str,
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode {
     self.as_ref().map_or_else(
       || {
         print!("{buffer}");
         ExitCode::Ok
       },
-      |path| match File::create(path) {
+      |path| match File::options()
+        .append(append)
+        .create(true)
+        .write(true)
+        .open(path)
+      {
         Ok(mut file) => {
           let buffer = buffer.as_bytes();
           match file.write(buffer) {
