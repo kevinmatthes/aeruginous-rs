@@ -41,6 +41,7 @@ pub trait PatternIOProcessor {
     &self,
     input: impl PatternReader,
     output: impl PatternWriter,
+    append: bool,
     show_error_messages: bool,
   ) -> ExitCode;
 }
@@ -50,10 +51,13 @@ impl<T: Fn(String) -> String> PatternIOProcessor for T {
     &self,
     input: impl PatternReader,
     output: impl PatternWriter,
+    append: bool,
     show_error_messages: bool,
   ) -> ExitCode {
     match input.read_string(show_error_messages) {
-      Ok(lines) => output.write_string(&self(lines), show_error_messages),
+      Ok(lines) => {
+        output.write_string(&self(lines), append, show_error_messages)
+      }
       Err(code) => code,
     }
   }
