@@ -115,8 +115,8 @@
 //! and pastes it at the end of the given output file.
 //!
 //! If the input file is omitted, the input information are attemted to be read
-//! from `stdin`.  Likewise, the omitting the output file will cause
-//! `cffreference` to write to `stdout`.
+//! from `stdin`.  Likewise, omitting the output file will cause `cffreference`
+//! to write to `stdout`.
 //!
 //! ### `rs2md`
 //!
