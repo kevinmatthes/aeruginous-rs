@@ -51,6 +51,7 @@
 //! 1. [Introduction](#introduction)
 //! 1. [Meaning of the Name](#meaning-of-the-name)
 //! 1. [Supported Subcommands](#supported-subcommands)
+//!    1. [`cffreference`](#cffreference)
 //!    1. [`rs2md`](#rs2md)
 //!
 //! ## License
@@ -104,6 +105,19 @@
 //!
 //! ## Supported Subcommands
 //!
+//! ### `cffreference`
+//!
+//! CFF makes software citable.  Projects exposing a `CITATION.cff` can be cited
+//! with APA plain text citations, BibTeX database entries, and also in another
+//! `CITATION.cff`'s list of references.
+//!
+//! This subcommand grabs the citation information of the named source CFF file
+//! and pastes it at the end of the given output file.
+//!
+//! If the input file is omitted, the input information are attemted to be read
+//! from `stdin`.  Likewise, the omitting the output file will cause
+//! `cffreference` to write to `stdout`.
+//!
 //! ### `rs2md`
 //!
 //! Source code should always be documented.  Rust's documentation system
@@ -113,10 +127,9 @@
 //! documentation comments for typos.
 //!
 //! When called, the subcommand accepts a list of input files to read from.  If
-//! no input file is given, `rs2md` will read from `stdin`.
-//!
-//! At option, an output file can be specified where the results will be written
-//! to.  If omitted, the results will be written to `stdout`.
+//! no input file is given, `rs2md` will read from `stdin`.  At option, an
+//! output file can be specified where the results will be written to.  If
+//! omitted, the results will be written to `stdout`.
 //!
 //! Users are free to choose whether they would like to extract Rust comments
 //! starting with `//!` (outer comments) or comments starting with `///` (inner
