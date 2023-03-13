@@ -30,6 +30,10 @@ pub trait PatternWriter {
   /// method is called on.  As the output is not limited to be a file,
   /// implementations should also consider the possibility to write to `stdout`.
   ///
+  /// In case of a file to write to, the parameter `append` controls whether to
+  /// add the buffer's contents at the end of the file or to truncate the file
+  /// before writing to it.
+  ///
   /// As errors might occur during IO actions, the returned `sysexits::ExitCode`
   /// indicates whether the operation succeeded.  Implementations should return
   /// values according to the following conventions.  Furthermore, an
