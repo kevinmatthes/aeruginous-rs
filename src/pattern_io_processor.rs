@@ -27,8 +27,8 @@ pub trait PatternIOProcessor {
   /// Process input in a given manner and write the output to a certain stream.
   ///
   /// Processing input is a common task.  Often, this input originates from a
-  /// stream and needs to be written to another stream after processing.  The
-  /// traits [`PatternReader`][PatternReader] and
+  /// stream and needs to be written to another stream after processing it.
+  /// The traits [`PatternReader`][PatternReader] and
   /// [`PatternWriter`][PatternWriter] offer semantics to handle reading from
   /// and writing to streams.  This method now adds a convenient connection
   /// between them as it is designed to be applied on input processing functions
