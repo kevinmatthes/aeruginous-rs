@@ -17,8 +17,6 @@
 |                                                                              |
 \******************************************************************************/
 
-//! Convenient implementations of common IO writing patterns.
-
 use std::{fs::File, io::Write, path::PathBuf};
 use sysexits::ExitCode;
 
@@ -29,6 +27,10 @@ pub trait PatternWriter {
   /// The content of the given buffer will be written to the instance this
   /// method is called on.  As the output is not limited to be a file,
   /// implementations should also consider the possibility to write to `stdout`.
+  ///
+  /// In case of a file to write to, the parameter `append` controls whether to
+  /// add the buffer's contents at the end of the file or to truncate the file
+  /// before writing to it.
   ///
   /// As errors might occur during IO actions, the returned `sysexits::ExitCode`
   /// indicates whether the operation succeeded.  Implementations should return
@@ -52,8 +54,8 @@ pub trait PatternWriter {
   /// ## `sysexits::ExitCode::IoErr`
   ///
   /// The data could not be written to the intended destination.  Information
-  /// might be lost or were invalid UTF-8 characters which caused the operation
-  /// to fail.
+  /// might be lost or contained invalid UTF-8 characters which caused the
+  /// operation to fail.
   fn write_bytes(
     &self,
     buffer: &[u8],

@@ -17,8 +17,6 @@
 |                                                                              |
 \******************************************************************************/
 
-//! The version information management utilities.
-
 /// The parsing error type for this struct.
 ///
 /// An instance of `Version` can be constructed from a given string slice.  In

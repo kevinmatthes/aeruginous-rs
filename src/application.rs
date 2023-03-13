@@ -17,8 +17,6 @@
 |                                                                              |
 \******************************************************************************/
 
-//! The application's subcommands.
-
 use crate::PatternIOProcessor;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;

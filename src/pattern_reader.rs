@@ -17,8 +17,6 @@
 |                                                                              |
 \******************************************************************************/
 
-//! Convenient implementations of common IO reading patterns.
-
 use std::{
   fs::File,
   io::{stdin, BufRead, BufReader},
@@ -32,10 +30,10 @@ pub trait PatternReader {
   ///
   /// The given input stream contains the information to be read as a sequence
   /// of UTF-8 encoded characters, represented as combinations of `u8` bytes.
-  /// This method tries to retrieve the contents of a given input stream to
-  /// return the contained bytes as a vector:  `Vec<u8>`.  As an input stream
-  /// is not limited to be a file, implementations should also consider possible
-  /// input from `stdin`.
+  /// This method tries to retrieve the contents of a given input stream in
+  /// order to return the contained bytes as a vector:  `Vec<u8>`.  As an input
+  /// stream is not limited to be a file, implementations should also consider
+  /// possible input from `stdin`.
   ///
   /// In case of an error, the Boolean parameter controls whether to write an
   /// appropriate error message to `stderr`.
