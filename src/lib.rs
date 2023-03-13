@@ -87,9 +87,9 @@
 //! fulfilled repeatedly.  Since the application already had a somehow stable
 //! calling interface, the solutions to these tasks were added as subcommands
 //! to `aeruginous` in order to provide a convenient and time efficient
-//! automation.  One major advantage of doing is the reduced maintenance effort
-//! and overall setup overhead because there is only one project to maintain
-//! instead multiple ones.
+//! automation.  One major advantage of doing so is the reduced maintenance
+//! effort and overall setup overhead because there is only one project to
+//! maintain instead multiple ones.
 //!
 //! This is how the idea arose to design `aeruginous` to be a toolbox instead
 //! of only a time tracker.
