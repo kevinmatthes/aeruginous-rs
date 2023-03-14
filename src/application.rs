@@ -43,11 +43,11 @@ pub enum Action {
   Rs2md {
     /// Whether to extract Rust documentation line comments starting with `///`.
     #[arg(long = "inner")]
-    extract_inner: Option<bool>,
+    extract_inner: bool,
 
     /// Whether to extract Rust documentation line comments starting with `//!`.
     #[arg(long = "outer")]
-    extract_outer: Option<bool>,
+    extract_outer: bool,
 
     /// The Rust files to read from, defaulting to `stdin`, if omitted.
     #[arg(short = 'i')]
@@ -143,8 +143,8 @@ impl Action {
 
   /// Extract Markdown code from Rust documentation comments.
   fn rs2md(
-    extract_inner: Option<bool>,
-    extract_outer: Option<bool>,
+    extract_inner: bool,
+    extract_outer: bool,
     input_files: &Vec<PathBuf>,
     output_file: &Option<PathBuf>,
   ) -> ExitCode {
@@ -152,8 +152,8 @@ impl Action {
       s.lines()
         .map(str::trim_start)
         .filter(|l| {
-          (extract_inner.unwrap_or(false) && l.starts_with("///"))
-            || (extract_outer.unwrap_or(false) && l.starts_with("//!"))
+          (extract_inner && l.starts_with("///"))
+            || (extract_outer && l.starts_with("//!"))
         })
         .map(|l| {
           String::from(l.chars().skip(4).collect::<String>().trim_end()) + "\n"

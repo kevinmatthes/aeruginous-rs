@@ -23,13 +23,13 @@
 ##  BRIEF       Update the README when changing `src/lib.rs`.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
-##  FILE        automirror.yml
+##  FILE        mirror.yml
 ##  NOTE        See `LICENSE' for full license.
 ##              See `README.md' for project details.
 ##
 ################################################################################
 
-name: automirror
+name: mirror
 
 on:
   push:
@@ -54,7 +54,7 @@ jobs:
 
       - name: update
         run: |
-          cargo r -- rs2md -i src/lib.rs --outer true -o README.md \
+          cargo r -- rs2md -i src/lib.rs --outer -o README.md \
           && git add README.md \
           && git commit --allow-empty -m \
                  "`git config --list \
