@@ -7,11 +7,11 @@
 ..
 .. - A bullet item for the Added category.
 ..
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Changed
+.......
+
+- rs2md:  make Boolean switch presence suffice
+
 .. Deprecated
 .. ..........
 ..
