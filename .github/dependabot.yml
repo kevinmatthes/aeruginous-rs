@@ -41,7 +41,7 @@ updates:
     commit-message:
       prefix: Dependabot
       include: scope
-    milestone: 2
+    milestone: 3
 
   - package-ecosystem: github-actions
     directory: /
@@ -53,6 +53,6 @@ updates:
     commit-message:
       prefix: Dependabot
       include: scope
-    milestone: 2
+    milestone: 3
 
 ################################################################################
