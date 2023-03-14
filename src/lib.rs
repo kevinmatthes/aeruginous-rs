@@ -25,6 +25,8 @@
 //! [ci-url]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci
 //! [crates-io]:  https://img.shields.io/crates/v/aeruginous
 //! [crates-io-url]:  https://crates.io/crates/aeruginous
+//! [docs-rs]:  https://docs.rs/aeruginous/badge.svg
+//! [docs-rs-url]:  https://docs.rs/aeruginous
 //! [downloads]:  https://img.shields.io/crates/d/aeruginous
 //! [gpl3]:  https://github.com/kevinmatthes/aeruginous-rs/blob/main/LICENSE
 //! [lcns]:  https://img.shields.io/github/license/kevinmatthes/aeruginous-rs
@@ -41,6 +43,7 @@
 //! [![][bors]][bors-url]
 //! [![][ci]][ci-url]
 //! [![][crates-io]][crates-io-url]
+//! [![][docs-rs]][docs-rs-url]
 //! [![][downloads]][crates-io-url]
 //! [![][lst]][repository]
 //! [![][lcns]][repository]
