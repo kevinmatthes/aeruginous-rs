@@ -50,6 +50,43 @@ All pending changelog entries are stored in `changelog.d`_.
 
 .. scriv-insert-here
 
+.. _changelog-0.2.0:
+
+0.2.0 — 2023-03-14
+------------------
+
+Added
+.....
+
+- cffreference:  creation
+
+- README:  document cffreference
+
+- src/pattern_io_processor.rs:  creation
+
+- src/pattern_reader.rs:  creation
+
+- src/pattern_writer.rs:  creation
+
+- CFF:  cite Rust crate ``chrono``
+
+- Cargo.toml:  project keyword ``cffreference``
+
+- CFF:  project keyword ``cffreference``
+
+- README:  docs.rs badge
+
+Changed
+.......
+
+- src/application.rs:  apply new Rust coding pattern inspired traits
+
+- Cargo.toml:  sort package metadata by alphabet
+
+- GitHub Action workflow:  rename README mirroring workflow
+
+- rs2md:  make Boolean switch presence suffice
+
 .. _changelog-0.1.0:
 
 0.1.0 — 2023-03-11
