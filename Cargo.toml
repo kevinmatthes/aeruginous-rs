@@ -30,18 +30,7 @@
 ################################################################################
 
 [package]
-name = "aeruginous"
-version = "0.1.0"
-edition = "2021"
 authors = ["Kevin Matthes <aeruginous.rs@gmail.com>"]
-description = "The Aeruginous Open Source Development Toolbox."
-readme = "README.md"
-homepage = "https://github.com/kevinmatthes/aeruginous-rs"
-license = "GPL-3.0"
-rust-version = "1.67.1"
-include = ["/src"]
-keywords = ["aeruginous", "cffreference", "rs2md"]
-repository = "https://github.com/kevinmatthes/aeruginous-rs"
 categories = [
   "command-line-utilities",
   "config",
@@ -49,6 +38,17 @@ categories = [
   "rust-patterns",
   "template-engine"
 ]
+description = "The Aeruginous Open Source Development Toolbox."
+edition = "2021"
+homepage = "https://github.com/kevinmatthes/aeruginous-rs"
+include = ["/src"]
+keywords = ["aeruginous", "cffreference", "rs2md"]
+license = "GPL-3.0"
+name = "aeruginous"
+readme = "README.md"
+repository = "https://github.com/kevinmatthes/aeruginous-rs"
+rust-version = "1.67.1"
+version = "0.1.0"
 
 [dependencies]
 chrono = "0.4.24"
