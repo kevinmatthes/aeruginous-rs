@@ -46,6 +46,7 @@ authors:
 keywords:
   - Rust
   - aeruginous
+  - cffreference
   - rs2md
 license: GPL-3.0
 repository-code: https://github.com/kevinmatthes/aeruginous-rs
