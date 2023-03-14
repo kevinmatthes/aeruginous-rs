@@ -10,6 +10,8 @@
 Changed
 .......
 
+- GitHub Action workflow:  rename README mirroring
+
 - rs2md:  make Boolean switch presence suffice
 
 .. Deprecated
