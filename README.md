@@ -78,6 +78,22 @@ maintain instead multiple ones.
 This is how the idea arose to design `aeruginous` to be a toolbox instead
 of only a time tracker.
 
+## Installation
+
+To download the latest stable version from [`crates.io`][crates-io-url], run
+the following command.
+
+```bash
+cargo install aeruginous
+```
+
+To install the latest nightly build from sources, Cargo also supports the
+installation from the current repository state.
+
+```bash
+cargo install --git https://github.com/kevinmatthes/aeruginous-rs
+```
+
 ## Meaning of the Name
 
 When searching a name for this project, one main requirement was to reflect
