@@ -99,7 +99,7 @@ cargo install --git https://github.com/kevinmatthes/aeruginous-rs
 When searching a name for this project, one main requirement was to reflect
 both the originally intended main purpose of tracking time as well as the
 coding language this CLI is written in, Rust.  The adjective *aeruginous*
-fulfills both criterions as it means that the described noun has patina, a
+fulfills both criteria as it means that the described noun has patina, a
 special form of rust which appears after a certain period of time has
 passed.
 
@@ -136,3 +136,4 @@ starting with `//!` (outer comments) or comments starting with `///` (inner
 comments).  If neither option is given, nothing will be extracted.
 
 <!------------------------------------------------------------------------->
+>
