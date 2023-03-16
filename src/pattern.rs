@@ -19,13 +19,54 @@
 
 use std::{
   fs::File,
-  io::{stdin, BufRead, BufReader},
+  io::{stdin, BufRead, BufReader, Write},
   path::PathBuf,
 };
 use sysexits::ExitCode;
 
+/// Read some input, process it, and write it to the intended destination.
+pub trait IOProcessor {
+  /// Process input in a given manner and write the output to a certain stream.
+  ///
+  /// Processing input is a common task.  Often, this input originates from a
+  /// stream and needs to be written to another stream after processing it.
+  /// The traits [`PatternReader`][PatternReader] and
+  /// [`PatternWriter`][PatternWriter] offer semantics to handle reading from
+  /// and writing to streams.  This method now adds a convenient connection
+  /// between them as it is designed to be applied on input processing functions
+  /// and closures.
+  ///
+  /// The result of the operation is indicated by the return value which
+  /// originates from the reading and writing processes and can be propagated to
+  /// the main function.
+  fn process(
+    &self,
+    input: impl Reader,
+    output: impl Writer,
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode;
+}
+
+impl<T: Fn(String) -> String> IOProcessor for T {
+  fn process(
+    &self,
+    input: impl Reader,
+    output: impl Writer,
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode {
+    match input.read_string(show_error_messages) {
+      Ok(lines) => {
+        output.write_string(&self(lines), append, show_error_messages)
+      }
+      Err(code) => code,
+    }
+  }
+}
+
 /// Read from common sources of input.
-pub trait PatternReader {
+pub trait Reader {
   /// Read bytes of information from the given stream.
   ///
   /// The given input stream contains the information to be read as a sequence
@@ -79,7 +120,7 @@ pub trait PatternReader {
   fn read_string(&self, show_error_messages: bool) -> Result<String, ExitCode>;
 }
 
-impl PatternReader for &Option<PathBuf> {
+impl Reader for &Option<PathBuf> {
   fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>, ExitCode> {
     self.as_ref().map_or_else(
       || {
@@ -174,7 +215,7 @@ impl PatternReader for &Option<PathBuf> {
   }
 }
 
-impl PatternReader for &Vec<PathBuf> {
+impl Reader for &Vec<PathBuf> {
   fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>, ExitCode> {
     let mut result = Vec::<u8>::new();
 
@@ -268,6 +309,170 @@ impl PatternReader for &Vec<PathBuf> {
     }
 
     Ok(result)
+  }
+}
+
+/// Write to common destinations for output.
+pub trait Writer {
+  /// Write the given buffer's contents to the given output stream.
+  ///
+  /// The content of the given buffer will be written to the instance this
+  /// method is called on.  As the output is not limited to be a file,
+  /// implementations should also consider the possibility to write to `stdout`.
+  ///
+  /// In case of a file to write to, the parameter `append` controls whether to
+  /// add the buffer's contents at the end of the file or to truncate the file
+  /// before writing to it.
+  ///
+  /// As errors might occur during IO actions, the returned `sysexits::ExitCode`
+  /// indicates whether the operation succeeded.  Implementations should return
+  /// values according to the following conventions.  Furthermore, an
+  /// appropriate error message can be written to `stderr`, if activated by the
+  /// last parameter.
+  ///
+  /// # Errors
+  ///
+  /// ## `sysexits::ExitCode::CantCreat`
+  ///
+  /// In case of an output file to write to, this value indicates that it could
+  /// not be created.
+  ///
+  /// ## `sysexits::ExitCode::DataErr`
+  ///
+  /// Sometimes, a conversion of the data might be required before writing it
+  /// to the destination.  This conversion might fail due to the data containing
+  /// invalid UTF-8 characters.
+  ///
+  /// ## `sysexits::ExitCode::IoErr`
+  ///
+  /// The data could not be written to the intended destination.  Information
+  /// might be lost or contained invalid UTF-8 characters which caused the
+  /// operation to fail.
+  fn write_bytes(
+    &self,
+    buffer: &[u8],
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode;
+
+  /// Write the given buffer's contents to the given output stream.
+  ///
+  /// See [`write_bytes`][PatternWriter::write_bytes] for details.
+  fn write_string(
+    &self,
+    buffer: &str,
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode;
+}
+
+impl Writer for &Option<PathBuf> {
+  fn write_bytes(
+    &self,
+    buffer: &[u8],
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode {
+    self.as_ref().map_or_else(
+      || match String::from_utf8(buffer.to_vec()) {
+        Ok(string) => {
+          print!("{string}");
+          ExitCode::Ok
+        }
+        Err(error) => {
+          if show_error_messages {
+            eprintln!("{error}");
+          }
+
+          ExitCode::DataErr
+        }
+      },
+      |path| match File::options()
+        .append(append)
+        .create(true)
+        .write(true)
+        .open(path)
+      {
+        Ok(mut file) => match file.write(buffer) {
+          Ok(count) => {
+            if count == buffer.len() {
+              ExitCode::Ok
+            } else {
+              if show_error_messages {
+                eprintln!("Writing the buffer did not create an exact copy!");
+              }
+
+              ExitCode::IoErr
+            }
+          }
+          Err(error) => {
+            if show_error_messages {
+              eprintln!("{error}");
+            }
+
+            ExitCode::IoErr
+          }
+        },
+        Err(error) => {
+          if show_error_messages {
+            eprintln!("{error}");
+          }
+
+          ExitCode::CantCreat
+        }
+      },
+    )
+  }
+
+  fn write_string(
+    &self,
+    buffer: &str,
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode {
+    self.as_ref().map_or_else(
+      || {
+        print!("{buffer}");
+        ExitCode::Ok
+      },
+      |path| match File::options()
+        .append(append)
+        .create(true)
+        .write(true)
+        .open(path)
+      {
+        Ok(mut file) => {
+          let buffer = buffer.as_bytes();
+          match file.write(buffer) {
+            Ok(count) => {
+              if count == buffer.len() {
+                ExitCode::Ok
+              } else {
+                if show_error_messages {
+                  eprintln!("Writing the buffer did not create an exact copy!");
+                }
+
+                ExitCode::IoErr
+              }
+            }
+            Err(error) => {
+              if show_error_messages {
+                eprintln!("{error}");
+              }
+
+              ExitCode::IoErr
+            }
+          }
+        }
+        Err(error) => {
+          if show_error_messages {
+            eprintln!("{error}");
+          }
+
+          ExitCode::CantCreat
+        }
+      },
+    )
   }
 }
 
