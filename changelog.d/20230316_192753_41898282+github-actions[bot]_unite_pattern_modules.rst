@@ -2,11 +2,11 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- src/pattern.rs:  creation
+
 .. Changed
 .. .......
 ..
@@ -22,11 +22,15 @@
 ..
 .. - A bullet item for the Fixed category.
 ..
-.. Removed
-.. .......
-..
-.. - A bullet item for the Removed category.
-..
+Removed
+.......
+
+- src/pattern_io_processor.rs
+
+- src/pattern_reader.rs
+
+- src/pattern_writer.rs
+
 .. Security
 .. ........
 ..
