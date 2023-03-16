@@ -169,17 +169,16 @@
 )]
 
 mod application;
-mod pattern_io_processor;
-mod pattern_reader;
-mod pattern_writer;
+mod pattern;
 mod running;
 mod version;
 
 pub use crate::{
   application::Clap as Application,
-  pattern_io_processor::PatternIOProcessor,
-  pattern_reader::PatternReader,
-  pattern_writer::PatternWriter,
+  pattern::{
+    IOProcessor as PatternIOProcessor, Reader as PatternReader,
+    Writer as PatternWriter,
+  },
   running::Running,
   version::{ParsingError as VersionParsingError, Version},
 };
