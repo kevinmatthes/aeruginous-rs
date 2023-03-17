@@ -146,7 +146,7 @@ impl<T: Fn(String) -> String> IOProcessor for T {
     show_error_messages: bool,
   ) -> ExitCode {
     match input.read() {
-      Ok(boxed_value) => match Box::leak(boxed_value).try_into_string() {
+      Ok(buffer) => match Box::leak(buffer).try_into_string() {
         Ok(lines) => {
           output.write_string(&self(lines), append, show_error_messages)
         }
