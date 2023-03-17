@@ -30,11 +30,10 @@ pub trait IOProcessor {
   ///
   /// Processing input is a common task.  Often, this input originates from a
   /// stream and needs to be written to another stream after processing it.
-  /// The traits [`PatternReader`][Reader] and
-  /// [`PatternWriter`][Writer] offer semantics to handle reading from
-  /// and writing to streams.  This method now adds a convenient connection
-  /// between them as it is designed to be applied on input processing functions
-  /// and closures.
+  /// The traits [`PatternReader`][Reader] and [`PatternWriter`][Writer] offer
+  /// semantics to handle reading from and writing to streams.  This method now
+  /// adds a convenient connection between them as it is designed to be applied
+  /// on input processing functions and closures.
   ///
   /// The result of the operation is indicated by the return value which
   /// originates from the reading and writing processes and can be propagated to
@@ -99,9 +98,9 @@ pub trait Reader {
 
   /// Fill a string buffer with the information from the given stream.
   ///
-  /// This method behaves just like [`read_bytes`][Reader::read_bytes]
-  /// but returns a `String` instead of a `Vec<u8>`.  In addition, there are
-  /// further recommendations for error conditions.
+  /// This method behaves just like [`read_bytes`][Reader::read_bytes] but
+  /// returns a `String` instead of a `Vec<u8>`.  In addition, there are further
+  /// recommendations for error conditions.
   ///
   /// # Errors
   ///
