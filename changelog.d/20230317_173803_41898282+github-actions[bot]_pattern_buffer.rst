@@ -7,16 +7,22 @@ Added
 
 - src/pattern.rs:  PatternBuffer
 
+- src/pattern.rs:  PatternReader::read
+
+- src/pattern.rs:  PatternReader::read_silently
+
 .. Changed
 .. .......
 ..
 .. - A bullet item for the Changed category.
 ..
-.. Deprecated
-.. ..........
-..
-.. - A bullet item for the Deprecated category.
-..
+Deprecated
+..........
+
+- src/pattern.rs:  PatternReader::read_bytes
+
+- src/pattern.rs:  PatternReader::read_string
+
 .. Fixed
 .. .....
 ..
