@@ -30,8 +30,8 @@ pub trait IOProcessor {
   ///
   /// Processing input is a common task.  Often, this input originates from a
   /// stream and needs to be written to another stream after processing it.
-  /// The traits [`PatternReader`][PatternReader] and
-  /// [`PatternWriter`][PatternWriter] offer semantics to handle reading from
+  /// The traits [`PatternReader`][Reader] and
+  /// [`PatternWriter`][Writer] offer semantics to handle reading from
   /// and writing to streams.  This method now adds a convenient connection
   /// between them as it is designed to be applied on input processing functions
   /// and closures.
@@ -99,7 +99,7 @@ pub trait Reader {
 
   /// Fill a string buffer with the information from the given stream.
   ///
-  /// This method behaves just like [`read_bytes`][PatternReader::read_bytes]
+  /// This method behaves just like [`read_bytes`][Reader::read_bytes]
   /// but returns a `String` instead of a `Vec<u8>`.  In addition, there are
   /// further recommendations for error conditions.
   ///
@@ -112,11 +112,11 @@ pub trait Reader {
   ///
   /// ## `sysexits::ExitCode::IoErr`
   ///
-  /// See [`read_bytes`][PatternReader::read_bytes].
+  /// See [`read_bytes`][Reader::read_bytes].
   ///
   /// ## `sysexits::ExitCode::NoInput`
   ///
-  /// See [`read_bytes`][PatternReader::read_bytes].
+  /// See [`read_bytes`][Reader::read_bytes].
   fn read_string(&self, show_error_messages: bool) -> Result<String, ExitCode>;
 }
 
@@ -357,7 +357,7 @@ pub trait Writer {
 
   /// Write the given buffer's contents to the given output stream.
   ///
-  /// See [`write_bytes`][PatternWriter::write_bytes] for details.
+  /// See [`write_bytes`][Writer::write_bytes] for details.
   fn write_string(
     &self,
     buffer: &str,
