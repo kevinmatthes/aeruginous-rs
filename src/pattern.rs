@@ -169,8 +169,8 @@ pub trait Reader {
   ///
   /// ## `sysexits::ExitCode::IoErr`
   ///
-  /// Reading from the input stream failed.  For instance, the stream might have
-  /// contained invalid UTF-8 characters.
+  /// Reading from the input stream(s) failed.  For instance, the stream(s)
+  /// might have contained invalid UTF-8 characters.
   ///
   /// ## `sysexits::ExitCode::NoInput`
   ///
