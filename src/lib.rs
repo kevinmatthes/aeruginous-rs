@@ -165,7 +165,8 @@
   clippy::pedantic,
   clippy::perf,
   clippy::suspicious,
-  clippy::style
+  clippy::style,
+  deprecated
 )]
 
 mod application;
@@ -176,8 +177,8 @@ mod version;
 pub use crate::{
   application::Clap as Application,
   pattern::{
-    IOProcessor as PatternIOProcessor, Reader as PatternReader,
-    Writer as PatternWriter,
+    Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
+    Reader as PatternReader, Writer as PatternWriter,
   },
   running::Running,
   version::{ParsingError as VersionParsingError, Version},
