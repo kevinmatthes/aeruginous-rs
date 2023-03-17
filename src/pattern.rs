@@ -24,6 +24,96 @@ use std::{
 };
 use sysexits::ExitCode;
 
+/// A buffer for pattern-based IO.
+pub trait Buffer {
+  /// Fill this buffer with bytes.
+  ///
+  /// Some reading operations return the read data as a sequence of UTF-8
+  /// encoded characters.  This method will convert the given data into the
+  /// type of the buffer.  If the conversion of the given data succeeds, the
+  /// buffer's contents will be replaced with the converted data.
+  ///
+  /// # Errors
+  ///
+  /// ## `sysexits::ExitCode::DataErr`
+  ///
+  /// A conversion was not possible.
+  fn try_from_bytes(&mut self, bytes: &[u8]) -> ExitCode;
+
+  /// Fill this buffer with a string.
+  ///
+  /// This method behaves just like [`try_from_bytes`][Buffer::try_from_bytes]
+  /// but for `String` as the respective source type.
+  ///
+  /// # Errors
+  ///
+  /// See [`try_from_bytes`][Buffer::try_from_bytes].
+  fn try_from_string(&mut self, string: &str) -> ExitCode;
+
+  /// Convert this buffer into a `Vec<u8>`.
+  ///
+  /// Some writing processes require the data to write as a sequence of UTF-8
+  /// encoded characters.  If required, this method will take care about the
+  /// provision of the data in the required type.
+  ///
+  /// # Errors
+  ///
+  /// See [`try_from_bytes`][Buffer::try_from_bytes].
+  fn try_into_bytes(&self) -> Result<Vec<u8>, ExitCode>;
+
+  /// Convert this buffer into a `String`.
+  ///
+  /// This method behaves just like [`try_into_bytes`][Buffer::try_into_bytes]
+  /// but for `String` as the respective target type.
+  ///
+  /// # Errors
+  ///
+  /// See [`try_from_bytes`][Buffer::try_from_bytes].
+  fn try_into_string(&self) -> Result<String, ExitCode>;
+}
+
+impl Buffer for String {
+  fn try_from_bytes(&mut self, bytes: &[u8]) -> ExitCode {
+    Self::from_utf8(bytes.to_vec()).map_or(ExitCode::DataErr, |string| {
+      *self = string;
+      ExitCode::Ok
+    })
+  }
+
+  fn try_from_string(&mut self, string: &str) -> ExitCode {
+    *self = string.to_string();
+    ExitCode::Ok
+  }
+
+  fn try_into_bytes(&self) -> Result<Vec<u8>, ExitCode> {
+    Ok(self.as_bytes().to_vec())
+  }
+
+  fn try_into_string(&self) -> Result<String, ExitCode> {
+    Ok(Self::from(self))
+  }
+}
+
+impl Buffer for Vec<u8> {
+  fn try_from_bytes(&mut self, bytes: &[u8]) -> ExitCode {
+    *self = bytes.to_vec();
+    ExitCode::Ok
+  }
+
+  fn try_from_string(&mut self, string: &str) -> ExitCode {
+    *self = string.as_bytes().to_vec();
+    ExitCode::Ok
+  }
+
+  fn try_into_bytes(&self) -> Result<Vec<u8>, ExitCode> {
+    Ok(self.clone())
+  }
+
+  fn try_into_string(&self) -> Result<String, ExitCode> {
+    String::from_utf8(self.clone()).map_or(Err(ExitCode::DataErr), Ok)
+  }
+}
+
 /// Read some input, process it, and write it to the intended destination.
 pub trait IOProcessor {
   /// Process input in a given manner and write the output to a certain stream.
@@ -55,10 +145,13 @@ impl<T: Fn(String) -> String> IOProcessor for T {
     append: bool,
     show_error_messages: bool,
   ) -> ExitCode {
-    match input.read_string(show_error_messages) {
-      Ok(lines) => {
-        output.write_string(&self(lines), append, show_error_messages)
-      }
+    match input.read() {
+      Ok(boxed_value) => match Box::leak(boxed_value).try_into_string() {
+        Ok(lines) => {
+          output.write_string(&self(lines), append, show_error_messages)
+        }
+        Err(code) => code,
+      },
       Err(code) => code,
     }
   }
@@ -66,6 +159,35 @@ impl<T: Fn(String) -> String> IOProcessor for T {
 
 /// Read from common sources of input.
 pub trait Reader {
+  /// Read the input stream(s) and write error messages to `stderr`.
+  ///
+  /// This method will process the given input streams and return a struct
+  /// implementing the [`PatternBuffer`][Buffer] trait.  Errors are indicated
+  /// by `sysexits::ExitCode`s to be propagated to the main function.
+  ///
+  /// # Errors
+  ///
+  /// ## `sysexits::ExitCode::IoErr`
+  ///
+  /// Reading from the input stream failed.  For instance, the stream might have
+  /// contained invalid UTF-8 characters.
+  ///
+  /// ## `sysexits::ExitCode::NoInput`
+  ///
+  /// The given input stream did not exist or the permissions were insufficent.
+  /// This is especially in case of files a common error cause.
+  fn read(&self) -> Result<Box<dyn Buffer>, ExitCode>;
+
+  /// Read the input stream(s) **without** writing error messages to `stderr`.
+  ///
+  /// Except the missing error messages, this method behaves just like
+  /// [`read`][Reader::read].
+  ///
+  /// # Errors
+  ///
+  /// See [`read`][Reader::read].
+  fn read_silently(&self) -> Result<Box<dyn Buffer>, ExitCode>;
+
   /// Read bytes of information from the given stream.
   ///
   /// The given input stream contains the information to be read as a sequence
@@ -82,8 +204,11 @@ pub trait Reader {
   ///
   /// As with all IO actions, errors may occur.  In order to handle them
   /// appropriately, this method will return a `sysexits::ExitCode` then,
-  /// describing the exact cause in further detail.  Implementations of this
-  /// trait should use the following conventions.
+  /// describing the exact cause in further detail.
+  ///
+  /// ## `sysexits::ExitCode::DataErr`
+  ///
+  /// The conversion to the target type failed.
   ///
   /// ## `sysexits::ExitCode::IoErr`
   ///
@@ -94,220 +219,168 @@ pub trait Reader {
   ///
   /// Reading from the stream was not possible.  For example, the resource did
   /// not exist or the permissions were insufficient.
-  fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>, ExitCode>;
+  #[deprecated(note = "Use `read` and `read_silently` instead.")]
+  fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>, ExitCode> {
+    if show_error_messages {
+      match self.read() {
+        Ok(buffer) => Box::<dyn Buffer>::leak(buffer).try_into_bytes(),
+        Err(code) => Err(code),
+      }
+    } else {
+      match self.read_silently() {
+        Ok(buffer) => Box::<dyn Buffer>::leak(buffer).try_into_bytes(),
+        Err(code) => Err(code),
+      }
+    }
+  }
 
   /// Fill a string buffer with the information from the given stream.
   ///
   /// This method behaves just like [`read_bytes`][Reader::read_bytes] but
-  /// returns a `String` instead of a `Vec<u8>`.  In addition, there are further
-  /// recommendations for error conditions.
+  /// returns a `String` instead of a `Vec<u8>`.
   ///
   /// # Errors
   ///
-  /// ## `sysexits::ExitCode::DataErr`
-  ///
-  /// The conversion to an UTF-8 encoded string failed.  One reason might be
-  /// that the read bytes describe invalid UTF-8 characters.
-  ///
-  /// ## `sysexits::ExitCode::IoErr`
-  ///
   /// See [`read_bytes`][Reader::read_bytes].
-  ///
-  /// ## `sysexits::ExitCode::NoInput`
-  ///
-  /// See [`read_bytes`][Reader::read_bytes].
-  fn read_string(&self, show_error_messages: bool) -> Result<String, ExitCode>;
+  #[deprecated(note = "Use `read` and `read_silently` instead.")]
+  fn read_string(&self, show_error_messages: bool) -> Result<String, ExitCode> {
+    if show_error_messages {
+      match self.read() {
+        Ok(buffer) => Box::<dyn Buffer>::leak(buffer).try_into_string(),
+        Err(code) => Err(code),
+      }
+    } else {
+      match self.read_silently() {
+        Ok(buffer) => Box::<dyn Buffer>::leak(buffer).try_into_string(),
+        Err(code) => Err(code),
+      }
+    }
+  }
 }
 
 impl Reader for &Option<PathBuf> {
-  fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>, ExitCode> {
-    self.as_ref().map_or_else(
-      || {
-        let mut result = Vec::<u8>::new();
-
-        for line in stdin().lines() {
-          match line {
-            Ok(string) => result.append(&mut string.as_bytes().to_vec()),
-            Err(error) => {
-              if show_error_messages {
-                eprintln!("{error}");
-              }
-
-              return Err(ExitCode::IoErr);
-            }
-          }
-        }
-
-        Ok(result)
-      },
-      |path| match File::open(path) {
+  fn read(&self) -> Result<Box<dyn Buffer>, ExitCode> {
+    match self {
+      Some(path) => match File::open(path) {
         Ok(file) => match BufReader::new(file).fill_buf() {
-          Ok(buffer) => Ok(buffer.to_vec()),
+          Ok(bytes) => Ok(Box::new(bytes.to_vec())),
           Err(error) => {
-            if show_error_messages {
-              eprintln!("{error}");
-            }
-
+            eprintln!("{error}");
             Err(ExitCode::IoErr)
           }
         },
         Err(error) => {
-          if show_error_messages {
-            eprintln!("{error}");
-          }
-
+          eprintln!("{error}");
           Err(ExitCode::NoInput)
         }
       },
-    )
-  }
-
-  fn read_string(&self, show_error_messages: bool) -> Result<String, ExitCode> {
-    self.as_ref().map_or_else(
-      || {
+      None => {
         let mut result = String::new();
 
         for line in stdin().lines() {
           match line {
             Ok(string) => result.push_str(&string),
             Err(error) => {
-              if show_error_messages {
-                eprintln!("{error}");
-              }
-
+              eprintln!("{error}");
               return Err(ExitCode::IoErr);
             }
           }
         }
 
-        Ok(result)
-      },
-      |path| match File::open(path) {
-        Ok(file) => match BufReader::new(file).fill_buf() {
-          Ok(buffer) => match String::from_utf8(buffer.to_vec()) {
-            Ok(string) => Ok(string),
-            Err(error) => {
-              if show_error_messages {
-                eprintln!("{error}");
-              }
+        Ok(Box::new(result))
+      }
+    }
+  }
 
-              Err(ExitCode::DataErr)
-            }
-          },
-          Err(error) => {
-            if show_error_messages {
-              eprintln!("{error}");
-            }
+  fn read_silently(&self) -> Result<Box<dyn Buffer>, ExitCode> {
+    match self {
+      Some(path) => File::open(path).map_or(Err(ExitCode::NoInput), |file| {
+        BufReader::new(file)
+          .fill_buf()
+          .map_or(Err(ExitCode::IoErr), |bytes| Ok(Box::new(bytes.to_vec())))
+      }),
+      None => {
+        let mut result = String::new();
 
-            Err(ExitCode::IoErr)
+        for line in stdin().lines() {
+          match line {
+            Ok(string) => result.push_str(&string),
+            Err(_) => return Err(ExitCode::IoErr),
           }
-        },
-        Err(error) => {
-          if show_error_messages {
-            eprintln!("{error}");
-          }
-
-          Err(ExitCode::NoInput)
         }
-      },
-    )
+
+        Ok(Box::new(result))
+      }
+    }
   }
 }
 
 impl Reader for &Vec<PathBuf> {
-  fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>, ExitCode> {
-    let mut result = Vec::<u8>::new();
-
+  fn read(&self) -> Result<Box<dyn Buffer>, ExitCode> {
     if self.is_empty() {
-      for line in stdin().lines() {
-        match line {
-          Ok(string) => result.append(&mut string.as_bytes().to_vec()),
-          Err(error) => {
-            if show_error_messages {
-              eprintln!("{error}");
-            }
+      let mut result = String::new();
 
-            return Err(ExitCode::IoErr);
-          }
-        }
-      }
-    } else {
-      for file in *self {
-        match File::open(file) {
-          Ok(file) => match BufReader::new(file).fill_buf() {
-            Ok(buffer) => result.append(&mut buffer.to_vec()),
-            Err(error) => {
-              if show_error_messages {
-                eprintln!("{error}");
-              }
-
-              return Err(ExitCode::IoErr);
-            }
-          },
-          Err(error) => {
-            if show_error_messages {
-              eprintln!("{error}");
-            }
-
-            return Err(ExitCode::NoInput);
-          }
-        }
-      }
-    }
-
-    Ok(result)
-  }
-
-  fn read_string(&self, show_error_messages: bool) -> Result<String, ExitCode> {
-    let mut result = String::new();
-
-    if self.is_empty() {
       for line in stdin().lines() {
         match line {
           Ok(string) => result.push_str(&string),
           Err(error) => {
-            if show_error_messages {
-              eprintln!("{error}");
-            }
-
+            eprintln!("{error}");
             return Err(ExitCode::IoErr);
           }
         }
       }
+
+      Ok(Box::new(result))
     } else {
+      let mut result = Vec::<u8>::new();
+
       for file in *self {
         match File::open(file) {
           Ok(file) => match BufReader::new(file).fill_buf() {
-            Ok(buffer) => match String::from_utf8(buffer.to_vec()) {
-              Ok(string) => result.push_str(&string),
-              Err(error) => {
-                if show_error_messages {
-                  eprintln!("{error}");
-                }
-
-                return Err(ExitCode::DataErr);
-              }
-            },
+            Ok(bytes) => result.append(&mut bytes.to_vec()),
             Err(error) => {
-              if show_error_messages {
-                eprintln!("{error}");
-              }
-
+              eprintln!("{error}");
               return Err(ExitCode::IoErr);
             }
           },
           Err(error) => {
-            if show_error_messages {
-              eprintln!("{error}");
-            }
-
+            eprintln!("{error}");
             return Err(ExitCode::NoInput);
           }
         }
       }
-    }
 
-    Ok(result)
+      Ok(Box::new(result))
+    }
+  }
+
+  fn read_silently(&self) -> Result<Box<dyn Buffer>, ExitCode> {
+    if self.is_empty() {
+      let mut result = String::new();
+
+      for line in stdin().lines() {
+        match line {
+          Ok(string) => result.push_str(&string),
+          Err(_) => return Err(ExitCode::IoErr),
+        }
+      }
+
+      Ok(Box::new(result))
+    } else {
+      let mut result = Vec::<u8>::new();
+
+      for file in *self {
+        match File::open(file) {
+          Ok(file) => match BufReader::new(file).fill_buf() {
+            Ok(bytes) => result.append(&mut bytes.to_vec()),
+            Err(_) => return Err(ExitCode::IoErr),
+          },
+          Err(_) => return Err(ExitCode::NoInput),
+        }
+      }
+
+      Ok(Box::new(result))
+    }
   }
 }
 
