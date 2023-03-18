@@ -52,10 +52,12 @@
 //!
 //! 1. [License](#license)
 //! 1. [Introduction](#introduction)
+//! 1. [Installation](#installation)
 //! 1. [Meaning of the Name](#meaning-of-the-name)
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`rs2md`](#rs2md)
+//! 1. [Notes](#notes)
 //!
 //! ## License
 //!
@@ -154,6 +156,12 @@
 //! starting with `//!` (outer comments) or comments starting with `///` (inner
 //! comments).  If neither option is given, nothing will be extracted.
 //!
+//! # Notes
+//!
+//! All deprecated symbols, if any, will be removed with the next respective
+//! minor release.  A major release will remove all deprecated symbols, if any,
+//! of the previous major version series.
+//!
 //! <!------------------------------------------------------------------------->
 
 #![deny(
@@ -166,7 +174,8 @@
   clippy::perf,
   clippy::suspicious,
   clippy::style,
-  deprecated
+  deprecated,
+  missing_docs
 )]
 
 mod application;
