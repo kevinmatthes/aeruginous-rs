@@ -116,29 +116,75 @@ impl Buffer for Vec<u8> {
 
 /// Read some input, process it, and write it to the intended destination.
 pub trait IOProcessor {
-  /// Process input in a given manner and write the output to a certain stream.
+  /// The shared logic of all methods.
   ///
-  /// Processing input is a common task.  Often, this input originates from a
-  /// stream and needs to be written to another stream after processing it.
-  /// The traits [`PatternReader`][Reader] and [`PatternWriter`][Writer] offer
-  /// semantics to handle reading from and writing to streams.  This method now
-  /// adds a convenient connection between them as it is designed to be applied
-  /// on input processing functions and closures.
+  /// This method defines the common behaviour of all methods this trait
+  /// provides.
   ///
-  /// The result of the operation is indicated by the return value which
-  /// originates from the reading and writing processes and can be propagated to
-  /// the main function.
-  fn process(
+  /// In case of a file, `append` shall control whether to *not* truncate it
+  /// before writing to it.  `show_error_messages` shall control whether to
+  /// write error messages to `stderr`, if appropriate.
+  ///
+  /// # Errors
+  ///
+  /// The return value shall indicate whether the operation succeeded.
+  /// Implementations should rely on the semantics of [`PatternReader`][Reader]
+  /// and [`PatternWriter`][Writer] instead of introducing further exit codes.
+  fn behaviour(
     &self,
     input: impl Reader,
     output: impl Writer,
     append: bool,
     show_error_messages: bool,
   ) -> ExitCode;
+
+  /// Truncate the output stream and write error messages.
+  ///
+  /// See [`behaviour`][IOProcessor::behaviour] for details.
+  fn io(&self, input: impl Reader, output: impl Writer) -> ExitCode {
+    self.behaviour(input, output, false, true)
+  }
+
+  /// Do not truncate the output stream and write error messages.
+  ///
+  /// See [`behaviour`][IOProcessor::behaviour] for details.
+  fn io_append(&self, input: impl Reader, output: impl Writer) -> ExitCode {
+    self.behaviour(input, output, true, true)
+  }
+
+  /// Neither truncate the output stream nor write error messages.
+  ///
+  /// See [`behaviour`][IOProcessor::behaviour] for details.
+  fn io_append_silently(
+    &self,
+    input: impl Reader,
+    output: impl Writer,
+  ) -> ExitCode {
+    self.behaviour(input, output, true, false)
+  }
+
+  /// Truncate the output stream and do not write error messages.
+  ///
+  /// See [`behaviour`][IOProcessor::behaviour] for details.
+  fn io_silent(&self, input: impl Reader, output: impl Writer) -> ExitCode {
+    self.behaviour(input, output, false, false)
+  }
+
+  /// A deprecated synonym for [`behaviour`][IOProcessor::behaviour].
+  #[deprecated(note = "Renamed to `behaviour`.")]
+  fn process(
+    &self,
+    input: impl Reader,
+    output: impl Writer,
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode {
+    self.behaviour(input, output, append, show_error_messages)
+  }
 }
 
 impl<T: Fn(String) -> String> IOProcessor for T {
-  fn process(
+  fn behaviour(
     &self,
     input: impl Reader,
     output: impl Writer,
@@ -148,7 +194,7 @@ impl<T: Fn(String) -> String> IOProcessor for T {
     match input.read() {
       Ok(buffer) => match Box::leak(buffer).try_into_string() {
         Ok(lines) => {
-          output.write_string(&self(lines), append, show_error_messages)
+          output.behaviour(Box::new(self(lines)), append, show_error_messages)
         }
         Err(code) => code,
       },
@@ -159,13 +205,18 @@ impl<T: Fn(String) -> String> IOProcessor for T {
 
 /// Read from common sources of input.
 pub trait Reader {
-  /// Read the input stream(s) and write error messages to `stderr`.
+  /// The shared logic of all methods.
   ///
-  /// This method will process the given input streams and return a struct
-  /// implementing the [`PatternBuffer`][Buffer] trait.  Errors are indicated
-  /// by `sysexits::ExitCode`s to be propagated to the main function.
+  /// This method defines the common behaviour of all methods this trait
+  /// provides.  Implementations should consider the possibilities to read from
+  /// both (a) file(s) and `stdin`.
+  ///
+  /// `show_error_messages` shall control whether to write error messages to
+  /// `stderr`, if appropriate.
   ///
   /// # Errors
+  ///
+  /// Implementations shall follow these conventions for error cases.
   ///
   /// ## `sysexits::ExitCode::IoErr`
   ///
@@ -174,52 +225,37 @@ pub trait Reader {
   ///
   /// ## `sysexits::ExitCode::NoInput`
   ///
-  /// The given input stream did not exist or the permissions were insufficent.
-  /// This is especially in case of files a common error cause.
-  fn read(&self) -> Result<Box<dyn Buffer>, ExitCode>;
+  /// This input stream did not exist or the permissions were insufficent.  This
+  /// is especially in case of files a common error cause.
+  fn behaviour(
+    &self,
+    show_error_messages: bool,
+  ) -> Result<Box<dyn Buffer>, ExitCode>;
 
-  /// Read the input stream(s) **without** writing error messages to `stderr`.
-  ///
-  /// Except the missing error messages, this method behaves just like
-  /// [`read`][Reader::read].
+  /// Read the input stream(s) and write error messages to `stderr`.
   ///
   /// # Errors
   ///
-  /// See [`read`][Reader::read].
-  fn read_silently(&self) -> Result<Box<dyn Buffer>, ExitCode>;
+  /// See [`behaviour`][Reader::behaviour].
+  fn read(&self) -> Result<Box<dyn Buffer>, ExitCode> {
+    self.behaviour(true)
+  }
 
-  /// Read bytes of information from the given stream.
-  ///
-  /// The given input stream contains the information to be read as a sequence
-  /// of UTF-8 encoded characters, represented as combinations of `u8` bytes.
-  /// This method tries to retrieve the contents of a given input stream in
-  /// order to return the contained bytes as a vector:  `Vec<u8>`.  As an input
-  /// stream is not limited to be a file, implementations should also consider
-  /// possible input from `stdin`.
-  ///
-  /// In case of an error, the Boolean parameter controls whether to write an
-  /// appropriate error message to `stderr`.
+  /// Read the input stream(s) without writing error messages to `stderr`.
   ///
   /// # Errors
   ///
-  /// As with all IO actions, errors may occur.  In order to handle them
-  /// appropriately, this method will return a `sysexits::ExitCode` then,
-  /// describing the exact cause in further detail.
+  /// See [`behaviour`][Reader::behaviour].
+  fn read_silently(&self) -> Result<Box<dyn Buffer>, ExitCode> {
+    self.behaviour(false)
+  }
+
+  /// Read bytes from this stream.
   ///
-  /// ## `sysexits::ExitCode::DataErr`
+  /// # Errors
   ///
-  /// The conversion to the target type failed.
-  ///
-  /// ## `sysexits::ExitCode::IoErr`
-  ///
-  /// An error occured while reading from the stream.  This might have happened
-  /// due to invalid UTF-8 characters, for example.
-  ///
-  /// ## `sysexits::ExitCode::NoInput`
-  ///
-  /// Reading from the stream was not possible.  For example, the resource did
-  /// not exist or the permissions were insufficient.
-  #[deprecated(note = "Use `read` and `read_silently` instead.")]
+  /// See [`behaviour`][Reader::behaviour].
+  #[deprecated]
   fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>, ExitCode> {
     if show_error_messages {
       match self.read() {
@@ -234,15 +270,12 @@ pub trait Reader {
     }
   }
 
-  /// Fill a string buffer with the information from the given stream.
-  ///
-  /// This method behaves just like [`read_bytes`][Reader::read_bytes] but
-  /// returns a `String` instead of a `Vec<u8>`.
+  /// Read a string from this stream.
   ///
   /// # Errors
   ///
-  /// See [`read_bytes`][Reader::read_bytes].
-  #[deprecated(note = "Use `read` and `read_silently` instead.")]
+  /// See [`behaviour`][Reader::behaviour].
+  #[deprecated]
   fn read_string(&self, show_error_messages: bool) -> Result<String, ExitCode> {
     if show_error_messages {
       match self.read() {
@@ -259,18 +292,27 @@ pub trait Reader {
 }
 
 impl Reader for &Option<PathBuf> {
-  fn read(&self) -> Result<Box<dyn Buffer>, ExitCode> {
+  fn behaviour(
+    &self,
+    show_error_messages: bool,
+  ) -> Result<Box<dyn Buffer>, ExitCode> {
     match self {
       Some(path) => match File::open(path) {
         Ok(file) => match BufReader::new(file).fill_buf() {
           Ok(bytes) => Ok(Box::new(bytes.to_vec())),
           Err(error) => {
-            eprintln!("{error}");
+            if show_error_messages {
+              eprintln!("{error}");
+            }
+
             Err(ExitCode::IoErr)
           }
         },
         Err(error) => {
-          eprintln!("{error}");
+          if show_error_messages {
+            eprintln!("{error}");
+          }
+
           Err(ExitCode::NoInput)
         }
       },
@@ -281,31 +323,12 @@ impl Reader for &Option<PathBuf> {
           match line {
             Ok(string) => result.push_str(&string),
             Err(error) => {
-              eprintln!("{error}");
+              if show_error_messages {
+                eprintln!("{error}");
+              }
+
               return Err(ExitCode::IoErr);
             }
-          }
-        }
-
-        Ok(Box::new(result))
-      }
-    }
-  }
-
-  fn read_silently(&self) -> Result<Box<dyn Buffer>, ExitCode> {
-    match self {
-      Some(path) => File::open(path).map_or(Err(ExitCode::NoInput), |file| {
-        BufReader::new(file)
-          .fill_buf()
-          .map_or(Err(ExitCode::IoErr), |bytes| Ok(Box::new(bytes.to_vec())))
-      }),
-      None => {
-        let mut result = String::new();
-
-        for line in stdin().lines() {
-          match line {
-            Ok(string) => result.push_str(&string),
-            Err(_) => return Err(ExitCode::IoErr),
           }
         }
 
@@ -316,7 +339,10 @@ impl Reader for &Option<PathBuf> {
 }
 
 impl Reader for &Vec<PathBuf> {
-  fn read(&self) -> Result<Box<dyn Buffer>, ExitCode> {
+  fn behaviour(
+    &self,
+    show_error_messages: bool,
+  ) -> Result<Box<dyn Buffer>, ExitCode> {
     if self.is_empty() {
       let mut result = String::new();
 
@@ -324,7 +350,10 @@ impl Reader for &Vec<PathBuf> {
         match line {
           Ok(string) => result.push_str(&string),
           Err(error) => {
-            eprintln!("{error}");
+            if show_error_messages {
+              eprintln!("{error}");
+            }
+
             return Err(ExitCode::IoErr);
           }
         }
@@ -339,43 +368,20 @@ impl Reader for &Vec<PathBuf> {
           Ok(file) => match BufReader::new(file).fill_buf() {
             Ok(bytes) => result.append(&mut bytes.to_vec()),
             Err(error) => {
-              eprintln!("{error}");
+              if show_error_messages {
+                eprintln!("{error}");
+              }
+
               return Err(ExitCode::IoErr);
             }
           },
           Err(error) => {
-            eprintln!("{error}");
+            if show_error_messages {
+              eprintln!("{error}");
+            }
+
             return Err(ExitCode::NoInput);
           }
-        }
-      }
-
-      Ok(Box::new(result))
-    }
-  }
-
-  fn read_silently(&self) -> Result<Box<dyn Buffer>, ExitCode> {
-    if self.is_empty() {
-      let mut result = String::new();
-
-      for line in stdin().lines() {
-        match line {
-          Ok(string) => result.push_str(&string),
-          Err(_) => return Err(ExitCode::IoErr),
-        }
-      }
-
-      Ok(Box::new(result))
-    } else {
-      let mut result = Vec::<u8>::new();
-
-      for file in *self {
-        match File::open(file) {
-          Ok(file) => match BufReader::new(file).fill_buf() {
-            Ok(bytes) => result.append(&mut bytes.to_vec()),
-            Err(_) => return Err(ExitCode::IoErr),
-          },
-          Err(_) => return Err(ExitCode::NoInput),
         }
       }
 
@@ -386,165 +392,176 @@ impl Reader for &Vec<PathBuf> {
 
 /// Write to common destinations for output.
 pub trait Writer {
-  /// Write the given buffer's contents to the given output stream.
+  /// The shared logic of all methods.
   ///
-  /// The content of the given buffer will be written to the instance this
-  /// method is called on.  As the output is not limited to be a file,
-  /// implementations should also consider the possibility to write to `stdout`.
+  /// This method defines the common behaviour of all methods this trait
+  /// provides.  Implementations should consider the possibilities to write to
+  /// both (a) file(s) and `stdout`.
   ///
-  /// In case of a file to write to, the parameter `append` controls whether to
-  /// add the buffer's contents at the end of the file or to truncate the file
-  /// before writing to it.
+  /// In case of a file, `append` shall control whether to *not* truncating it
+  /// before writing to it.  If the file should not already exist, it shall be
+  /// created.  Contents shall be pasted at the file's end.
   ///
-  /// As errors might occur during IO actions, the returned `sysexits::ExitCode`
-  /// indicates whether the operation succeeded.  Implementations should return
-  /// values according to the following conventions.  Furthermore, an
-  /// appropriate error message can be written to `stderr`, if activated by the
-  /// last parameter.
+  /// `show_error_messages` shall control whether to write error messages to
+  /// `stderr`, if appropriate.
   ///
   /// # Errors
   ///
+  /// The return value shall indicate whether the operation succeeded.  In case
+  /// of success, `sysexits::ExitCode::Ok` shall be returned.  Implementations
+  /// shall follow these conventions for error cases.
+  ///
   /// ## `sysexits::ExitCode::CantCreat`
   ///
-  /// In case of an output file to write to, this value indicates that it could
-  /// not be created.
+  /// In case of a file, the target could not be created.
   ///
   /// ## `sysexits::ExitCode::DataErr`
   ///
-  /// Sometimes, a conversion of the data might be required before writing it
-  /// to the destination.  This conversion might fail due to the data containing
-  /// invalid UTF-8 characters.
+  /// The buffer could not be converted into the target type.
   ///
   /// ## `sysexits::ExitCode::IoErr`
   ///
-  /// The data could not be written to the intended destination.  Information
-  /// might be lost or contained invalid UTF-8 characters which caused the
-  /// operation to fail.
-  fn write_bytes(
+  /// The data could not be written (completely).  Loss of information is
+  /// possible.  The buffer might also have contained invalid UTF-8 characters.
+  fn behaviour(
     &self,
-    buffer: &[u8],
+    buffer: Box<dyn Buffer>,
     append: bool,
     show_error_messages: bool,
   ) -> ExitCode;
 
-  /// Write the given buffer's contents to the given output stream.
+  /// Append the buffer's contents to a stream and print error messages.
   ///
-  /// See [`write_bytes`][Writer::write_bytes] for details.
-  fn write_string(
-    &self,
-    buffer: &str,
-    append: bool,
-    show_error_messages: bool,
-  ) -> ExitCode;
-}
+  /// See [`behaviour`][Writer::behaviour] for details.
+  fn append(&self, buffer: Box<dyn Buffer>) -> ExitCode {
+    self.behaviour(buffer, true, true)
+  }
 
-impl Writer for &Option<PathBuf> {
+  /// Append the buffer's contents without printing error messages.
+  ///
+  /// See [`behaviour`][Writer::behaviour] for details.
+  fn append_silently(&self, buffer: Box<dyn Buffer>) -> ExitCode {
+    self.behaviour(buffer, true, false)
+  }
+
+  /// Truncate the stream, write the buffer's data, and print error messages.
+  ///
+  /// See [`behaviour`][Writer::behaviour] for details.
+  fn write(&self, buffer: Box<dyn Buffer>) -> ExitCode {
+    self.behaviour(buffer, false, true)
+  }
+
+  /// Truncate the stream and write the buffer's data without error messages.
+  ///
+  /// See [`behaviour`][Writer::behaviour] for details.
+  fn write_silently(&self, buffer: Box<dyn Buffer>) -> ExitCode {
+    self.behaviour(buffer, false, false)
+  }
+
+  /// Write bytes to this stream.
+  ///
+  /// See [`behaviour`][Writer::behaviour] for details.
+  #[deprecated]
   fn write_bytes(
     &self,
     buffer: &[u8],
     append: bool,
     show_error_messages: bool,
   ) -> ExitCode {
-    self.as_ref().map_or_else(
-      || match String::from_utf8(buffer.to_vec()) {
-        Ok(string) => {
-          print!("{string}");
-          ExitCode::Ok
-        }
-        Err(error) => {
-          if show_error_messages {
-            eprintln!("{error}");
-          }
+    if show_error_messages {
+      if append {
+        self.append(Box::new(buffer.to_vec()))
+      } else {
+        self.write(Box::new(buffer.to_vec()))
+      }
+    } else if append {
+      self.append_silently(Box::new(buffer.to_vec()))
+    } else {
+      self.write_silently(Box::new(buffer.to_vec()))
+    }
+  }
 
-          ExitCode::DataErr
-        }
-      },
-      |path| match File::options()
-        .append(append)
-        .create(true)
-        .write(true)
-        .open(path)
-      {
-        Ok(mut file) => match file.write(buffer) {
-          Ok(count) => {
-            if count == buffer.len() {
-              ExitCode::Ok
-            } else {
-              if show_error_messages {
-                eprintln!("Writing the buffer did not create an exact copy!");
+  /// Write a string to this stream.
+  ///
+  /// See [`behaviour`][Writer::behaviour] for details.
+  #[deprecated]
+  fn write_string(
+    &self,
+    buffer: &str,
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode {
+    if show_error_messages {
+      if append {
+        self.append(Box::new(buffer.to_string()))
+      } else {
+        self.write(Box::new(buffer.to_string()))
+      }
+    } else if append {
+      self.append_silently(Box::new(buffer.to_string()))
+    } else {
+      self.write_silently(Box::new(buffer.to_string()))
+    }
+  }
+}
+
+impl Writer for &Option<PathBuf> {
+  fn behaviour(
+    &self,
+    buffer: Box<dyn Buffer>,
+    append: bool,
+    show_error_messages: bool,
+  ) -> ExitCode {
+    match self {
+      Some(path) => {
+        match File::options()
+          .append(append)
+          .create(true)
+          .write(true)
+          .open(path)
+        {
+          Ok(mut file) => match Box::leak(buffer).try_into_bytes() {
+            Ok(bytes) => match file.write(&bytes) {
+              Ok(count) => {
+                if count == bytes.len() {
+                  ExitCode::Ok
+                } else {
+                  if show_error_messages {
+                    eprintln!(
+                      "Writing the buffer did not create an exact copy!"
+                    );
+                  }
+
+                  ExitCode::IoErr
+                }
               }
+              Err(error) => {
+                if show_error_messages {
+                  eprintln!("{error}");
+                }
 
-              ExitCode::IoErr
-            }
-          }
+                ExitCode::IoErr
+              }
+            },
+            Err(code) => code,
+          },
           Err(error) => {
             if show_error_messages {
               eprintln!("{error}");
             }
 
-            ExitCode::IoErr
-          }
-        },
-        Err(error) => {
-          if show_error_messages {
-            eprintln!("{error}");
-          }
-
-          ExitCode::CantCreat
-        }
-      },
-    )
-  }
-
-  fn write_string(
-    &self,
-    buffer: &str,
-    append: bool,
-    show_error_messages: bool,
-  ) -> ExitCode {
-    self.as_ref().map_or_else(
-      || {
-        print!("{buffer}");
-        ExitCode::Ok
-      },
-      |path| match File::options()
-        .append(append)
-        .create(true)
-        .write(true)
-        .open(path)
-      {
-        Ok(mut file) => {
-          let buffer = buffer.as_bytes();
-          match file.write(buffer) {
-            Ok(count) => {
-              if count == buffer.len() {
-                ExitCode::Ok
-              } else {
-                if show_error_messages {
-                  eprintln!("Writing the buffer did not create an exact copy!");
-                }
-
-                ExitCode::IoErr
-              }
-            }
-            Err(error) => {
-              if show_error_messages {
-                eprintln!("{error}");
-              }
-
-              ExitCode::IoErr
-            }
+            ExitCode::CantCreat
           }
         }
-        Err(error) => {
-          if show_error_messages {
-            eprintln!("{error}");
-          }
-
-          ExitCode::CantCreat
+      }
+      None => match Box::leak(buffer).try_into_string() {
+        Ok(string) => {
+          print!("{string}");
+          ExitCode::Ok
         }
+        Err(code) => code,
       },
-    )
+    }
   }
 }
 
