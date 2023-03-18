@@ -138,7 +138,7 @@ impl Action {
           .collect::<String>()
       }
     }
-    .process(input_file, output_file, true, true)
+    .io_append(input_file, output_file)
   }
 
   /// Extract Markdown code from Rust documentation comments.
@@ -160,7 +160,7 @@ impl Action {
         })
         .collect::<String>()
     }
-    .process(input_files, output_file, false, true)
+    .io(input_files, output_file)
   }
 
   /// Execute the selected action.
