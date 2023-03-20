@@ -43,7 +43,7 @@ pub trait Buffer {
   ///
   /// ## `sysexits::ExitCode::DataErr`
   ///
-  /// A conversion was not possible.
+  /// The buffer could not be converted into the target type.
   fn try_from_bytes(&mut self, bytes: &[u8]) -> Result<()>;
 
   /// Fill this buffer with a string.
@@ -235,6 +235,10 @@ pub trait Reader {
   ///
   /// Implementations shall follow these conventions for error cases.
   ///
+  /// ## `sysexits::ExitCode::DataErr`
+  ///
+  /// The buffer could not be converted into the target type.
+  ///
   /// ## `sysexits::ExitCode::IoErr`
   ///
   /// Reading from the input stream(s) failed.  For instance, the stream(s)
@@ -309,26 +313,32 @@ impl Reader for &Option<PathBuf> {
   fn behaviour(&self, show_error_messages: bool) -> Result<Box<dyn Buffer>> {
     self.as_ref().map_or_else(
       || stdin().behaviour(show_error_messages),
-      |path| match File::open(path) {
-        Ok(file) => match BufReader::new(file).fill_buf() {
-          Ok(bytes) => Ok(Box::new(bytes.to_vec())),
-          Err(error) => {
-            if show_error_messages {
-              eprintln!("{error}");
-            }
+      |path| path.behaviour(show_error_messages),
+    )
+  }
+}
 
-            Err(ExitCode::IoErr)
-          }
-        },
+impl Reader for PathBuf {
+  fn behaviour(&self, show_error_messages: bool) -> Result<Box<dyn Buffer>> {
+    match File::open(self) {
+      Ok(file) => match BufReader::new(file).fill_buf() {
+        Ok(bytes) => Ok(Box::new(bytes.to_vec())),
         Err(error) => {
           if show_error_messages {
             eprintln!("{error}");
           }
 
-          Err(ExitCode::NoInput)
+          Err(ExitCode::IoErr)
         }
       },
-    )
+      Err(error) => {
+        if show_error_messages {
+          eprintln!("{error}");
+        }
+
+        Err(ExitCode::NoInput)
+      }
+    }
   }
 }
 
@@ -361,24 +371,14 @@ impl Reader for &Vec<PathBuf> {
       let mut result = Vec::<u8>::new();
 
       for file in *self {
-        match File::open(file) {
-          Ok(file) => match BufReader::new(file).fill_buf() {
-            Ok(bytes) => result.append(&mut bytes.to_vec()),
-            Err(error) => {
-              if show_error_messages {
-                eprintln!("{error}");
-              }
-
-              return Err(ExitCode::IoErr);
+        match file.behaviour(show_error_messages) {
+          Ok(buffer) => {
+            match Box::leak(buffer).try_into_bytes() {
+              Ok(mut bytes) => result.append(& mut bytes),
+              Err(code) => return Err(code),
             }
           },
-          Err(error) => {
-            if show_error_messages {
-              eprintln!("{error}");
-            }
-
-            return Err(ExitCode::NoInput);
-          }
+          Err(code) => return Err(code),
         }
       }
 
