@@ -372,11 +372,9 @@ impl Reader for &Vec<PathBuf> {
 
       for file in *self {
         match file.behaviour(show_error_messages) {
-          Ok(buffer) => {
-            match Box::leak(buffer).try_into_bytes() {
-              Ok(mut bytes) => result.append(& mut bytes),
-              Err(code) => return Err(code),
-            }
+          Ok(buffer) => match Box::leak(buffer).try_into_bytes() {
+            Ok(mut bytes) => result.append(&mut bytes),
+            Err(code) => return Err(code),
           },
           Err(code) => return Err(code),
         }
