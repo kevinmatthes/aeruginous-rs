@@ -313,7 +313,7 @@ impl Reader for &Option<PathBuf> {
   fn behaviour(&self, show_error_messages: bool) -> Result<Box<dyn Buffer>> {
     self.as_ref().map_or_else(
       || stdin().behaviour(show_error_messages),
-      |path| path.behaviour(show_error_messages),
+      |path| Reader::behaviour(path, show_error_messages),
     )
   }
 }
@@ -371,7 +371,7 @@ impl Reader for &Vec<PathBuf> {
       let mut result = Vec::<u8>::new();
 
       for file in *self {
-        match file.behaviour(show_error_messages) {
+        match Reader::behaviour(file, show_error_messages) {
           Ok(buffer) => match Box::leak(buffer).try_into_bytes() {
             Ok(mut bytes) => result.append(&mut bytes),
             Err(code) => return Err(code),
@@ -522,54 +522,67 @@ impl Writer for &Option<PathBuf> {
     show_error_messages: bool,
   ) -> Result<()> {
     match self {
-      Some(path) => {
-        match File::options()
-          .append(append)
-          .create(true)
-          .write(true)
-          .open(path)
-        {
-          Ok(mut file) => match Box::leak(buffer).try_into_bytes() {
-            Ok(bytes) => match file.write(&bytes) {
-              Ok(count) => {
-                if count == bytes.len() {
-                  Ok(())
-                } else {
-                  if show_error_messages {
-                    eprintln!(
-                      "Writing the buffer did not create an exact copy!"
-                    );
-                  }
+      Some(path) => Writer::behaviour(path, buffer, append, show_error_messages),
+      None => std::io::stdout().behaviour(buffer, append, show_error_messages),
+    }
+  }
+}
 
-                  Err(ExitCode::IoErr)
-                }
+impl Writer for PathBuf {
+  fn behaviour(
+    &self,
+    buffer: Box<dyn Buffer>,
+    append: bool,
+    show_error_messages: bool,
+  ) -> Result<()> {
+    match File::options()
+      .append(append)
+      .create(true)
+      .write(true)
+      .open(self)
+    {
+      Ok(mut file) => match Box::leak(buffer).try_into_bytes() {
+        Ok(bytes) => match file.write(&bytes) {
+          Ok(count) => {
+            if count == bytes.len() {
+              Ok(())
+            } else {
+              if show_error_messages {
+                eprintln!("Writing the buffer did not create an exact copy!");
               }
-              Err(error) => {
-                if show_error_messages {
-                  eprintln!("{error}");
-                }
 
-                Err(ExitCode::IoErr)
-              }
-            },
-            Err(code) => Err(code),
-          },
+              Err(ExitCode::IoErr)
+            }
+          }
           Err(error) => {
             if show_error_messages {
               eprintln!("{error}");
             }
 
-            Err(ExitCode::CantCreat)
+            Err(ExitCode::IoErr)
           }
-        }
-      }
-      None => match Box::leak(buffer).try_into_string() {
-        Ok(string) => {
-          print!("{string}");
-          Ok(())
-        }
+        },
         Err(code) => Err(code),
       },
+      Err(error) => {
+        if show_error_messages {
+          eprintln!("{error}");
+        }
+
+        Err(ExitCode::CantCreat)
+      }
+    }
+  }
+}
+
+impl Writer for std::io::Stdout {
+  fn behaviour(&self, buffer: Box<dyn Buffer>, _: bool, _: bool) -> Result<()> {
+    match Box::leak(buffer).try_into_string() {
+      Ok(string) => {
+        print!("{string}");
+        Ok(())
+      }
+      Err(code) => Err(code),
     }
   }
 }
