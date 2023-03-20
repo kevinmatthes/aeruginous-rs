@@ -392,6 +392,20 @@ impl Reader for &Vec<PathBuf> {
 
 /// Write to common destinations for output.
 pub trait Writer {
+  /// Append the buffer's contents to a stream and print error messages.
+  ///
+  /// See [`behaviour`][Writer::behaviour] for details.
+  fn append(&self, buffer: Box<dyn Buffer>) -> ExitCode {
+    self.behaviour(buffer, true, true)
+  }
+
+  /// Append the buffer's contents without printing error messages.
+  ///
+  /// See [`behaviour`][Writer::behaviour] for details.
+  fn append_silently(&self, buffer: Box<dyn Buffer>) -> ExitCode {
+    self.behaviour(buffer, true, false)
+  }
+
   /// The shared logic of all methods.
   ///
   /// This method defines the common behaviour of all methods this trait
@@ -429,20 +443,6 @@ pub trait Writer {
     append: bool,
     show_error_messages: bool,
   ) -> ExitCode;
-
-  /// Append the buffer's contents to a stream and print error messages.
-  ///
-  /// See [`behaviour`][Writer::behaviour] for details.
-  fn append(&self, buffer: Box<dyn Buffer>) -> ExitCode {
-    self.behaviour(buffer, true, true)
-  }
-
-  /// Append the buffer's contents without printing error messages.
-  ///
-  /// See [`behaviour`][Writer::behaviour] for details.
-  fn append_silently(&self, buffer: Box<dyn Buffer>) -> ExitCode {
-    self.behaviour(buffer, true, false)
-  }
 
   /// Truncate the stream, write the buffer's data, and print error messages.
   ///
