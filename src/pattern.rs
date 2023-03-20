@@ -424,7 +424,7 @@ pub trait Writer {
   /// provides.  Implementations should consider the possibilities to write to
   /// both (a) file(s) and `stdout`.
   ///
-  /// In case of a file, `append` shall control whether to *not* truncating it
+  /// In case of a file, `append` shall control whether to *not* truncate it
   /// before writing to it.  If the file should not already exist, it shall be
   /// created.  Contents shall be pasted at the file's end.
   ///
