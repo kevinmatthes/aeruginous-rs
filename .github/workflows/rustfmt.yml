@@ -38,8 +38,8 @@ permissions:
   contents: write
 
 jobs:
-  format:
-    name: format
+  rustfmt:
+    name: rustfmt
     runs-on: ubuntu-latest
     steps:
       - name: checkout
