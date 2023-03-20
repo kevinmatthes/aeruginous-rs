@@ -55,6 +55,6 @@ jobs:
                  "`git config --list \
                  | grep user\.name \
                  | cut -d= -f2`:  cargo fmt" \
-          && git push ${{ github.ref }}
+          && git push ${{ github.head_ref }}
 
 ################################################################################
