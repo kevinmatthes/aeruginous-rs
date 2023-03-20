@@ -185,7 +185,7 @@ pub trait IOProcessor {
   }
 
   /// A deprecated synonym for [`behaviour`][IOProcessor::behaviour].
-  #[deprecated(note = "Renamed to `behaviour`.")]
+  #[deprecated(note = "Renamed to `behaviour`.", since = "0.2.1")]
   fn process(
     &self,
     input: impl Reader,
@@ -269,7 +269,7 @@ pub trait Reader {
   /// # Errors
   ///
   /// See [`behaviour`][Reader::behaviour].
-  #[deprecated]
+  #[deprecated(since = "0.2.1")]
   fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>> {
     if show_error_messages {
       match self.read() {
@@ -289,7 +289,7 @@ pub trait Reader {
   /// # Errors
   ///
   /// See [`behaviour`][Reader::behaviour].
-  #[deprecated]
+  #[deprecated(since = "0.2.1")]
   fn read_string(&self, show_error_messages: bool) -> Result<String> {
     if show_error_messages {
       match self.read() {
@@ -477,7 +477,7 @@ pub trait Writer {
   /// Write bytes to this stream.
   ///
   /// See [`behaviour`][Writer::behaviour] for details.
-  #[deprecated]
+  #[deprecated(since = "0.2.1")]
   fn write_bytes(
     &self,
     buffer: &[u8],
@@ -503,7 +503,7 @@ pub trait Writer {
   /// Write a string to this stream.
   ///
   /// See [`behaviour`][Writer::behaviour] for details.
-  #[deprecated]
+  #[deprecated(since = "0.2.1")]
   fn write_string(
     &self,
     buffer: &str,
