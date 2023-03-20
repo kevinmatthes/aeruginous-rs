@@ -39,6 +39,8 @@ Added
 
 - src/pattern.rs:  PatternWriter::write_silently
 
+- src/pattern.rs:  Result
+
 .. Changed
 .. .......
 ..
