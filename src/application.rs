@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::PatternIOProcessor;
+use crate::{PatternIOProcessor, Result};
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 use sysexits::ExitCode;
@@ -64,7 +64,7 @@ impl Action {
   fn cffreference(
     input_file: &Option<PathBuf>,
     output_file: &Option<PathBuf>,
-  ) -> ExitCode {
+  ) -> Result<()> {
     |s: String| -> String {
       let mut buffer = String::new();
       let mut has_preferred_citation = false;
@@ -138,7 +138,7 @@ impl Action {
           .collect::<String>()
       }
     }
-    .process(input_file, output_file, true, true)
+    .io_append(input_file, output_file)
   }
 
   /// Extract Markdown code from Rust documentation comments.
@@ -147,7 +147,7 @@ impl Action {
     extract_outer: bool,
     input_files: &Vec<PathBuf>,
     output_file: &Option<PathBuf>,
-  ) -> ExitCode {
+  ) -> Result<()> {
     |s: String| -> String {
       s.lines()
         .map(str::trim_start)
@@ -160,13 +160,13 @@ impl Action {
         })
         .collect::<String>()
     }
-    .process(input_files, output_file, false, true)
+    .io(input_files, output_file)
   }
 
   /// Execute the selected action.
   #[must_use]
   pub fn run(&self) -> ExitCode {
-    match self {
+    match match self {
       Self::Cffreference {
         input_file,
         output_file,
@@ -179,6 +179,9 @@ impl Action {
       } => {
         Self::rs2md(*extract_inner, *extract_outer, input_files, output_file)
       }
+    } {
+      Ok(()) => ExitCode::Ok,
+      Err(code) => code,
     }
   }
 }
