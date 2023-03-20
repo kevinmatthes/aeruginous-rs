@@ -522,7 +522,9 @@ impl Writer for &Option<PathBuf> {
     show_error_messages: bool,
   ) -> Result<()> {
     match self {
-      Some(path) => Writer::behaviour(path, buffer, append, show_error_messages),
+      Some(path) => {
+        Writer::behaviour(path, buffer, append, show_error_messages)
+      }
       None => std::io::stdout().behaviour(buffer, append, show_error_messages),
     }
   }
