@@ -307,8 +307,9 @@ pub trait Reader {
 
 impl Reader for &Option<PathBuf> {
   fn behaviour(&self, show_error_messages: bool) -> Result<Box<dyn Buffer>> {
-    match self {
-      Some(path) => match File::open(path) {
+    self.as_ref().map_or_else(
+      || stdin().behaviour(show_error_messages),
+      |path| match File::open(path) {
         Ok(file) => match BufReader::new(file).fill_buf() {
           Ok(bytes) => Ok(Box::new(bytes.to_vec())),
           Err(error) => {
@@ -327,47 +328,35 @@ impl Reader for &Option<PathBuf> {
           Err(ExitCode::NoInput)
         }
       },
-      None => {
-        let mut result = String::new();
+    )
+  }
+}
 
-        for line in stdin().lines() {
-          match line {
-            Ok(string) => result.push_str(&string),
-            Err(error) => {
-              if show_error_messages {
-                eprintln!("{error}");
-              }
+impl Reader for std::io::Stdin {
+  fn behaviour(&self, show_error_messages: bool) -> Result<Box<dyn Buffer>> {
+    let mut result = String::new();
 
-              return Err(ExitCode::IoErr);
-            }
+    for line in stdin().lines() {
+      match line {
+        Ok(string) => result.push_str(&string),
+        Err(error) => {
+          if show_error_messages {
+            eprintln!("{error}");
           }
-        }
 
-        Ok(Box::new(result))
+          return Err(ExitCode::IoErr);
+        }
       }
     }
+
+    Ok(Box::new(result))
   }
 }
 
 impl Reader for &Vec<PathBuf> {
   fn behaviour(&self, show_error_messages: bool) -> Result<Box<dyn Buffer>> {
     if self.is_empty() {
-      let mut result = String::new();
-
-      for line in stdin().lines() {
-        match line {
-          Ok(string) => result.push_str(&string),
-          Err(error) => {
-            if show_error_messages {
-              eprintln!("{error}");
-            }
-
-            return Err(ExitCode::IoErr);
-          }
-        }
-      }
-
-      Ok(Box::new(result))
+      stdin().behaviour(show_error_messages)
     } else {
       let mut result = Vec::<u8>::new();
 
