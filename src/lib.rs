@@ -167,6 +167,7 @@
   clippy::suspicious,
   clippy::style
 )]
+#![allow(clippy::multiple_crate_versions)]
 
 mod application;
 mod pattern;
