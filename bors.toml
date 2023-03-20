@@ -30,7 +30,7 @@
 ################################################################################
 
 # The CI steps to watch for.
-status = ["bors", "rustfmt"]
+status = ["bors"]
 
 # Settings for the merging strategy.
 delete_merged_branches = true
