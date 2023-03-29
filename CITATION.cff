@@ -114,22 +114,6 @@ references:
     title: chrono
     url: https://docs.rs/chrono
   - type: software
-    date-released: 2023-03-16
-    version: 4.1.9
-    abstract: A full featured, fast Command Line Argument Parser for Rust
-    authors:
-      - alias: kbknapp
-        family-names: Knapp
-        given-names: Kevin B.
-      - name: The Clap Community
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/clap
-    repository-code: https://github.com/clap-rs/clap
-    title: clap
-    url: https://docs.rs/clap
-  - type: software
     abstract: CITATION.cff files are plain text files with human- and machine-readable citation information for software. Code developers can include them in their repositories to let others know how to correctly cite their software. This is the specification for the Citation File Format.
     authors:
       - family-names: Druskat
@@ -184,24 +168,8 @@ references:
     license: "CC-BY-4.0"
     doi: 10.5281/zenodo.5171937
   - type: software
-    date-released: 2023-03-17
-    version: 4.1.10
-    abstract: A full featured, fast Command Line Argument Parser for Rust
-    authors:
-      - alias: kbknapp
-        family-names: Knapp
-        given-names: Kevin B.
-      - name: The Clap Community
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/clap
-    repository-code: https://github.com/clap-rs/clap
-    title: clap
-    url: https://docs.rs/clap
-  - type: software
-    date-released: 2023-03-17
-    version: 4.1.11
+    date-released: 2023-03-28
+    version: 4.2.0
     abstract: A full featured, fast Command Line Argument Parser for Rust
     authors:
       - alias: kbknapp
