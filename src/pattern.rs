@@ -209,7 +209,7 @@ impl<T: Fn(String) -> String> IOProcessor for T {
     show_error_messages: bool,
   ) -> Result<()> {
     match input.read() {
-      Ok(buffer) => match Box::leak(buffer).try_into_string() {
+      Ok(buffer) => match buffer.as_ref().try_into_string() {
         Ok(lines) => {
           output.behaviour(Box::new(self(lines)), append, show_error_messages)
         }
@@ -372,7 +372,7 @@ impl Reader for &Vec<PathBuf> {
 
       for file in *self {
         match Reader::behaviour(file, show_error_messages) {
-          Ok(buffer) => match Box::leak(buffer).try_into_bytes() {
+          Ok(buffer) => match buffer.as_ref().try_into_bytes() {
             Ok(mut bytes) => result.append(&mut bytes),
             Err(code) => return Err(code),
           },
@@ -543,7 +543,7 @@ impl Writer for PathBuf {
       .write(true)
       .open(self)
     {
-      Ok(mut file) => match Box::leak(buffer).try_into_bytes() {
+      Ok(mut file) => match buffer.as_ref().try_into_bytes() {
         Ok(bytes) => match file.write(&bytes) {
           Ok(count) => {
             if count == bytes.len() {
@@ -579,7 +579,7 @@ impl Writer for PathBuf {
 
 impl Writer for std::io::Stdout {
   fn behaviour(&self, buffer: Box<dyn Buffer>, _: bool, _: bool) -> Result<()> {
-    match Box::leak(buffer).try_into_string() {
+    match buffer.as_ref().try_into_string() {
       Ok(string) => {
         print!("{string}");
         Ok(())
