@@ -52,7 +52,7 @@ version = "0.2.0"
 
 [dependencies]
 chrono = "0.4.24"
-clap = { version = "4.1.14", features = ["derive"] }
+clap = { version = "4.2.0", features = ["derive"] }
 sysexits = "0.4.1"
 
 ################################################################################
