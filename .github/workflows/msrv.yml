@@ -34,7 +34,6 @@ name: msrv
 on:
   schedule:
     - cron: '42 0 * * FRI'
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -63,7 +62,7 @@ jobs:
                                                                 --version \
                                                                 | cut -d' ' \
                                                                       -f2`\"/g \
-                 Cargo.toml.tmp >> Cargo.toml.tmp \
+                 Cargo.toml >> Cargo.toml.tmp \
           && mv Cargo.toml.tmp Cargo.toml \
           && echo Changed > changelog.d/msrv.rst \
           && echo ....... >> changelog.d/msrv.rst \
