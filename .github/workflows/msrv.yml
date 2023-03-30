@@ -34,7 +34,6 @@ name: msrv
 on:
   schedule:
     - cron: '42 0 * * FRI'
-  workflow_dispatch:
 
 permissions:
   contents: write
