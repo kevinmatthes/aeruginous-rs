@@ -33,6 +33,10 @@ name: rustfmt
 
 on:
   pull_request:
+    paths:
+      - Cargo.lock
+      - Cargo.toml
+      - src/*.rs
 
 permissions:
   contents: write
