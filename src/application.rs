@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternIOProcessor};
+use crate::PatternIOProcessor;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 use sysexits::ExitCode;
@@ -138,7 +138,8 @@ impl Action {
           .collect::<String>()
       }
     }
-    .io_append(input_file, output_file).map_or_else(|code| code, |()| ExitCode::Ok)
+    .io_append(input_file, output_file)
+    .map_or_else(|code| code, |()| ExitCode::Ok)
   }
 
   /// Extract Markdown code from Rust documentation comments.
@@ -160,7 +161,8 @@ impl Action {
         })
         .collect::<String>()
     }
-    .io(input_files, output_file).map_or_else(|code| code, |()| ExitCode::Ok)
+    .io(input_files, output_file)
+    .map_or_else(|code| code, |()| ExitCode::Ok)
   }
 
   /// Execute the selected action.
