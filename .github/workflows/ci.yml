@@ -45,6 +45,7 @@ jobs:
       - cffconvert
       - check
       - clippy
+      - rustfmt
       - test
     runs-on: ubuntu-latest
     steps:
@@ -94,6 +95,21 @@ jobs:
 
       - name: cargo
         run: cargo clippy
+
+  rustfmt:
+    name: rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: rustup
+        run: rustup update
+
+      - name: checkout
+        uses: actions/checkout@v3.5.0
+        with:
+          persist-credentials: false
+
+      - name: cargo
+        run: cargo fmt --check
 
   test:
     name: test
