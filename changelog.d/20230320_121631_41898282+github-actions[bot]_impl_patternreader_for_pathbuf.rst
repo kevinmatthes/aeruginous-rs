@@ -5,7 +5,7 @@
 Added
 .....
 
-- src/pattern.rs:  impl PatternReader for PathBuf
+- src/pattern/reader.rs:  impl PatternReader for PathBuf
 
 .. Changed
 .. .......
