@@ -5,7 +5,7 @@
 Added
 .....
 
-- src/pattern.rs:  impl PatternReader for std::io::Stdin
+- src/pattern/reader.rs:  impl PatternReader for std::io::Stdin
 
 .. Changed
 .. .......
