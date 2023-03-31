@@ -5,9 +5,9 @@
 Added
 .....
 
-- src/pattern.rs:  impl PatternWriter for PathBuf
+- src/pattern/writer.rs:  impl PatternWriter for PathBuf
 
-- src/pattern.rs:  impl PatternWriter for std::io::Stdout
+- src/pattern/writer.rs:  impl PatternWriter for std::io::Stdout
 
 .. Changed
 .. .......
