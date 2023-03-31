@@ -33,7 +33,7 @@ name: msrv
 
 on:
   schedule:
-    - cron: '42 0 * * FRI'
+    - cron: '0 0 * * TUE'
 
 permissions:
   contents: write
