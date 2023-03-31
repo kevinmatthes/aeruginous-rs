@@ -5,7 +5,17 @@
 Added
 .....
 
-- src/pattern.rs:  creation
+- src/pattern/buffer.rs:  creation
+
+- src/pattern/io_processor.rs:  creation
+
+- src/pattern/mod.rs:  creation
+
+- src/pattern/reader.rs:  creation
+
+- src/pattern/result.rs:  creation
+
+- src/pattern/writer.rs:  creation
 
 .. Changed
 .. .......

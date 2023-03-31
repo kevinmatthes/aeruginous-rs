@@ -11,35 +11,35 @@ Added
 
 - README:  notes on deprecated symbols
 
-- src/pattern.rs:  PatternBuffer
+- src/pattern/buffer.rs:  PatternBuffer
 
-- src/pattern.rs:  PatternIOProcessor::behaviour
+- src/pattern/io_processor.rs:  PatternIOProcessor::behaviour
 
-- src/pattern.rs:  PatternIOProcessor::io
+- src/pattern/io_processor.rs:  PatternIOProcessor::io
 
-- src/pattern.rs:  PatternIOProcessor::io_append
+- src/pattern/io_processor.rs:  PatternIOProcessor::io_append
 
-- src/pattern.rs:  PatternIOProcessor::io_append_silently
+- src/pattern/io_processor.rs:  PatternIOProcessor::io_append_silently
 
-- src/pattern.rs:  PatternIOProcessor::io_silent
+- src/pattern/io_processor.rs:  PatternIOProcessor::io_silent
 
-- src/pattern.rs:  PatternReader::behaviour
+- src/pattern/reader.rs:  PatternReader::behaviour
 
-- src/pattern.rs:  PatternReader::read
+- src/pattern/reader.rs:  PatternReader::read
 
-- src/pattern.rs:  PatternReader::read_silently
+- src/pattern/reader.rs:  PatternReader::read_silently
 
-- src/pattern.rs:  PatternWriter::append
+- src/pattern/result.rs:  Result
 
-- src/pattern.rs:  PatternWriter::append_silently
+- src/pattern/writer.rs:  PatternWriter::append
 
-- src/pattern.rs:  PatternWriter::behaviour
+- src/pattern/writer.rs:  PatternWriter::append_silently
 
-- src/pattern.rs:  PatternWriter::write
+- src/pattern/writer.rs:  PatternWriter::behaviour
 
-- src/pattern.rs:  PatternWriter::write_silently
+- src/pattern/writer.rs:  PatternWriter::write
 
-- src/pattern.rs:  Result
+- src/pattern/writer.rs:  PatternWriter::write_silently
 
 .. Changed
 .. .......
@@ -49,15 +49,15 @@ Added
 Deprecated
 ..........
 
-- src/pattern.rs:  PatternIOProcessor::process
+- src/pattern/io_processor.rs:  PatternIOProcessor::process
 
-- src/pattern.rs:  PatternReader::read_bytes
+- src/pattern/reader.rs:  PatternReader::read_bytes
 
-- src/pattern.rs:  PatternReader::read_string
+- src/pattern/reader.rs:  PatternReader::read_string
 
-- src/pattern.rs:  PatternWriter::write_bytes
+- src/pattern/writer.rs:  PatternWriter::write_bytes
 
-- src/pattern.rs:  PatternWriter::write_string
+- src/pattern/writer.rs:  PatternWriter::write_string
 
 .. Fixed
 .. .....

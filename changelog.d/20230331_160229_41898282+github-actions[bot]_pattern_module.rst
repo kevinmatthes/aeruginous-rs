@@ -2,11 +2,11 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-Added
-.....
-
-- src/pattern/reader.rs:  impl PatternReader for PathBuf
-
+.. Added
+.. .....
+..
+.. - A bullet item for the Added category.
+..
 .. Changed
 .. .......
 ..
