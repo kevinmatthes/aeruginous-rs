@@ -85,7 +85,46 @@ impl Buffer for String {
   }
 
   fn try_into_string(&self) -> Result<String> {
-    Ok(Self::from(self))
+    Ok(self.clone())
+  }
+}
+
+#[cfg(test)]
+mod string {
+  use crate::PatternBuffer;
+
+  #[test]
+  fn try_from_bytes() {
+    let data = "bytes".as_bytes();
+    let mut string = String::new();
+
+    assert_eq!(string.try_from_bytes(data), Ok(()));
+    assert_eq!(string, "bytes".to_string());
+  }
+
+  #[test]
+  fn try_from_string() {
+    let data = "string";
+    let mut string = String::new();
+
+    assert_eq!(string.try_from_string(data), Ok(()));
+    assert_eq!(string, "string".to_string());
+  }
+
+  #[test]
+  fn try_into_bytes() {
+    assert_eq!(
+      "string".to_string().try_into_bytes(),
+      Ok("string".as_bytes().to_vec())
+    );
+  }
+
+  #[test]
+  fn try_into_string() {
+    assert_eq!(
+      "string".to_string().try_into_string(),
+      Ok("string".to_string())
+    );
   }
 }
 
