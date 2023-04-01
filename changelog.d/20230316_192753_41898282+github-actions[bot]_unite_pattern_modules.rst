@@ -13,8 +13,6 @@ Added
 
 - src/pattern/reader.rs:  creation
 
-- src/pattern/result.rs:  creation
-
 - src/pattern/writer.rs:  creation
 
 .. Changed
