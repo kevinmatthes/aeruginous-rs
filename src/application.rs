@@ -17,9 +17,10 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternIOProcessor, Result};
+use crate::PatternIOProcessor;
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
+use sysexits::Result;
 
 /// The supported application modes.
 ///
