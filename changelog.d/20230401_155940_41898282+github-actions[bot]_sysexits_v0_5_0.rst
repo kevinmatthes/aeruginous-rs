@@ -7,11 +7,11 @@
 ..
 .. - A bullet item for the Added category.
 ..
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Changed
+.......
+
+- apply new sysexits::Result type and semantics
+
 .. Deprecated
 .. ..........
 ..
