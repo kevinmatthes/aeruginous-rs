@@ -46,6 +46,9 @@ jobs:
     name: readme
     runs-on: ubuntu-latest
     steps:
+      - name: rustup
+        run: rustup update
+
       - name: checkout
         uses: actions/checkout@v3.5.0
 
