@@ -119,7 +119,7 @@ pub trait IOProcessor {
   ) -> ExitCode {
     self
       .behaviour(input, output, append, show_error_messages)
-      .map_or_else(|c| c, |()| ExitCode::Ok)
+      .into()
   }
 }
 
