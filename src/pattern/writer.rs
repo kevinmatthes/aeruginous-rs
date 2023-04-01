@@ -17,9 +17,9 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternBuffer, Result};
+use crate::PatternBuffer;
 use std::{fs::File, io::Write, path::PathBuf};
-use sysexits::ExitCode;
+use sysexits::{ExitCode, Result};
 
 /// Write to common destinations for output.
 pub trait Writer {
@@ -107,7 +107,7 @@ pub trait Writer {
     append: bool,
     show_error_messages: bool,
   ) -> ExitCode {
-    match if show_error_messages {
+    if show_error_messages {
       if append {
         self.append(Box::new(buffer.to_vec()))
       } else {
@@ -117,10 +117,8 @@ pub trait Writer {
       self.append_silently(Box::new(buffer.to_vec()))
     } else {
       self.write_silently(Box::new(buffer.to_vec()))
-    } {
-      Ok(()) => ExitCode::Ok,
-      Err(code) => code,
     }
+    .into()
   }
 
   /// Write a string to this stream.
@@ -133,7 +131,7 @@ pub trait Writer {
     append: bool,
     show_error_messages: bool,
   ) -> ExitCode {
-    match if show_error_messages {
+    if show_error_messages {
       if append {
         self.append(Box::new(buffer.to_string()))
       } else {
@@ -143,10 +141,8 @@ pub trait Writer {
       self.append_silently(Box::new(buffer.to_string()))
     } else {
       self.write_silently(Box::new(buffer.to_string()))
-    } {
-      Ok(()) => ExitCode::Ok,
-      Err(code) => code,
     }
+    .into()
   }
 }
 
