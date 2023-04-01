@@ -29,8 +29,6 @@ Added
 
 - src/pattern/reader.rs:  PatternReader::read_silently
 
-- src/pattern/result.rs:  Result
-
 - src/pattern/writer.rs:  PatternWriter::append
 
 - src/pattern/writer.rs:  PatternWriter::append_silently

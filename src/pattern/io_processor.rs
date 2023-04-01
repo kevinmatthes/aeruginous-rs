@@ -17,8 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternReader, PatternWriter, Result};
-use sysexits::ExitCode;
+use crate::{PatternReader, PatternWriter};
+use sysexits::{ExitCode, Result};
 
 /// Read some input, process it, and write it to the intended destination.
 pub trait IOProcessor {
@@ -105,10 +105,9 @@ pub trait IOProcessor {
     append: bool,
     show_error_messages: bool,
   ) -> ExitCode {
-    match self.behaviour(input, output, append, show_error_messages) {
-      Ok(()) => ExitCode::Ok,
-      Err(code) => code,
-    }
+    self
+      .behaviour(input, output, append, show_error_messages)
+      .into()
   }
 }
 

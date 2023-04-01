@@ -17,8 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::Result;
-use sysexits::ExitCode;
+use sysexits::{ExitCode, Result};
 
 /// A buffer for pattern-based IO.
 pub trait Buffer {

@@ -188,7 +188,7 @@ pub use crate::{
   application::Clap as Application,
   pattern::{
     Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
-    Reader as PatternReader, Result, Writer as PatternWriter,
+    Reader as PatternReader, Writer as PatternWriter,
   },
   running::Running,
   version::{ParsingError as VersionParsingError, Version},

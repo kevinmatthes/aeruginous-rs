@@ -20,10 +20,7 @@
 use clap::Parser;
 
 fn main() -> sysexits::ExitCode {
-  aeruginous::Application::parse()
-    .action()
-    .run()
-    .map_or_else(|c| c, |()| sysexits::ExitCode::Ok)
+  aeruginous::Application::parse().action().run().into()
 }
 
 /******************************************************************************/
