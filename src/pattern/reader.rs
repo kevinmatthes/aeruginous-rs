@@ -17,13 +17,13 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternBuffer, Result};
+use crate::PatternBuffer;
 use std::{
   fs::File,
   io::{stdin, BufRead, BufReader},
   path::PathBuf,
 };
-use sysexits::ExitCode;
+use sysexits::{ExitCode, Result};
 
 /// Read from common sources of input.
 pub trait Reader {
