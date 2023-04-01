@@ -20,7 +20,7 @@
 Fixed
 .....
 
-- CI:  mirror workflow now upgrades before running job
+- CI:  mirror workflow now upgrades Rust during README mirroring job
 
 .. Removed
 .. .......
