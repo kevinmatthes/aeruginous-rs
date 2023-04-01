@@ -175,7 +175,8 @@
   clippy::suspicious,
   clippy::style,
   deprecated,
-  missing_docs
+  missing_docs,
+  rustdoc::broken_intra_doc_links
 )]
 #![allow(clippy::multiple_crate_versions)]
 

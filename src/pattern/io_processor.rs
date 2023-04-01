@@ -21,6 +21,18 @@ use crate::{PatternReader, PatternWriter};
 use sysexits::{ExitCode, Result};
 
 /// Read some input, process it, and write it to the intended destination.
+///
+/// Many CLIs need to interact with streams, such as files on a file system and
+/// [`std::io::Stdout`] as well as [`std::io::Stdin`].  The tasks are usually to
+/// read from one or more input stream(s) and to write the processed data to
+/// another stream.  Often, only the processing logic differs but the actual IO
+/// steps to execute are always the same.  This leads to redundant boilerplate
+/// code which is hard to maintain.
+///
+/// This trait shall provide a uniform and convenient interface for processing
+/// logic such that the user can focus on the implementation of the way the read
+/// data shall be processed.  The IO is handled by [`PatternReader`]s and
+/// [`PatternWriter`]s such that one can rely on their semantics.
 pub trait IOProcessor {
   /// The shared logic of all methods.
   ///
@@ -29,13 +41,13 @@ pub trait IOProcessor {
   ///
   /// In case of a file, `append` shall control whether to *not* truncate it
   /// before writing to it.  `show_error_messages` shall control whether to
-  /// write error messages to `stderr`, if appropriate.
+  /// write error messages to [`std::io::Stderr`], if appropriate.
   ///
   /// # Errors
   ///
   /// The return value shall indicate whether the operation succeeded.
-  /// Implementations should rely on the semantics of [`PatternReader`][Reader]
-  /// and [`PatternWriter`][Writer] instead of introducing further exit codes.
+  /// Implementations should rely on the semantics of [`PatternReader`] and
+  /// [`PatternWriter`] instead of introducing further exit codes.
   fn behaviour(
     &self,
     input: impl PatternReader,
@@ -48,7 +60,7 @@ pub trait IOProcessor {
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][IOProcessor::behaviour] for details.
+  /// See [`Self::behaviour`] for details.
   fn io(
     &self,
     input: impl PatternReader,
@@ -61,7 +73,7 @@ pub trait IOProcessor {
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][IOProcessor::behaviour] for details.
+  /// See [`Self::behaviour`] for details.
   fn io_append(
     &self,
     input: impl PatternReader,
@@ -74,7 +86,7 @@ pub trait IOProcessor {
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][IOProcessor::behaviour] for details.
+  /// See [`Self::behaviour`] for details.
   fn io_append_silently(
     &self,
     input: impl PatternReader,
@@ -87,7 +99,7 @@ pub trait IOProcessor {
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][IOProcessor::behaviour] for details.
+  /// See [`Self::behaviour`] for details.
   fn io_silent(
     &self,
     input: impl PatternReader,
@@ -96,7 +108,7 @@ pub trait IOProcessor {
     self.behaviour(input, output, false, false)
   }
 
-  /// A deprecated synonym for [`behaviour`][IOProcessor::behaviour].
+  /// A deprecated synonym for [`Self::behaviour`].
   #[deprecated(note = "Renamed to `behaviour`.", since = "0.2.1")]
   fn process(
     &self,
