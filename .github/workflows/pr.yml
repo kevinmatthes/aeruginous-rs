@@ -74,7 +74,7 @@ jobs:
 
       - name: tarpaulin
         run: |
-          cargo tarpaulin --engine llvm --out xml \
+          cargo tarpaulin \
           && echo '```' >> message.md \
           && pycobertura show cobertura.xml >> message.md \
           && echo '```' >> message.md
@@ -84,9 +84,6 @@ jobs:
         with:
           comment_tag: tarpaulin
           filePath: message.md
-
-      - name: rm
-        run: rm cobertura.xml message.md requirements.txt
 
   format:
     name: format
