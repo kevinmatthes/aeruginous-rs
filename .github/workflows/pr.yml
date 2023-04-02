@@ -46,6 +46,8 @@ jobs:
     name: coverage
     needs:
       - format
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: python
