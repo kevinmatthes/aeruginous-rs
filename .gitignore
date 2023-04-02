@@ -31,6 +31,9 @@
 
 # Build artifacts.
 /target
+
+# Coverage artifacts.
+cobertura.xml
 tarpaulin-report.html
 
 ################################################################################
