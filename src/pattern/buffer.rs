@@ -148,4 +148,43 @@ impl Buffer for Vec<u8> {
   }
 }
 
+#[cfg(test)]
+mod vec_u8 {
+  use crate::PatternBuffer;
+
+  #[test]
+  fn try_from_bytes() {
+    let data = "bytes".as_bytes();
+    let mut bytes = Vec::<u8>::new();
+
+    assert_eq!(bytes.try_from_bytes(data), Ok(()));
+    assert_eq!(bytes, "bytes".as_bytes().to_vec());
+  }
+
+  #[test]
+  fn try_from_string() {
+    let data = "string";
+    let mut bytes = Vec::<u8>::new();
+
+    assert_eq!(bytes.try_from_string(data), Ok(()));
+    assert_eq!(bytes, "string".as_bytes().to_vec());
+  }
+
+  #[test]
+  fn try_into_bytes() {
+    assert_eq!(
+      "bytes".as_bytes().to_vec().try_into_bytes(),
+      Ok("bytes".as_bytes().to_vec())
+    );
+  }
+
+  #[test]
+  fn try_into_string() {
+    assert_eq!(
+      "bytes".as_bytes().to_vec().try_into_string(),
+      Ok("bytes".to_string())
+    );
+  }
+}
+
 /******************************************************************************/
