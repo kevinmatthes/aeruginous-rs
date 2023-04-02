@@ -96,7 +96,7 @@ impl Action {
             has_type = true;
           }
 
-          buffer.push_str(&(String::from(line) + "\n"));
+          buffer.push_str(&(line.to_string() + "\n"));
         } else if line.starts_with("references:") {
           references = true;
         }
@@ -108,7 +108,7 @@ impl Action {
 
         for line in buffer.lines() {
           if preferred_citation_reached && line.starts_with(' ') {
-            result.push_str(&(String::from("  ") + line + "\n"));
+            result.push_str(&("  ".to_string() + line + "\n"));
           } else if preferred_citation_reached {
             preferred_citation_reached = false;
           }
@@ -122,19 +122,19 @@ impl Action {
 
         lines
           .next()
-          .map_or_else(String::new, |l| String::from("  - ") + l.trim() + "\n")
-          + &lines.map(|l| String::from(l) + "\n").collect::<String>()
+          .map_or_else(String::new, |l| "  - ".to_string() + l.trim() + "\n")
+          + &lines.map(|l| l.to_string() + "\n").collect::<String>()
       } else {
         let mut lines = buffer.lines();
 
         (if has_type {
-          lines.next().map_or_else(String::new, |l| {
-            String::from("  - ") + l.trim() + "\n"
-          })
+          lines
+            .next()
+            .map_or_else(String::new, |l| "  - ".to_string() + l.trim() + "\n")
         } else {
-          String::from("  - type: software\n")
+          "  - type: software\n".to_string()
         }) + &lines
-          .map(|l| String::from("    ") + l + "\n")
+          .map(|l| "    ".to_string() + l + "\n")
           .collect::<String>()
       }
     }
@@ -156,7 +156,7 @@ impl Action {
             || (extract_outer && l.starts_with("//!"))
         })
         .map(|l| {
-          String::from(l.chars().skip(4).collect::<String>().trim_end()) + "\n"
+          l.chars().skip(4).collect::<String>().trim_end().to_string() + "\n"
         })
         .collect::<String>()
     }
