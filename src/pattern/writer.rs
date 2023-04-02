@@ -216,13 +216,41 @@ impl Writer for std::io::Stdout {
     _: bool,
     _: bool,
   ) -> Result<()> {
-    match buffer.as_ref().try_into_string() {
-      Ok(string) => {
-        print!("{string}");
-        Ok(())
-      }
-      Err(code) => Err(code),
-    }
+    let string = buffer.as_ref().try_into_string()?;
+    print!("{string}");
+    Ok(())
+  }
+}
+
+#[cfg(test)]
+mod stdout {
+  use crate::PatternWriter;
+  use std::io::stdout;
+
+  #[test]
+  fn append() {
+    assert_eq!(stdout().append(Box::new("append".to_string())), Ok(()));
+  }
+
+  #[test]
+  fn append_silently() {
+    assert_eq!(
+      stdout().append_silently(Box::new("append_silently".to_string())),
+      Ok(())
+    );
+  }
+
+  #[test]
+  fn write() {
+    assert_eq!(stdout().write(Box::new("write".to_string())), Ok(()));
+  }
+
+  #[test]
+  fn write_silently() {
+    assert_eq!(
+      stdout().write_silently(Box::new("write_silently".to_string())),
+      Ok(())
+    );
   }
 }
 
