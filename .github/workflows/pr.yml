@@ -74,7 +74,7 @@ jobs:
 
       - name: tarpaulin
         run: |
-          cargo tarpaulin --out xml \
+          cargo tarpaulin --engine llvm --out xml \
           && echo '```' >> message.md \
           && pycobertura show cobertura.xml >> message.md \
           && echo '```' >> message.md
