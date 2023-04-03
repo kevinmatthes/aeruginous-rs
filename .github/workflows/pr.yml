@@ -59,13 +59,22 @@ jobs:
       - name: rustup
         run: rustup update
 
-      - name: cargo
-        run: cargo install cargo-tarpaulin
-
       - name: checkout
         uses: actions/checkout@v3.5.0
         with:
           ref: ${{ github.head_ref }}
+
+      - name: cache
+        uses: actions/cache@v3.3.1
+        with:
+          key: ${{ runner.os }}-tarpaulin-${{ hashFiles ('~/.cargo/bin/cargo-tarpaulin') }}
+          path: |
+            ~/.cargo/bin/cargo-tarpaulin
+          restore-keys: |
+            ${{ runner.os }}-tarpaulin-
+
+      - name: cargo
+        run: cargo install cargo-tarpaulin
 
       - name: requirements
         run: echo pycobertura >> requirements.txt
