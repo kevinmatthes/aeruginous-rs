@@ -76,8 +76,8 @@ jobs:
 
       - name: cargo
         run: |
-          if [[ ! -e ~/.cargo/bin/cargo-tarpaulin ]] then
-            cargo install cargo-tarpaulin
+          if [[ ! -e ~/.cargo/bin/cargo-tarpaulin ]]; then
+            cargo install cargo-tarpaulin;
           fi
 
       - name: requirements
