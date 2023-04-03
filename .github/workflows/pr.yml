@@ -65,8 +65,7 @@ jobs:
           persist-credentials: false
           ref: ${{ github.head_ref }}
 
-      - id: cache
-        name: cache
+      - name: cache
         uses: actions/cache@v3.3.1
         with:
           key: ${{ runner.os }}-tarpaulin-${{ github.sha }}
@@ -75,9 +74,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-tarpaulin-
 
-      - if: steps.cache.outputs.cache-hit != 'true'
-        name: cargo
-        run: cargo install cargo-tarpaulin
+      - name: cargo
+        run: |
+          if [[ ! -e ~/.cargo/bin/cargo-tarpaulin ]] then
+            cargo install cargo-tarpaulin
+          fi
 
       - name: requirements
         run: echo pycobertura >> requirements.txt
