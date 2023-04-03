@@ -62,18 +62,19 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3.5.0
         with:
+          persist-credentials: false
           ref: ${{ github.head_ref }}
 
-      - name: cache
+      - id: cache
+        name: cache
         uses: actions/cache@v3.3.1
         with:
           key: ${{ runner.os }}-tarpaulin-${{ hashFiles ('~/.cargo/bin/cargo-tarpaulin') }}
           path: |
             ~/.cargo/bin/cargo-tarpaulin
-          restore-keys: |
-            ${{ runner.os }}-tarpaulin-
 
-      - name: cargo
+      - if: steps.cache.outputs.cache-hit != 'true'
+        name: cargo
         run: cargo install cargo-tarpaulin
 
       - name: requirements
