@@ -100,6 +100,7 @@ pub trait Writer {
   /// Write bytes to this stream.
   ///
   /// See [`behaviour`][Writer::behaviour] for details.
+  #[cfg(not(tarpaulin_include))]
   #[deprecated(since = "0.2.1")]
   fn write_bytes(
     &self,
@@ -124,6 +125,7 @@ pub trait Writer {
   /// Write a string to this stream.
   ///
   /// See [`behaviour`][Writer::behaviour] for details.
+  #[cfg(not(tarpaulin_include))]
   #[deprecated(since = "0.2.1")]
   fn write_string(
     &self,
