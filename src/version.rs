@@ -191,7 +191,7 @@ impl Version {
 }
 
 #[cfg(test)]
-mod getter {
+mod getters {
   use crate::Version;
 
   #[test]
@@ -235,7 +235,7 @@ mod getter {
 }
 
 #[cfg(test)]
-mod setter {
+mod setters {
   use crate::Version;
 
   #[test]
