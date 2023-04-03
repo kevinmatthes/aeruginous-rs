@@ -50,11 +50,10 @@ impl Running {
 #[cfg(test)]
 mod getters {
   use crate::Running;
-  use chrono::{DateTime, Local};
 
   #[test]
   fn begin() {
-    assert!(Running::create().get() <= &Local::now());
+    assert!(Running::create().get() <= &chrono::Local::now());
   }
 }
 
