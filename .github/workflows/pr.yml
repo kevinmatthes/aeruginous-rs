@@ -72,6 +72,8 @@ jobs:
           key: ${{ runner.os }}-tarpaulin-${{ github.sha }}
           path: |
             ~/.cargo/bin/cargo-tarpaulin
+          restore-keys: |
+            ${{ runner.os }}-tarpaulin-
 
       - if: steps.cache.outputs.cache-hit != 'true'
         name: cargo
