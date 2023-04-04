@@ -113,7 +113,7 @@ jobs:
 
       - name: rustfmt
         run: |
-          if [[ ! cargo fmt --check ]];
+          if [[ ! (cargo fmt --check) ]];
             cargo fmt;
             git commit -am \
                 "`git config --list \
