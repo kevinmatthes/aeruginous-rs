@@ -17,10 +17,13 @@
 |                                                                              |
 \******************************************************************************/
 
+use sysexits::ExitCode;
+
 /// The parsing error type for this struct.
 ///
 /// An instance of `Version` can be constructed from a given string slice.  In
 /// case that the parsing should fail, an appropriate error type is required.
+#[deprecated(since = "0.2.1")]
 #[derive(Debug, PartialEq, Eq)]
 pub struct ParsingError;
 
@@ -328,7 +331,7 @@ mod fmt {
 }
 
 impl std::str::FromStr for Version {
-  type Err = ParsingError;
+  type Err = ExitCode;
 
   /// Create a new version instance from a string slice.
   ///
@@ -349,7 +352,7 @@ impl std::str::FromStr for Version {
   /// least one part should contain non-numeric characters, the parsing will
   /// fail.
   ///
-  /// If the parsing fails, `Err(VersionParsingError)` will be returned.
+  /// If the parsing fails, `Err(sysexits::ExitCode::DataErr)` will be returned.
   fn from_str(string: &str) -> Result<Self, Self::Err> {
     let parts: Vec<&str> = if string.starts_with('v') {
       string.strip_prefix('v').unwrap()
@@ -374,83 +377,84 @@ impl std::str::FromStr for Version {
         minor,
         patch,
       }),
-      _ => Err(ParsingError),
+      _ => Err(ExitCode::DataErr),
     }
   }
 }
 
 #[cfg(test)]
 mod from_str {
-  use crate::{Version, VersionParsingError};
+  use crate::Version;
   use std::str::FromStr;
+  use sysexits::ExitCode;
 
   #[test]
   fn invalid_2_parts_and_only_one_numeric() {
-    assert_eq!(Version::from_str("1.abc"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("abc.1"), Err(VersionParsingError));
+    assert_eq!(Version::from_str("1.abc"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("abc.1"), Err(ExitCode::DataErr));
   }
 
   #[test]
   fn invalid_3_parts_and_just_two_numeric() {
-    assert_eq!(Version::from_str("1.2.abc"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("1.abc.2"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("abc.1.2"), Err(VersionParsingError));
+    assert_eq!(Version::from_str("1.2.abc"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("1.abc.2"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("abc.1.2"), Err(ExitCode::DataErr));
   }
 
   #[test]
   fn invalid_3_parts_and_only_one_numeric() {
-    assert_eq!(Version::from_str("1.abc.def"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("abc.1.def"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("abc.def.1"), Err(VersionParsingError));
+    assert_eq!(Version::from_str("1.abc.def"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("abc.1.def"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("abc.def.1"), Err(ExitCode::DataErr));
   }
 
   #[test]
   fn invalid_hexdecimal() {
-    assert_eq!(Version::from_str("0x1"), Err(VersionParsingError));
+    assert_eq!(Version::from_str("0x1"), Err(ExitCode::DataErr));
 
-    assert_eq!(Version::from_str("0x1.0x2"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("0x1.2"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("1.0x2"), Err(VersionParsingError));
+    assert_eq!(Version::from_str("0x1.0x2"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("0x1.2"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("1.0x2"), Err(ExitCode::DataErr));
 
-    assert_eq!(Version::from_str("0x1.0x2.0x3"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("0x1.0x2.3"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("0x1.2.0x3"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("0x1.2.3"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("1.0x2.0x3"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("1.0x2.3"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("1.2.0x3"), Err(VersionParsingError));
+    assert_eq!(Version::from_str("0x1.0x2.0x3"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("0x1.0x2.3"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("0x1.2.0x3"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("0x1.2.3"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("1.0x2.0x3"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("1.0x2.3"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("1.2.0x3"), Err(ExitCode::DataErr));
   }
 
   #[test]
   fn invalid_introduced_but_empty_parts() {
-    assert_eq!(Version::from_str(""), Err(VersionParsingError));
+    assert_eq!(Version::from_str(""), Err(ExitCode::DataErr));
 
-    assert_eq!(Version::from_str("."), Err(VersionParsingError));
-    assert_eq!(Version::from_str("1."), Err(VersionParsingError));
-    assert_eq!(Version::from_str(".2"), Err(VersionParsingError));
+    assert_eq!(Version::from_str("."), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("1."), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str(".2"), Err(ExitCode::DataErr));
 
-    assert_eq!(Version::from_str(".."), Err(VersionParsingError));
-    assert_eq!(Version::from_str("1.."), Err(VersionParsingError));
-    assert_eq!(Version::from_str(".2."), Err(VersionParsingError));
-    assert_eq!(Version::from_str("..3"), Err(VersionParsingError));
-    assert_eq!(Version::from_str("1.2."), Err(VersionParsingError));
-    assert_eq!(Version::from_str("1..3"), Err(VersionParsingError));
-    assert_eq!(Version::from_str(".2.3"), Err(VersionParsingError));
+    assert_eq!(Version::from_str(".."), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("1.."), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str(".2."), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("..3"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("1.2."), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str("1..3"), Err(ExitCode::DataErr));
+    assert_eq!(Version::from_str(".2.3"), Err(ExitCode::DataErr));
   }
 
   #[test]
   fn invalid_only_letters_1_part() {
-    assert_eq!(Version::from_str("abc"), Err(VersionParsingError));
+    assert_eq!(Version::from_str("abc"), Err(ExitCode::DataErr));
   }
 
   #[test]
   fn invalid_only_letters_2_parts() {
-    assert_eq!(Version::from_str("abc.def"), Err(VersionParsingError));
+    assert_eq!(Version::from_str("abc.def"), Err(ExitCode::DataErr));
   }
 
   #[test]
   fn invalid_only_letters_3_parts() {
-    assert_eq!(Version::from_str("abc.def.ghi"), Err(VersionParsingError));
+    assert_eq!(Version::from_str("abc.def.ghi"), Err(ExitCode::DataErr));
   }
 
   #[test]
