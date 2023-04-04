@@ -84,15 +84,9 @@ pub trait Reader {
   #[deprecated(since = "0.2.1")]
   fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>> {
     if show_error_messages {
-      match self.read() {
-        Ok(buffer) => buffer.as_ref().try_into_bytes(),
-        Err(code) => Err(code),
-      }
+      self.read()?.as_ref().try_into_bytes()
     } else {
-      match self.read_silently() {
-        Ok(buffer) => buffer.as_ref().try_into_bytes(),
-        Err(code) => Err(code),
-      }
+      self.read_silently()?.as_ref().try_into_bytes()
     }
   }
 
@@ -104,15 +98,9 @@ pub trait Reader {
   #[deprecated(since = "0.2.1")]
   fn read_string(&self, show_error_messages: bool) -> Result<String> {
     if show_error_messages {
-      match self.read() {
-        Ok(buffer) => buffer.as_ref().try_into_string(),
-        Err(code) => Err(code),
-      }
+      self.read()?.as_ref().try_into_string()
     } else {
-      match self.read_silently() {
-        Ok(buffer) => buffer.as_ref().try_into_string(),
-        Err(code) => Err(code),
-      }
+      self.read_silently()?.try_into_string()
     }
   }
 }
@@ -191,13 +179,10 @@ impl Reader for &Vec<PathBuf> {
       let mut result = Vec::<u8>::new();
 
       for file in *self {
-        match Reader::behaviour(file, show_error_messages) {
-          Ok(buffer) => match buffer.as_ref().try_into_bytes() {
-            Ok(mut bytes) => result.append(&mut bytes),
-            Err(code) => return Err(code),
-          },
-          Err(code) => return Err(code),
-        }
+        let mut bytes = Reader::behaviour(file, show_error_messages)?
+          .as_ref()
+          .try_into_bytes()?;
+        result.append(&mut bytes);
       }
 
       Ok(Box::new(result))
