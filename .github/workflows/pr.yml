@@ -113,13 +113,11 @@ jobs:
 
       - name: rustfmt
         run: |
-          if [[ ! (cargo fmt --check) ]];
-            cargo fmt;
-            git commit -am \
-                "`git config --list \
-                 | grep user\.name \
-                 | cut -d= -f2`:  cargo fmt";
-            git push;
-          fi
+          cargo fmt \
+          && git commit -am \
+                 "`git config --list \
+                   | grep user\.name \
+                   | cut -d= -f2`:  cargo fmt" \
+          && git push
 
 ################################################################################
