@@ -131,15 +131,8 @@ impl<T: Fn(String) -> String> IOProcessor for T {
     append: bool,
     show_error_messages: bool,
   ) -> Result<()> {
-    match input.read() {
-      Ok(buffer) => match buffer.as_ref().try_into_string() {
-        Ok(lines) => {
-          output.behaviour(Box::new(self(lines)), append, show_error_messages)
-        }
-        Err(code) => Err(code),
-      },
-      Err(code) => Err(code),
-    }
+    let lines = input.read()?.as_ref().try_into_string()?;
+    output.behaviour(Box::new(self(lines)), append, show_error_messages)
   }
 }
 

@@ -100,6 +100,7 @@ pub trait Writer {
   /// Write bytes to this stream.
   ///
   /// See [`behaviour`][Writer::behaviour] for details.
+  #[cfg(not(tarpaulin_include))]
   #[deprecated(since = "0.2.1")]
   fn write_bytes(
     &self,
@@ -124,6 +125,7 @@ pub trait Writer {
   /// Write a string to this stream.
   ///
   /// See [`behaviour`][Writer::behaviour] for details.
+  #[cfg(not(tarpaulin_include))]
   #[deprecated(since = "0.2.1")]
   fn write_string(
     &self,
@@ -209,6 +211,51 @@ impl Writer for PathBuf {
   }
 }
 
+impl Writer for std::io::Stderr {
+  fn behaviour(
+    &self,
+    buffer: Box<dyn PatternBuffer>,
+    _: bool,
+    _: bool,
+  ) -> Result<()> {
+    let string = buffer.as_ref().try_into_string()?;
+    eprint!("{string}");
+    Ok(())
+  }
+}
+
+#[cfg(test)]
+mod stderr {
+  use crate::PatternWriter;
+  use std::io::stderr;
+
+  #[test]
+  fn append() {
+    assert_eq!(stderr().append(Box::new("append".to_string())), Ok(()));
+  }
+
+  #[test]
+  fn append_silently() {
+    assert_eq!(
+      stderr().append_silently(Box::new("append_silently".to_string())),
+      Ok(())
+    );
+  }
+
+  #[test]
+  fn write() {
+    assert_eq!(stderr().write(Box::new("write".to_string())), Ok(()));
+  }
+
+  #[test]
+  fn write_silently() {
+    assert_eq!(
+      stderr().write_silently(Box::new("write_silently".to_string())),
+      Ok(())
+    );
+  }
+}
+
 impl Writer for std::io::Stdout {
   fn behaviour(
     &self,
@@ -216,13 +263,41 @@ impl Writer for std::io::Stdout {
     _: bool,
     _: bool,
   ) -> Result<()> {
-    match buffer.as_ref().try_into_string() {
-      Ok(string) => {
-        print!("{string}");
-        Ok(())
-      }
-      Err(code) => Err(code),
-    }
+    let string = buffer.as_ref().try_into_string()?;
+    print!("{string}");
+    Ok(())
+  }
+}
+
+#[cfg(test)]
+mod stdout {
+  use crate::PatternWriter;
+  use std::io::stdout;
+
+  #[test]
+  fn append() {
+    assert_eq!(stdout().append(Box::new("append".to_string())), Ok(()));
+  }
+
+  #[test]
+  fn append_silently() {
+    assert_eq!(
+      stdout().append_silently(Box::new("append_silently".to_string())),
+      Ok(())
+    );
+  }
+
+  #[test]
+  fn write() {
+    assert_eq!(stdout().write(Box::new("write".to_string())), Ok(()));
+  }
+
+  #[test]
+  fn write_silently() {
+    assert_eq!(
+      stdout().write_silently(Box::new("write_silently".to_string())),
+      Ok(())
+    );
   }
 }
 

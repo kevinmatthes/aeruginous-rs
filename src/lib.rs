@@ -192,7 +192,7 @@ pub use crate::{
     Reader as PatternReader, Writer as PatternWriter,
   },
   running::Running,
-  version::{ParsingError as VersionParsingError, Version},
+  version::Version,
 };
 
 /// This crate's name.

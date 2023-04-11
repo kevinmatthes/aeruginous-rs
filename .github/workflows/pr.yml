@@ -37,6 +37,7 @@ on:
       - Cargo.lock
       - Cargo.toml
       - src/*.rs
+      - src/**/*.rs
 
 permissions:
   contents: write
@@ -58,13 +59,26 @@ jobs:
       - name: rustup
         run: rustup update
 
-      - name: cargo
-        run: cargo install cargo-tarpaulin
-
       - name: checkout
         uses: actions/checkout@v3.5.0
         with:
+          persist-credentials: false
           ref: ${{ github.head_ref }}
+
+      - name: cache
+        uses: actions/cache@v3.3.1
+        with:
+          key: ${{ runner.os }}-tarpaulin-${{ github.sha }}
+          path: |
+            ~/.cargo/bin/cargo-tarpaulin
+          restore-keys: |
+            ${{ runner.os }}-tarpaulin-
+
+      - name: cargo
+        run: |
+          if [[ ! -e ~/.cargo/bin/cargo-tarpaulin ]]; then
+            cargo install cargo-tarpaulin;
+          fi
 
       - name: requirements
         run: echo pycobertura >> requirements.txt

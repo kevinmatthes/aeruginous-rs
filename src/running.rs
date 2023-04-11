@@ -47,4 +47,14 @@ impl Running {
   }
 }
 
+#[cfg(test)]
+mod getters {
+  use crate::Running;
+
+  #[test]
+  fn begin() {
+    assert!(Running::create().get() <= &chrono::Local::now());
+  }
+}
+
 /******************************************************************************/
