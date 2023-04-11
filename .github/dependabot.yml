@@ -39,7 +39,7 @@ updates:
     assignees:
       - kevinmatthes
     commit-message:
-      prefix: Dependabot
+      prefix: '[Dependabot] '
       include: scope
     milestone: 3
 
@@ -51,7 +51,7 @@ updates:
     assignees:
       - kevinmatthes
     commit-message:
-      prefix: Dependabot
+      prefix: '[Dependabot] '
       include: scope
     milestone: 3
 
