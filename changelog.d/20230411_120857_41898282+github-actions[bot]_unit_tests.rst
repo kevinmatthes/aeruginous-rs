@@ -2,11 +2,11 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- src/pattern/writer.rs:  impl PatternWriter for std::io::Stderr
+
 .. Changed
 .. .......
 ..
