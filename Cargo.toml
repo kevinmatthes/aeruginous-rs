@@ -28,7 +28,7 @@
 ##              See `README.md' for project details.
 ##
 ################################################################################
- 
+
 [package]
 authors = ["Kevin Matthes <aeruginous.rs@gmail.com>"]
 categories = [
