@@ -33,11 +33,6 @@ name: pr
 
 on:
   pull_request:
-    paths:
-      - Cargo.lock
-      - Cargo.toml
-      - src/*.rs
-      - src/**/*.rs
 
 permissions:
   contents: write
@@ -96,7 +91,6 @@ jobs:
       - name: comment
         uses: thollander/actions-comment-pull-request@v2.3.1
         with:
-          comment_tag: tarpaulin
           filePath: message.md
 
   format:
