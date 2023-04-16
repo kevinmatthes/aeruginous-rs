@@ -40,7 +40,6 @@ updates:
       - kevinmatthes
     commit-message:
       prefix: '[Dependabot] '
-      include: scope
     milestone: 3
 
   - package-ecosystem: github-actions
@@ -52,7 +51,6 @@ updates:
       - kevinmatthes
     commit-message:
       prefix: '[Dependabot] '
-      include: scope
     milestone: 3
 
 ################################################################################
