@@ -17,11 +17,11 @@
 ..
 .. - A bullet item for the Deprecated category.
 ..
-.. Fixed
-.. .....
-..
-.. - A bullet item for the Fixed category.
-..
+Fixed
+.....
+
+- src/pattern/reader.rs:  only first 8192 bytes of file were read
+
 .. Removed
 .. .......
 ..
