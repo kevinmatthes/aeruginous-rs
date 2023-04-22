@@ -186,7 +186,7 @@ mod running;
 mod version;
 
 pub use crate::{
-  application::Clap as Application,
+  application::{Action, Clap as Application},
   pattern::{
     Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
     Reader as PatternReader, Writer as PatternWriter,

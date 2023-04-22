@@ -95,7 +95,7 @@ mod string {
 
   #[test]
   fn try_from_bytes() {
-    let data = "bytes".as_bytes();
+    let data = b"bytes";
     let mut string = String::new();
 
     assert_eq!(string.try_from_bytes(data), Ok(()));
@@ -115,7 +115,7 @@ mod string {
   fn try_into_bytes() {
     assert_eq!(
       "string".to_string().try_into_bytes(),
-      Ok("string".as_bytes().to_vec())
+      Ok(b"string".to_vec())
     );
   }
 
@@ -154,11 +154,11 @@ mod vec_u8 {
 
   #[test]
   fn try_from_bytes() {
-    let data = "bytes".as_bytes();
+    let data = b"bytes";
     let mut bytes = Vec::<u8>::new();
 
     assert_eq!(bytes.try_from_bytes(data), Ok(()));
-    assert_eq!(bytes, "bytes".as_bytes().to_vec());
+    assert_eq!(bytes, b"bytes".to_vec());
   }
 
   #[test]
@@ -167,23 +167,17 @@ mod vec_u8 {
     let mut bytes = Vec::<u8>::new();
 
     assert_eq!(bytes.try_from_string(data), Ok(()));
-    assert_eq!(bytes, "string".as_bytes().to_vec());
+    assert_eq!(bytes, b"string".to_vec());
   }
 
   #[test]
   fn try_into_bytes() {
-    assert_eq!(
-      "bytes".as_bytes().to_vec().try_into_bytes(),
-      Ok("bytes".as_bytes().to_vec())
-    );
+    assert_eq!(b"bytes".to_vec().try_into_bytes(), Ok(b"bytes".to_vec()));
   }
 
   #[test]
   fn try_into_string() {
-    assert_eq!(
-      "bytes".as_bytes().to_vec().try_into_string(),
-      Ok("bytes".to_string())
-    );
+    assert_eq!(b"bytes".to_vec().try_into_string(), Ok("bytes".to_string()));
   }
 }
 
