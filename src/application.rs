@@ -62,13 +62,11 @@ pub enum Action {
 
   /// Remove CRLFs from the given file.
   Uncrlf {
-    /// The input file to read from, defaulting to [`std::io::Stdin`], if
-    /// omitted.
+    /// The file to read from, defaulting to [`std::io::Stdin`], if omitted.
     #[arg(short = 'i')]
     input_file: Option<PathBuf>,
 
-    /// The output file to write to, defaulting to [`std::io::Stdout`], if
-    /// omitted.
+    /// The file to write to, defaulting to [`std::io::Stdout`], if omitted.
     #[arg(short = 'o')]
     output_file: Option<PathBuf>,
   },
