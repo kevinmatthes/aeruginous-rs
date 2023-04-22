@@ -123,16 +123,24 @@ impl Reader for PathBuf {
     show_error_messages: bool,
   ) -> Result<Box<dyn PatternBuffer>> {
     match File::open(self) {
-      Ok(file) => match BufReader::new(file).fill_buf() {
-        Ok(bytes) => Ok(Box::new(bytes.to_vec())),
-        Err(error) => {
-          if show_error_messages {
-            eprintln!("{error}");
-          }
+      Ok(file) => {
+        let mut result = String::new();
 
-          Err(ExitCode::IoErr)
+        for line in BufReader::new(file).lines() {
+          match line {
+            Ok(string) => result.push_str(&(string + "\n")),
+            Err(error) => {
+              if show_error_messages {
+                eprintln!("{error}");
+              }
+
+              return Err(ExitCode::IoErr);
+            }
+          }
         }
-      },
+
+        Ok(Box::new(result))
+      }
       Err(error) => {
         if show_error_messages {
           eprintln!("{error}");
