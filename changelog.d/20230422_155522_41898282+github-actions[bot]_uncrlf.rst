@@ -5,6 +5,10 @@
 Added
 .....
 
+- Cargo.toml:  project keyword ``uncrlf``
+
+- README:  document uncrlf
+
 - uncrlf:  creation
 
 .. Changed
