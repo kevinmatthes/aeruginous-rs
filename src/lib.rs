@@ -57,6 +57,7 @@
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`rs2md`](#rs2md)
+//!    1. [`uncrlf`](#uncrlf)
 //! 1. [Notes](#notes)
 //!
 //! ## License
