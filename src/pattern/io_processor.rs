@@ -109,6 +109,7 @@ pub trait IOProcessor {
   }
 
   /// A deprecated synonym for [`Self::behaviour`].
+  #[cfg(not(tarpaulin_include))]
   #[deprecated(note = "Renamed to `behaviour`.", since = "0.2.1")]
   fn process(
     &self,
