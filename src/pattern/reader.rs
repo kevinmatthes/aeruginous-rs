@@ -81,6 +81,7 @@ pub trait Reader {
   /// # Errors
   ///
   /// See [`behaviour`][Reader::behaviour].
+  #[cfg(not(tarpaulin_include))]
   #[deprecated(since = "0.2.1")]
   fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>> {
     if show_error_messages {
@@ -95,6 +96,7 @@ pub trait Reader {
   /// # Errors
   ///
   /// See [`behaviour`][Reader::behaviour].
+  #[cfg(not(tarpaulin_include))]
   #[deprecated(since = "0.2.1")]
   fn read_string(&self, show_error_messages: bool) -> Result<String> {
     if show_error_messages {
