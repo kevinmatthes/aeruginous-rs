@@ -189,13 +189,10 @@ impl Reader for &Vec<PathBuf> {
       let mut result = Vec::<u8>::new();
 
       for file in *self {
-        match Reader::behaviour(file, show_error_messages) {
-          Ok(buffer) => match buffer.as_ref().try_into_bytes() {
-            Ok(mut bytes) => result.append(&mut bytes),
-            Err(code) => return Err(code),
-          },
-          Err(code) => return Err(code),
-        }
+        let mut bytes = Reader::behaviour(file, show_error_messages)?
+          .as_ref()
+          .try_into_bytes()?;
+        result.append(&mut bytes);
       }
 
       Ok(Box::new(result))
