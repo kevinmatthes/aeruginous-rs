@@ -177,8 +177,10 @@ impl Writer for PathBuf {
       .write(true)
       .open(self)
     {
-      Ok(mut file) => match buffer.as_ref().try_into_bytes() {
-        Ok(bytes) => match file.write(&bytes) {
+      Ok(mut file) => {
+        let bytes = buffer.as_ref().try_into_bytes()?;
+
+        match file.write(&bytes) {
           Ok(count) => {
             if count == bytes.len() {
               Ok(())
@@ -197,9 +199,8 @@ impl Writer for PathBuf {
 
             Err(ExitCode::IoErr)
           }
-        },
-        Err(code) => Err(code),
-      },
+        }
+      }
       Err(error) => {
         if show_error_messages {
           eprintln!("{error}");
