@@ -188,8 +188,9 @@ mod version;
 pub use crate::{
   application::{Action, Clap as Application},
   pattern::{
-    Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
-    Reader as PatternReader, Writer as PatternWriter,
+    AppendAsLine as PatternAppendAsLine, Buffer as PatternBuffer,
+    IOProcessor as PatternIOProcessor, Reader as PatternReader,
+    Writer as PatternWriter,
   },
   running::Running,
   version::Version,
