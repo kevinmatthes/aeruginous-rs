@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::PatternBuffer;
+use crate::{PatternAppendAsLine, PatternBuffer};
 use std::{
   fs::File,
   io::{stdin, BufRead, BufReader},
@@ -130,7 +130,7 @@ impl Reader for PathBuf {
 
         for line in BufReader::new(file).lines() {
           match line {
-            Ok(string) => result.push_str(&(string + "\n")),
+            Ok(string) => result.append_as_line(string),
             Err(error) => {
               if show_error_messages {
                 eprintln!("{error}");
