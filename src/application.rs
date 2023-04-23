@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::PatternIOProcessor;
+use crate::{PatternAppendAsLine, PatternIOProcessor};
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 use sysexits::Result;
@@ -94,7 +94,7 @@ impl Action {
           has_type = true;
         }
 
-        buffer.push_str(&(line.to_string() + "\n"));
+        buffer.append_as_line(line);
       } else if line.starts_with("references:") {
         references = true;
       }

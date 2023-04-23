@@ -17,11 +17,13 @@
 |                                                                              |
 \******************************************************************************/
 
+mod append_as_line;
 mod buffer;
 mod io_processor;
 mod reader;
 mod writer;
 
+pub use append_as_line::AppendAsLine;
 pub use buffer::Buffer;
 pub use io_processor::IOProcessor;
 pub use reader::Reader;
