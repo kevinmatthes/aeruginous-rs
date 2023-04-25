@@ -60,7 +60,7 @@ pub trait IOProcessor {
   ///
   /// # Errors
   ///
-  /// See [`Self::behaviour`] for details.
+  /// See [`Self::behaviour`].
   fn io(
     &self,
     input: impl PatternReader,
@@ -69,11 +69,11 @@ pub trait IOProcessor {
     self.behaviour(input, output, false, true)
   }
 
-  /// Do not truncate the output stream and write error messages.
+  /// Do not truncate the output stream but write error messages.
   ///
   /// # Errors
   ///
-  /// See [`Self::behaviour`] for details.
+  /// See [`Self::behaviour`].
   fn io_append(
     &self,
     input: impl PatternReader,
@@ -86,7 +86,7 @@ pub trait IOProcessor {
   ///
   /// # Errors
   ///
-  /// See [`Self::behaviour`] for details.
+  /// See [`Self::behaviour`].
   fn io_append_silently(
     &self,
     input: impl PatternReader,
@@ -95,11 +95,11 @@ pub trait IOProcessor {
     self.behaviour(input, output, true, false)
   }
 
-  /// Truncate the output stream and do not write error messages.
+  /// Truncate the output stream but do not write error messages.
   ///
   /// # Errors
   ///
-  /// See [`Self::behaviour`] for details.
+  /// See [`Self::behaviour`].
   fn io_silent(
     &self,
     input: impl PatternReader,
