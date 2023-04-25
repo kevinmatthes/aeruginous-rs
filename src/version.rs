@@ -32,7 +32,7 @@ pub struct ParsingError;
 /// Future releases of `aeruginous` might introduce changes due to which the
 /// respective previous version's data would become invalid.  In order to offer
 /// the possibility of an automatic conversion, the version information of the
-/// application need to be stored together with the time frames.  If a
+/// application needs to be stored together with the time frames.  If a
 /// conversion should be necessary, `aeruginous` will take care about the
 /// required adjustments.
 #[derive(Debug, PartialEq, Eq)]
@@ -352,7 +352,8 @@ impl std::str::FromStr for Version {
   /// least one part should contain non-numeric characters, the parsing will
   /// fail.
   ///
-  /// If the parsing fails, `Err(sysexits::ExitCode::DataErr)` will be returned.
+  /// If the parsing fails, [`sysexits::ExitCode::DataErr`] will be returned as
+  /// [`Result::Err`].
   fn from_str(string: &str) -> Result<Self, Self::Err> {
     let parts: Vec<&str> = if string.starts_with('v') {
       string.strip_prefix('v').unwrap()
