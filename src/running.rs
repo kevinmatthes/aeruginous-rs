@@ -65,4 +65,25 @@ mod getters {
   }
 }
 
+impl Default for Running {
+  fn default() -> Self {
+    Self::new()
+  }
+}
+
+#[cfg(test)]
+mod default {
+  use crate::Running;
+
+  #[test]
+  fn begin() {
+    assert!(Running::default().get() <= &chrono::Local::now());
+  }
+
+  #[test]
+  fn method_equality() {
+    assert!(Running::default().get() <= Running::new().get());
+  }
+}
+
 /******************************************************************************/
