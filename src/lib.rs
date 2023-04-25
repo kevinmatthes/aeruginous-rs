@@ -108,7 +108,7 @@
 //! cargo install aeruginous
 //! ```
 //!
-//! To install the latest nightly build from sources, Cargo also supports the
+//! To install the latest nightly version from sources, Cargo also supports the
 //! installation from the current repository state.
 //!
 //! ```bash
@@ -136,8 +136,8 @@
 //! and pastes it at the end of the given output file.
 //!
 //! If the input file is omitted, the input information are attemted to be read
-//! from `stdin`.  Likewise, omitting the output file will cause `cffreference`
-//! to write to `stdout`.
+//! from [`std::io::Stdin`].  Likewise, omitting the output file will cause
+//! `cffreference` to write to [`std::io::Stdout`].
 //!
 //! ### `rs2md`
 //!
@@ -148,9 +148,9 @@
 //! documentation comments for typos.
 //!
 //! When called, the subcommand accepts a list of input files to read from.  If
-//! no input file is given, `rs2md` will read from `stdin`.  At option, an
-//! output file can be specified where the results will be written to.  If
-//! omitted, the results will be written to `stdout`.
+//! no input file is given, `rs2md` will read from [`std::io::Stdin`].  At
+//! option, an output file can be specified where the results will be written to.
+//! If omitted, the results will be written to [`std::io::Stdout`].
 //!
 //! Users are free to choose whether they would like to extract Rust comments
 //! starting with `//!` (outer comments) or comments starting with `///` (inner

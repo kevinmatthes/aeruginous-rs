@@ -25,7 +25,10 @@ use sysexits::Result;
 /// The supported application modes.
 ///
 /// Depending on the given command line arguments, `aeruginous` will show a
-/// different behaviour.
+/// different behaviour.  Each variant of this enum will trigger the associated
+/// application mode in order to fulfill a certain task.  The variants
+/// themselves, in turn, are defined as anonymous structs with their fields
+/// being the accepted command line arguments and options, respectively.
 #[derive(Subcommand)]
 pub enum Action {
   /// Extract the citation information from a given and valid CFF file.

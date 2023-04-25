@@ -27,7 +27,7 @@ pub trait Writer {
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][Writer::behaviour] for details.
+  /// See [`Self::behaviour`].
   fn append(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
     self.behaviour(buffer, true, true)
   }
@@ -36,7 +36,7 @@ pub trait Writer {
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][Writer::behaviour] for details.
+  /// See [`Self::behaviour`].
   fn append_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
     self.behaviour(buffer, true, false)
   }
@@ -44,34 +44,21 @@ pub trait Writer {
   /// The shared logic of all methods.
   ///
   /// This method defines the common behaviour of all methods this trait
-  /// provides.  Implementations should consider the possibilities to write to
-  /// both (a) file(s) and `stdout`.
+  /// provides.  Implementations should also consider the possibilities to write
+  /// to both (a) file(s) and [`std::io::Stdout`].
   ///
   /// In case of a file, `append` shall control whether to *not* truncate it
   /// before writing to it.  If the file should not already exist, it shall be
   /// created.  Contents shall be pasted at the file's end.
   ///
   /// `show_error_messages` shall control whether to write error messages to
-  /// `stderr`, if appropriate.
+  /// [`std::io::Stderr`], if appropriate.
   ///
   /// # Errors
   ///
-  /// The return value shall indicate whether the operation succeeded.  In case
-  /// of success, `sysexits::ExitCode::Ok` shall be returned.  Implementations
-  /// shall follow these conventions for error cases.
-  ///
-  /// ## `sysexits::ExitCode::CantCreat`
-  ///
-  /// In case of a file, the target could not be created.
-  ///
-  /// ## `sysexits::ExitCode::DataErr`
-  ///
-  /// The buffer could not be converted into the target type.
-  ///
-  /// ## `sysexits::ExitCode::IoErr`
-  ///
-  /// The data could not be written (completely).  Loss of information is
-  /// possible.  The buffer might also have contained invalid UTF-8 characters.
+  /// - [`sysexits::ExitCode::CantCreat`]
+  /// - [`sysexits::ExitCode::DataErr`]
+  /// - [`sysexits::ExitCode::IoErr`]
   fn behaviour(
     &self,
     buffer: Box<dyn PatternBuffer>,
@@ -83,7 +70,7 @@ pub trait Writer {
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][Writer::behaviour] for details.
+  /// See [`Self::behaviour`].
   fn write(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
     self.behaviour(buffer, false, true)
   }
@@ -92,14 +79,14 @@ pub trait Writer {
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][Writer::behaviour] for details.
+  /// See [`Self::behaviour`].
   fn write_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
     self.behaviour(buffer, false, false)
   }
 
   /// Write bytes to this stream.
   ///
-  /// See [`behaviour`][Writer::behaviour] for details.
+  /// See [`Self::behaviour`].
   #[cfg(not(tarpaulin_include))]
   #[deprecated(since = "0.2.1")]
   fn write_bytes(
@@ -124,7 +111,7 @@ pub trait Writer {
 
   /// Write a string to this stream.
   ///
-  /// See [`behaviour`][Writer::behaviour] for details.
+  /// See [`Self::behaviour`].
   #[cfg(not(tarpaulin_include))]
   #[deprecated(since = "0.2.1")]
   fn write_string(

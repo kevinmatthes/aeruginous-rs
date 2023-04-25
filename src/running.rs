@@ -19,7 +19,7 @@
 
 use chrono::{DateTime, Local};
 
-/// The data type for an ongoing time tracking session.
+/// The data type of an ongoing time tracking session.
 ///
 /// `aeruginous` saves the starting point of time of the current time tracking
 /// session in a configuration file.  When the tracking session is ended, the
@@ -32,18 +32,26 @@ pub struct Running {
 }
 
 impl Running {
-  /// Construct a new running instance.
+  /// A deprecated synonym for [`Self::new`].
+  #[cfg(not(tarpaulin_include))]
+  #[deprecated(note = "Renamed to `new`.", since = "0.2.1")]
   #[must_use]
   pub fn create() -> Self {
-    Self {
-      begin: Local::now(),
-    }
+    Self::new()
   }
 
   /// Retrieve the creation time.
   #[must_use]
   pub const fn get(&self) -> &DateTime<Local> {
     &self.begin
+  }
+
+  /// Construct a new running instance.
+  #[must_use]
+  pub fn new() -> Self {
+    Self {
+      begin: Local::now(),
+    }
   }
 }
 
@@ -53,7 +61,28 @@ mod getters {
 
   #[test]
   fn begin() {
-    assert!(Running::create().get() <= &chrono::Local::now());
+    assert!(Running::new().get() <= &chrono::Local::now());
+  }
+}
+
+impl Default for Running {
+  fn default() -> Self {
+    Self::new()
+  }
+}
+
+#[cfg(test)]
+mod default {
+  use crate::Running;
+
+  #[test]
+  fn begin() {
+    assert!(Running::default().get() <= &chrono::Local::now());
+  }
+
+  #[test]
+  fn method_equality() {
+    assert!(Running::default().get() <= Running::new().get());
   }
 }
 

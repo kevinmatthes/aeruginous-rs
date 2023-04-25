@@ -30,48 +30,36 @@ pub trait Reader {
   /// The shared logic of all methods.
   ///
   /// This method defines the common behaviour of all methods this trait
-  /// provides.  Implementations should consider the possibilities to read from
-  /// both (a) file(s) and `stdin`.
+  /// provides.  Implementations should also consider the possibilities to read
+  /// from both (a) file(s) and [`std::io::Stdin`].
   ///
   /// `show_error_messages` shall control whether to write error messages to
-  /// `stderr`, if appropriate.
+  /// [`std::io::Stderr`], if appropriate.
   ///
   /// # Errors
   ///
-  /// Implementations shall follow these conventions for error cases.
-  ///
-  /// ## `sysexits::ExitCode::DataErr`
-  ///
-  /// The buffer could not be converted into the target type.
-  ///
-  /// ## `sysexits::ExitCode::IoErr`
-  ///
-  /// Reading from the input stream(s) failed.  For instance, the stream(s)
-  /// might have contained invalid UTF-8 characters.
-  ///
-  /// ## `sysexits::ExitCode::NoInput`
-  ///
-  /// This input stream did not exist or the permissions were insufficent.  This
-  /// is especially in case of files a common error cause.
+  /// - [`sysexits::ExitCode::DataErr`]
+  /// - [`sysexits::ExitCode::IoErr`]
+  /// - [`sysexits::ExitCode::NoInput`]
   fn behaviour(
     &self,
     show_error_messages: bool,
   ) -> Result<Box<dyn PatternBuffer>>;
 
-  /// Read the input stream(s) and write error messages to `stderr`.
+  /// Read the input stream(s) and write error messages to [`std::io::Stderr`].
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][Reader::behaviour].
+  /// See [`Self::behaviour`].
   fn read(&self) -> Result<Box<dyn PatternBuffer>> {
     self.behaviour(true)
   }
 
-  /// Read the input stream(s) without writing error messages to `stderr`.
+  /// Read the input stream(s) without writing error messages.
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][Reader::behaviour].
+  /// See [`Self::behaviour`].
   fn read_silently(&self) -> Result<Box<dyn PatternBuffer>> {
     self.behaviour(false)
   }
@@ -80,7 +68,7 @@ pub trait Reader {
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][Reader::behaviour].
+  /// See [`Self::behaviour`].
   #[cfg(not(tarpaulin_include))]
   #[deprecated(since = "0.2.1")]
   fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>> {
@@ -95,7 +83,7 @@ pub trait Reader {
   ///
   /// # Errors
   ///
-  /// See [`behaviour`][Reader::behaviour].
+  /// See [`Self::behaviour`].
   #[cfg(not(tarpaulin_include))]
   #[deprecated(since = "0.2.1")]
   fn read_string(&self, show_error_messages: bool) -> Result<String> {
