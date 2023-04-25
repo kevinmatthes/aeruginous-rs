@@ -34,8 +34,8 @@ cff-version: 1.2.0
 message: Please cite this software using these information.
 
 # Version information.
-date-released: 2023-03-14
-version: 0.2.0
+date-released: 2023-04-25
+version: 0.2.1
 
 # Project information.
 abstract: The Aeruginous Open Source Development Toolbox.
@@ -168,22 +168,6 @@ references:
     license: "CC-BY-4.0"
     doi: 10.5281/zenodo.5171937
   - type: software
-    date-released: 2023-03-28
-    version: 4.2.1
-    abstract: A full featured, fast Command Line Argument Parser for Rust
-    authors:
-      - alias: kbknapp
-        family-names: Knapp
-        given-names: Kevin B.
-      - name: The Clap Community
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/clap
-    repository-code: https://github.com/clap-rs/clap
-    title: clap
-    url: https://docs.rs/clap
-  - type: software
     date-released: 2023-04-01
     version: 0.5.0
     abstract: The system exit codes as defined by <sysexits.h> for Rust
@@ -201,3 +185,19 @@ references:
     repository-code: https://github.com/sorairolake/sysexits-rs
     title: sysexits-rs
     url: https://docs.rs/sysexits
+  - type: software
+    date-released: 2023-04-19
+    version: 4.2.4
+    abstract: A full featured, fast Command Line Argument Parser for Rust
+    authors:
+      - alias: kbknapp
+        family-names: Knapp
+        given-names: Kevin B.
+      - name: The Clap Community
+    license:
+      - Apache-2.0
+      - MIT
+    repository-artifact: https://crates.io/crates/clap
+    repository-code: https://github.com/clap-rs/clap
+    title: clap
+    url: https://docs.rs/clap

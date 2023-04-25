@@ -169,7 +169,7 @@ impl Action {
         input_file,
         output_file,
       } => (|s: String| -> String { Self::cffreference(&s) })
-        .io(input_file, output_file),
+        .io_append(input_file, output_file),
       Self::Rs2md {
         extract_inner,
         extract_outer,
