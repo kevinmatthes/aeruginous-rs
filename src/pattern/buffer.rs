@@ -30,22 +30,20 @@ pub trait Buffer {
   ///
   /// # Errors
   ///
-  /// ## `sysexits::ExitCode::DataErr`
-  ///
-  /// The buffer could not be converted into the target type.
+  /// - [`sysexits::ExitCode::DataErr`]
   fn try_from_bytes(&mut self, bytes: &[u8]) -> Result<()>;
 
   /// Fill this buffer with a string.
   ///
-  /// This method behaves just like [`try_from_bytes`][Buffer::try_from_bytes]
-  /// but for `String` as the respective source type.
+  /// This method behaves just like [`Self::try_from_bytes`] but for [`String`]
+  /// as the respective source type.
   ///
   /// # Errors
   ///
-  /// See [`try_from_bytes`][Buffer::try_from_bytes].
+  /// - [`sysexits::ExitCode::DataErr`]
   fn try_from_string(&mut self, string: &str) -> Result<()>;
 
-  /// Convert this buffer into a `Vec<u8>`.
+  /// Convert this buffer into a [`Vec<u8>`].
   ///
   /// Some writing processes require the data to write as a sequence of UTF-8
   /// encoded characters.  If required, this method will take care about the
@@ -53,17 +51,17 @@ pub trait Buffer {
   ///
   /// # Errors
   ///
-  /// See [`try_from_bytes`][Buffer::try_from_bytes].
+  /// - [`sysexits::ExitCode::DataErr`]
   fn try_into_bytes(&self) -> Result<Vec<u8>>;
 
-  /// Convert this buffer into a `String`.
+  /// Convert this buffer into a [`String`].
   ///
-  /// This method behaves just like [`try_into_bytes`][Buffer::try_into_bytes]
-  /// but for `String` as the respective target type.
+  /// This method behaves just like [`Self::try_into_bytes`] but for [`String`]
+  /// as the respective target type.
   ///
   /// # Errors
   ///
-  /// See [`try_from_bytes`][Buffer::try_from_bytes].
+  /// - [`sysexits::ExitCode::DataErr`]
   fn try_into_string(&self) -> Result<String>;
 }
 
