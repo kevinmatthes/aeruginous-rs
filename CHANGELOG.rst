@@ -144,15 +144,19 @@ Changed
 Deprecated
 ..........
 
-- src/pattern/io_processor.rs:  PatternIOProcessor::process
+- PatternIOProcessor::process
 
-- src/pattern/reader.rs:  PatternReader::read_bytes
+- PatternReader::read_bytes
 
-- src/pattern/reader.rs:  PatternReader::read_string
+- PatternReader::read_string
 
-- src/pattern/writer.rs:  PatternWriter::write_bytes
+- PatternWriter::write_bytes
 
-- src/pattern/writer.rs:  PatternWriter::write_string
+- PatternWriter::write_string
+
+- Running::create
+
+- Version::ParsingError
 
 Fixed
 .....
