@@ -22,11 +22,23 @@
 ..
 .. - A bullet item for the Fixed category.
 ..
-.. Removed
-.. .......
-..
-.. - A bullet item for the Removed category.
-..
+Removed
+.......
+
+- PatternIOProcessor::process
+
+- PatternReader::read_bytes
+
+- PatternReader::read_string
+
+- PatternWriter::write_bytes
+
+- PatternWriter::write_string
+
+- Running::create
+
+- Version::ParsingError
+
 .. Security
 .. ........
 ..
