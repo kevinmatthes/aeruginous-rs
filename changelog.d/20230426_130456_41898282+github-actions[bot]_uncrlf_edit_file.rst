@@ -2,11 +2,13 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- src/pattern/reader.rs:  impl PatternReader for Option<PathBuf>
+
+- src/pattern/writer.rs:  impl PatternWriter for Option<PathBuf>
+
 .. Changed
 .. .......
 ..
