@@ -47,9 +47,13 @@ pub trait Writer {
   /// provides.  Implementations should also consider the possibilities to write
   /// to both (a) file(s) and [`std::io::Stdout`].
   ///
-  /// In case of a file, `append` shall control whether to *not* truncate it
-  /// before writing to it.  If the file should not already exist, it shall be
-  /// created.  Contents shall be pasted at the file's end.
+  /// In case of a file,
+  ///
+  /// - `append` shall control whether to edit it solely by pasting the buffer's
+  ///   contents at the file's end.
+  /// - `truncate` shall control whether to clear the file before writing to it.
+  /// - the output file shall be created, in case that it should not already
+  ///   exist.
   ///
   /// `show_error_messages` shall control whether to write error messages to
   /// [`std::io::Stderr`], if appropriate.
