@@ -65,6 +65,10 @@ pub enum Action {
 
   /// Remove CRLFs from the given file.
   Uncrlf {
+    /// The file to edit.
+    #[arg(short = 'e')]
+    file_to_edit: Option<PathBuf>,
+
     /// The file to read from, defaulting to [`std::io::Stdin`], if omitted.
     #[arg(short = 'i')]
     input_file: Option<PathBuf>,
@@ -191,13 +195,21 @@ impl Action {
       })
       .io(input_files, output_file),
       Self::Uncrlf {
+        file_to_edit,
         input_file,
         output_file,
       } => |mut s: String| -> String {
         s.retain(|c| c != '\r');
         s
       }
-      .io(input_file, output_file),
+      .io(
+        file_to_edit
+          .as_ref()
+          .map_or_else(|| input_file.clone(), |file| Some(file.clone())),
+        file_to_edit
+          .as_ref()
+          .map_or_else(|| output_file.clone(), |file| Some(file.clone())),
+      ),
     }
   }
 }
