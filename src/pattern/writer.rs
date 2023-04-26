@@ -29,7 +29,7 @@ pub trait Writer {
   ///
   /// See [`Self::behaviour`].
   fn append(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
-    self.behaviour(buffer, true, true)
+    self.behaviour(buffer, true, true, false)
   }
 
   /// Append the buffer's contents without printing error messages.
@@ -38,7 +38,7 @@ pub trait Writer {
   ///
   /// See [`Self::behaviour`].
   fn append_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
-    self.behaviour(buffer, true, false)
+    self.behaviour(buffer, true, false, false)
   }
 
   /// The shared logic of all methods.
@@ -64,6 +64,7 @@ pub trait Writer {
     buffer: Box<dyn PatternBuffer>,
     append: bool,
     show_error_messages: bool,
+    truncate: bool,
   ) -> Result<()>;
 
   /// Truncate the stream, write the buffer's data, and print error messages.
@@ -71,8 +72,8 @@ pub trait Writer {
   /// # Errors
   ///
   /// See [`Self::behaviour`].
-  fn write(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
-    self.behaviour(buffer, false, true)
+  fn truncate(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
+    self.behaviour(buffer, false, true, true)
   }
 
   /// Truncate the stream and write the buffer's data without error messages.
@@ -80,8 +81,26 @@ pub trait Writer {
   /// # Errors
   ///
   /// See [`Self::behaviour`].
+  fn truncate_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
+    self.behaviour(buffer, false, false, true)
+  }
+
+  /// Edit the stream, write the buffer's data, and print error messages.
+  ///
+  /// # Errors
+  ///
+  /// See [`Self::behaviour`].
+  fn write(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
+    self.behaviour(buffer, false, true, false)
+  }
+
+  /// Edit the stream and write the buffer's data without error messages.
+  ///
+  /// # Errors
+  ///
+  /// See [`Self::behaviour`].
   fn write_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
-    self.behaviour(buffer, false, false)
+    self.behaviour(buffer, false, false, false)
   }
 
   /// Write bytes to this stream.
@@ -141,12 +160,18 @@ impl Writer for &Option<PathBuf> {
     buffer: Box<dyn PatternBuffer>,
     append: bool,
     show_error_messages: bool,
+    truncate: bool,
   ) -> Result<()> {
     match self {
       Some(path) => {
-        Writer::behaviour(path, buffer, append, show_error_messages)
+        Writer::behaviour(path, buffer, append, show_error_messages, truncate)
       }
-      None => std::io::stdout().behaviour(buffer, append, show_error_messages),
+      None => std::io::stdout().behaviour(
+        buffer,
+        append,
+        show_error_messages,
+        truncate,
+      ),
     }
   }
 }
@@ -157,11 +182,13 @@ impl Writer for PathBuf {
     buffer: Box<dyn PatternBuffer>,
     append: bool,
     show_error_messages: bool,
+    truncate: bool,
   ) -> Result<()> {
     match File::options()
       .append(append)
       .create(true)
       .write(true)
+      .truncate(truncate)
       .open(self)
     {
       Ok(mut file) => {
@@ -205,6 +232,7 @@ impl Writer for std::io::Stderr {
     buffer: Box<dyn PatternBuffer>,
     _: bool,
     _: bool,
+    _: bool,
   ) -> Result<()> {
     let string = buffer.as_ref().try_into_string()?;
     eprint!("{string}");
@@ -242,12 +270,26 @@ mod stderr {
       Ok(())
     );
   }
+
+  #[test]
+  fn truncate() {
+    assert_eq!(stderr().truncate(Box::new("truncate".to_string())), Ok(()));
+  }
+
+  #[test]
+  fn truncate_silently() {
+    assert_eq!(
+      stderr().truncate_silently(Box::new("truncate_silently".to_string())),
+      Ok(())
+    );
+  }
 }
 
 impl Writer for std::io::Stdout {
   fn behaviour(
     &self,
     buffer: Box<dyn PatternBuffer>,
+    _: bool,
     _: bool,
     _: bool,
   ) -> Result<()> {
@@ -284,6 +326,19 @@ mod stdout {
   fn write_silently() {
     assert_eq!(
       stdout().write_silently(Box::new("write_silently".to_string())),
+      Ok(())
+    );
+  }
+
+  #[test]
+  fn truncate() {
+    assert_eq!(stdout().truncate(Box::new("truncate".to_string())), Ok(()));
+  }
+
+  #[test]
+  fn truncate_silently() {
+    assert_eq!(
+      stdout().truncate_silently(Box::new("truncate_silently".to_string())),
       Ok(())
     );
   }
