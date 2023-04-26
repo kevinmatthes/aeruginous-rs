@@ -35,7 +35,7 @@ impl AppendAsLine<char> for String {
 
 #[cfg(test)]
 mod character {
-  use crate::PatternAppendAsLine;
+  use crate::AppendAsLine;
 
   #[test]
   fn empty_string() {
@@ -71,7 +71,7 @@ impl AppendAsLine<Self> for String {
 
 #[cfg(test)]
 mod string {
-  use crate::PatternAppendAsLine;
+  use crate::AppendAsLine;
 
   #[test]
   fn empty_string() {
@@ -107,7 +107,7 @@ impl AppendAsLine<&str> for String {
 
 #[cfg(test)]
 mod string_slice {
-  use crate::PatternAppendAsLine;
+  use crate::AppendAsLine;
 
   #[test]
   fn empty_string() {
