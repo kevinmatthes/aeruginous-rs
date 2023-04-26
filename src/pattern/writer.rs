@@ -108,7 +108,7 @@ pub trait Writer {
   }
 }
 
-impl Writer for &Option<PathBuf> {
+impl Writer for Option<PathBuf> {
   fn behaviour(
     &self,
     buffer: Box<dyn PatternBuffer>,
@@ -127,6 +127,18 @@ impl Writer for &Option<PathBuf> {
         truncate,
       ),
     }
+  }
+}
+
+impl Writer for &Option<PathBuf> {
+  fn behaviour(
+    &self,
+    buffer: Box<dyn PatternBuffer>,
+    append: bool,
+    show_error_messages: bool,
+    truncate: bool,
+  ) -> Result<()> {
+    (*self).behaviour(buffer, append, show_error_messages, truncate)
   }
 }
 

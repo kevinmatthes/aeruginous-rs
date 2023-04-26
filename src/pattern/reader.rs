@@ -65,7 +65,7 @@ pub trait Reader {
   }
 }
 
-impl Reader for &Option<PathBuf> {
+impl Reader for Option<PathBuf> {
   fn behaviour(
     &self,
     show_error_messages: bool,
@@ -74,6 +74,15 @@ impl Reader for &Option<PathBuf> {
       || stdin().behaviour(show_error_messages),
       |path| Reader::behaviour(path, show_error_messages),
     )
+  }
+}
+
+impl Reader for &Option<PathBuf> {
+  fn behaviour(
+    &self,
+    show_error_messages: bool,
+  ) -> Result<Box<dyn PatternBuffer>> {
+    (*self).behaviour(show_error_messages)
   }
 }
 
