@@ -57,6 +57,7 @@
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`rs2md`](#rs2md)
+//!    1. [`uncrlf`](#uncrlf)
 //! 1. [Notes](#notes)
 //!
 //! ## License
@@ -155,6 +156,12 @@
 //! Users are free to choose whether they would like to extract Rust comments
 //! starting with `//!` (outer comments) or comments starting with `///` (inner
 //! comments).  If neither option is given, nothing will be extracted.
+//!
+//! ### `uncrlf`
+//!
+//! Source code should have a uniform appearance.  Some text editors terminate
+//! lines by Carriage Return Line Feeds (CRLFs, `\r\n`).  This subcommand will
+//! remove those from the given file.
 //!
 //! # Notes
 //!

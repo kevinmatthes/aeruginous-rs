@@ -62,6 +62,17 @@ pub enum Action {
     #[arg(short = 'o')]
     output_file: Option<PathBuf>,
   },
+
+  /// Remove CRLFs from the given file.
+  Uncrlf {
+    /// The file to read from, defaulting to [`std::io::Stdin`], if omitted.
+    #[arg(short = 'i')]
+    input_file: Option<PathBuf>,
+
+    /// The file to write to, defaulting to [`std::io::Stdout`], if omitted.
+    #[arg(short = 'o')]
+    output_file: Option<PathBuf>,
+  },
 }
 
 impl Action {
@@ -179,6 +190,14 @@ impl Action {
         Self::rs2md(&s, *extract_inner, *extract_outer)
       })
       .io(input_files, output_file),
+      Self::Uncrlf {
+        input_file,
+        output_file,
+      } => |mut s: String| -> String {
+        s.retain(|c| c != '\r');
+        s
+      }
+      .io(input_file, output_file),
     }
   }
 }
