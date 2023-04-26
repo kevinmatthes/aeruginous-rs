@@ -65,7 +65,7 @@ pub enum Action {
 
   /// Remove CRLFs from the given file.
   Uncrlf {
-    /// The file to edit.
+    /// The file to edit; overrides `input_file` and `output_file`.
     #[arg(short = 'e')]
     file_to_edit: Option<PathBuf>,
 
