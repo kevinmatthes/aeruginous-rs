@@ -18,7 +18,7 @@
 \******************************************************************************/
 
 use crate::{PatternReader, PatternWriter};
-use sysexits::{ExitCode, Result};
+use sysexits::Result;
 
 /// Read some input, process it, and write it to the intended destination.
 ///
@@ -140,21 +140,6 @@ pub trait IOProcessor {
     output: impl PatternWriter,
   ) -> Result<()> {
     self.behaviour(input, output, false, false, false)
-  }
-
-  /// A deprecated synonym for [`Self::behaviour`].
-  #[cfg(not(tarpaulin_include))]
-  #[deprecated(note = "Renamed to `behaviour`.", since = "0.2.1")]
-  fn process(
-    &self,
-    input: impl PatternReader,
-    output: impl PatternWriter,
-    append: bool,
-    show_error_messages: bool,
-  ) -> ExitCode {
-    self
-      .behaviour(input, output, append, show_error_messages, false)
-      .into()
   }
 }
 

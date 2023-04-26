@@ -63,36 +63,6 @@ pub trait Reader {
   fn read_silently(&self) -> Result<Box<dyn PatternBuffer>> {
     self.behaviour(false)
   }
-
-  /// Read bytes from this stream.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  #[cfg(not(tarpaulin_include))]
-  #[deprecated(since = "0.2.1")]
-  fn read_bytes(&self, show_error_messages: bool) -> Result<Vec<u8>> {
-    if show_error_messages {
-      self.read()?.as_ref().try_into_bytes()
-    } else {
-      self.read_silently()?.as_ref().try_into_bytes()
-    }
-  }
-
-  /// Read a string from this stream.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  #[cfg(not(tarpaulin_include))]
-  #[deprecated(since = "0.2.1")]
-  fn read_string(&self, show_error_messages: bool) -> Result<String> {
-    if show_error_messages {
-      self.read()?.as_ref().try_into_string()
-    } else {
-      self.read_silently()?.as_ref().try_into_string()
-    }
-  }
 }
 
 impl Reader for &Option<PathBuf> {

@@ -106,56 +106,6 @@ pub trait Writer {
   fn write_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
     self.behaviour(buffer, false, false, false)
   }
-
-  /// Write bytes to this stream.
-  ///
-  /// See [`Self::behaviour`].
-  #[cfg(not(tarpaulin_include))]
-  #[deprecated(since = "0.2.1")]
-  fn write_bytes(
-    &self,
-    buffer: &[u8],
-    append: bool,
-    show_error_messages: bool,
-  ) -> ExitCode {
-    if show_error_messages {
-      if append {
-        self.append(Box::new(buffer.to_vec()))
-      } else {
-        self.write(Box::new(buffer.to_vec()))
-      }
-    } else if append {
-      self.append_silently(Box::new(buffer.to_vec()))
-    } else {
-      self.write_silently(Box::new(buffer.to_vec()))
-    }
-    .into()
-  }
-
-  /// Write a string to this stream.
-  ///
-  /// See [`Self::behaviour`].
-  #[cfg(not(tarpaulin_include))]
-  #[deprecated(since = "0.2.1")]
-  fn write_string(
-    &self,
-    buffer: &str,
-    append: bool,
-    show_error_messages: bool,
-  ) -> ExitCode {
-    if show_error_messages {
-      if append {
-        self.append(Box::new(buffer.to_string()))
-      } else {
-        self.write(Box::new(buffer.to_string()))
-      }
-    } else if append {
-      self.append_silently(Box::new(buffer.to_string()))
-    } else {
-      self.write_silently(Box::new(buffer.to_string()))
-    }
-    .into()
-  }
 }
 
 impl Writer for &Option<PathBuf> {

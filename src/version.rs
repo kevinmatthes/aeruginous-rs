@@ -19,14 +19,6 @@
 
 use sysexits::ExitCode;
 
-/// The parsing error type for this struct.
-///
-/// An instance of `Version` can be constructed from a given string slice.  In
-/// case that the parsing should fail, an appropriate error type is required.
-#[deprecated(since = "0.2.1")]
-#[derive(Debug, PartialEq, Eq)]
-pub struct ParsingError;
-
 /// The version information data structure.
 ///
 /// Future releases of `aeruginous` might introduce changes due to which the
