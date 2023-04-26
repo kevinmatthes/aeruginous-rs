@@ -32,14 +32,6 @@ pub struct Running {
 }
 
 impl Running {
-  /// A deprecated synonym for [`Self::new`].
-  #[cfg(not(tarpaulin_include))]
-  #[deprecated(note = "Renamed to `new`.", since = "0.2.1")]
-  #[must_use]
-  pub fn create() -> Self {
-    Self::new()
-  }
-
   /// Retrieve the creation time.
   #[must_use]
   pub const fn get(&self) -> &DateTime<Local> {
