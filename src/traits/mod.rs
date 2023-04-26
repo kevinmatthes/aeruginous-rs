@@ -17,14 +17,10 @@
 |                                                                              |
 \******************************************************************************/
 
-mod buffer;
-mod io_processor;
-mod reader;
-mod writer;
+mod append_as_line;
+mod prioritise;
 
-pub use buffer::Buffer;
-pub use io_processor::IOProcessor;
-pub use reader::Reader;
-pub use writer::Writer;
+pub use append_as_line::AppendAsLine;
+pub use prioritise::Prioritise;
 
 /******************************************************************************/

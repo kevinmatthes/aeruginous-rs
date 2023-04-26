@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternAppendAsLine, PatternBuffer};
+use crate::{AppendAsLine, PatternBuffer};
 use std::{
   fs::File,
   io::{stdin, BufRead, BufReader},

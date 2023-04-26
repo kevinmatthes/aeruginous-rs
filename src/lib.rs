@@ -190,16 +190,17 @@
 mod application;
 mod pattern;
 mod running;
+mod traits;
 mod version;
 
 pub use crate::{
   application::{Action, Clap as Application},
   pattern::{
-    AppendAsLine as PatternAppendAsLine, Buffer as PatternBuffer,
-    IOProcessor as PatternIOProcessor, Reader as PatternReader,
-    Writer as PatternWriter,
+    Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
+    Reader as PatternReader, Writer as PatternWriter,
   },
   running::Running,
+  traits::{AppendAsLine, AppendAsLine as PatternAppendAsLine, Prioritise},
   version::Version,
 };
 

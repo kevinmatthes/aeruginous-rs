@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternAppendAsLine, PatternIOProcessor};
+use crate::{AppendAsLine, PatternIOProcessor, Prioritise};
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 use sysexits::Result;
@@ -203,12 +203,8 @@ impl Action {
         s
       }
       .io(
-        file_to_edit
-          .as_ref()
-          .map_or_else(|| input_file.clone(), |file| Some(file.clone())),
-        file_to_edit
-          .as_ref()
-          .map_or_else(|| output_file.clone(), |file| Some(file.clone())),
+        input_file.prioritise(file_to_edit.clone()),
+        output_file.prioritise(file_to_edit.clone()),
       ),
     }
   }
