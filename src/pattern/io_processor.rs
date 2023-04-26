@@ -54,6 +54,7 @@ pub trait IOProcessor {
     output: impl PatternWriter,
     append: bool,
     show_error_messages: bool,
+    truncate: bool,
   ) -> Result<()>;
 
   /// Truncate the output stream and write error messages.
@@ -66,7 +67,7 @@ pub trait IOProcessor {
     input: impl PatternReader,
     output: impl PatternWriter,
   ) -> Result<()> {
-    self.behaviour(input, output, false, true)
+    self.behaviour(input, output, false, true, true)
   }
 
   /// Do not truncate the output stream but write error messages.
@@ -79,7 +80,7 @@ pub trait IOProcessor {
     input: impl PatternReader,
     output: impl PatternWriter,
   ) -> Result<()> {
-    self.behaviour(input, output, true, true)
+    self.behaviour(input, output, true, true, false)
   }
 
   /// Neither truncate the output stream nor write error messages.
@@ -92,7 +93,7 @@ pub trait IOProcessor {
     input: impl PatternReader,
     output: impl PatternWriter,
   ) -> Result<()> {
-    self.behaviour(input, output, true, false)
+    self.behaviour(input, output, true, false, false)
   }
 
   /// Truncate the output stream but do not write error messages.
@@ -105,7 +106,33 @@ pub trait IOProcessor {
     input: impl PatternReader,
     output: impl PatternWriter,
   ) -> Result<()> {
-    self.behaviour(input, output, false, false)
+    self.behaviour(input, output, false, false, true)
+  }
+
+  /// Edit the output stream and write error messages.
+  ///
+  /// # Errors
+  ///
+  /// See [`Self::behaviour`].
+  fn io_write(
+    &self,
+    input: impl PatternReader,
+    output: impl PatternWriter,
+  ) -> Result<()> {
+    self.behaviour(input, output, false, true, false)
+  }
+
+  /// Edit the output stream but do not write error messages.
+  ///
+  /// # Errors
+  ///
+  /// See [`Self::behaviour`].
+  fn io_write_silently(
+    &self,
+    input: impl PatternReader,
+    output: impl PatternWriter,
+  ) -> Result<()> {
+    self.behaviour(input, output, false, false, false)
   }
 
   /// A deprecated synonym for [`Self::behaviour`].
@@ -119,7 +146,7 @@ pub trait IOProcessor {
     show_error_messages: bool,
   ) -> ExitCode {
     self
-      .behaviour(input, output, append, show_error_messages)
+      .behaviour(input, output, append, show_error_messages, false)
       .into()
   }
 }
@@ -131,9 +158,15 @@ impl<T: Fn(String) -> String> IOProcessor for T {
     output: impl PatternWriter,
     append: bool,
     show_error_messages: bool,
+    truncate: bool,
   ) -> Result<()> {
     let lines = input.read()?.as_ref().try_into_string()?;
-    output.behaviour(Box::new(self(lines)), append, show_error_messages)
+    output.behaviour(
+      Box::new(self(lines)),
+      append,
+      show_error_messages,
+      truncate,
+    )
   }
 }
 
