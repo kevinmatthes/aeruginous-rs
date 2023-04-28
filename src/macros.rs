@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-/// Implement a getter for a struct field.
+/// Implement getters for certain struct fields.
 #[macro_export]
 macro_rules! get {
   ( @context $strct:ty { $( $field:ident = ( $function:item ) ),+ } ) => {
