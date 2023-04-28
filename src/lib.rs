@@ -188,6 +188,7 @@
 #![allow(clippy::multiple_crate_versions)]
 
 mod application;
+mod macros;
 mod pattern;
 mod running;
 mod traits;
