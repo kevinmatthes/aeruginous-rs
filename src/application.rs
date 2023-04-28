@@ -219,12 +219,6 @@ pub struct Clap {
   action: Action,
 }
 
-impl Clap {
-  /// Retrieve the selected action.
-  #[must_use]
-  pub const fn action(&self) -> &Action {
-    &self.action
-  }
-}
+crate::get!(@ref Clap { action: Action });
 
 /******************************************************************************/
