@@ -31,7 +31,7 @@ pub struct Running {
   beginning: DateTime<Local>,
 }
 
-crate::get!(@ref Running { beginning: DateTime<Local> });
+crate::getters!(@ref Running { beginning: DateTime<Local> });
 
 impl Running {
   /// Construct a new running instance.
