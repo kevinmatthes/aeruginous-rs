@@ -21,14 +21,16 @@
 #[macro_export]
 macro_rules! get {
   ( @context $strct:ty { $( $field:ident = ( $function:item ) ),+ } ) => {
-    $crate::implement! { $strct;
+    $crate::implement! {
+      $strct;
       $(
-        #[doc = concat!("Retrieve [`Self::", stringify!($field), "`].")]
-        #[must_use]
-        $function
+        $crate::get! {
+          @header $field = ( $function )
+        }
       ),+
     }
   };
+
   ( @cp $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
     $crate::get! {
       @context $strct {
@@ -42,6 +44,13 @@ macro_rules! get {
       }
     }
   };
+
+  ( @header $field:ident = ( $function:item ) ) => {
+    #[doc = concat!("Retrieve [`Self::", stringify!($field), "`].")]
+    #[must_use]
+    $function
+  };
+
   ( @ref $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
     $crate::get! {
       @context $strct {
@@ -53,6 +62,58 @@ macro_rules! get {
           )
         ),+
       }
+    }
+  };
+}
+
+/// Implement getter methods for the given struct fields.
+#[macro_export]
+macro_rules! getters {
+  ( @cp $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
+    $crate::implement! {
+      $strct;
+      $(
+        $crate::getters! {
+          @fn @cp $field : $return
+        }
+      ),+
+    }
+  };
+
+  ( @fn @cp $field:ident : $return:ty ) => {
+    $crate::getters! {
+      @header $field = (
+        pub const fn $field(&self) -> $return {
+          self.$field
+        }
+      )
+    }
+  };
+
+  ( @fn @ref $field:ident : $return:ty ) => {
+    $crate::getters! {
+      @header $field = (
+        pub const fn $field(&self) -> &$return {
+          &self.$field
+        }
+      )
+    }
+  };
+
+  ( @header $field:ident = ( $function:item ) ) => {
+    #[doc = concat!("Retrieve [`Self::", stringify!($field), "`].")]
+    #[must_use]
+    $function
+  };
+
+  ( @ref $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
+    $crate::implement! {
+      $strct;
+      $(
+        $crate::getters! {
+          @fn @ref $field : $return
+        }
+      ),+
     }
   };
 }
