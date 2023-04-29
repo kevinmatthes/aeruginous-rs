@@ -219,6 +219,6 @@ pub struct Clap {
   action: Action,
 }
 
-crate::get!(@ref Clap { action: Action });
+crate::getters!(@ref Clap { action: Action });
 
 /******************************************************************************/
