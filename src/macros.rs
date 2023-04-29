@@ -23,32 +23,36 @@ macro_rules! getters {
   ( @cp $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
     $crate::implement! {
       $strct;
-      $(
-        $crate::getters! {
-          @fn @cp $field : $return
-        }
-      ),+
+      $crate::getters! {
+        @fn @cp $(
+          $field : $return
+        ),+
+      }
     }
   };
 
-  ( @fn @cp $field:ident : $return:ty ) => {
-    $crate::getters! {
-      @header $field = (
-        pub const fn $field(&self) -> $return {
-          self.$field
-        }
-      )
-    }
+  ( @fn @cp $( $field:ident : $return:ty ),+ ) => {
+    $(
+      $crate::getters! {
+        @header $field = (
+          pub const fn $field(&self) -> $return {
+            self.$field
+          }
+        )
+      }
+    )+
   };
 
-  ( @fn @ref $field:ident : $return:ty ) => {
-    $crate::getters! {
-      @header $field = (
-        pub const fn $field(&self) -> &$return {
-          &self.$field
-        }
-      )
-    }
+  ( @fn @ref $( $field:ident : $return:ty ),+ ) => {
+    $(
+      $crate::getters! {
+        @header $field = (
+          pub const fn $field(&self) -> &$return {
+            &self.$field
+          }
+        )
+      }
+    )+
   };
 
   ( @header $field:ident = ( $function:item ) ) => {
@@ -60,11 +64,11 @@ macro_rules! getters {
   ( @ref $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
     $crate::implement! {
       $strct;
-      $(
-        $crate::getters! {
-          @fn @ref $field : $return
-        }
-      ),+
+      $crate::getters! {
+        @fn @ref $(
+          $field : $return
+        ),+
+      }
     }
   };
 }
