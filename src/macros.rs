@@ -17,55 +17,6 @@
 |                                                                              |
 \******************************************************************************/
 
-/// Implement getters for certain struct fields.
-#[macro_export]
-macro_rules! get {
-  ( @context $strct:ty { $( $field:ident = ( $function:item ) ),+ } ) => {
-    $crate::implement! {
-      $strct;
-      $(
-        $crate::get! {
-          @header $field = ( $function )
-        }
-      ),+
-    }
-  };
-
-  ( @cp $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
-    $crate::get! {
-      @context $strct {
-        $(
-          $field = (
-            pub const fn $field(&self) -> $return {
-              self.$field
-            }
-          )
-        ),+
-      }
-    }
-  };
-
-  ( @header $field:ident = ( $function:item ) ) => {
-    #[doc = concat!("Retrieve [`Self::", stringify!($field), "`].")]
-    #[must_use]
-    $function
-  };
-
-  ( @ref $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
-    $crate::get! {
-      @context $strct {
-        $(
-          $field = (
-            pub const fn $field(&self) -> &$return {
-              &self.$field
-            }
-          )
-        ),+
-      }
-    }
-  };
-}
-
 /// Implement getter methods for the given struct fields.
 #[macro_export]
 macro_rules! getters {
