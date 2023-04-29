@@ -150,7 +150,7 @@ mod eq {
   }
 }
 
-crate::get!(@cp Version { major: usize, minor: usize, patch: usize });
+crate::getters!(@cp Version { major: usize, minor: usize, patch: usize });
 
 impl Version {
   /// Modify the major version of this version instance.
