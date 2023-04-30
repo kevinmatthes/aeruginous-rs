@@ -150,9 +150,13 @@ mod eq {
   }
 }
 
-crate::getters!(@cp Version { major: usize, minor: usize, patch: usize });
-
 impl Version {
+  crate::getters!(@fn @cp
+    major: usize,
+    minor: usize,
+    patch: usize
+  );
+
   /// Modify the major version of this version instance.
   pub fn set_major(&mut self, major: usize) {
     self.major = major;
