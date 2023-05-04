@@ -87,6 +87,64 @@
 /// assert_eq!(example.b(), 23.0);
 /// assert_eq!(Example::function(), 42);
 /// ```
+///
+/// # References to Values
+///
+/// More complex data often does not implement the [`Copy`] trait.  Thus, when
+/// creating a getter for such a field, returning a reference to the information
+/// should be the preferred solution.  This macro also offers modes for these
+/// cases.
+///
+/// Again, first of all, here is an example for the creation of an entirely new
+/// `impl` block to store the methods in.
+///
+/// ```rust
+/// use aeruginous::getters;
+///
+/// struct Example {
+///   a: String,
+///   b: Vec<i32>,
+/// }
+///
+/// getters!(@ref Example {
+///   a: String,
+///   b: Vec<i32>
+/// });
+///
+/// let example = Example {a: String::from("string"), b: vec![1, 2, 3]};
+///
+/// assert_eq!(example.a(), "string");
+/// assert_eq!(example.b(), &vec![1, 2, 3]);
+/// ```
+///
+/// Furthermore, the generation of getter methods returning references within
+/// already existing `impl` blocks works analogously to the copying case.
+///
+/// ```rust
+/// use aeruginous::getters;
+///
+/// struct Example {
+///   a: String,
+///   b: Vec<i32>,
+/// }
+///
+/// impl Example {
+///   getters!(@fn @ref
+///     a: String,
+///     b: Vec<i32>
+///   );
+///
+///   pub fn function() -> i32 {
+///     42
+///   }
+/// }
+///
+/// let example = Example {a: String::from("string"), b: vec![1, 2, 3]};
+///
+/// assert_eq!(example.a(), "string");
+/// assert_eq!(example.b(), &vec![1, 2, 3]);
+/// assert_eq!(Example::function(), 42);
+/// ```
 #[macro_export]
 macro_rules! getters {
   ( @cp $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
