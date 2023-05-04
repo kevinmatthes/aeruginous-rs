@@ -2,16 +2,20 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Added
+.....
+
+- src/macros.rs:  creation
+
+- src/macros.rs:  getters
+
+- src/macros.rs:  implement
+
+Changed
+.......
+
+- use own macros to render getter methods
+
 .. Deprecated
 .. ..........
 ..
