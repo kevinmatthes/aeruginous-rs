@@ -18,6 +18,12 @@
 \******************************************************************************/
 
 /// Implement getter methods for the given struct fields.
+///
+/// Getter methods usually only return either a reference to or a copy of the
+/// corresponding field without any further action on the data.  Their
+/// definition is, thus, a repetitive task which can be automated by some
+/// technologies.  This macro aims to provide simple and convenient semantics to
+/// do so.
 #[macro_export]
 macro_rules! getters {
   ( @cp $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
