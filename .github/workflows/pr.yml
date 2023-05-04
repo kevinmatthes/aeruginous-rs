@@ -43,6 +43,11 @@ jobs:
     name: coverage
     runs-on: ubuntu-latest
     steps:
+      - name: cargo
+        uses: taiki-e/install-action@v2.8.0
+        with:
+          tool: cargo-tarpaulin
+
       - name: python
         uses: actions/setup-python@v4.6.0
         with:
@@ -56,21 +61,6 @@ jobs:
         with:
           persist-credentials: false
           ref: ${{ github.head_ref }}
-
-      - id: cache
-        name: cache
-        uses: actions/cache@v3.3.1
-        with:
-          key: ${{ runner.os }}-tarpaulin
-          path: |
-            ~/.cargo/bin/cargo-tarpaulin
-
-      - if: steps.cache.outputs.cache-hit != 'true'
-        name: cargo
-        run: |
-          if [[ ! -e ~/.cargo/bin/cargo-tarpaulin ]]; then
-            cargo install cargo-tarpaulin;
-          fi
 
       - name: requirements
         run: echo pycobertura >> requirements.txt
