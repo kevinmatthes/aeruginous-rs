@@ -74,6 +74,24 @@ macro_rules! getters {
 }
 
 /// Create an `impl` block for the given struct.
+///
+/// Despite this macro being primarily intended for the definition of further
+/// macros, it can be also applied in production anyway as the following
+/// example illustrates.
+///
+/// ```rust
+/// use aeruginous::implement;
+///
+/// struct Example;
+///
+/// implement!(Example;
+///   pub fn function() -> i32 {
+///     42
+///   }
+/// );
+///
+/// assert_eq!(Example::function(), 42);
+/// ```
 #[macro_export]
 macro_rules! implement {
   ( $T:ty ; $( $function:item ),+ ) => {
