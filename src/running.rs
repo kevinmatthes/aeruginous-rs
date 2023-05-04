@@ -28,21 +28,17 @@ use chrono::{DateTime, Local};
 /// project, the configuration file for the finished time tracking session will
 /// be removed.
 pub struct Running {
-  begin: DateTime<Local>,
+  beginning: DateTime<Local>,
 }
 
-impl Running {
-  /// Retrieve the creation time.
-  #[must_use]
-  pub const fn get(&self) -> &DateTime<Local> {
-    &self.begin
-  }
+crate::getters!(@ref Running { beginning: DateTime<Local> });
 
+impl Running {
   /// Construct a new running instance.
   #[must_use]
   pub fn new() -> Self {
     Self {
-      begin: Local::now(),
+      beginning: Local::now(),
     }
   }
 }
@@ -53,7 +49,7 @@ mod getters {
 
   #[test]
   fn begin() {
-    assert!(Running::new().get() <= &chrono::Local::now());
+    assert!(Running::new().beginning() <= &chrono::Local::now());
   }
 }
 
@@ -69,12 +65,12 @@ mod default {
 
   #[test]
   fn begin() {
-    assert!(Running::default().get() <= &chrono::Local::now());
+    assert!(Running::default().beginning() <= &chrono::Local::now());
   }
 
   #[test]
   fn method_equality() {
-    assert!(Running::default().get() <= Running::new().get());
+    assert!(Running::default().beginning() <= Running::new().beginning());
   }
 }
 
