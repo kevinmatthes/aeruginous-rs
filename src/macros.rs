@@ -145,6 +145,52 @@
 /// assert_eq!(example.b(), &vec![1, 2, 3]);
 /// assert_eq!(Example::function(), 42);
 /// ```
+///
+/// # Header Generation
+///
+/// All previously presented modes named the resulting method according to the
+/// field they queried and did nothing more returning the data of that field
+/// somehow.  There might be use cases in which a the getter should not have the
+/// same name as the field it queries or in which the query is more complex than
+/// just returning a copy or a reference.  For these cases, there is one last
+/// mode:  `@header`.
+///
+/// This macro renders the documentation as well as some useful compiler
+/// attributes for each generated getter method.  These information are
+/// considered a getter's "header".  When defining a specialised getter method,
+/// one might would like to have exactly this header for the new method, as
+/// well.  This mode provides the required functionality therefore.  In contrast
+/// to the other modes, only *one* method per call can be tagged by such a
+/// header.  Furthermore, an *already existing* `impl` block is mandatory.
+///
+/// ```rust
+/// use aeruginous::getters;
+///
+/// struct Example {
+///   a: i32,
+///   b: f64,
+///   c: bool,
+/// }
+///
+/// impl Example {
+///   getters!(@fn @cp
+///     a: i32,
+///     b: f64
+///   );
+///
+///   getters!(@header c = (
+///     pub fn field_c(&self) -> String {
+///       format!("{}", self.c)
+///     }
+///   ));
+/// }
+///
+/// let example = Example {a: 42, b: 23.0, c: true};
+///
+/// assert_eq!(example.a(), 42);
+/// assert_eq!(example.b(), 23.0);
+/// assert_eq!(example.field_c(), String::from("true"));
+/// ```
 #[macro_export]
 macro_rules! getters {
   ( @cp $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
