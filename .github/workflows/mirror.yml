@@ -39,7 +39,8 @@ on:
       - src/lib.rs
 
 permissions:
-  contents: write
+  contents: read
+  pull-requests: write
 
 jobs:
   readme:
@@ -63,6 +64,16 @@ jobs:
                  "`git config --list \
                  | grep user\.name \
                  | cut -d= -f2`:  Mirror README.md from src/lib.rs" \
-          && git push
+
+      - name: pr
+        uses: peter-evans/create-pull-request@v5.0.1
+        with:
+          assignees: |
+            kevinmatthes
+          branch-suffix: short-commit-hash
+          labels: |
+            documentation
+          milestone: 3
+          title: '[GitHub Actions] Mirror README.md from src/lib.rs'
 
 ################################################################################
