@@ -24,6 +24,69 @@
 /// definition is, thus, a repetitive task which can be automated by some
 /// technologies.  This macro aims to provide simple and convenient semantics to
 /// do so.
+///
+/// # Copies of Values
+///
+/// This macro offers two modes for getter methods which shall retrieve a copy
+/// the respective fields:  `@cp` as well as `@fn @cp`.  The difference between
+/// these two is that the former one will create a new `impl` block for the
+/// methods whilst the latter one requires the existence of such a block to put
+/// the generated methods into.
+///
+/// The following example illustrates the generation of getter methods within a
+/// completely new block.  The Rust Documentation System will generate a section
+/// on its own for this `impl` block.
+///
+/// ```rust
+/// use aeruginous::getters;
+///
+/// struct Example {
+///   a: i32,
+///   b: f64,
+/// }
+///
+/// getters!(@cp Example {
+///   a: i32,
+///   b: f64
+/// });
+///
+/// let example = Example {a: 42, b: 23.0};
+///
+/// assert_eq!(example.a(), 42);
+/// assert_eq!(example.b(), 23.0);
+/// ```
+///
+/// In case of further methods for the same struct, such a break in the
+/// documentation might be rather unaesthetic.  For this use case, there is the
+/// second mode of this macro:  `@fn @cp`.  Users can decide to have their getter
+/// methods rendered into an already existing `impl` block, as shown by the
+/// following example.
+///
+/// ```rust
+/// use aeruginous::getters;
+///
+/// struct Example {
+///   a: i32,
+///   b: f64,
+/// }
+///
+/// impl Example {
+///   getters!(@fn @cp
+///     a: i32,
+///     b: f64
+///   );
+///
+///   pub fn function() -> i32 {
+///     42
+///   }
+/// }
+///
+/// let example = Example {a: 42, b: 23.0};
+///
+/// assert_eq!(example.a(), 42);
+/// assert_eq!(example.b(), 23.0);
+/// assert_eq!(Example::function(), 42);
+/// ```
 #[macro_export]
 macro_rules! getters {
   ( @cp $strct:ty { $( $field:ident : $return:ty ),+ } ) => {
