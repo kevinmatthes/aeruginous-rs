@@ -37,6 +37,7 @@ on:
       - main
     paths:
       - src/lib.rs
+  workflow_dispatch:
 
 permissions:
   contents: read
