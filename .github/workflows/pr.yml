@@ -59,7 +59,7 @@ jobs:
 
       - id: cache
         name: cache
-        uses: actions/cache@v3.3.0
+        uses: actions/cache@v3.3.1
         with:
           key: ${{ runner.os }}-tarpaulin
           path: |
