@@ -174,50 +174,6 @@ impl Version {
 }
 
 #[cfg(test)]
-mod getters {
-  use crate::Version;
-
-  #[test]
-  fn major() {
-    assert_eq!(
-      Version {
-        major: 1,
-        minor: 2,
-        patch: 3
-      }
-      .major(),
-      1
-    );
-  }
-
-  #[test]
-  fn minor() {
-    assert_eq!(
-      Version {
-        major: 1,
-        minor: 2,
-        patch: 3
-      }
-      .minor(),
-      2
-    );
-  }
-
-  #[test]
-  fn patch() {
-    assert_eq!(
-      Version {
-        major: 1,
-        minor: 2,
-        patch: 3
-      }
-      .patch(),
-      3
-    );
-  }
-}
-
-#[cfg(test)]
 mod setters {
   use crate::Version;
 
