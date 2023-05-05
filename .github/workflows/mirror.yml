@@ -37,7 +37,6 @@ on:
       - main
     paths:
       - src/lib.rs
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -64,7 +63,7 @@ jobs:
           && git commit --allow-empty -m \
                  "`git config --list \
                  | grep user\.name \
-                 | cut -d= -f2`:  Mirror README.md from src/lib.rs" \
+                 | cut -d= -f2`:  Mirror README.md from src/lib.rs"
 
       - name: pr
         uses: peter-evans/create-pull-request@v5.0.1
