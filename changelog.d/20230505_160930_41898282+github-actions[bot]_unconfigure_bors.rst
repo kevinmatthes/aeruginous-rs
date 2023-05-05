@@ -22,11 +22,13 @@
 ..
 .. - A bullet item for the Fixed category.
 ..
-.. Removed
-.. .......
-..
-.. - A bullet item for the Removed category.
-..
+Removed
+.......
+
+- Bors:  configuration
+
+- README:  Bors badge
+
 .. Security
 .. ........
 ..
