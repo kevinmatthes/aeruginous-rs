@@ -19,8 +19,6 @@
 
 //! <!------------------------------------------------------------------------->
 //!
-//! [bors]:  https://bors.tech/images/badge_small.svg
-//! [bors-url]:  https://app.bors.tech/repositories/63092
 //! [ci]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci/badge.svg
 //! [ci-url]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci
 //! [crates-io]:  https://img.shields.io/crates/v/aeruginous
@@ -40,7 +38,6 @@
 //!
 //! ## Summary
 //!
-//! [![][bors]][bors-url]
 //! [![][ci]][ci-url]
 //! [![][crates-io]][crates-io-url]
 //! [![][docs-rs]][docs-rs-url]
