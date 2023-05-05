@@ -17,51 +17,37 @@
 |                                                                              |
 \******************************************************************************/
 
-use chrono::{DateTime, Local};
+use aeruginous::implement;
 
-/// The data type of an ongoing time tracking session.
-///
-/// `aeruginous` saves the starting point of time of the current time tracking
-/// session in a configuration file.  When the tracking session is ended, the
-/// given point of time will be the begin of a new time frame to be appended to
-/// the respective project.  When the time frame is saved in the correct
-/// project, the configuration file for the finished time tracking session will
-/// be removed.
-pub struct Running {
-  beginning: DateTime<Local>,
-}
+#[test]
+fn one_function() {
+  struct Example;
 
-crate::getters!(@ref Running { beginning: DateTime<Local> });
-
-impl Running {
-  /// Construct a new running instance.
-  #[must_use]
-  pub fn new() -> Self {
-    Self {
-      beginning: Local::now(),
+  implement!(Example;
+    pub fn function() -> i32 {
+      42
     }
-  }
+  );
+
+  assert_eq!(Example::function(), 42);
 }
 
-impl Default for Running {
-  fn default() -> Self {
-    Self::new()
-  }
-}
+#[test]
+fn two_functions() {
+  struct Example;
 
-#[cfg(test)]
-mod default {
-  use crate::Running;
+  implement!(Example;
+    pub fn function_one() -> i32 {
+      42
+    },
 
-  #[test]
-  fn begin() {
-    assert!(Running::default().beginning() <= &chrono::Local::now());
-  }
+    pub fn function_two() -> f64 {
+      23.0
+    }
+  );
 
-  #[test]
-  fn method_equality() {
-    assert!(Running::default().beginning() <= Running::new().beginning());
-  }
+  assert_eq!(Example::function_one(), 42);
+  assert_eq!(Example::function_two(), 23.0);
 }
 
 /******************************************************************************/
