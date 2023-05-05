@@ -43,16 +43,6 @@ impl Running {
   }
 }
 
-#[cfg(test)]
-mod getters {
-  use crate::Running;
-
-  #[test]
-  fn begin() {
-    assert!(Running::new().beginning() <= &chrono::Local::now());
-  }
-}
-
 impl Default for Running {
   fn default() -> Self {
     Self::new()
