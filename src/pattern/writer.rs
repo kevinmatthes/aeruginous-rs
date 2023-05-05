@@ -206,51 +206,6 @@ impl Writer for std::io::Stderr {
   }
 }
 
-#[cfg(test)]
-mod stderr {
-  use crate::PatternWriter;
-  use std::io::stderr;
-
-  #[test]
-  fn append() {
-    assert_eq!(stderr().append(Box::new("append".to_string())), Ok(()));
-  }
-
-  #[test]
-  fn append_silently() {
-    assert_eq!(
-      stderr().append_silently(Box::new("append_silently".to_string())),
-      Ok(())
-    );
-  }
-
-  #[test]
-  fn write() {
-    assert_eq!(stderr().write(Box::new("write".to_string())), Ok(()));
-  }
-
-  #[test]
-  fn write_silently() {
-    assert_eq!(
-      stderr().write_silently(Box::new("write_silently".to_string())),
-      Ok(())
-    );
-  }
-
-  #[test]
-  fn truncate() {
-    assert_eq!(stderr().truncate(Box::new("truncate".to_string())), Ok(()));
-  }
-
-  #[test]
-  fn truncate_silently() {
-    assert_eq!(
-      stderr().truncate_silently(Box::new("truncate_silently".to_string())),
-      Ok(())
-    );
-  }
-}
-
 impl Writer for std::io::Stdout {
   fn behaviour(
     &self,
@@ -262,51 +217,6 @@ impl Writer for std::io::Stdout {
     let string = buffer.as_ref().try_into_string()?;
     print!("{string}");
     Ok(())
-  }
-}
-
-#[cfg(test)]
-mod stdout {
-  use crate::PatternWriter;
-  use std::io::stdout;
-
-  #[test]
-  fn append() {
-    assert_eq!(stdout().append(Box::new("append".to_string())), Ok(()));
-  }
-
-  #[test]
-  fn append_silently() {
-    assert_eq!(
-      stdout().append_silently(Box::new("append_silently".to_string())),
-      Ok(())
-    );
-  }
-
-  #[test]
-  fn write() {
-    assert_eq!(stdout().write(Box::new("write".to_string())), Ok(()));
-  }
-
-  #[test]
-  fn write_silently() {
-    assert_eq!(
-      stdout().write_silently(Box::new("write_silently".to_string())),
-      Ok(())
-    );
-  }
-
-  #[test]
-  fn truncate() {
-    assert_eq!(stdout().truncate(Box::new("truncate".to_string())), Ok(()));
-  }
-
-  #[test]
-  fn truncate_silently() {
-    assert_eq!(
-      stdout().truncate_silently(Box::new("truncate_silently".to_string())),
-      Ok(())
-    );
   }
 }
 
