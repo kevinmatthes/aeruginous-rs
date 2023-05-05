@@ -2,11 +2,13 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- tests/getters.rs:  creation
+
+- tests/implement.rs:  creation
+
 .. Changed
 .. .......
 ..
