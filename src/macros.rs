@@ -50,7 +50,7 @@
 ///   b: f64
 /// });
 ///
-/// let example = Example {a: 42, b: 23.0};
+/// let example = Example { a: 42, b: 23.0 };
 ///
 /// assert_eq!(example.a(), 42);
 /// assert_eq!(example.b(), 23.0);
@@ -81,7 +81,7 @@
 ///   }
 /// }
 ///
-/// let example = Example {a: 42, b: 23.0};
+/// let example = Example { a: 42, b: 23.0 };
 ///
 /// assert_eq!(example.a(), 42);
 /// assert_eq!(example.b(), 23.0);
@@ -111,7 +111,7 @@
 ///   b: Vec<i32>
 /// });
 ///
-/// let example = Example {a: String::from("string"), b: vec![1, 2, 3]};
+/// let example = Example { a: "string".to_string(), b: vec![1, 2, 3] };
 ///
 /// assert_eq!(example.a(), "string");
 /// assert_eq!(example.b(), &vec![1, 2, 3]);
@@ -139,7 +139,7 @@
 ///   }
 /// }
 ///
-/// let example = Example {a: String::from("string"), b: vec![1, 2, 3]};
+/// let example = Example { a: "string".to_string(), b: vec![1, 2, 3] };
 ///
 /// assert_eq!(example.a(), "string");
 /// assert_eq!(example.b(), &vec![1, 2, 3]);
@@ -180,16 +180,20 @@
 ///
 ///   getters!(@header c = (
 ///     pub fn field_c(&self) -> String {
-///       format!("{}", self.c)
+///       self.c.to_string()
 ///     }
 ///   ));
 /// }
 ///
-/// let example = Example {a: 42, b: 23.0, c: true};
+/// let example = Example {
+///   a: 42,
+///   b: 23.0,
+///   c: true,
+/// };
 ///
 /// assert_eq!(example.a(), 42);
 /// assert_eq!(example.b(), 23.0);
-/// assert_eq!(example.field_c(), String::from("true"));
+/// assert_eq!(example.field_c(), "true".to_string());
 /// ```
 #[macro_export]
 macro_rules! getters {
