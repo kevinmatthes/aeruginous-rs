@@ -2,11 +2,15 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- src/traits/convert_buffer.rs:  ConvertBuffer
+
+- src/traits/convert_buffer.rs:  creation
+
+- tests/convert_buffer.rs:  creation
+
 .. Changed
 .. .......
 ..
