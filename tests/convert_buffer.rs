@@ -17,12 +17,46 @@
 |                                                                              |
 \******************************************************************************/
 
-mod append_as_line;
-mod convert_buffer;
-mod prioritise;
+use aeruginous::ConvertBuffer;
 
-pub use append_as_line::AppendAsLine;
-pub use convert_buffer::ConvertBuffer;
-pub use prioritise::Prioritise;
+#[test]
+fn string_string() {
+  let buffer = "buffer".to_string();
+  let mut string = "string".to_string();
+
+  assert_eq!(string.convert_into(), Ok("string".to_string()));
+  assert_eq!(string.convert_from(buffer), Ok(()));
+  assert_eq!(string.convert_into(), Ok("buffer".to_string()));
+}
+
+#[test]
+fn string_vecu8() {
+  let buffer = b"buffer".to_vec();
+  let mut string = "string".to_string();
+
+  assert_eq!(string.convert_into(), Ok(b"string".to_vec()));
+  assert_eq!(string.convert_from(buffer), Ok(()));
+  assert_eq!(string.convert_into(), Ok(b"buffer".to_vec()));
+}
+
+#[test]
+fn vecu8_string() {
+  let buffer = "buffer".to_string();
+  let mut vecu8 = b"vecu8".to_vec();
+
+  assert_eq!(vecu8.convert_into(), Ok("vecu8".to_string()));
+  assert_eq!(vecu8.convert_from(buffer), Ok(()));
+  assert_eq!(vecu8.convert_into(), Ok("buffer".to_string()));
+}
+
+#[test]
+fn vecu8_vecu8() {
+  let buffer = b"buffer".to_vec();
+  let mut vecu8 = b"vecu8".to_vec();
+
+  assert_eq!(vecu8.convert_into(), Ok(b"vecu8".to_vec()));
+  assert_eq!(vecu8.convert_from(buffer), Ok(()));
+  assert_eq!(vecu8.convert_into(), Ok(b"buffer".to_vec()));
+}
 
 /******************************************************************************/
