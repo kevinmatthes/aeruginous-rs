@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{AppendAsLine, PatternIOProcessor, Prioritise};
+use crate::{AppendAsLine, PatternIOProcessor, Prefer};
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 use sysexits::Result;
@@ -203,8 +203,8 @@ impl Action {
         s
       }
       .io(
-        input_file.prioritise(file_to_edit.clone()),
-        output_file.prioritise(file_to_edit.clone()),
+        input_file.prefer(file_to_edit.clone()),
+        output_file.prefer(file_to_edit.clone()),
       ),
     }
   }
