@@ -178,13 +178,16 @@
   clippy::perf,
   clippy::suspicious,
   clippy::style,
+  dead_code,
   deprecated,
   missing_docs,
-  rustdoc::broken_intra_doc_links
+  rustdoc::broken_intra_doc_links,
+  unused_macros
 )]
 #![allow(clippy::multiple_crate_versions)]
 
 mod application;
+mod graph_description;
 mod macros;
 mod pattern;
 mod running;
@@ -193,6 +196,7 @@ mod version;
 
 pub use crate::{
   application::{Action, Clap as Application},
+  graph_description::{GraphDescription, Tokens as AgdTokens},
   pattern::{
     Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
     Reader as PatternReader, Writer as PatternWriter,

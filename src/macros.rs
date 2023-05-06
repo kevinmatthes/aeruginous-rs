@@ -58,9 +58,9 @@
 ///
 /// In case of further methods for the same struct, such a break in the
 /// documentation might be rather unaesthetic.  For this use case, there is the
-/// second mode of this macro:  `@fn @cp`.  Users can decide to have their getter
-/// methods rendered into an already existing `impl` block, as shown by the
-/// following example.
+/// second mode of this macro:  `@fn @cp`.  Users can decide to have their
+/// getter methods rendered into an already existing `impl` block, as shown by
+/// the following example.
 ///
 /// ```rust
 /// use aeruginous::getters;
@@ -114,7 +114,7 @@
 /// let example = Example { a: "string".to_string(), b: vec![1, 2, 3] };
 ///
 /// assert_eq!(example.a(), "string");
-/// assert_eq!(example.b(), &vec![1, 2, 3]);
+/// assert_eq!(example.b(), &[1, 2, 3]);
 /// ```
 ///
 /// Furthermore, the generation of getter methods returning references within
@@ -142,7 +142,7 @@
 /// let example = Example { a: "string".to_string(), b: vec![1, 2, 3] };
 ///
 /// assert_eq!(example.a(), "string");
-/// assert_eq!(example.b(), &vec![1, 2, 3]);
+/// assert_eq!(example.b(), &[1, 2, 3]);
 /// assert_eq!(Example::function(), 42);
 /// ```
 ///

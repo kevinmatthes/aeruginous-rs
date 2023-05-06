@@ -147,7 +147,7 @@ fn fn_ref_two_fields() {
   };
 
   assert_eq!(example.a(), "string");
-  assert_eq!(example.b(), &vec![1, 2, 3]);
+  assert_eq!(example.b(), &[1, 2, 3]);
   assert_eq!(Example::function(), 42);
 }
 
@@ -218,7 +218,7 @@ fn ref_two_fields() {
   };
 
   assert_eq!(example.a(), "string");
-  assert_eq!(example.b(), &vec![1, 2, 3]);
+  assert_eq!(example.b(), &[1, 2, 3]);
 }
 
 /******************************************************************************/
