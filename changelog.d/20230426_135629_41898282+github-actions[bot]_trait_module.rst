@@ -11,9 +11,11 @@ Added
 
 - src/traits/mod.rs:  creation
 
-- src/traits/prioritise.rs:  creation
+- src/traits/prefer.rs:  creation
 
-- src/traits/prioritise.rs:  Prioritise
+- src/traits/prefer.rs:  Prefer
+
+- tests/prefer.rs:  creation
 
 .. Changed
 .. .......
