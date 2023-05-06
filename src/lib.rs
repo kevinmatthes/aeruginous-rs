@@ -198,7 +198,10 @@ pub use crate::{
     Reader as PatternReader, Writer as PatternWriter,
   },
   running::Running,
-  traits::{AppendAsLine, AppendAsLine as PatternAppendAsLine, Prioritise},
+  traits::{
+    AppendAsLine, AppendAsLine as PatternAppendAsLine, ConvertBuffer,
+    Prioritise,
+  },
   version::Version,
 };
 
