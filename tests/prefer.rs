@@ -20,7 +20,7 @@
 use aeruginous::Prefer;
 
 #[test]
-fn option_t() {
+fn option_i32() {
   assert_eq!(Some(23).prefer(Some(42)), Some(42));
   assert_eq!(None.prefer(Some(42)), Some(42));
   assert_eq!(Some(23).prefer(None), Some(23));
