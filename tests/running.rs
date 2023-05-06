@@ -17,38 +17,17 @@
 |                                                                              |
 \******************************************************************************/
 
-use chrono::{DateTime, Local};
+use aeruginous::Running;
+use chrono::Local;
 
-/// The data type of an ongoing time tracking session.
-///
-/// `aeruginous` saves the starting point of time of the current time tracking
-/// session in a configuration file.  When the tracking session is ended, the
-/// given point of time will be the begin of a new time frame to be appended to
-/// the respective project.  When the time frame is saved in the correct
-/// project, the configuration file for the finished time tracking session will
-/// be removed.
-pub struct Running {
-  beginning: DateTime<Local>,
+#[test]
+fn beginning_field_compared_to_now() {
+  assert!(Running::default().beginning() <= &Local::now());
 }
 
-impl Running {
-  crate::getters!(@fn @ref
-    beginning: DateTime<Local>
-  );
-
-  /// Construct a new running instance.
-  #[must_use]
-  pub fn new() -> Self {
-    Self {
-      beginning: Local::now(),
-    }
-  }
-}
-
-impl Default for Running {
-  fn default() -> Self {
-    Self::new()
-  }
+#[test]
+fn method_equality_constructor_and_default() {
+  assert!(Running::default().beginning() <= Running::new().beginning());
 }
 
 /******************************************************************************/
