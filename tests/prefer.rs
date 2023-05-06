@@ -17,12 +17,25 @@
 |                                                                              |
 \******************************************************************************/
 
-mod append_as_line;
-mod convert_buffer;
-mod prefer;
+use aeruginous::Prefer;
 
-pub use append_as_line::AppendAsLine;
-pub use convert_buffer::ConvertBuffer;
-pub use prefer::Prefer;
+#[test]
+fn option_i32() {
+  assert_eq!(Some(23).prefer(Some(42)), Some(42));
+  assert_eq!(None.prefer(Some(42)), Some(42));
+  assert_eq!(Some(23).prefer(None), Some(23));
+  assert_eq!(None::<i32>.prefer(None), None);
+}
+
+#[test]
+fn option_string() {
+  assert_eq!(
+    Some(23.to_string()).prefer(Some(42.to_string())),
+    Some(42.to_string())
+  );
+  assert_eq!(None.prefer(Some(42.to_string())), Some(42.to_string()));
+  assert_eq!(Some(23.to_string()).prefer(None), Some(23.to_string()));
+  assert_eq!(None::<String>.prefer(None), None);
+}
 
 /******************************************************************************/

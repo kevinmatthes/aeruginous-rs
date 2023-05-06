@@ -199,8 +199,7 @@ pub use crate::{
   },
   running::Running,
   traits::{
-    AppendAsLine, AppendAsLine as PatternAppendAsLine, ConvertBuffer,
-    Prioritise,
+    AppendAsLine, AppendAsLine as PatternAppendAsLine, ConvertBuffer, Prefer,
   },
   version::Version,
 };
