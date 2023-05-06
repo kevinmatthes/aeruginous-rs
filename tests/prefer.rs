@@ -27,4 +27,15 @@ fn option_t() {
   assert_eq!(None::<i32>.prefer(None), None);
 }
 
+#[test]
+fn option_string() {
+  assert_eq!(
+    Some(23.to_string()).prefer(Some(42.to_string())),
+    Some(42.to_string())
+  );
+  assert_eq!(None.prefer(Some(42.to_string())), Some(42.to_string()));
+  assert_eq!(Some(23.to_string()).prefer(None), Some(23.to_string()));
+  assert_eq!(None::<String>.prefer(None), None);
+}
+
 /******************************************************************************/
