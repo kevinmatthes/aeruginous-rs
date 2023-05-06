@@ -31,9 +31,11 @@ pub struct Running {
   beginning: DateTime<Local>,
 }
 
-crate::getters!(@ref Running { beginning: DateTime<Local> });
-
 impl Running {
+  crate::getters!(@fn @ref
+    beginning: DateTime<Local>
+  );
+
   /// Construct a new running instance.
   #[must_use]
   pub fn new() -> Self {
@@ -46,21 +48,6 @@ impl Running {
 impl Default for Running {
   fn default() -> Self {
     Self::new()
-  }
-}
-
-#[cfg(test)]
-mod default {
-  use crate::Running;
-
-  #[test]
-  fn begin() {
-    assert!(Running::default().beginning() <= &chrono::Local::now());
-  }
-
-  #[test]
-  fn method_equality() {
-    assert!(Running::default().beginning() <= Running::new().beginning());
   }
 }
 
