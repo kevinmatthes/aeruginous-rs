@@ -2,11 +2,17 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- src/graph_description.rs:  creation
+
+- src/graph_description.rs:  AgdTokens
+
+- src/graph_description.rs:  GraphDescription
+
+- tests/graph_description.rs:  creation
+
 .. Changed
 .. .......
 ..
