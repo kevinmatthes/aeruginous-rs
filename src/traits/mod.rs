@@ -19,10 +19,10 @@
 
 mod append_as_line;
 mod convert_buffer;
-mod prioritise;
+mod prefer;
 
 pub use append_as_line::AppendAsLine;
 pub use convert_buffer::ConvertBuffer;
-pub use prioritise::Prioritise;
+pub use prefer::Prefer;
 
 /******************************************************************************/
