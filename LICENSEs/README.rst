@@ -31,11 +31,16 @@
 
 .. -------------------------------------------------------------------------- ..
 ..
+.. _anstyle:  https://github.com/rust-cli/anstyle
+..
 .. _chrono:  https://github.com/chronotope/chrono
 .. _chronotope/chrono/LICENSE:  chronotope/chrono/LICENSE
 .. _clap:  https://github.com/clap-rs/clap
 .. _clap-rs/clap/LICENSE-Apache-2.0:  clap-rs/clap/LICENSE-Apache-2.0
 .. _clap-rs/clap/LICENSE-MIT:  clap-rs/clap/LICENSE-MIT
+..
+.. _rust-cli/anstyle/LICENSE-Apache-2.0:  rust-cli/anstyle/LICENSE-Apache-2.0
+.. _rust-cli/anstyle/LICENSE-MIT:  rust-cli/anstyle/LICENSE-MIT
 ..
 .. _sorairolake/sysexits-rs/LICENSE-Apache-2.0:  sorairolake/sysexits-rs/LICENSE-Apache-2.0
 .. _sorairolake/sysexits-rs/LICENSE-MIT:  sorairolake/sysexits-rs/LICENSE-MIT
@@ -55,6 +60,21 @@ location of a copy being stored in this repository.
 
 Rust Crates
 -----------
+
+`anstyle`_
+..........
+
+- local copies:
+
+  - Apache-2.0:  `rust-cli/anstyle/LICENSE-Apache-2.0`_
+
+  - MIT:  `rust-cli/anstyle/LICENSE-MIT`_
+
+- original licenses:
+
+  - Apache-2.0:  https://github.com/rust-cli/anstyle/blob/main/crates/anstyle/LICENSE-APACHE
+
+  - MIT:  https://github.com/rust-cli/anstyle/blob/main/crates/anstyle/LICENSE-MIT
 
 `chrono`_
 .........
