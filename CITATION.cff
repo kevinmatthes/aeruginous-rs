@@ -203,8 +203,8 @@ references:
     title: clap
     url: https://docs.rs/clap
   - type: software
-    date-released: 2023-04-27
-    version: 4.2.5
+    date-released: 2023-05-02
+    version: 4.2.7
     abstract: A full featured, fast Command Line Argument Parser for Rust
     authors:
       - alias: kbknapp
