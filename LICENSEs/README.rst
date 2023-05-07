@@ -42,7 +42,8 @@
 .. _rust-cli/anstyle/LICENSE-Apache-2.0:  rust-cli/anstyle/LICENSE-Apache-2.0
 .. _rust-cli/anstyle/LICENSE-MIT:  rust-cli/anstyle/LICENSE-MIT
 ..
-.. _sorairolake/sysexits-rs/LICENSE-Apache-2.0:  sorairolake/sysexits-rs/LICENSE-Apache-2.0
+.. _sorairolake/sysexits-rs/LICENSE-Apache-2.0:
+    sorairolake/sysexits-rs/LICENSE-Apache-2.0
 .. _sorairolake/sysexits-rs/LICENSE-MIT:  sorairolake/sysexits-rs/LICENSE-MIT
 .. _sysexits:  https://github.com/sorairolake/sysexits-rs
 ..
