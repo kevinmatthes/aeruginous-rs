@@ -72,9 +72,11 @@ Rust Crates
 
 - original licenses:
 
-  - Apache-2.0:  https://github.com/rust-cli/anstyle/blob/main/crates/anstyle/LICENSE-APACHE
+  - Apache-2.0:
+    https://github.com/rust-cli/anstyle/blob/main/crates/anstyle/LICENSE-APACHE
 
-  - MIT:  https://github.com/rust-cli/anstyle/blob/main/crates/anstyle/LICENSE-MIT
+  - MIT:
+    https://github.com/rust-cli/anstyle/blob/main/crates/anstyle/LICENSE-MIT
 
 `chrono`_
 .........
@@ -109,7 +111,8 @@ Rust Crates
 
 - original licenses:
 
-  - Apache-2.0:  https://github.com/sorairolake/sysexits-rs/blob/develop/LICENSE-APACHE
+  - Apache-2.0:
+    https://github.com/sorairolake/sysexits-rs/blob/develop/LICENSE-APACHE
 
   - MIT:  https://github.com/sorairolake/sysexits-rs/blob/develop/LICENSE-MIT
 
