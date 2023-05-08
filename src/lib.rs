@@ -53,6 +53,7 @@
 //! 1. [Meaning of the Name](#meaning-of-the-name)
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cffreference`](#cffreference)
+//!    1. [`graph-description`](#graph-description)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //! 1. [Notes](#notes)
@@ -126,6 +127,11 @@
 //!
 //! ### `cffreference`
 //!
+//! > To be called with:
+//! >
+//! > - `cffref`
+//! > - `cffreference`
+//!
 //! CFF makes software citable.  Projects exposing a `CITATION.cff` can be cited
 //! with APA plain text citations, BibTeX database entries, and also in another
 //! `CITATION.cff`'s list of references.
@@ -137,7 +143,25 @@
 //! from [`std::io::Stdin`].  Likewise, omitting the output file will cause
 //! `cffreference` to write to [`std::io::Stdout`].
 //!
+//! ### `graph-description`
+//!
+//! > To be called with:
+//! >
+//! > - `agd`
+//! > - `graph-description`
+//!
+//! The Aeruginous Graph Description is a very easy to learn coding language to
+//! describe the structure of graphs.  The language itself is based on plain
+//! English ensuring that no programming skills at all are required to learn it.
+//!
+//! This mode is not finished, yet, but it can already detect some issues
+//! regarding given input files.
+//!
 //! ### `rs2md`
+//!
+//! > To be called with:
+//! >
+//! > - `rs2md`
 //!
 //! Source code should always be documented.  Rust's documentation system
 //! supports Markdown syntax in documentation comments.  Thus, it is a
@@ -155,6 +179,10 @@
 //! comments).  If neither option is given, nothing will be extracted.
 //!
 //! ### `uncrlf`
+//!
+//! > To be called with:
+//! >
+//! > - `uncrlf`
 //!
 //! Source code should have a uniform appearance.  Some text editors terminate
 //! lines by Carriage Return Line Feeds (CRLFs, `\r\n`).  This subcommand will
