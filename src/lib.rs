@@ -210,7 +210,9 @@
   deprecated,
   missing_docs,
   rustdoc::broken_intra_doc_links,
-  unused_macros
+  unused_imports,
+  unused_macros,
+  unused_parens
 )]
 #![allow(clippy::multiple_crate_versions)]
 
@@ -231,7 +233,8 @@ pub use crate::{
   },
   running::Running,
   traits::{
-    AppendAsLine, AppendAsLine as PatternAppendAsLine, ConvertBuffer, Prefer,
+    AppendAsLine, AppendAsLine as PatternAppendAsLine, ColourMessage,
+    ConvertBuffer, Prefer,
   },
   version::Version,
 };

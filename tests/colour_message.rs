@@ -17,14 +17,21 @@
 |                                                                              |
 \******************************************************************************/
 
-mod append_as_line;
-mod colour_message;
-mod convert_buffer;
-mod prefer;
+use aeruginous::ColourMessage;
+use anstyle::AnsiColor::Red;
+use std::io::stderr;
 
-pub use append_as_line::AppendAsLine;
-pub use colour_message::ColourMessage;
-pub use convert_buffer::ConvertBuffer;
-pub use prefer::Prefer;
+#[test]
+fn string() {
+  assert_eq!(
+    "Error!".to_string().colour_message(Red, &mut stderr()),
+    Ok(())
+  );
+}
+
+#[test]
+fn string_slice() {
+  assert_eq!("Error!".colour_message(Red, &mut stderr()), Ok(()));
+}
 
 /******************************************************************************/
