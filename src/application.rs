@@ -32,7 +32,7 @@ use sysexits::Result;
 #[derive(Subcommand)]
 pub enum Action {
   /// Extract the citation information from a given and valid CFF file.
-  #[command(aliases = ["cffref"])]
+  #[command(aliases = ["cffref", "cff-reference"])]
   Cffreference {
     /// The CFF file to read from, defaulting to [`std::io::Stdin`], if omitted.
     #[arg(short = 'i')]
