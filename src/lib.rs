@@ -131,6 +131,7 @@
 //! >
 //! > - `cffref`
 //! > - `cffreference`
+//! > - `cff-reference`
 //!
 //! CFF makes software citable.  Projects exposing a `CITATION.cff` can be cited
 //! with APA plain text citations, BibTeX database entries, and also in another
@@ -232,10 +233,7 @@ pub use crate::{
     Reader as PatternReader, Writer as PatternWriter,
   },
   running::Running,
-  traits::{
-    AppendAsLine, AppendAsLine as PatternAppendAsLine, ColourMessage,
-    ConvertBuffer, Prefer,
-  },
+  traits::{AppendAsLine, ColourMessage, ConvertBuffer, Prefer},
   version::Version,
 };
 
