@@ -5,17 +5,17 @@
 Added
 .....
 
-- graphs/invalid/delimiters.agd
+- graphs/invalid/delimiters.agd:  creation
 
-- graphs/invalid/more_delimiters.agd
+- graphs/invalid/more_delimiters.agd:  creation
 
-- graphs/invalid/question_mark.agd
+- graphs/invalid/question_mark.agd:  creation
 
-- graphs/invalid/too_long_comments.agd
+- graphs/invalid/too_long_comments.agd:  creation
 
-- graphs/invalid/too_long_comments_and_typo.agd
+- graphs/invalid/too_long_comments_and_typo.agd:  creation
 
-- graphs/testing/comment.agd
+- graphs/testing/comment.agd:  creation
 
 .. Changed
 .. .......
