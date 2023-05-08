@@ -68,7 +68,7 @@ fn string_text_without_newline() {
 }
 
 #[test]
-fn string_slice_empty_string() {
+fn str_empty_string() {
   let mut buffer = String::new();
   buffer.append_as_line("test");
 
@@ -76,7 +76,7 @@ fn string_slice_empty_string() {
 }
 
 #[test]
-fn string_slice_one_line() {
+fn str_one_line() {
   let mut buffer = "line\n".to_string();
   buffer.append_as_line("test");
 
@@ -84,7 +84,7 @@ fn string_slice_one_line() {
 }
 
 #[test]
-fn string_slice_text_without_newline() {
+fn str_text_without_newline() {
   let mut buffer = "text".to_string();
   buffer.append_as_line("test");
 
