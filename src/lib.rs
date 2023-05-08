@@ -227,7 +227,9 @@ mod version;
 
 pub use crate::{
   application::{Action, Clap as Application},
-  graph_description::{GraphDescription, Tokens as AgdTokens},
+  graph_description::{
+    GraphDescription as AeruginousGraphDescription, Tokens as AgdTokens,
+  },
   pattern::{
     Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
     Reader as PatternReader, Writer as PatternWriter,
