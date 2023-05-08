@@ -44,7 +44,7 @@ impl GraphDescription {
 
   /// Determine whether all lines fit the line width of 80 characters.
   ///
-  /// A line is allowed to consist of at most 80 characters and a linefeed.  If
+  /// A line is allowed to consist of at most 80 characters and a line feed.  If
   /// a line should have more characters, this is a sign that the overall design
   /// of the source file urgently deserves a refactoring.  Hence, this is a more
   /// critical issue than just a simple typo which is why the indication colour
