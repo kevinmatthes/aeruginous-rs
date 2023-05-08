@@ -1,11 +1,18 @@
 (This is a valid Aeruginous Graph Description file.)
+
 (And this is a comment taking ...
 ... multiple lines.)
+
 (This is a short comment.) (This is another comment.)
+
 (Yet another comment ...) (... before a comment which, again, ...
 ... takes multiple lines.)
+
 (This is a nested comment (because of a comment within it).)
 (Nested comments can also take multiple lines (as you ...
 ... can see).)
+
 (The next comment will be empty but valid.)
 ()
+
+(<----- This comment will take exactly 80 characters plus one line feed. ----->)
