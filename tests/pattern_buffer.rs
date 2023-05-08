@@ -17,34 +17,68 @@
 |                                                                              |
 \******************************************************************************/
 
-/// Append a buffer as a line to another buffer.
-pub trait AppendAsLine<T> {
-  /// Append a buffer as a line to another buffer.
-  ///
-  /// This method will take ownership of a given buffer in order to append it to
-  /// the instance this method is called on as a new line.
-  fn append_as_line(&mut self, data: T);
+use aeruginous::PatternBuffer;
+
+#[test]
+fn string_try_from_bytes() {
+  let data = b"bytes";
+  let mut string = String::new();
+
+  assert_eq!(string.try_from_bytes(data), Ok(()));
+  assert_eq!(string, "bytes".to_string());
 }
 
-impl AppendAsLine<char> for String {
-  fn append_as_line(&mut self, data: char) {
-    self.push(data);
-    self.push('\n');
-  }
+#[test]
+fn string_try_from_string() {
+  let data = "string";
+  let mut string = String::new();
+
+  assert_eq!(string.try_from_string(data), Ok(()));
+  assert_eq!(string, "string".to_string());
 }
 
-impl AppendAsLine<Self> for String {
-  fn append_as_line(&mut self, data: Self) {
-    self.push_str(data.as_str());
-    self.push('\n');
-  }
+#[test]
+fn string_try_into_bytes() {
+  assert_eq!(
+    "string".to_string().try_into_bytes(),
+    Ok(b"string".to_vec())
+  );
 }
 
-impl AppendAsLine<&str> for String {
-  fn append_as_line(&mut self, data: &str) {
-    self.push_str(data);
-    self.push('\n');
-  }
+#[test]
+fn string_try_into_string() {
+  assert_eq!(
+    "string".to_string().try_into_string(),
+    Ok("string".to_string())
+  );
+}
+
+#[test]
+fn vecu8_try_from_bytes() {
+  let data = b"bytes";
+  let mut bytes = Vec::<u8>::new();
+
+  assert_eq!(bytes.try_from_bytes(data), Ok(()));
+  assert_eq!(bytes, b"bytes".to_vec());
+}
+
+#[test]
+fn vecu8_try_from_string() {
+  let data = "string";
+  let mut bytes = Vec::<u8>::new();
+
+  assert_eq!(bytes.try_from_string(data), Ok(()));
+  assert_eq!(bytes, b"string".to_vec());
+}
+
+#[test]
+fn vecu8_try_into_bytes() {
+  assert_eq!(b"bytes".to_vec().try_into_bytes(), Ok(b"bytes".to_vec()));
+}
+
+#[test]
+fn vecu8_try_into_string() {
+  assert_eq!(b"bytes".to_vec().try_into_string(), Ok("bytes".to_string()));
 }
 
 /******************************************************************************/

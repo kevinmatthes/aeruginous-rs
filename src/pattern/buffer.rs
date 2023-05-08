@@ -87,45 +87,6 @@ impl Buffer for String {
   }
 }
 
-#[cfg(test)]
-mod string {
-  use crate::PatternBuffer;
-
-  #[test]
-  fn try_from_bytes() {
-    let data = b"bytes";
-    let mut string = String::new();
-
-    assert_eq!(string.try_from_bytes(data), Ok(()));
-    assert_eq!(string, "bytes".to_string());
-  }
-
-  #[test]
-  fn try_from_string() {
-    let data = "string";
-    let mut string = String::new();
-
-    assert_eq!(string.try_from_string(data), Ok(()));
-    assert_eq!(string, "string".to_string());
-  }
-
-  #[test]
-  fn try_into_bytes() {
-    assert_eq!(
-      "string".to_string().try_into_bytes(),
-      Ok(b"string".to_vec())
-    );
-  }
-
-  #[test]
-  fn try_into_string() {
-    assert_eq!(
-      "string".to_string().try_into_string(),
-      Ok("string".to_string())
-    );
-  }
-}
-
 impl Buffer for Vec<u8> {
   fn try_from_bytes(&mut self, bytes: &[u8]) -> Result<()> {
     *self = bytes.to_vec();
@@ -143,39 +104,6 @@ impl Buffer for Vec<u8> {
 
   fn try_into_string(&self) -> Result<String> {
     String::from_utf8(self.clone()).map_or(Err(ExitCode::DataErr), Ok)
-  }
-}
-
-#[cfg(test)]
-mod vec_u8 {
-  use crate::PatternBuffer;
-
-  #[test]
-  fn try_from_bytes() {
-    let data = b"bytes";
-    let mut bytes = Vec::<u8>::new();
-
-    assert_eq!(bytes.try_from_bytes(data), Ok(()));
-    assert_eq!(bytes, b"bytes".to_vec());
-  }
-
-  #[test]
-  fn try_from_string() {
-    let data = "string";
-    let mut bytes = Vec::<u8>::new();
-
-    assert_eq!(bytes.try_from_string(data), Ok(()));
-    assert_eq!(bytes, b"string".to_vec());
-  }
-
-  #[test]
-  fn try_into_bytes() {
-    assert_eq!(b"bytes".to_vec().try_into_bytes(), Ok(b"bytes".to_vec()));
-  }
-
-  #[test]
-  fn try_into_string() {
-    assert_eq!(b"bytes".to_vec().try_into_string(), Ok("bytes".to_string()));
   }
 }
 

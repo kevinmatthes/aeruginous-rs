@@ -17,34 +17,78 @@
 |                                                                              |
 \******************************************************************************/
 
-/// Append a buffer as a line to another buffer.
-pub trait AppendAsLine<T> {
-  /// Append a buffer as a line to another buffer.
-  ///
-  /// This method will take ownership of a given buffer in order to append it to
-  /// the instance this method is called on as a new line.
-  fn append_as_line(&mut self, data: T);
+use aeruginous::AppendAsLine;
+
+#[test]
+fn character_empty_string() {
+  let mut buffer = String::new();
+  buffer.append_as_line('x');
+
+  assert_eq!("x\n".to_string(), buffer);
 }
 
-impl AppendAsLine<char> for String {
-  fn append_as_line(&mut self, data: char) {
-    self.push(data);
-    self.push('\n');
-  }
+#[test]
+fn character_one_line() {
+  let mut buffer = "line\n".to_string();
+  buffer.append_as_line('x');
+
+  assert_eq!("line\nx\n".to_string(), buffer);
 }
 
-impl AppendAsLine<Self> for String {
-  fn append_as_line(&mut self, data: Self) {
-    self.push_str(data.as_str());
-    self.push('\n');
-  }
+#[test]
+fn character_text_without_newline() {
+  let mut buffer = "text".to_string();
+  buffer.append_as_line('x');
+
+  assert_eq!("textx\n".to_string(), buffer);
 }
 
-impl AppendAsLine<&str> for String {
-  fn append_as_line(&mut self, data: &str) {
-    self.push_str(data);
-    self.push('\n');
-  }
+#[test]
+fn string_empty_string() {
+  let mut buffer = String::new();
+  buffer.append_as_line("test".to_string());
+
+  assert_eq!("test\n".to_string(), buffer);
+}
+
+#[test]
+fn string_one_line() {
+  let mut buffer = "line\n".to_string();
+  buffer.append_as_line("test".to_string());
+
+  assert_eq!("line\ntest\n".to_string(), buffer);
+}
+
+#[test]
+fn string_text_without_newline() {
+  let mut buffer = "text".to_string();
+  buffer.append_as_line("test".to_string());
+
+  assert_eq!("texttest\n".to_string(), buffer);
+}
+
+#[test]
+fn str_empty_string() {
+  let mut buffer = String::new();
+  buffer.append_as_line("test");
+
+  assert_eq!("test\n".to_string(), buffer);
+}
+
+#[test]
+fn str_one_line() {
+  let mut buffer = "line\n".to_string();
+  buffer.append_as_line("test");
+
+  assert_eq!("line\ntest\n".to_string(), buffer);
+}
+
+#[test]
+fn str_text_without_newline() {
+  let mut buffer = "text".to_string();
+  buffer.append_as_line("test");
+
+  assert_eq!("texttest\n".to_string(), buffer);
 }
 
 /******************************************************************************/
