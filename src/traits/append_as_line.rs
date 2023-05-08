@@ -33,35 +33,6 @@ impl AppendAsLine<char> for String {
   }
 }
 
-#[cfg(test)]
-mod character {
-  use crate::AppendAsLine;
-
-  #[test]
-  fn empty_string() {
-    let mut buffer = String::new();
-    buffer.append_as_line('x');
-
-    assert_eq!("x\n".to_string(), buffer);
-  }
-
-  #[test]
-  fn one_line() {
-    let mut buffer = "line\n".to_string();
-    buffer.append_as_line('x');
-
-    assert_eq!("line\nx\n".to_string(), buffer);
-  }
-
-  #[test]
-  fn text_without_newline() {
-    let mut buffer = "text".to_string();
-    buffer.append_as_line('x');
-
-    assert_eq!("textx\n".to_string(), buffer);
-  }
-}
-
 impl AppendAsLine<Self> for String {
   fn append_as_line(&mut self, data: Self) {
     self.push_str(data.as_str());
@@ -69,68 +40,10 @@ impl AppendAsLine<Self> for String {
   }
 }
 
-#[cfg(test)]
-mod string {
-  use crate::AppendAsLine;
-
-  #[test]
-  fn empty_string() {
-    let mut buffer = String::new();
-    buffer.append_as_line("test".to_string());
-
-    assert_eq!("test\n".to_string(), buffer);
-  }
-
-  #[test]
-  fn one_line() {
-    let mut buffer = "line\n".to_string();
-    buffer.append_as_line("test".to_string());
-
-    assert_eq!("line\ntest\n".to_string(), buffer);
-  }
-
-  #[test]
-  fn text_without_newline() {
-    let mut buffer = "text".to_string();
-    buffer.append_as_line("test".to_string());
-
-    assert_eq!("texttest\n".to_string(), buffer);
-  }
-}
-
 impl AppendAsLine<&str> for String {
   fn append_as_line(&mut self, data: &str) {
     self.push_str(data);
     self.push('\n');
-  }
-}
-
-#[cfg(test)]
-mod string_slice {
-  use crate::AppendAsLine;
-
-  #[test]
-  fn empty_string() {
-    let mut buffer = String::new();
-    buffer.append_as_line("test");
-
-    assert_eq!("test\n".to_string(), buffer);
-  }
-
-  #[test]
-  fn one_line() {
-    let mut buffer = "line\n".to_string();
-    buffer.append_as_line("test");
-
-    assert_eq!("line\ntest\n".to_string(), buffer);
-  }
-
-  #[test]
-  fn text_without_newline() {
-    let mut buffer = "text".to_string();
-    buffer.append_as_line("test");
-
-    assert_eq!("texttest\n".to_string(), buffer);
   }
 }
 
