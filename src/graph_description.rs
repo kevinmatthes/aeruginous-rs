@@ -17,6 +17,9 @@
 |                                                                              |
 \******************************************************************************/
 
+use crate::PatternReader;
+use anstyle::{AnsiColor, Style};
+use std::io::stderr;
 use sysexits::{ExitCode, Result};
 
 /// An Aeruginous Graph Description.
@@ -39,6 +42,109 @@ impl GraphDescription {
     tokens: Vec<Tokens>
   );
 
+  /// Determine whether all lines fit the line width of 80 characters.
+  ///
+  /// A line is allowed to consist of at most 80 characters and a line feed.  If
+  /// a line should have more characters, this is a sign that the overall design
+  /// of the source file urgently deserves a refactoring.  Hence, this is a more
+  /// critical issue than just a simple typo which is why the indication colour
+  /// of the error message is written in yellow.
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::IoErr`]
+  pub fn line_width(&self, input: &str) -> Result<usize> {
+    let mut column = 0;
+    let mut line = 1;
+    let line_width_colour =
+      Style::new().fg_color(Some(AnsiColor::Yellow.into()));
+    let mut result = 0;
+
+    for character in input.chars() {
+      if character == '\n' {
+        if column > 80 {
+          result += 1;
+
+          match line_width_colour.write_to(&mut stderr()) {
+            Ok(()) => {
+              eprint!("  Line ");
+
+              match line_width_colour.write_reset_to(&mut stderr()) {
+                Ok(()) => {
+                  eprintln!("{line} is {} characters too long.", column - 80);
+                }
+                Err(error) => {
+                  eprintln!("{error}");
+                  return Err(ExitCode::IoErr);
+                }
+              }
+            }
+            Err(error) => {
+              eprintln!("{error}");
+              return Err(ExitCode::IoErr);
+            }
+          }
+        }
+
+        column = 0;
+        line += 1;
+      } else {
+        column += 1;
+      }
+    }
+
+    Ok(result)
+  }
+
+  /// The main function for the Aeruginous Graph Description processing.
+  ///
+  /// # Errors
+  ///
+  /// See
+  ///
+  /// - [`crate::PatternBuffer::try_into_string`]
+  /// - [`PatternReader::read`]
+  /// - [`Self::read`]
+  /// - [`Self::typos`]
+  pub fn main(input: &Option<std::path::PathBuf>) -> Result<()> {
+    let mut agd = Self::new();
+    let input = input.read()?.try_into_string()?;
+    let lines = agd.line_width(&input)?;
+    agd.read(&input)?;
+    let typos = agd.typos()?;
+    let sum = lines + typos;
+
+    if sum == 0 {
+      Ok(())
+    } else {
+      let failure_colour = Style::new().fg_color(Some(AnsiColor::Red.into()));
+
+      match failure_colour.write_to(&mut stderr()) {
+        Ok(()) => {
+          eprint!("Failed ");
+
+          match failure_colour.write_reset_to(&mut stderr()) {
+            Ok(()) => {
+              eprintln!(
+                "due to {sum} issue{} to fix.",
+                if sum == 1 { "" } else { "s" }
+              );
+              Err(ExitCode::DataErr)
+            }
+            Err(error) => {
+              eprintln!("{error}");
+              Err(ExitCode::IoErr)
+            }
+          }
+        }
+        Err(error) => {
+          eprintln!("{error}");
+          Err(ExitCode::IoErr)
+        }
+      }
+    }
+  }
+
   /// Initialise a new instance.
   #[must_use]
   pub const fn new() -> Self {
@@ -54,7 +160,7 @@ impl GraphDescription {
   /// # Errors
   ///
   /// - [`sysexits::ExitCode::DataErr`]
-  pub fn parse(&mut self, s: &str) -> Result<()> {
+  pub fn read(&mut self, s: &str) -> Result<()> {
     let mut comment_depth = 0usize;
     let mut line = 1;
     let mut pending_token = None::<Tokens>;
@@ -111,8 +217,61 @@ impl GraphDescription {
     if pending_token.is_none() {
       Ok(())
     } else {
+      eprintln!("This source file is not ready for review, yet.");
       Err(ExitCode::DataErr)
     }
+  }
+
+  /// The detected typos in the input source file.
+  ///
+  /// The typos will be named well human readable by writing the found
+  /// character and the line as well as the column position it is found in to
+  /// [`std::io::Stderr`].  As typos are mistakes which are easy to fix, the
+  /// error message will be written in green.
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::IoErr`]
+  pub fn typos(&self) -> Result<usize> {
+    let mut result = 0;
+    let typo_colour = Style::new().fg_color(Some(AnsiColor::Green.into()));
+
+    for token in &self.tokens {
+      match token {
+        Tokens::Unexpected {
+          character,
+          line,
+          position,
+        } => {
+          result += 1;
+
+          match typo_colour.write_to(&mut stderr()) {
+            Ok(()) => {
+              eprint!("  Typo ");
+
+              match typo_colour.write_reset_to(&mut stderr()) {
+                Ok(()) => {
+                  eprintln!(
+                    "'{character}' in line {line} at position {position}.",
+                  );
+                }
+                Err(error) => {
+                  eprintln!("{error}");
+                  return Err(ExitCode::IoErr);
+                }
+              }
+            }
+            Err(error) => {
+              eprintln!("{error}");
+              return Err(ExitCode::IoErr);
+            }
+          }
+        }
+        _ => continue,
+      }
+    }
+
+    Ok(result)
   }
 }
 

@@ -19,22 +19,52 @@
 
 use aeruginous::{
   AgdTokens::{Comment, FullStop, LineFeed, Space, Unexpected},
-  GraphDescription,
+  GraphDescription, PatternReader,
 };
+use std::path::PathBuf;
+use sysexits::ExitCode;
 
 macro_rules! make_test {
-  ( @parse @fail $( $name:ident : $string:literal ),+ ) => {
+  ( @line $( $name:ident : $path:literal -> $lines:tt ),+ ) => {
+    $(
+      #[test]
+      fn $name() {
+        let agd = GraphDescription::new();
+        let input = PathBuf::from($path)
+          .read()
+          .unwrap()
+          .try_into_string()
+          .unwrap();
+
+        assert_eq!(agd.line_width(&input), Ok($lines));
+      }
+    )+
+  };
+
+  ( @main @data-err $( $name:ident : $path:literal ),+ ) => {
+    $(
+      #[test]
+      fn $name() {
+        assert_eq!(
+          GraphDescription::main(&Some(PathBuf::from($path))),
+          Err(ExitCode::DataErr)
+        );
+      }
+    )+
+  };
+
+  ( @read @fail $( $name:ident : $string:literal ),+ ) => {
     $(
       #[test]
       fn $name() {
         let mut agd = GraphDescription::new();
-        assert_eq!(agd.parse($string), Err(sysexits::ExitCode::DataErr));
+        assert_eq!(agd.read($string), Err(sysexits::ExitCode::DataErr));
       }
     )+
   };
 
   (
-    @parse @tokens $(
+    @read @tokens $(
       $name:ident : $string:literal -> $expectation:tt
     ),+
   ) => {
@@ -42,126 +72,164 @@ macro_rules! make_test {
       #[test]
       fn $name() {
         let mut agd = GraphDescription::new();
-        agd.parse($string).unwrap();
+        agd.read($string).unwrap();
 
         assert_eq!(agd.tokens(), &$expectation);
       }
     )+
   };
 
-  ( @parse @tokens @comment $( $name:ident : $string:literal ),+ ) => {
+  ( @read @tokens @comment $( $name:ident : $string:literal ),+ ) => {
     make_test!(
-      @parse @tokens $(
+      @read @tokens $(
         $name : $string -> [Comment]
       ),+
     );
   };
+
+  ( @typos $($name:ident : $path:literal -> $typos:tt ),+ ) => {
+    $(
+      #[test]
+      fn $name() {
+        let mut agd = GraphDescription::new();
+        let input = PathBuf::from($path)
+          .read()
+          .unwrap()
+          .try_into_string()
+          .unwrap();
+        agd.read(&input).unwrap();
+
+        assert_eq!(agd.typos(), Ok($typos));
+      }
+    )+
+  };
 }
 
-make_test!(@parse @fail
-  parse_fail_incomplete_comment_1: "(",
-  parse_fail_incomplete_comment_2: "(...",
+make_test!(@line
+  line_comment: "./graphs/testing/comment.agd" -> 0,
+  line_delimiters: "./graphs/invalid/delimiters.agd" -> 0,
+  line_more_delimiters: "./graphs/invalid/more_delimiters.agd" -> 0,
+  line_question_mark: "./graphs/invalid/question_mark.agd" -> 0,
+  line_too_long_comments: "./graphs/invalid/too_long_comments.agd" -> 2,
 
-  parse_fail_incomplete_comment_3: "(()",
-  parse_fail_incomplete_comment_4: "(...()",
-  parse_fail_incomplete_comment_5: "((...)",
-  parse_fail_incomplete_comment_6: "(()...",
-  parse_fail_incomplete_comment_7: "(...(...)",
-  parse_fail_incomplete_comment_8: "(...()...",
-  parse_fail_incomplete_comment_9: "((...)...",
-  parse_fail_incomplete_comment_10: "(...(...)...",
-
-  parse_fail_incomplete_comment_11: "((())",
-  parse_fail_incomplete_comment_12: "(...(())",
-  parse_fail_incomplete_comment_13: "((...())",
-  parse_fail_incomplete_comment_14: "(((...))",
-  parse_fail_incomplete_comment_15: "((()...)",
-  parse_fail_incomplete_comment_16: "((())...",
-  parse_fail_incomplete_comment_17: "(...(...())",
-  parse_fail_incomplete_comment_18: "(...((...))",
-  parse_fail_incomplete_comment_19: "(...(()...)",
-  parse_fail_incomplete_comment_20: "(...(())...",
-  parse_fail_incomplete_comment_21: "((...(...))",
-  parse_fail_incomplete_comment_22: "((...()...)",
-  parse_fail_incomplete_comment_23: "((...())...",
-  parse_fail_incomplete_comment_24: "(((...)...)",
-  parse_fail_incomplete_comment_25: "(((...))...",
-  parse_fail_incomplete_comment_26: "((()...)...",
-  parse_fail_incomplete_comment_27: "(...(...(...))",
-  parse_fail_incomplete_comment_28: "(...(...()...)",
-  parse_fail_incomplete_comment_29: "(...(...())...",
-  parse_fail_incomplete_comment_30: "(...((...)...)",
-  parse_fail_incomplete_comment_31: "(...((...))...",
-  parse_fail_incomplete_comment_32: "(...(()...)...",
-  parse_fail_incomplete_comment_33: "((...(...)...)",
-  parse_fail_incomplete_comment_34: "((...(...))...",
-  parse_fail_incomplete_comment_35: "((...()...)...",
-  parse_fail_incomplete_comment_36: "(((...)...)...",
-  parse_fail_incomplete_comment_37: "(...(...(...)...)",
-  parse_fail_incomplete_comment_38: "(...(...(...))...",
-  parse_fail_incomplete_comment_39: "(...(...()...)...",
-  parse_fail_incomplete_comment_40: "(...((...)...)...",
-  parse_fail_incomplete_comment_41: "((...(...)...)...",
-  parse_fail_incomplete_comment_42: "(...(...(...)...)..."
+  line_too_long_comments_and_typos:
+    "./graphs/invalid/too_long_comments_and_typos.agd" -> 2
 );
 
-make_test!(@parse @tokens @comment
-  parse_tokens_valid_comment_1: "()",
-  parse_tokens_valid_comment_2: "(...)",
+make_test!(@main @data-err
+  main_delimiters: "./graphs/invalid/delimiters.agd",
+  main_more_delimiters: "./graphs/invalid/more_delimiters.agd",
+  main_question_mark: "./graphs/invalid/question_mark.agd",
+  main_too_long_comments: "./graphs/invalid/too_long_comments.agd",
 
-  parse_tokens_valid_comment_3: "(())",
-  parse_tokens_valid_comment_4: "(...())",
-  parse_tokens_valid_comment_5: "((...))",
-  parse_tokens_valid_comment_6: "(()...)",
-  parse_tokens_valid_comment_7: "(...(...))",
-  parse_tokens_valid_comment_8: "(...()...)",
-  parse_tokens_valid_comment_9: "((...)...)",
-  parse_tokens_valid_comment_10: "(...(...)...)",
-
-  parse_tokens_valid_comment_11: "((()))",
-  parse_tokens_valid_comment_12: "(...(()))",
-  parse_tokens_valid_comment_13: "((...()))",
-  parse_tokens_valid_comment_14: "(((...)))",
-  parse_tokens_valid_comment_15: "((()...))",
-  parse_tokens_valid_comment_16: "((())...)",
-  parse_tokens_valid_comment_17: "(...(...()))",
-  parse_tokens_valid_comment_18: "(...((...)))",
-  parse_tokens_valid_comment_19: "(...(()...))",
-  parse_tokens_valid_comment_20: "(...(())...)",
-  parse_tokens_valid_comment_21: "((...(...)))",
-  parse_tokens_valid_comment_22: "((...()...))",
-  parse_tokens_valid_comment_23: "((...())...)",
-  parse_tokens_valid_comment_24: "(((...)...))",
-  parse_tokens_valid_comment_25: "(((...))...)",
-  parse_tokens_valid_comment_26: "((()...)...)",
-  parse_tokens_valid_comment_27: "(...(...(...)))",
-  parse_tokens_valid_comment_28: "(...(...()...))",
-  parse_tokens_valid_comment_29: "(...(...())...)",
-  parse_tokens_valid_comment_30: "(...((...)...))",
-  parse_tokens_valid_comment_31: "(...((...))...)",
-  parse_tokens_valid_comment_32: "(...(()...)...)",
-  parse_tokens_valid_comment_33: "((...(...)...))",
-  parse_tokens_valid_comment_34: "((...(...))...)",
-  parse_tokens_valid_comment_35: "((...()...)...)",
-  parse_tokens_valid_comment_36: "(((...)...)...)",
-  parse_tokens_valid_comment_37: "(...(...(...)...))",
-  parse_tokens_valid_comment_38: "(...(...(...))...)",
-  parse_tokens_valid_comment_39: "(...(...()...)...)",
-  parse_tokens_valid_comment_40: "(...((...)...)...)",
-  parse_tokens_valid_comment_41: "((...(...)...)...)",
-  parse_tokens_valid_comment_42: "(...(...(...)...)...)"
+  main_too_long_comments_and_typos:
+    "./graphs/invalid/too_long_comments_and_typos.agd"
 );
 
-make_test!(@parse @tokens
-  parse_tokens_valid_sequence_1: " " -> [Space],
-  parse_tokens_valid_sequence_2: "." -> [FullStop],
-  parse_tokens_valid_sequence_3: " ." -> [Space, FullStop],
-  parse_tokens_valid_sequence_4: ". " -> [FullStop, Space],
-  parse_tokens_valid_sequence_5: ".  " -> [FullStop, Space, Space],
-  parse_tokens_valid_sequence_6: ".\n." -> [FullStop, LineFeed, FullStop],
-  parse_tokens_valid_sequence_7: ".\n  " -> [FullStop, LineFeed, Space, Space],
+make_test!(@read @fail
+  read_fail_incomplete_comment_1: "(",
+  read_fail_incomplete_comment_2: "(...",
 
-  parse_tokens_valid_sequence_8: ".  \n." -> [
+  read_fail_incomplete_comment_3: "(()",
+  read_fail_incomplete_comment_4: "(...()",
+  read_fail_incomplete_comment_5: "((...)",
+  read_fail_incomplete_comment_6: "(()...",
+  read_fail_incomplete_comment_7: "(...(...)",
+  read_fail_incomplete_comment_8: "(...()...",
+  read_fail_incomplete_comment_9: "((...)...",
+  read_fail_incomplete_comment_10: "(...(...)...",
+
+  read_fail_incomplete_comment_11: "((())",
+  read_fail_incomplete_comment_12: "(...(())",
+  read_fail_incomplete_comment_13: "((...())",
+  read_fail_incomplete_comment_14: "(((...))",
+  read_fail_incomplete_comment_15: "((()...)",
+  read_fail_incomplete_comment_16: "((())...",
+  read_fail_incomplete_comment_17: "(...(...())",
+  read_fail_incomplete_comment_18: "(...((...))",
+  read_fail_incomplete_comment_19: "(...(()...)",
+  read_fail_incomplete_comment_20: "(...(())...",
+  read_fail_incomplete_comment_21: "((...(...))",
+  read_fail_incomplete_comment_22: "((...()...)",
+  read_fail_incomplete_comment_23: "((...())...",
+  read_fail_incomplete_comment_24: "(((...)...)",
+  read_fail_incomplete_comment_25: "(((...))...",
+  read_fail_incomplete_comment_26: "((()...)...",
+  read_fail_incomplete_comment_27: "(...(...(...))",
+  read_fail_incomplete_comment_28: "(...(...()...)",
+  read_fail_incomplete_comment_29: "(...(...())...",
+  read_fail_incomplete_comment_30: "(...((...)...)",
+  read_fail_incomplete_comment_31: "(...((...))...",
+  read_fail_incomplete_comment_32: "(...(()...)...",
+  read_fail_incomplete_comment_33: "((...(...)...)",
+  read_fail_incomplete_comment_34: "((...(...))...",
+  read_fail_incomplete_comment_35: "((...()...)...",
+  read_fail_incomplete_comment_36: "(((...)...)...",
+  read_fail_incomplete_comment_37: "(...(...(...)...)",
+  read_fail_incomplete_comment_38: "(...(...(...))...",
+  read_fail_incomplete_comment_39: "(...(...()...)...",
+  read_fail_incomplete_comment_40: "(...((...)...)...",
+  read_fail_incomplete_comment_41: "((...(...)...)...",
+  read_fail_incomplete_comment_42: "(...(...(...)...)..."
+);
+
+make_test!(@read @tokens @comment
+  read_tokens_valid_comment_1: "()",
+  read_tokens_valid_comment_2: "(...)",
+
+  read_tokens_valid_comment_3: "(())",
+  read_tokens_valid_comment_4: "(...())",
+  read_tokens_valid_comment_5: "((...))",
+  read_tokens_valid_comment_6: "(()...)",
+  read_tokens_valid_comment_7: "(...(...))",
+  read_tokens_valid_comment_8: "(...()...)",
+  read_tokens_valid_comment_9: "((...)...)",
+  read_tokens_valid_comment_10: "(...(...)...)",
+
+  read_tokens_valid_comment_11: "((()))",
+  read_tokens_valid_comment_12: "(...(()))",
+  read_tokens_valid_comment_13: "((...()))",
+  read_tokens_valid_comment_14: "(((...)))",
+  read_tokens_valid_comment_15: "((()...))",
+  read_tokens_valid_comment_16: "((())...)",
+  read_tokens_valid_comment_17: "(...(...()))",
+  read_tokens_valid_comment_18: "(...((...)))",
+  read_tokens_valid_comment_19: "(...(()...))",
+  read_tokens_valid_comment_20: "(...(())...)",
+  read_tokens_valid_comment_21: "((...(...)))",
+  read_tokens_valid_comment_22: "((...()...))",
+  read_tokens_valid_comment_23: "((...())...)",
+  read_tokens_valid_comment_24: "(((...)...))",
+  read_tokens_valid_comment_25: "(((...))...)",
+  read_tokens_valid_comment_26: "((()...)...)",
+  read_tokens_valid_comment_27: "(...(...(...)))",
+  read_tokens_valid_comment_28: "(...(...()...))",
+  read_tokens_valid_comment_29: "(...(...())...)",
+  read_tokens_valid_comment_30: "(...((...)...))",
+  read_tokens_valid_comment_31: "(...((...))...)",
+  read_tokens_valid_comment_32: "(...(()...)...)",
+  read_tokens_valid_comment_33: "((...(...)...))",
+  read_tokens_valid_comment_34: "((...(...))...)",
+  read_tokens_valid_comment_35: "((...()...)...)",
+  read_tokens_valid_comment_36: "(((...)...)...)",
+  read_tokens_valid_comment_37: "(...(...(...)...))",
+  read_tokens_valid_comment_38: "(...(...(...))...)",
+  read_tokens_valid_comment_39: "(...(...()...)...)",
+  read_tokens_valid_comment_40: "(...((...)...)...)",
+  read_tokens_valid_comment_41: "((...(...)...)...)",
+  read_tokens_valid_comment_42: "(...(...(...)...)...)"
+);
+
+make_test!(@read @tokens
+  read_tokens_valid_sequence_1: " " -> [Space],
+  read_tokens_valid_sequence_2: "." -> [FullStop],
+  read_tokens_valid_sequence_3: " ." -> [Space, FullStop],
+  read_tokens_valid_sequence_4: ". " -> [FullStop, Space],
+  read_tokens_valid_sequence_5: ".  " -> [FullStop, Space, Space],
+  read_tokens_valid_sequence_6: ".\n." -> [FullStop, LineFeed, FullStop],
+  read_tokens_valid_sequence_7: ".\n  " -> [FullStop, LineFeed, Space, Space],
+
+  read_tokens_valid_sequence_8: ".  \n." -> [
     FullStop,
     Space,
     Space,
@@ -169,7 +237,7 @@ make_test!(@parse @tokens
     FullStop,
   ],
 
-  parse_tokens_valid_sequence_9: ". ()\n ." -> [
+  read_tokens_valid_sequence_9: ". ()\n ." -> [
     FullStop,
     Space,
     Comment,
@@ -179,14 +247,14 @@ make_test!(@parse @tokens
   ]
 );
 
-make_test!(@parse @tokens
-  parse_tokens_unexpected_1: "\r" -> [Unexpected {
+make_test!(@read @tokens
+  read_tokens_unexpected_1: "\r" -> [Unexpected {
     character: '\r',
     line: 1,
     position: 1,
   }],
 
-  parse_tokens_unexpected_2: ".\r\n." -> [
+  read_tokens_unexpected_2: ".\r\n." -> [
     FullStop,
     Unexpected {
       character: '\r',
@@ -197,7 +265,7 @@ make_test!(@parse @tokens
     FullStop,
   ],
 
-  parse_tokens_unexpected_3: " \r\n.\r\n ()" -> [
+  read_tokens_unexpected_3: " \r\n.\r\n ()" -> [
     Space,
     Unexpected {
       character: '\r',
@@ -216,7 +284,7 @@ make_test!(@parse @tokens
     Comment,
   ],
 
-  parse_tokens_unexpected_4: "(...)\r\n.  (... (...) ...) \r\n." -> [
+  read_tokens_unexpected_4: "(...)\r\n.  (... (...) ...) \r\n." -> [
     Comment,
     Unexpected {
       character: '\r',
@@ -238,6 +306,27 @@ make_test!(@parse @tokens
     FullStop,
   ]
 );
+
+make_test!(@typos
+  typos_comment: "./graphs/testing/comment.agd" -> 0,
+  typos_delimiters: "./graphs/invalid/delimiters.agd" -> 3,
+  typos_more_delimiters: "./graphs/invalid/more_delimiters.agd" -> 12,
+  typos_question_mark: "./graphs/invalid/question_mark.agd" -> 1,
+  typos_too_long_comments: "./graphs/invalid/too_long_comments.agd" -> 0,
+
+  typos_too_long_comments_and_typos:
+    "./graphs/invalid/too_long_comments_and_typos.agd" -> 1
+);
+
+#[test]
+fn main_comment() {
+  assert_eq!(
+    GraphDescription::main(&Some(PathBuf::from(
+      "./graphs/testing/comment.agd"
+    ))),
+    Ok(())
+  );
+}
 
 #[test]
 fn method_equality() {

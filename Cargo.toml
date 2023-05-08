@@ -42,7 +42,16 @@ description = "The Aeruginous Open Source Development Toolbox."
 edition = "2021"
 homepage = "https://github.com/kevinmatthes/aeruginous-rs"
 include = ["/src"]
-keywords = ["aeruginous", "cffreference", "rs2md", "uncrlf"]
+keywords = [
+  "aeruginous",
+  "aeruginous-graph-description",
+  "agd",
+  "cffreference",
+  "graph-description",
+  "graphs",
+  "rs2md",
+  "uncrlf"
+]
 license = "GPL-3.0"
 name = "aeruginous"
 readme = "README.md"
