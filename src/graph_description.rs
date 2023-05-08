@@ -17,8 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::PatternReader;
-use anstyle::{AnsiColor, Style};
+use crate::{ColourMessage, PatternReader};
+use anstyle::AnsiColor;
 use std::io::stderr;
 use sysexits::{ExitCode, Result};
 
@@ -56,8 +56,6 @@ impl GraphDescription {
   pub fn line_width(&self, input: &str) -> Result<usize> {
     let mut column = 0;
     let mut line = 1;
-    let line_width_colour =
-      Style::new().fg_color(Some(AnsiColor::Yellow.into()));
     let mut result = 0;
 
     for character in input.chars() {
@@ -65,25 +63,8 @@ impl GraphDescription {
         if column > 80 {
           result += 1;
 
-          match line_width_colour.write_to(&mut stderr()) {
-            Ok(()) => {
-              eprint!("  Line ");
-
-              match line_width_colour.write_reset_to(&mut stderr()) {
-                Ok(()) => {
-                  eprintln!("{line} is {} characters too long.", column - 80);
-                }
-                Err(error) => {
-                  eprintln!("{error}");
-                  return Err(ExitCode::IoErr);
-                }
-              }
-            }
-            Err(error) => {
-              eprintln!("{error}");
-              return Err(ExitCode::IoErr);
-            }
-          }
+          "  Line ".colour_message(AnsiColor::Yellow, &mut stderr())?;
+          eprintln!("{line} is {} characters too long.", column - 80);
         }
 
         column = 0;
@@ -117,31 +98,12 @@ impl GraphDescription {
     if sum == 0 {
       Ok(())
     } else {
-      let failure_colour = Style::new().fg_color(Some(AnsiColor::Red.into()));
-
-      match failure_colour.write_to(&mut stderr()) {
-        Ok(()) => {
-          eprint!("Failed ");
-
-          match failure_colour.write_reset_to(&mut stderr()) {
-            Ok(()) => {
-              eprintln!(
-                "due to {sum} issue{} to fix.",
-                if sum == 1 { "" } else { "s" }
-              );
-              Err(ExitCode::DataErr)
-            }
-            Err(error) => {
-              eprintln!("{error}");
-              Err(ExitCode::IoErr)
-            }
-          }
-        }
-        Err(error) => {
-          eprintln!("{error}");
-          Err(ExitCode::IoErr)
-        }
-      }
+      "Failed ".colour_message(AnsiColor::Red, &mut stderr())?;
+      eprintln!(
+        "due to {sum} issue{} to fix.",
+        if sum == 1 { "" } else { "s" }
+      );
+      Err(ExitCode::DataErr)
     }
   }
 
@@ -234,7 +196,6 @@ impl GraphDescription {
   /// - [`sysexits::ExitCode::IoErr`]
   pub fn typos(&self) -> Result<usize> {
     let mut result = 0;
-    let typo_colour = Style::new().fg_color(Some(AnsiColor::Green.into()));
 
     for token in &self.tokens {
       match token {
@@ -245,27 +206,8 @@ impl GraphDescription {
         } => {
           result += 1;
 
-          match typo_colour.write_to(&mut stderr()) {
-            Ok(()) => {
-              eprint!("  Typo ");
-
-              match typo_colour.write_reset_to(&mut stderr()) {
-                Ok(()) => {
-                  eprintln!(
-                    "'{character}' in line {line} at position {position}.",
-                  );
-                }
-                Err(error) => {
-                  eprintln!("{error}");
-                  return Err(ExitCode::IoErr);
-                }
-              }
-            }
-            Err(error) => {
-              eprintln!("{error}");
-              return Err(ExitCode::IoErr);
-            }
-          }
+          "  Typo ".colour_message(AnsiColor::Green, &mut stderr())?;
+          eprintln!("'{character}' in line {line} at position {position}.");
         }
         _ => continue,
       }
