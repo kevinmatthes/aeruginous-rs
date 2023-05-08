@@ -195,7 +195,7 @@ impl Action {
       } => (|s: String| -> String { Self::cffreference(&s) })
         .io_append(input_file, output_file),
       Self::GraphDescription { input_file } => {
-        crate::GraphDescription::main(input_file)
+        crate::AeruginousGraphDescription::main(input_file)
       }
       Self::Rs2md {
         extract_inner,
