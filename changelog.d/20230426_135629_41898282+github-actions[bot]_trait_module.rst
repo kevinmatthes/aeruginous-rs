@@ -22,11 +22,6 @@ Added
 ..
 .. - A bullet item for the Changed category.
 ..
-Deprecated
-..........
-
-- PatternAppendAsLine
-
 .. Fixed
 .. .....
 ..
@@ -34,6 +29,8 @@ Deprecated
 ..
 Removed
 .......
+
+- PatternAppendAsLine
 
 - src/pattern/append_as_line.rs
 
