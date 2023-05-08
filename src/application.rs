@@ -32,6 +32,7 @@ use sysexits::Result;
 #[derive(Subcommand)]
 pub enum Action {
   /// Extract the citation information from a given and valid CFF file.
+  #[command(aliases = ["cffref"])]
   Cffreference {
     /// The CFF file to read from, defaulting to [`std::io::Stdin`], if omitted.
     #[arg(short = 'i')]
@@ -40,6 +41,14 @@ pub enum Action {
     /// The CFF file to write to, defaulting to [`std::io::Stdout`], if omitted.
     #[arg(short = 'o')]
     output_file: Option<PathBuf>,
+  },
+
+  /// Rate an Aeruginous Graph Description (AGD).
+  #[command(aliases = ["agd"])]
+  GraphDescription {
+    /// The AGD file to read.
+    #[arg(short = 'i')]
+    input_file: Option<PathBuf>,
   },
 
   /// Extract Markdown code from Rust documentation comments.
@@ -185,6 +194,9 @@ impl Action {
         output_file,
       } => (|s: String| -> String { Self::cffreference(&s) })
         .io_append(input_file, output_file),
+      Self::GraphDescription { input_file } => {
+        crate::GraphDescription::main(input_file)
+      }
       Self::Rs2md {
         extract_inner,
         extract_outer,
