@@ -2,11 +2,23 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- lints:  deny dead code
+
+- lints:  deny unused imports
+
+- lints:  deny unused macros
+
+- lints:  deny unused parentheses
+
+- src/traits/colour_message.rs:  creation
+
+- src/traits/colour_message.rs:  ColourMessage
+
+- tests/traits/colour_message.rs:  creation
+
 .. Changed
 .. .......
 ..
