@@ -18,8 +18,9 @@
 \******************************************************************************/
 
 use aeruginous::{
-  AgdTokens::{Comment, FullStop, LineFeed, Space, Unexpected},
-  GraphDescription, PatternReader,
+  AeruginousGraphDescription,
+  AgdTokens::{Comment, FullStop, LineFeed, Space, StringLiteral, Unexpected},
+  PatternReader,
 };
 use std::path::PathBuf;
 use sysexits::ExitCode;
@@ -29,7 +30,7 @@ macro_rules! make_test {
     $(
       #[test]
       fn $name() {
-        let agd = GraphDescription::new();
+        let agd = AeruginousGraphDescription::new();
         let input = PathBuf::from($path)
           .read()
           .unwrap()
@@ -46,7 +47,7 @@ macro_rules! make_test {
       #[test]
       fn $name() {
         assert_eq!(
-          GraphDescription::main(&Some(PathBuf::from($path))),
+          AeruginousGraphDescription::main(&Some(PathBuf::from($path))),
           Err(ExitCode::DataErr)
         );
       }
@@ -57,7 +58,7 @@ macro_rules! make_test {
     $(
       #[test]
       fn $name() {
-        let mut agd = GraphDescription::new();
+        let mut agd = AeruginousGraphDescription::new();
         assert_eq!(agd.read($string), Err(sysexits::ExitCode::DataErr));
       }
     )+
@@ -71,7 +72,7 @@ macro_rules! make_test {
     $(
       #[test]
       fn $name() {
-        let mut agd = GraphDescription::new();
+        let mut agd = AeruginousGraphDescription::new();
         agd.read($string).unwrap();
 
         assert_eq!(agd.tokens(), &$expectation);
@@ -91,7 +92,7 @@ macro_rules! make_test {
     $(
       #[test]
       fn $name() {
-        let mut agd = GraphDescription::new();
+        let mut agd = AeruginousGraphDescription::new();
         let input = PathBuf::from($path)
           .read()
           .unwrap()
@@ -170,7 +171,10 @@ make_test!(@read @fail
   read_fail_incomplete_comment_39: "(...(...()...)...",
   read_fail_incomplete_comment_40: "(...((...)...)...",
   read_fail_incomplete_comment_41: "((...(...)...)...",
-  read_fail_incomplete_comment_42: "(...(...(...)...)..."
+  read_fail_incomplete_comment_42: "(...(...(...)...)...",
+
+  read_fail_incomplete_string_1: "\"",
+  read_fail_incomplete_string_2: "\"..."
 );
 
 make_test!(@read @tokens @comment
@@ -244,6 +248,29 @@ make_test!(@read @tokens
     LineFeed,
     Space,
     FullStop,
+  ],
+
+  read_tokens_valid_sequence_10: "\"\"" -> [StringLiteral(0)],
+  read_tokens_valid_sequence_11: "\"...\"" -> [StringLiteral(0)],
+
+  read_tokens_valid_sequence_12: "(...) \"...\" (...)" -> [
+    Comment,
+    Space,
+    StringLiteral(0),
+    Space,
+    Comment,
+  ],
+
+  read_tokens_valid_sequence_13: "(...) \"...\" (...) \"\" (...)" -> [
+    Comment,
+    Space,
+    StringLiteral(0),
+    Space,
+    Comment,
+    Space,
+    StringLiteral(1),
+    Space,
+    Comment,
   ]
 );
 
@@ -321,7 +348,7 @@ make_test!(@typos
 #[test]
 fn main_comment() {
   assert_eq!(
-    GraphDescription::main(&Some(PathBuf::from(
+    AeruginousGraphDescription::main(&Some(PathBuf::from(
       "./graphs/testing/comment.agd"
     ))),
     Ok(())
@@ -330,7 +357,35 @@ fn main_comment() {
 
 #[test]
 fn method_equality() {
-  assert_eq!(GraphDescription::default(), GraphDescription::new());
+  assert_eq!(
+    AeruginousGraphDescription::default(),
+    AeruginousGraphDescription::new()
+  );
+}
+
+#[test]
+fn read_string_literals() {
+  let mut agd = AeruginousGraphDescription::new();
+  agd.read("(...) \"abc ...\" (...) \"def\" (...)").unwrap();
+
+  assert_eq!(
+    agd.tokens(),
+    &[
+      Comment,
+      Space,
+      StringLiteral(0),
+      Space,
+      Comment,
+      Space,
+      StringLiteral(1),
+      Space,
+      Comment
+    ]
+  );
+  assert_eq!(
+    agd.string_literals(),
+    &["abc ...".to_string(), "def".to_string()]
+  );
 }
 
 /******************************************************************************/

@@ -123,10 +123,12 @@ impl GraphDescription {
   ///
   /// - [`sysexits::ExitCode::DataErr`]
   pub fn read(&mut self, s: &str) -> Result<()> {
+    let mut buffer = String::new();
     let mut comment_depth = 0usize;
     let mut line = 1;
     let mut pending_token = None::<Tokens>;
     let mut position = 0;
+    let mut strings = 0;
 
     for character in s.chars() {
       position += 1;
@@ -147,6 +149,18 @@ impl GraphDescription {
             }
             _ => continue,
           },
+          Tokens::StringLiteral(_) => match character {
+            '"' => {
+              self.string_literals.push(buffer.clone());
+              self.tokens.push(token);
+              buffer.clear();
+              pending_token = None;
+              strings += 1;
+            }
+            _ => {
+              buffer.push(character);
+            }
+          },
           _ => unreachable!(),
         },
         None => match character {
@@ -157,6 +171,9 @@ impl GraphDescription {
           }
           ' ' => {
             self.tokens.push(Tokens::Space);
+          }
+          '"' => {
+            pending_token = Some(Tokens::StringLiteral(strings));
           }
           '(' => {
             comment_depth += 1;
