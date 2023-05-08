@@ -2,11 +2,13 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- tests/append_as_line.rs:  creation
+
+- tests/pattern_buffer.rs:  creation
+
 .. Changed
 .. .......
 ..
