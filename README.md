@@ -112,6 +112,7 @@ passed.
 >
 > - `cffref`
 > - `cffreference`
+> - `cff-reference`
 
 CFF makes software citable.  Projects exposing a `CITATION.cff` can be cited
 with APA plain text citations, BibTeX database entries, and also in another
