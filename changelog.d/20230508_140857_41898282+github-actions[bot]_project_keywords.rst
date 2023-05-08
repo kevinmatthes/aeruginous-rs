@@ -2,11 +2,25 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- Cargo.toml:  project keyword ``cff``
+
+- Cargo.toml:  project keyword ``cffref``
+
+- Cargo.toml:  project keyword ``cff-reference``
+
+- Cargo.toml:  project keyword ``citation-file-format``
+
+- CITATION.cff:  project keyword ``cff``
+
+- CITATION.cff:  project keyword ``cffref``
+
+- CITATION.cff:  project keyword ``cff-reference``
+
+- CITATION.cff:  project keyword ``citation-file-format``
+
 .. Changed
 .. .......
 ..
