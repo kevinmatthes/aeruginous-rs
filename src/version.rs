@@ -46,6 +46,16 @@ impl Version {
     patch: usize
   );
 
+  /// Create a new version instance.
+  #[must_use]
+  pub const fn new(major: usize, minor: usize, patch: usize) -> Self {
+    Self {
+      major,
+      minor,
+      patch,
+    }
+  }
+
   /// Modify the major version of this version instance.
   pub fn set_major(&mut self, major: usize) {
     self.major = major;
@@ -62,50 +72,6 @@ impl Version {
   }
 }
 
-#[cfg(test)]
-mod setters {
-  use crate::Version;
-
-  #[test]
-  fn major() {
-    let mut version = Version {
-      major: 1,
-      minor: 2,
-      patch: 3,
-    };
-    version.set_major(0);
-    let version = version;
-
-    assert_eq!(version.major(), 0);
-  }
-
-  #[test]
-  fn minor() {
-    let mut version = Version {
-      major: 1,
-      minor: 2,
-      patch: 3,
-    };
-    version.set_minor(0);
-    let version = version;
-
-    assert_eq!(version.minor(), 0);
-  }
-
-  #[test]
-  fn patch() {
-    let mut version = Version {
-      major: 1,
-      minor: 2,
-      patch: 3,
-    };
-    version.set_patch(0);
-    let version = version;
-
-    assert_eq!(version.patch(), 0);
-  }
-}
-
 impl std::fmt::Display for Version {
   /// The string representation of a version instance.
   ///
@@ -113,45 +79,6 @@ impl std::fmt::Display for Version {
   /// format `v<major>.<minor>.<patch>`.
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     write!(f, "v{}.{}.{}", self.major, self.minor, self.patch)
-  }
-}
-
-#[cfg(test)]
-mod fmt {
-  use crate::{Version, VERSION};
-  use std::str::FromStr;
-
-  #[test]
-  fn crate_version_constant() {
-    assert_eq!(VERSION, format!("{}", Version::from_str(VERSION).unwrap()));
-  }
-
-  #[test]
-  fn from_string() {
-    assert_eq!("v1.0.0", format!("{}", Version::from_str("1").unwrap()));
-    assert_eq!("v1.0.0", format!("{}", Version::from_str("v1").unwrap()));
-    assert_eq!("v1.2.0", format!("{}", Version::from_str("1.2").unwrap()));
-    assert_eq!("v1.2.0", format!("{}", Version::from_str("v1.2").unwrap()));
-    assert_eq!("v1.2.3", format!("{}", Version::from_str("1.2.3").unwrap()));
-    assert_eq!(
-      "v1.2.3",
-      format!("{}", Version::from_str("v1.2.3").unwrap())
-    );
-  }
-
-  #[test]
-  fn simple_test() {
-    assert_eq!(
-      "v1.2.3",
-      format!(
-        "{}",
-        Version {
-          major: 1,
-          minor: 2,
-          patch: 3
-        }
-      )
-    );
   }
 }
 
@@ -205,182 +132,6 @@ impl std::str::FromStr for Version {
       }),
       _ => Err(ExitCode::DataErr),
     }
-  }
-}
-
-#[cfg(test)]
-mod from_str {
-  use crate::Version;
-  use std::str::FromStr;
-  use sysexits::ExitCode;
-
-  #[test]
-  fn invalid_2_parts_and_only_one_numeric() {
-    assert_eq!(Version::from_str("1.abc"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("abc.1"), Err(ExitCode::DataErr));
-  }
-
-  #[test]
-  fn invalid_3_parts_and_just_two_numeric() {
-    assert_eq!(Version::from_str("1.2.abc"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("1.abc.2"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("abc.1.2"), Err(ExitCode::DataErr));
-  }
-
-  #[test]
-  fn invalid_3_parts_and_only_one_numeric() {
-    assert_eq!(Version::from_str("1.abc.def"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("abc.1.def"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("abc.def.1"), Err(ExitCode::DataErr));
-  }
-
-  #[test]
-  fn invalid_hexdecimal() {
-    assert_eq!(Version::from_str("0x1"), Err(ExitCode::DataErr));
-
-    assert_eq!(Version::from_str("0x1.0x2"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("0x1.2"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("1.0x2"), Err(ExitCode::DataErr));
-
-    assert_eq!(Version::from_str("0x1.0x2.0x3"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("0x1.0x2.3"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("0x1.2.0x3"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("0x1.2.3"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("1.0x2.0x3"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("1.0x2.3"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("1.2.0x3"), Err(ExitCode::DataErr));
-  }
-
-  #[test]
-  fn invalid_introduced_but_empty_parts() {
-    assert_eq!(Version::from_str(""), Err(ExitCode::DataErr));
-
-    assert_eq!(Version::from_str("."), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("1."), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str(".2"), Err(ExitCode::DataErr));
-
-    assert_eq!(Version::from_str(".."), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("1.."), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str(".2."), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("..3"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("1.2."), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str("1..3"), Err(ExitCode::DataErr));
-    assert_eq!(Version::from_str(".2.3"), Err(ExitCode::DataErr));
-  }
-
-  #[test]
-  fn invalid_only_letters_1_part() {
-    assert_eq!(Version::from_str("abc"), Err(ExitCode::DataErr));
-  }
-
-  #[test]
-  fn invalid_only_letters_2_parts() {
-    assert_eq!(Version::from_str("abc.def"), Err(ExitCode::DataErr));
-  }
-
-  #[test]
-  fn invalid_only_letters_3_parts() {
-    assert_eq!(Version::from_str("abc.def.ghi"), Err(ExitCode::DataErr));
-  }
-
-  #[test]
-  fn valid_1_part() {
-    assert_eq!(
-      Version::from_str("1"),
-      Ok(Version {
-        major: 1,
-        minor: 0,
-        patch: 0
-      })
-    );
-  }
-
-  #[test]
-  fn valid_2_parts() {
-    assert_eq!(
-      Version::from_str("1.2"),
-      Ok(Version {
-        major: 1,
-        minor: 2,
-        patch: 0
-      })
-    );
-  }
-
-  #[test]
-  fn valid_3_parts() {
-    assert_eq!(
-      Version::from_str("1.2.3"),
-      Ok(Version {
-        major: 1,
-        minor: 2,
-        patch: 3
-      })
-    );
-  }
-
-  #[test]
-  fn valid_3_parts_and_dot() {
-    assert_eq!(
-      Version::from_str("1.2.3."),
-      Ok(Version {
-        major: 1,
-        minor: 2,
-        patch: 3
-      })
-    );
-  }
-
-  #[test]
-  fn valid_4_parts() {
-    assert_eq!(
-      Version::from_str("1.2.3.4"),
-      Ok(Version {
-        major: 1,
-        minor: 2,
-        patch: 3
-      })
-    );
-  }
-
-  #[test]
-  fn valid_4th_part_letter() {
-    assert_eq!(
-      Version::from_str("1.2.3.x"),
-      Ok(Version {
-        major: 1,
-        minor: 2,
-        patch: 3
-      })
-    );
-  }
-
-  #[test]
-  fn valid_v_prefix() {
-    assert_eq!(
-      Version::from_str("v1"),
-      Ok(Version {
-        major: 1,
-        minor: 0,
-        patch: 0
-      })
-    );
-    assert_eq!(
-      Version::from_str("v1.2"),
-      Ok(Version {
-        major: 1,
-        minor: 2,
-        patch: 0
-      })
-    );
-    assert_eq!(
-      Version::from_str("v1.2.3"),
-      Ok(Version {
-        major: 1,
-        minor: 2,
-        patch: 3
-      })
-    );
   }
 }
 
