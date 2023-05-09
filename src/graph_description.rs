@@ -203,7 +203,7 @@ impl GraphDescription {
     self.tokens.push(Tokens::LineFeed);
   }
 
-  /// Push a new string literal to the list of tokens.
+  /// Push a string literal to the list of tokens.
   fn push_string(&mut self) {
     self.string_literals.push(self.buffer.clone());
     self.tokens.push(Tokens::StringLiteral(self.count_strings));
@@ -213,7 +213,7 @@ impl GraphDescription {
     self.count_strings += 1;
   }
 
-  /// Push a new unexpected character to the list of tokens.
+  /// Push an unexpected character to the list of tokens.
   fn push_unexpected(&mut self, character: char) {
     self.tokens.push(Tokens::Unexpected {
       character,
