@@ -19,7 +19,10 @@
 
 use aeruginous::{
   AeruginousGraphDescription,
-  AgdTokens::{Comment, FullStop, LineFeed, Space, StringLiteral, Unexpected},
+  AgdTokens::{
+    Abbreviate, And, By, Comment, Connect, Declare, FullStop, Identifier,
+    LineFeed, Space, StringLiteral, Unexpected,
+  },
   PatternReader,
 };
 use std::path::PathBuf;
@@ -352,6 +355,49 @@ fn main_comment() {
       "./graphs/testing/comment.agd"
     ))),
     Ok(())
+  );
+}
+
+#[test]
+fn main_etc() {
+  let mut agd = AeruginousGraphDescription::new();
+  let input = PathBuf::from("./graphs/examples/etc.agd")
+    .read()
+    .unwrap()
+    .try_into_string()
+    .unwrap();
+  agd.read(&input).unwrap();
+
+  assert_eq!(
+    agd.tokens(),
+    &[
+      Comment,
+      LineFeed,
+      LineFeed,
+      Abbreviate,
+      Space,
+      StringLiteral(0),
+      Space,
+      By,
+      Space,
+      Identifier(0),
+      FullStop,
+      LineFeed,
+      Declare,
+      Space,
+      StringLiteral(1),
+      FullStop,
+      LineFeed,
+      Connect,
+      Space,
+      StringLiteral(2),
+      Space,
+      And,
+      Space,
+      Identifier(1),
+      FullStop,
+      LineFeed,
+    ]
   );
 }
 
