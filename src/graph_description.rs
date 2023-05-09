@@ -25,8 +25,29 @@ use sysexits::{ExitCode, Result};
 /// An Aeruginous Graph Description.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GraphDescription {
+  /// The buffer holding the characters of the pending token.
+  buffer: String,
+
+  /// The current comment depth.
+  comment_depth: usize,
+
+  /// The count of identifiers found so far.
+  count_identifiers: usize,
+
+  /// The count of string literals found so far.
+  count_strings: usize,
+
   /// The known identifiers.
   identifiers: Vec<String>,
+
+  /// The current line.
+  line: usize,
+
+  /// The pending token.
+  pending_token: Option<Tokens>,
+
+  /// The current column position.
+  position: usize,
 
   /// The held string literals.
   string_literals: Vec<String>,
@@ -41,6 +62,23 @@ impl GraphDescription {
     string_literals: Vec<String>,
     tokens: Vec<Tokens>
   );
+
+  /// Assume that the next token is going to be a comment.
+  fn assume_comment(&mut self) {
+    self.comment_depth += 1;
+    self.pending_token = Some(Tokens::Comment);
+  }
+
+  /// Assume that the next token is going to be an identifier.
+  fn assume_identifier(&mut self, character: char) {
+    self.buffer.push(character);
+    self.pending_token = Some(Tokens::Identifier(self.count_identifiers));
+  }
+
+  /// Assume that the next token is going to be a string literal.
+  fn assume_string(&mut self) {
+    self.pending_token = Some(Tokens::StringLiteral(self.count_strings));
+  }
 
   /// Determine whether all lines fit the line width of 80 characters.
   ///
@@ -107,14 +145,81 @@ impl GraphDescription {
     }
   }
 
+  /// Match an input character against the possible redirections.
+  fn match_character(&mut self, character: char) {
+    match character {
+      '\n' => self.push_line_feed(),
+      ' ' => self.tokens.push(Tokens::Space),
+      '"' => self.assume_string(),
+      '(' => self.assume_comment(),
+      '.' => self.tokens.push(Tokens::FullStop),
+      'A'..='Z' | 'a'..='z' => self.assume_identifier(character),
+      _ => self.push_unexpected(character),
+    }
+  }
+
   /// Initialise a new instance.
   #[must_use]
   pub const fn new() -> Self {
     Self {
+      buffer: String::new(),
+      comment_depth: 0,
+      count_identifiers: 0,
+      count_strings: 0,
       identifiers: Vec::new(),
+      line: 1,
+      pending_token: None,
+      position: 0,
       string_literals: Vec::new(),
       tokens: Vec::new(),
     }
+  }
+
+  /// Push an identifier to the list of tokens.
+  fn push_identifier(&mut self) {
+    let identifier = self.buffer.clone();
+    self.buffer.clear();
+    self.pending_token = None;
+
+    match identifier.as_str() {
+      "Abbreviate" => self.tokens.push(Tokens::Abbreviate),
+      "Connect" => self.tokens.push(Tokens::Connect),
+      "Declare" => self.tokens.push(Tokens::Declare),
+      "and" => self.tokens.push(Tokens::And),
+      "by" => self.tokens.push(Tokens::By),
+      _ => {
+        self.identifiers.push(identifier);
+        self.tokens.push(Tokens::Identifier(self.count_identifiers));
+
+        self.count_identifiers += 1;
+      }
+    }
+  }
+
+  /// Push a line feed to the list of tokens.
+  fn push_line_feed(&mut self) {
+    self.line += 1;
+    self.position = 0;
+    self.tokens.push(Tokens::LineFeed);
+  }
+
+  /// Push a new string literal to the list of tokens.
+  fn push_string(&mut self) {
+    self.string_literals.push(self.buffer.clone());
+    self.tokens.push(Tokens::StringLiteral(self.count_strings));
+
+    self.buffer.clear();
+    self.pending_token = None;
+    self.count_strings += 1;
+  }
+
+  /// Push a new unexpected character to the list of tokens.
+  fn push_unexpected(&mut self, character: char) {
+    self.tokens.push(Tokens::Unexpected {
+      character,
+      line: self.line,
+      position: self.position,
+    });
   }
 
   /// Fill this instance based on an input file's contents.
@@ -123,77 +228,50 @@ impl GraphDescription {
   ///
   /// - [`sysexits::ExitCode::DataErr`]
   pub fn read(&mut self, s: &str) -> Result<()> {
-    let mut buffer = String::new();
-    let mut comment_depth = 0usize;
-    let mut line = 1;
-    let mut pending_token = None::<Tokens>;
-    let mut position = 0;
-    let mut strings = 0;
-
     for character in s.chars() {
-      position += 1;
+      self.position += 1;
 
-      match pending_token {
+      match self.pending_token {
         Some(token) => match token {
           Tokens::Comment => match character {
             '(' => {
-              comment_depth += 1;
+              self.comment_depth += 1;
             }
             ')' => {
-              comment_depth -= 1;
+              self.comment_depth -= 1;
 
-              if comment_depth == 0 {
+              if self.comment_depth == 0 {
                 self.tokens.push(token);
-                pending_token = None;
+                self.pending_token = None;
               }
             }
             _ => continue,
           },
-          Tokens::StringLiteral(_) => match character {
-            '"' => {
-              self.string_literals.push(buffer.clone());
-              self.tokens.push(token);
-              buffer.clear();
-              pending_token = None;
-              strings += 1;
+          Tokens::Identifier(_) => match character {
+            '0'..='9' | 'A'..='Z' | 'a'..='z' | '_' | '-' => {
+              self.buffer.push(character);
             }
             _ => {
-              buffer.push(character);
+              self.push_identifier();
+              self.match_character(character);
             }
+          },
+          Tokens::StringLiteral(_) => match character {
+            '"' => self.push_string(),
+            _ => self.buffer.push(character),
           },
           _ => unreachable!(),
         },
-        None => match character {
-          '\n' => {
-            line += 1;
-            position = 0;
-            self.tokens.push(Tokens::LineFeed);
-          }
-          ' ' => {
-            self.tokens.push(Tokens::Space);
-          }
-          '"' => {
-            pending_token = Some(Tokens::StringLiteral(strings));
-          }
-          '(' => {
-            comment_depth += 1;
-            pending_token = Some(Tokens::Comment);
-          }
-          '.' => {
-            self.tokens.push(Tokens::FullStop);
-          }
-          _ => {
-            self.tokens.push(Tokens::Unexpected {
-              character,
-              line,
-              position,
-            });
-          }
-        },
+        None => self.match_character(character),
       }
     }
 
-    if pending_token.is_none() {
+    self.read_result()
+  }
+
+  /// Return the reading result.
+  fn read_result(&self) -> Result<()> {
+    if self.pending_token.is_none() {
       Ok(())
     } else {
       eprintln!("This source file is not ready for review, yet.");
