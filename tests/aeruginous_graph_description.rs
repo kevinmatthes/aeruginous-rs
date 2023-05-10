@@ -110,7 +110,7 @@ macro_rules! make_test {
 }
 
 make_test!(@line
-  line_comment: "./graphs/testing/comment.agd" -> 0,
+  line_comment: "./graphs/examples/comment.agd" -> 0,
   line_delimiters: "./graphs/invalid/delimiters.agd" -> 0,
   line_more_delimiters: "./graphs/invalid/more_delimiters.agd" -> 0,
   line_question_mark: "./graphs/invalid/question_mark.agd" -> 0,
@@ -338,7 +338,7 @@ make_test!(@read @tokens
 );
 
 make_test!(@typos
-  typos_comment: "./graphs/testing/comment.agd" -> 0,
+  typos_comment: "./graphs/examples/comment.agd" -> 0,
   typos_delimiters: "./graphs/invalid/delimiters.agd" -> 3,
   typos_more_delimiters: "./graphs/invalid/more_delimiters.agd" -> 12,
   typos_question_mark: "./graphs/invalid/question_mark.agd" -> 1,
@@ -352,7 +352,7 @@ make_test!(@typos
 fn main_comment() {
   assert_eq!(
     AeruginousGraphDescription::main(&Some(PathBuf::from(
-      "./graphs/testing/comment.agd"
+      "./graphs/examples/comment.agd"
     ))),
     Ok(())
   );
