@@ -17,9 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{ColourMessage, PatternReader};
-use anstyle::AnsiColor;
-use std::io::stderr;
+use crate::{ceprintln, PatternReader};
 use sysexits::{ExitCode, Result};
 
 /// An Aeruginous Graph Description.
@@ -101,8 +99,11 @@ impl GraphDescription {
         if column > 80 {
           result += 1;
 
-          "  Line ".colour_message(AnsiColor::Yellow, &mut stderr())?;
-          eprintln!("{line} is {} characters too long.", column - 80);
+          ceprintln!(
+            "  Line "!Yellow,
+            "{line} is {} characters too long.",
+            column - 80
+          )?;
         }
 
         column = 0;
@@ -136,11 +137,12 @@ impl GraphDescription {
     if sum == 0 {
       Ok(())
     } else {
-      "Failed ".colour_message(AnsiColor::Red, &mut stderr())?;
-      eprintln!(
+      ceprintln!(
+        "Failed "!Red,
         "due to {sum} issue{} to fix.",
         if sum == 1 { "" } else { "s" }
-      );
+      )?;
+
       Err(ExitCode::DataErr)
     }
   }
@@ -301,8 +303,10 @@ impl GraphDescription {
         } => {
           result += 1;
 
-          "  Typo ".colour_message(AnsiColor::Green, &mut stderr())?;
-          eprintln!("'{character}' in line {line} at position {position}.");
+          ceprintln!(
+            "  Typo "!Green,
+            "'{character}' in line {line} at position {position}."
+          )?;
         }
         _ => continue,
       }
