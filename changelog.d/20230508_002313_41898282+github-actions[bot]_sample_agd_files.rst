@@ -15,7 +15,7 @@ Added
 
 - graphs/invalid/too_long_comments_and_typo.agd:  creation
 
-- graphs/testing/comment.agd:  creation
+- graphs/examples/comment.agd:  creation
 
 .. Changed
 .. .......
