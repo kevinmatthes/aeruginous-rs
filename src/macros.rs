@@ -17,6 +17,72 @@
 |                                                                              |
 \******************************************************************************/
 
+/// Write a coloured error message to [`std::io::Stderr`] without a line feed.
+///
+/// # Examples
+///
+/// ```rust
+/// use aeruginous::ceprint;
+///
+/// ceprint!("Green message."!Green).unwrap();
+/// ceprint!("Green"!Green, " and white message.").unwrap();
+/// ```
+///
+/// # Errors
+///
+/// See [`crate::ColourMessage`].
+#[macro_export]
+macro_rules! ceprint {
+  ( $message:literal ! $colour:ident ) => {
+    {
+      use $crate::ColourMessage;
+
+      $message.colour_message(
+        anstyle::AnsiColor::$colour,
+        &mut std::io::stderr()
+      )
+    }
+  };
+
+  ( $message:literal ! $colour:ident , $( $suffix:tt )+ ) => {
+    match $crate::ceprint!($message ! $colour) {
+      Ok(()) => Ok(eprint!( $( $suffix )+ )),
+      Err(e) => Err(e),
+    }
+  };
+}
+
+/// Write a coloured error message to [`std::io::Stderr`].
+///
+/// # Examples
+///
+/// ```rust
+/// use aeruginous::ceprintln;
+///
+/// ceprintln!("Green message."!Green).unwrap();
+/// ceprintln!("Green"!Green, " and white message.").unwrap();
+/// ```
+///
+/// # Errors
+///
+/// See [`crate::ColourMessage`].
+#[macro_export]
+macro_rules! ceprintln {
+  ( $message:literal ! $colour:ident ) => {
+    match $crate::ceprint!($message ! $colour) {
+      Ok(()) => Ok(eprintln!()),
+      Err(e) => Err(e),
+    }
+  };
+
+  ( $message:literal ! $colour:ident , $( $suffix:tt )+ ) => {
+    match $crate::ceprint!($message ! $colour) {
+      Ok(()) => Ok(eprintln!( $( $suffix )+ )),
+      Err(e) => Err(e),
+    }
+  };
+}
+
 /// Implement getter methods for the given struct fields.
 ///
 /// Getter methods usually only return either a reference to or a copy of the
