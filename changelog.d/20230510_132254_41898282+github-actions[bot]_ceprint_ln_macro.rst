@@ -2,11 +2,13 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- src/macros.rs:  ceprint
+
+- src/macros.rs:  ceprintln
+
 .. Changed
 .. .......
 ..
