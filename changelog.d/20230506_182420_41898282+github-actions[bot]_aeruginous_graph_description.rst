@@ -9,7 +9,7 @@ Added
 
 - src/graph_description.rs:  AgdTokens
 
-- src/graph_description.rs:  GraphDescription
+- src/graph_description.rs:  AeruginousGraphDescription
 
 - tests/graph_description.rs:  creation
 
