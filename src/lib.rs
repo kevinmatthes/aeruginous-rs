@@ -213,6 +213,7 @@
   rustdoc::broken_intra_doc_links,
   unused_imports,
   unused_macros,
+  unused_must_use,
   unused_parens
 )]
 #![allow(clippy::multiple_crate_versions)]
