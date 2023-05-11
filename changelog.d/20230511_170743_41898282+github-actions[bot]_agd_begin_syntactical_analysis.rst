@@ -2,11 +2,11 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- lints:  deny unused function results of functions marked ``#[must_use]``
+
 .. Changed
 .. .......
 ..
