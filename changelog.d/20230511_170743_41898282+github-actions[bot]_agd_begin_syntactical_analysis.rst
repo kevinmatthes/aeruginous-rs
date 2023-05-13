@@ -19,11 +19,11 @@ Added
 
 - lints:  deny unused variables
 
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Changed
+.......
+
+- PatternReader:  rely on std::fs::read_to_string
+
 .. Deprecated
 .. ..........
 ..
