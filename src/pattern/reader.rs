@@ -17,12 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{AppendAsLine, PatternBuffer};
-use std::{
-  fs::File,
-  io::{stdin, BufRead, BufReader},
-  path::PathBuf,
-};
+use crate::PatternBuffer;
+use std::{io::stdin, path::PathBuf};
 use sysexits::{ExitCode, Result};
 
 /// Read from common sources of input.
@@ -91,31 +87,14 @@ impl Reader for PathBuf {
     &self,
     show_error_messages: bool,
   ) -> Result<Box<dyn PatternBuffer>> {
-    match File::open(self) {
-      Ok(file) => {
-        let mut result = String::new();
-
-        for line in BufReader::new(file).lines() {
-          match line {
-            Ok(string) => result.append_as_line(string),
-            Err(error) => {
-              if show_error_messages {
-                eprintln!("{error}");
-              }
-
-              return Err(ExitCode::IoErr);
-            }
-          }
-        }
-
-        Ok(Box::new(result))
-      }
+    match std::fs::read_to_string(self) {
+      Ok(string) => Ok(Box::new(string)),
       Err(error) => {
         if show_error_messages {
           eprintln!("{error}");
         }
 
-        Err(ExitCode::NoInput)
+        Err(ExitCode::IoErr)
       }
     }
   }
