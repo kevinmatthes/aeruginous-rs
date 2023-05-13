@@ -23,9 +23,8 @@ use aeruginous::{
     Abbreviate, And, By, Comment, Connect, Declare, FullStop, Identifier,
     LineFeed, Space, StringLiteral, Unexpected,
   },
-  PatternReader,
 };
-use std::path::PathBuf;
+use std::{fs::read_to_string, path::PathBuf};
 use sysexits::ExitCode;
 
 macro_rules! make_test {
@@ -34,13 +33,9 @@ macro_rules! make_test {
       #[test]
       fn $name() {
         let agd = AeruginousGraphDescription::new();
-        let input = PathBuf::from($path)
-          .read()
-          .unwrap()
-          .try_into_string()
-          .unwrap();
+        let input = read_to_string($path).unwrap();
 
-        assert_eq!(agd.line_width(&input), Ok($lines));
+        assert_eq!(agd.check_line_width(&input), Ok($lines));
       }
     )+
   };
@@ -91,19 +86,28 @@ macro_rules! make_test {
     );
   };
 
-  ( @typos $($name:ident : $path:literal -> $typos:tt ),+ ) => {
+  ( @syntax $( $name:ident : $path:literal -> $syntax:tt ),+ ) => {
     $(
       #[test]
       fn $name() {
         let mut agd = AeruginousGraphDescription::new();
-        let input = PathBuf::from($path)
-          .read()
-          .unwrap()
-          .try_into_string()
-          .unwrap();
+        let input = read_to_string($path).unwrap();
         agd.read(&input).unwrap();
 
-        assert_eq!(agd.typos(), Ok($typos));
+        assert_eq!(agd.check_for_syntax_issues(), Ok($syntax));
+      }
+    )+
+  };
+
+  ( @typos $( $name:ident : $path:literal -> $typos:tt ),+ ) => {
+    $(
+      #[test]
+      fn $name() {
+        let mut agd = AeruginousGraphDescription::new();
+        let input = read_to_string($path).unwrap();
+        agd.read(&input).unwrap();
+
+        assert_eq!(agd.check_for_typos(), Ok($typos));
       }
     )+
   };
@@ -228,28 +232,27 @@ make_test!(@read @tokens @comment
 );
 
 make_test!(@read @tokens
-  read_tokens_valid_sequence_1: " " -> [Space],
+  read_tokens_valid_sequence_1: " " -> [Space(1)],
   read_tokens_valid_sequence_2: "." -> [FullStop],
-  read_tokens_valid_sequence_3: " ." -> [Space, FullStop],
-  read_tokens_valid_sequence_4: ". " -> [FullStop, Space],
-  read_tokens_valid_sequence_5: ".  " -> [FullStop, Space, Space],
-  read_tokens_valid_sequence_6: ".\n." -> [FullStop, LineFeed, FullStop],
-  read_tokens_valid_sequence_7: ".\n  " -> [FullStop, LineFeed, Space, Space],
+  read_tokens_valid_sequence_3: " ." -> [Space(1), FullStop],
+  read_tokens_valid_sequence_4: ". " -> [FullStop, Space(1)],
+  read_tokens_valid_sequence_5: ".  " -> [FullStop, Space(2)],
+  read_tokens_valid_sequence_6: ".\n." -> [FullStop, LineFeed(1), FullStop],
+  read_tokens_valid_sequence_7: ".\n  " -> [FullStop, LineFeed(1), Space(2)],
 
   read_tokens_valid_sequence_8: ".  \n." -> [
     FullStop,
-    Space,
-    Space,
-    LineFeed,
+    Space(2),
+    LineFeed(1),
     FullStop,
   ],
 
   read_tokens_valid_sequence_9: ". ()\n ." -> [
     FullStop,
-    Space,
+    Space(1),
     Comment,
-    LineFeed,
-    Space,
+    LineFeed(1),
+    Space(1),
     FullStop,
   ],
 
@@ -258,21 +261,21 @@ make_test!(@read @tokens
 
   read_tokens_valid_sequence_12: "(...) \"...\" (...)" -> [
     Comment,
-    Space,
+    Space(1),
     StringLiteral(0),
-    Space,
+    Space(1),
     Comment,
   ],
 
   read_tokens_valid_sequence_13: "(...) \"...\" (...) \"\" (...)" -> [
     Comment,
-    Space,
+    Space(1),
     StringLiteral(0),
-    Space,
+    Space(1),
     Comment,
-    Space,
+    Space(1),
     StringLiteral(1),
-    Space,
+    Space(1),
     Comment,
   ]
 );
@@ -291,26 +294,26 @@ make_test!(@read @tokens
       line: 1,
       position: 2,
     },
-    LineFeed,
+    LineFeed(1),
     FullStop,
   ],
 
   read_tokens_unexpected_3: " \r\n.\r\n ()" -> [
-    Space,
+    Space(1),
     Unexpected {
       character: '\r',
       line: 1,
       position: 2,
     },
-    LineFeed,
+    LineFeed(1),
     FullStop,
     Unexpected {
       character: '\r',
       line: 2,
       position: 2,
     },
-    LineFeed,
-    Space,
+    LineFeed(1),
+    Space(1),
     Comment,
   ],
 
@@ -321,20 +324,23 @@ make_test!(@read @tokens
       line: 1,
       position: 6,
     },
-    LineFeed,
+    LineFeed(1),
     FullStop,
-    Space,
-    Space,
+    Space(2),
     Comment,
-    Space,
+    Space(1),
     Unexpected {
       character: '\r',
       line: 2,
       position: 20,
     },
-    LineFeed,
+    LineFeed(1),
     FullStop,
   ]
+);
+
+make_test!(@syntax
+  syntax_missing_newline: "./graphs/invalid/missing_line_feed.agd" -> 1
 );
 
 make_test!(@typos
@@ -361,42 +367,37 @@ fn main_comment() {
 #[test]
 fn main_etc() {
   let mut agd = AeruginousGraphDescription::new();
-  let input = PathBuf::from("./graphs/examples/etc.agd")
-    .read()
-    .unwrap()
-    .try_into_string()
-    .unwrap();
+  let input = read_to_string("./graphs/examples/etc.agd").unwrap();
   agd.read(&input).unwrap();
 
   assert_eq!(
     agd.tokens(),
     &[
       Comment,
-      LineFeed,
-      LineFeed,
+      LineFeed(2),
       Abbreviate,
-      Space,
+      Space(1),
       StringLiteral(0),
-      Space,
+      Space(1),
       By,
-      Space,
+      Space(1),
       Identifier(0),
       FullStop,
-      LineFeed,
+      LineFeed(1),
       Declare,
-      Space,
+      Space(1),
       StringLiteral(1),
       FullStop,
-      LineFeed,
+      LineFeed(1),
       Connect,
-      Space,
+      Space(1),
       StringLiteral(2),
-      Space,
+      Space(1),
       And,
-      Space,
+      Space(1),
       Identifier(1),
       FullStop,
-      LineFeed,
+      LineFeed(1),
     ]
   );
 }
@@ -418,13 +419,13 @@ fn read_string_literals() {
     agd.tokens(),
     &[
       Comment,
-      Space,
+      Space(1),
       StringLiteral(0),
-      Space,
+      Space(1),
       Comment,
-      Space,
+      Space(1),
       StringLiteral(1),
-      Space,
+      Space(1),
       Comment
     ]
   );

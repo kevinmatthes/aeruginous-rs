@@ -5,19 +5,25 @@
 Added
 .....
 
-- src/graph_description.rs:  creation
+- graphs/invalid/bad_spacing.agd:  creation
 
-- src/graph_description.rs:  AgdTokens
+- graphs/invalid/missing_line_feed.agd:  creation
 
-- src/graph_description.rs:  AeruginousGraphDescription
+- graphs/invalid/wrong_order.agd:  creation
 
-- tests/graph_description.rs:  creation
+- lints:  deny unused assignments
 
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+- lints:  deny unused function results of functions marked ``#[must_use]``
+
+- lints:  deny unused parenthesis
+
+- lints:  deny unused variables
+
+Changed
+.......
+
+- PatternReader:  rely on std::fs::read_to_string
+
 .. Deprecated
 .. ..........
 ..
