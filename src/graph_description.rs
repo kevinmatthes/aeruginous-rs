@@ -73,9 +73,67 @@ impl GraphDescription {
     self.pending_token = Some(Tokens::Identifier(self.count_identifiers));
   }
 
-  /// Assume that the next token is going to be a string literal.
-  fn assume_string(&mut self) {
-    self.pending_token = Some(Tokens::StringLiteral(self.count_strings));
+  /// Assume that the next token is going to be a line feed.
+  fn assume_line_feed(&mut self) {
+    self.line += 1;
+    self.position = 0;
+    self.pending_token = Some(Tokens::LineFeed(1));
+  }
+
+  /// The detected syntax issues in the input source file.
+  ///
+  /// These mistakes are critical, so they will be written in red.
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::IoErr`]
+  pub fn check_for_syntax_issues(&mut self) -> Result<usize> {
+    let mut result = 0;
+
+    if !matches!(self.tokens.last(), Some(Tokens::LineFeed(_))) {
+      result += 1;
+
+      ceprintln!(
+        "Syntax "!Red,
+        "problem:  every source file needs to be terminated by a line feed."
+      )?;
+    }
+
+    Ok(result)
+  }
+
+  /// The detected typos in the input source file.
+  ///
+  /// The typos will be named well human readable by writing the found
+  /// character and the line as well as the column position it is found in to
+  /// [`std::io::Stderr`].  As typos are mistakes which are easy to fix, the
+  /// error message will be written in green.
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::IoErr`]
+  pub fn check_for_typos(&self) -> Result<usize> {
+    let mut result = 0;
+
+    for token in &self.tokens {
+      match token {
+        Tokens::Unexpected {
+          character,
+          line,
+          position,
+        } => {
+          result += 1;
+
+          ceprintln!(
+            "  Typo "!Green,
+            "'{character}' in line {line} at position {position}."
+          )?;
+        }
+        _ => continue,
+      }
+    }
+
+    Ok(result)
   }
 
   /// Determine whether all lines fit the line width of 80 characters.
@@ -89,7 +147,7 @@ impl GraphDescription {
   /// # Errors
   ///
   /// - [`sysexits::ExitCode::IoErr`]
-  pub fn line_width(&self, input: &str) -> Result<usize> {
+  pub fn check_line_width(&self, input: &str) -> Result<usize> {
     let mut column = 0;
     let mut line = 1;
     let mut result = 0;
@@ -116,6 +174,13 @@ impl GraphDescription {
     Ok(result)
   }
 
+  /// Push the pending token and match the current character.
+  fn finalise_pending_token(&mut self, token: Tokens, character: char) {
+    self.tokens.push(token);
+    self.pending_token = None;
+    self.match_character(character);
+  }
+
   /// The main function for the Aeruginous Graph Description processing.
   ///
   /// # Errors
@@ -124,15 +189,16 @@ impl GraphDescription {
   ///
   /// - [`crate::PatternBuffer::try_into_string`]
   /// - [`PatternReader::read`]
+  /// - [`Self::check_for_typos`]
   /// - [`Self::read`]
-  /// - [`Self::typos`]
   pub fn main(input: &Option<std::path::PathBuf>) -> Result<()> {
     let mut agd = Self::new();
     let input = input.read()?.try_into_string()?;
-    let lines = agd.line_width(&input)?;
+    let lines = agd.check_line_width(&input)?;
     agd.read(&input)?;
-    let typos = agd.typos()?;
-    let sum = lines + typos;
+    let typos = agd.check_for_typos()?;
+    let syntax = agd.check_for_syntax_issues()?;
+    let sum = lines + syntax + typos;
 
     if sum == 0 {
       Ok(())
@@ -150,9 +216,11 @@ impl GraphDescription {
   /// Match an input character against the possible redirections.
   fn match_character(&mut self, character: char) {
     match character {
-      '\n' => self.push_line_feed(),
-      ' ' => self.tokens.push(Tokens::Space),
-      '"' => self.assume_string(),
+      '\n' => self.assume_line_feed(),
+      ' ' => self.pending_token = Some(Tokens::Space(1)),
+      '"' => {
+        self.pending_token = Some(Tokens::StringLiteral(self.count_strings));
+      }
       '(' => self.assume_comment(),
       '.' => self.tokens.push(Tokens::FullStop),
       'A'..='Z' | 'a'..='z' => self.assume_identifier(character),
@@ -196,13 +264,6 @@ impl GraphDescription {
         self.count_identifiers += 1;
       }
     }
-  }
-
-  /// Push a line feed to the list of tokens.
-  fn push_line_feed(&mut self) {
-    self.line += 1;
-    self.position = 0;
-    self.tokens.push(Tokens::LineFeed);
   }
 
   /// Push a string literal to the list of tokens.
@@ -249,70 +310,67 @@ impl GraphDescription {
             }
             _ => continue,
           },
-          Tokens::Identifier(_) => match character {
-            '0'..='9' | 'A'..='Z' | 'a'..='z' | '_' | '-' => {
+          Tokens::Identifier(_) => {
+            if matches!(
+              character,
+              '0'..='9'
+              | 'A'..='Z'
+              | 'a'..='z'
+              | '_'
+              | '-'
+            ) {
               self.buffer.push(character);
-            }
-            _ => {
+            } else {
               self.push_identifier();
               self.match_character(character);
             }
-          },
-          Tokens::StringLiteral(_) => match character {
-            '"' => self.push_string(),
-            _ => self.buffer.push(character),
-          },
+          }
+          Tokens::LineFeed(n) => {
+            if character == '\n' {
+              self.line += 1;
+              self.position = 0;
+              self.pending_token = Some(Tokens::LineFeed(n + 1));
+            } else {
+              self.finalise_pending_token(token, character);
+            }
+          }
+          Tokens::Space(n) => {
+            if character == ' ' {
+              self.pending_token = Some(Tokens::Space(n + 1));
+            } else {
+              self.finalise_pending_token(token, character);
+            }
+          }
+          Tokens::StringLiteral(_) => {
+            if character == '"' {
+              self.push_string();
+            } else {
+              self.buffer.push(character);
+            }
+          }
           _ => unreachable!(),
         },
         None => self.match_character(character),
       }
     }
 
-    self.read_result()
-  }
-
-  /// Return the reading result.
-  fn read_result(&self) -> Result<()> {
     if self.pending_token.is_none() {
       Ok(())
     } else {
-      eprintln!("This source file is not ready for review, yet.");
-      Err(ExitCode::DataErr)
-    }
-  }
-
-  /// The detected typos in the input source file.
-  ///
-  /// The typos will be named well human readable by writing the found
-  /// character and the line as well as the column position it is found in to
-  /// [`std::io::Stderr`].  As typos are mistakes which are easy to fix, the
-  /// error message will be written in green.
-  ///
-  /// # Errors
-  ///
-  /// - [`sysexits::ExitCode::IoErr`]
-  pub fn typos(&self) -> Result<usize> {
-    let mut result = 0;
-
-    for token in &self.tokens {
-      match token {
-        Tokens::Unexpected {
-          character,
-          line,
-          position,
-        } => {
-          result += 1;
-
-          ceprintln!(
-            "  Typo "!Green,
-            "'{character}' in line {line} at position {position}."
-          )?;
+      match self.pending_token {
+        Some(token) => {
+          if matches!(token, Tokens::LineFeed(_) | Tokens::Space(_)) {
+            self.tokens.push(token);
+            self.pending_token = None;
+            Ok(())
+          } else {
+            eprintln!("This source file is not ready for review, yet.");
+            Err(ExitCode::DataErr)
+          }
         }
-        _ => continue,
+        None => unreachable!(),
       }
     }
-
-    Ok(result)
   }
 }
 
@@ -350,10 +408,10 @@ pub enum Tokens {
   Identifier(usize),
 
   /// A simple line feed.
-  LineFeed,
+  LineFeed(usize),
 
   /// A space character.
-  Space,
+  Space(usize),
 
   /// A string literal's index within a [`GraphDescription`]'s set of string
   /// literals.
