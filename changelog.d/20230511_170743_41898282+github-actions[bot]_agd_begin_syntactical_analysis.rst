@@ -5,7 +5,13 @@
 Added
 .....
 
+- lints:  deny unused assignments
+
 - lints:  deny unused function results of functions marked ``#[must_use]``
+
+- lints:  deny unused parenthesis
+
+- lints:  deny unused variables
 
 .. Changed
 .. .......
