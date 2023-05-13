@@ -5,6 +5,12 @@
 Added
 .....
 
+- graphs/invalid/bad_spacing.agd:  creation
+
+- graphs/invalid/missing_line_feed.agd:  creation
+
+- graphs/invalid/wrong_order.agd:  creation
+
 - lints:  deny unused assignments
 
 - lints:  deny unused function results of functions marked ``#[must_use]``
