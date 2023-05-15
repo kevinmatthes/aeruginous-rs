@@ -19,7 +19,7 @@
 
 use anstyle::{AnsiColor, Style};
 use std::io::Write;
-use sysexits::{ExitCode, Result};
+use sysexits::Result;
 
 /// Write an instance to a stream using [`AnsiColor`]s for colouring.
 pub trait ColourMessage {
@@ -58,19 +58,11 @@ impl ColourMessage for str {
   ) -> Result<()> {
     let colour = Style::new().fg_color(Some(colour.into()));
 
-    colour.write_to(stream).map_or_else(
-      |_| Err(ExitCode::IoErr),
-      |()| {
-        write!(stream, "{self}").map_or_else(
-          |_| Err(ExitCode::IoErr),
-          |()| {
-            colour
-              .write_reset_to(stream)
-              .map_or_else(|_| Err(ExitCode::IoErr), |()| Ok(()))
-          },
-        )
-      },
-    )
+    colour.write_to(stream)?;
+    write!(stream, "{self}")?;
+    colour.write_reset_to(stream)?;
+
+    Ok(())
   }
 }
 
