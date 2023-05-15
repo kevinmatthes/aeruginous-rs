@@ -340,7 +340,8 @@ make_test!(@read @tokens
 );
 
 make_test!(@syntax
-  syntax_missing_newline: "./graphs/invalid/missing_line_feed.agd" -> 1
+  syntax_missing_newline: "./graphs/invalid/missing_line_feed.agd" -> 1,
+  syntax_starts_with_obsolete_spaces: "./graphs/invalid/bad_spacing.agd" -> 1
 );
 
 make_test!(@typos
