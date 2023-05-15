@@ -1,0 +1,38 @@
+.. A new scriv changelog fragment.
+..
+.. Uncomment the header that is right (remove the leading dots).
+..
+Added
+.....
+
+- src/traits/to_stderr.rs:  creation
+
+- src/traits/to_stderr.rs:  ToStderr
+
+- tests/to_stderr.rs:  creation
+
+Changed
+.......
+
+- apply new features of sysexits v0.6.0
+
+.. Deprecated
+.. ..........
+..
+.. - A bullet item for the Deprecated category.
+..
+.. Fixed
+.. .....
+..
+.. - A bullet item for the Fixed category.
+..
+.. Removed
+.. .......
+..
+.. - A bullet item for the Removed category.
+..
+.. Security
+.. ........
+..
+.. - A bullet item for the Security category.
+..

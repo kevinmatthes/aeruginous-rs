@@ -17,9 +17,9 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::PatternBuffer;
+use crate::{PatternBuffer, ToStderr};
 use std::{io::stdin, path::PathBuf};
-use sysexits::{ExitCode, Result};
+use sysexits::Result;
 
 /// Read from common sources of input.
 pub trait Reader {
@@ -34,9 +34,7 @@ pub trait Reader {
   ///
   /// # Errors
   ///
-  /// - [`sysexits::ExitCode::DataErr`]
-  /// - [`sysexits::ExitCode::IoErr`]
-  /// - [`sysexits::ExitCode::NoInput`]
+  /// See [`sysexits::ExitCode`].
   fn behaviour(
     &self,
     show_error_messages: bool,
@@ -89,13 +87,7 @@ impl Reader for PathBuf {
   ) -> Result<Box<dyn PatternBuffer>> {
     match std::fs::read_to_string(self) {
       Ok(string) => Ok(Box::new(string)),
-      Err(error) => {
-        if show_error_messages {
-          eprintln!("{error}");
-        }
-
-        Err(ExitCode::IoErr)
-      }
+      Err(error) => error.to_stderr(show_error_messages),
     }
   }
 }
@@ -110,13 +102,7 @@ impl Reader for std::io::Stdin {
     for line in stdin().lines() {
       match line {
         Ok(string) => result.push_str(&string),
-        Err(error) => {
-          if show_error_messages {
-            eprintln!("{error}");
-          }
-
-          return Err(ExitCode::IoErr);
-        }
+        Err(error) => return error.to_stderr(show_error_messages),
       }
     }
 

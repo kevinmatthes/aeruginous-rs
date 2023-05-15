@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::PatternBuffer;
+use crate::{PatternBuffer, ToStderr};
 use std::{fs::File, io::Write, path::PathBuf};
 use sysexits::{ExitCode, Result};
 
@@ -60,9 +60,7 @@ pub trait Writer {
   ///
   /// # Errors
   ///
-  /// - [`sysexits::ExitCode::CantCreat`]
-  /// - [`sysexits::ExitCode::DataErr`]
-  /// - [`sysexits::ExitCode::IoErr`]
+  /// See [`sysexits::ExitCode`].
   fn behaviour(
     &self,
     buffer: Box<dyn PatternBuffer>,
@@ -172,22 +170,10 @@ impl Writer for PathBuf {
               Err(ExitCode::IoErr)
             }
           }
-          Err(error) => {
-            if show_error_messages {
-              eprintln!("{error}");
-            }
-
-            Err(ExitCode::IoErr)
-          }
+          Err(error) => error.to_stderr(show_error_messages),
         }
       }
-      Err(error) => {
-        if show_error_messages {
-          eprintln!("{error}");
-        }
-
-        Err(ExitCode::CantCreat)
-      }
+      Err(error) => error.to_stderr(show_error_messages),
     }
   }
 }

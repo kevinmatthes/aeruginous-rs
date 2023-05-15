@@ -238,7 +238,7 @@ pub use crate::{
     Reader as PatternReader, Writer as PatternWriter,
   },
   running::Running,
-  traits::{AppendAsLine, ColourMessage, ConvertBuffer, Prefer},
+  traits::{AppendAsLine, ColourMessage, ConvertBuffer, Prefer, ToStderr},
   version::Version,
 };
 

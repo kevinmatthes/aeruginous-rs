@@ -17,63 +17,24 @@
 |                                                                              |
 \******************************************************************************/
 
-use anstyle::{AnsiColor, Style};
-use std::io::Write;
-use sysexits::Result;
+use aeruginous::ToStderr;
+use std::io::{Error, ErrorKind};
+use sysexits::ExitCode;
 
-/// Write an instance to a stream using [`AnsiColor`]s for colouring.
-pub trait ColourMessage {
-  /// Write this instance to the given stream using an [`AnsiColor`].
-  ///
-  /// The instance this method is called on will be written to the given stream.
-  /// Before the instance is written, it is attempted to set the output colour
-  /// to the given [`AnsiColor`].  After the instance was written, the colour
-  /// will be reset.
-  ///
-  /// # Examples
-  ///
-  /// ```rust
-  /// use aeruginous::ColourMessage;
-  /// use anstyle::AnsiColor::Red;
-  /// use std::io::stderr;
-  ///
-  /// assert_eq!("Error!".colour_message(Red, &mut stderr()), Ok(()));
-  /// ```
-  ///
-  /// # Errors
-  ///
-  /// - [`sysexits::ExitCode::IoErr`]
-  fn colour_message(
-    &self,
-    colour: AnsiColor,
-    stream: &mut dyn Write,
-  ) -> Result<()>;
+#[test]
+fn no() {
+  assert_eq!(
+    Error::from(ErrorKind::InvalidData).to_stderr(false),
+    Err::<(), ExitCode>(ExitCode::DataErr)
+  );
 }
 
-impl ColourMessage for str {
-  fn colour_message(
-    &self,
-    colour: AnsiColor,
-    stream: &mut dyn Write,
-  ) -> Result<()> {
-    let colour = Style::new().fg_color(Some(colour.into()));
-
-    colour.write_to(stream)?;
-    write!(stream, "{self}")?;
-    colour.write_reset_to(stream)?;
-
-    Ok(())
-  }
-}
-
-impl ColourMessage for String {
-  fn colour_message(
-    &self,
-    colour: AnsiColor,
-    stream: &mut dyn Write,
-  ) -> Result<()> {
-    self.as_str().colour_message(colour, stream)
-  }
+#[test]
+fn yes() {
+  assert_eq!(
+    Error::from(ErrorKind::InvalidData).to_stderr(true),
+    Err::<(), ExitCode>(ExitCode::DataErr)
+  );
 }
 
 /******************************************************************************/

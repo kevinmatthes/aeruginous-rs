@@ -23,9 +23,14 @@
 ///
 /// ```rust
 /// use aeruginous::ceprint;
+/// use sysexits::Result;
 ///
-/// ceprint!("Green message."!Green).unwrap();
-/// ceprint!("Green"!Green, " and white message.").unwrap();
+/// fn function() -> Result<()> {
+///   ceprint!("Green message."!Green);
+///   ceprint!("Green"!Green, " and white message.");
+///
+///   Ok(())
+/// }
 /// ```
 ///
 /// # Errors
@@ -40,15 +45,13 @@ macro_rules! ceprint {
       $message.colour_message(
         anstyle::AnsiColor::$colour,
         &mut std::io::stderr()
-      )
+      )?;
     }
   };
 
   ( $message:literal ! $colour:ident , $( $suffix:tt )+ ) => {
-    match $crate::ceprint!($message ! $colour) {
-      Ok(()) => Ok(eprint!( $( $suffix )+ )),
-      Err(e) => Err(e),
-    }
+    $crate::ceprint!($message ! $colour);
+    eprint!( $( $suffix )+ );
   };
 }
 
@@ -58,9 +61,14 @@ macro_rules! ceprint {
 ///
 /// ```rust
 /// use aeruginous::ceprintln;
+/// use sysexits::Result;
 ///
-/// ceprintln!("Green message."!Green).unwrap();
-/// ceprintln!("Green"!Green, " and white message.").unwrap();
+/// fn function() -> Result<()> {
+///   ceprintln!("Green message."!Green);
+///   ceprintln!("Green"!Green, " and white message.");
+///
+///   Ok(())
+/// }
 /// ```
 ///
 /// # Errors
@@ -69,17 +77,13 @@ macro_rules! ceprint {
 #[macro_export]
 macro_rules! ceprintln {
   ( $message:literal ! $colour:ident ) => {
-    match $crate::ceprint!($message ! $colour) {
-      Ok(()) => Ok(eprintln!()),
-      Err(e) => Err(e),
-    }
+    $crate::ceprint!($message ! $colour);
+    eprintln!();
   };
 
   ( $message:literal ! $colour:ident , $( $suffix:tt )+ ) => {
-    match $crate::ceprint!($message ! $colour) {
-      Ok(()) => Ok(eprintln!( $( $suffix )+ )),
-      Err(e) => Err(e),
-    }
+    $crate::ceprint!($message ! $colour);
+    eprintln!( $( $suffix )+ );
   };
 }
 

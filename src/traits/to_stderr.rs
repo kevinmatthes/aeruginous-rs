@@ -17,62 +17,29 @@
 |                                                                              |
 \******************************************************************************/
 
-use anstyle::{AnsiColor, Style};
-use std::io::Write;
 use sysexits::Result;
 
-/// Write an instance to a stream using [`AnsiColor`]s for colouring.
-pub trait ColourMessage {
-  /// Write this instance to the given stream using an [`AnsiColor`].
+/// Convert an instance into both a [`sysexits::ExitCode`] and an error message.
+pub trait ToStderr<T> {
+  /// Convert this instance.
   ///
-  /// The instance this method is called on will be written to the given stream.
-  /// Before the instance is written, it is attempted to set the output colour
-  /// to the given [`AnsiColor`].  After the instance was written, the colour
-  /// will be reset.
-  ///
-  /// # Examples
-  ///
-  /// ```rust
-  /// use aeruginous::ColourMessage;
-  /// use anstyle::AnsiColor::Red;
-  /// use std::io::stderr;
-  ///
-  /// assert_eq!("Error!".colour_message(Red, &mut stderr()), Ok(()));
-  /// ```
+  /// If the boolean parameter is set to `true`, an appropriate error message
+  /// for this instance will be written to [`std::io::Stderr`].  Furthermore,
+  /// this instance will be converted into a variant of [`sysexits::ExitCode`].
   ///
   /// # Errors
   ///
-  /// - [`sysexits::ExitCode::IoErr`]
-  fn colour_message(
-    &self,
-    colour: AnsiColor,
-    stream: &mut dyn Write,
-  ) -> Result<()>;
+  /// See [`sysexits::ExitCode`].
+  fn to_stderr(self, message: bool) -> Result<T>;
 }
 
-impl ColourMessage for str {
-  fn colour_message(
-    &self,
-    colour: AnsiColor,
-    stream: &mut dyn Write,
-  ) -> Result<()> {
-    let colour = Style::new().fg_color(Some(colour.into()));
+impl<T> ToStderr<T> for std::io::Error {
+  fn to_stderr(self, message: bool) -> Result<T> {
+    if message {
+      eprintln!("{self}");
+    }
 
-    colour.write_to(stream)?;
-    write!(stream, "{self}")?;
-    colour.write_reset_to(stream)?;
-
-    Ok(())
-  }
-}
-
-impl ColourMessage for String {
-  fn colour_message(
-    &self,
-    colour: AnsiColor,
-    stream: &mut dyn Write,
-  ) -> Result<()> {
-    self.as_str().colour_message(colour, stream)
+    Err(self.into())
   }
 }
 
