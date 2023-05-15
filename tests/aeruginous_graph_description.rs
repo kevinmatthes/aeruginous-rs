@@ -57,7 +57,7 @@ macro_rules! make_test {
       #[test]
       fn $name() {
         let mut agd = AeruginousGraphDescription::new();
-        assert_eq!(agd.read($string), Err(sysexits::ExitCode::DataErr));
+        assert_eq!(agd.read($string), Err(ExitCode::DataErr));
       }
     )+
   };
