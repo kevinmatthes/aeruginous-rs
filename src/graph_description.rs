@@ -96,7 +96,7 @@ impl GraphDescription {
       ceprintln!(
         "Syntax "!Red,
         "problem:  every source file needs to be terminated by a line feed."
-      )?;
+      );
     }
 
     Ok(result)
@@ -127,7 +127,7 @@ impl GraphDescription {
           ceprintln!(
             "  Typo "!Green,
             "'{character}' in line {line} at position {position}."
-          )?;
+          );
         }
         _ => continue,
       }
@@ -161,7 +161,7 @@ impl GraphDescription {
             "  Line "!Yellow,
             "{line} is {} characters too long.",
             column - 80
-          )?;
+          );
         }
 
         column = 0;
@@ -207,7 +207,7 @@ impl GraphDescription {
         "Failed "!Red,
         "due to {sum} issue{} to fix.",
         if sum == 1 { "" } else { "s" }
-      )?;
+      );
 
       Err(ExitCode::DataErr)
     }
