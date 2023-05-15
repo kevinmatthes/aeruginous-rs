@@ -90,6 +90,10 @@ impl GraphDescription {
   pub fn check_for_syntax_issues(&self) -> Result<usize> {
     let mut result = 0;
 
+    if self.starts_with_obsolete_spaces()? {
+      result += 1;
+    }
+
     if self.has_no_trailing_line_feed()? {
       result += 1;
     }
@@ -379,6 +383,20 @@ impl GraphDescription {
         }
         None => unreachable!(),
       }
+    }
+  }
+
+  /// Check whether the source file starts with obsolete spaces.
+  fn starts_with_obsolete_spaces(&self) -> Result<bool> {
+    if matches!(self.tokens.first(), Some(Tokens::Space(_))) {
+      ceprintln!(
+        "Syntax "!Red,
+        "rule violation:  the source file starts with obsolete spaces."
+      );
+
+      Ok(true)
+    } else {
+      Ok(false)
     }
   }
 }
