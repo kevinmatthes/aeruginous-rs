@@ -87,16 +87,11 @@ impl GraphDescription {
   /// # Errors
   ///
   /// - [`sysexits::ExitCode::IoErr`]
-  pub fn check_for_syntax_issues(&mut self) -> Result<usize> {
+  pub fn check_for_syntax_issues(&self) -> Result<usize> {
     let mut result = 0;
 
-    if !matches!(self.tokens.last(), Some(Tokens::LineFeed(_))) {
+    if self.has_no_trailing_line_feed()? {
       result += 1;
-
-      ceprintln!(
-        "Syntax "!Red,
-        "problem:  every source file needs to be terminated by a line feed."
-      );
     }
 
     Ok(result)
@@ -179,6 +174,20 @@ impl GraphDescription {
     self.tokens.push(token);
     self.pending_token = None;
     self.match_character(character);
+  }
+
+  /// Check whether there is a trailing line feed in the given source file.
+  fn has_no_trailing_line_feed(&self) -> Result<bool> {
+    if matches!(self.tokens.last(), Some(Tokens::LineFeed(_)) | None) {
+      Ok(false)
+    } else {
+      ceprintln!(
+        "Syntax "!Red,
+        "rule violation:  each source file must be ended by line feeds."
+      );
+
+      Ok(true)
+    }
   }
 
   /// The main function for the Aeruginous Graph Description processing.
