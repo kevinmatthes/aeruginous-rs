@@ -11,11 +11,11 @@ Added
 
 - tests/to_stderr.rs:  creation
 
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Changed
+.......
+
+- apply new features of sysexits v0.6.0
+
 .. Deprecated
 .. ..........
 ..
