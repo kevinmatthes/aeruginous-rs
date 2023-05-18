@@ -37,7 +37,6 @@ The Aeruginous Open Source Development Toolbox.
    1. [`graph-description`](#graph-description)
    1. [`rs2md`](#rs2md)
    1. [`uncrlf`](#uncrlf)
-1. [Notes](#notes)
 
 ## License
 
@@ -169,11 +168,5 @@ comments).  If neither option is given, nothing will be extracted.
 Source code should have a uniform appearance.  Some text editors terminate
 lines by Carriage Return Line Feeds (CRLFs, `\r\n`).  This subcommand will
 remove those from the given file.
-
-# Notes
-
-All deprecated symbols, if any, will be removed with the next respective
-minor release.  A major release will remove all deprecated symbols, if any,
-of the previous major version series.
 
 <!------------------------------------------------------------------------->
