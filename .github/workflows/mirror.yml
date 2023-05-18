@@ -83,7 +83,7 @@ jobs:
             `'<!-- cov -->/g' src/lib.rs >> lib.rs \
           && mv lib.rs src/ \
           && git add src/lib.rs \
-          && git commit -m \
+          && git commit --allow-empty -m \
                  "`git config --list \
                  | grep user\.name \
                  | cut -d= -f2`:  Update Coverage in src/lib.rs"
@@ -92,7 +92,7 @@ jobs:
         run: |
           cargo r -- rs2md -i src/lib.rs --outer -o README.md \
           && git add README.md \
-          && git commit -m \
+          && git commit --allow-empty -m \
                  "`git config --list \
                  | grep user\.name \
                  | cut -d= -f2`:  Mirror README.md from src/lib.rs"
