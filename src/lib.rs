@@ -57,6 +57,8 @@
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //!
+//! The current code coverage is **<!-- cov --><!-- cov -->**.
+//!
 //! ## License
 //!
 //! This project's license is **GPL-3.0**.  The whole license text can be found
