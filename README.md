@@ -34,11 +34,16 @@ The Aeruginous Open Source Development Toolbox.
 1. [Meaning of the Name](#meaning-of-the-name)
 1. [Supported Subcommands](#supported-subcommands)
    1. [`cffreference`](#cffreference)
+   1. [`rs2md`](#rs2md)
+   1. [`uncrlf`](#uncrlf)
+<!--
+   1. [`cffreference`](#cffreference)
    1. [`graph-description`](#graph-description)
    1. [`rs2md`](#rs2md)
    1. [`uncrlf`](#uncrlf)
+-->
 
-The current code coverage is **<!-- cov -->65.37%<!-- cov -->**.
+The current code coverage is **<!-- cov -->65.67%<!-- cov -->**.
 
 ## License
 
@@ -126,6 +131,7 @@ If the input file is omitted, the input information are attemted to be read
 from [`std::io::Stdin`].  Likewise, omitting the output file will cause
 `cffreference` to write to [`std::io::Stdout`].
 
+<!--
 ### `graph-description`
 
 > To be called with:
@@ -139,6 +145,7 @@ English ensuring that no programming skills at all are required to learn it.
 
 This mode is not finished, yet, but it can already detect some issues
 regarding given input files.
+-->
 
 ### `rs2md`
 
