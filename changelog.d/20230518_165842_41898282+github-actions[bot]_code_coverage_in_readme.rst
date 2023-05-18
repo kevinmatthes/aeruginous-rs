@@ -2,11 +2,13 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- CI:  code coverage update on PR
+
+- README:  mention current code coverage in summary section
+
 .. Changed
 .. .......
 ..
