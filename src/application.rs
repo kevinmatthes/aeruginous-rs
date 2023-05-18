@@ -43,6 +43,7 @@ pub enum Action {
     output_file: Option<PathBuf>,
   },
 
+  /*
   /// Rate an Aeruginous Graph Description (AGD).
   #[command(aliases = ["agd"])]
   GraphDescription {
@@ -50,7 +51,7 @@ pub enum Action {
     #[arg(short = 'i')]
     input_file: Option<PathBuf>,
   },
-
+  */
   /// Extract Markdown code from Rust documentation comments.
   Rs2md {
     /// Whether to extract Rust documentation line comments starting with `///`.
@@ -194,9 +195,11 @@ impl Action {
         output_file,
       } => (|s: String| -> String { Self::cffreference(&s) })
         .io_append(input_file, output_file),
+      /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)
       }
+      */
       Self::Rs2md {
         extract_inner,
         extract_outer,
