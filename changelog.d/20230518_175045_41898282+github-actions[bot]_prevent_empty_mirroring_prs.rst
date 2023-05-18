@@ -17,11 +17,11 @@
 ..
 .. - A bullet item for the Deprecated category.
 ..
-.. Fixed
-.. .....
-..
-.. - A bullet item for the Fixed category.
-..
+Fixed
+.....
+
+- CI:  prevent empty mirroring PRs
+
 .. Removed
 .. .......
 ..
