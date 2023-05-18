@@ -5,7 +5,7 @@
 Added
 .....
 
-- CI:  code coverage update on PR
+- CI:  code coverage update on mirroring PR
 
 - README:  mention current code coverage in summary section
 
