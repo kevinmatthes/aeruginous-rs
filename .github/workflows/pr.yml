@@ -35,7 +35,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 jobs:
@@ -56,10 +56,12 @@ jobs:
       - name: rustup
         run: rustup update
 
+      - name: user
+        uses: fregante/setup-git-user@v2.0.1
+
       - name: checkout
         uses: actions/checkout@v3.5.2
         with:
-          persist-credentials: false
           ref: ${{ github.head_ref }}
 
       - name: requirements
@@ -79,5 +81,21 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2.3.1
         with:
           filePath: message.md
+
+      - name: ratio
+        run: |
+          sed \
+            's/<!-- cov -->.*<!-- cov -->/<!-- cov -->'` \
+            pycobertura show -f csv --delimiter , cobertura.xml \
+            | grep TOTAL \
+            | cut -d, -f4 \
+            `'<!-- cov -->/g' src/lib.rs >> lib.rs \
+          && mv lib.rs src/ \
+          && git add src/lib.rs \
+          && git commit -m \
+                 "`git config --list \
+                 | grep user\.name \
+                 | cut -d= -f2`:  Update Coverage in src/lib.rs" \
+          && git push
 
 ################################################################################
