@@ -2,11 +2,13 @@
 ..
 .. Uncomment the header that is right (remove the leading dots).
 ..
-.. Added
-.. .....
-..
-.. - A bullet item for the Added category.
-..
+Added
+.....
+
+- README:  comment out AGD mode description for intermediate release
+
+- src/application.rs:  comment out AGD mode for intermediate release
+
 .. Changed
 .. .......
 ..
