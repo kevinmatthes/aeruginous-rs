@@ -22,11 +22,11 @@
 ..
 .. - A bullet item for the Fixed category.
 ..
-.. Removed
-.. .......
-..
-.. - A bullet item for the Removed category.
-..
+Removed
+.......
+
+- README:  notes on deprecated symbols
+
 .. Security
 .. ........
 ..
