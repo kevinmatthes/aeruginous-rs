@@ -37,4 +37,7 @@ build_rs_cov.profraw
 cobertura.xml
 tarpaulin-report.html
 
+# GitHub Action artifacts.
+requirements.txt
+
 ################################################################################
