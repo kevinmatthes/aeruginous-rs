@@ -154,12 +154,6 @@ Added
 
 - tests/traits/colour_message.rs:  creation
 
-- Cargo.toml:  project keyword ``cff``
-
-- Cargo.toml:  project keyword ``cffref``
-
-- Cargo.toml:  project keyword ``cff-reference``
-
 - Cargo.toml:  project keyword ``citation-file-format``
 
 - CITATION.cff:  project keyword ``cff``
@@ -233,6 +227,8 @@ Fixed
 
 Removed
 .......
+
+- Cargo.toml:  project keyword ``cffreference``
 
 - PatternIOProcessor::process
 
