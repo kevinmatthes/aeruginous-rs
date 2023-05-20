@@ -85,7 +85,6 @@ jobs:
             kevinmatthes
           branch: documentation/msrv
           branch-suffix: timestamp
-          delete-branch: true
           labels: |
             enhancement
           milestone: 3
