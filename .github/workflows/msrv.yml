@@ -34,6 +34,7 @@ name: msrv
 on:
   schedule:
     - cron: '0 0 * * TUE'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -82,7 +83,9 @@ jobs:
         with:
           assignees: |
             kevinmatthes
-          branch-suffix: short-commit-hash
+          branch: documentation/msrv
+          branch-suffix: timestamp
+          delete-branch: true
           labels: |
             enhancement
           milestone: 3
