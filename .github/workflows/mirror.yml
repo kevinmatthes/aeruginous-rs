@@ -37,6 +37,7 @@ on:
       - main
     paths:
       - src/lib.rs
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -102,7 +103,9 @@ jobs:
         with:
           assignees: |
             kevinmatthes
-          branch-suffix: short-commit-hash
+          branch: documentation/mirror
+          branch-suffix: timestamp
+          delete-branch: true
           labels: |
             documentation
           milestone: 3
