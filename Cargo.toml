@@ -44,10 +44,6 @@ homepage = "https://github.com/kevinmatthes/aeruginous-rs"
 include = ["/src"]
 keywords = [
   "aeruginous",
-  "cff",
-  "cffref",
-  "cffreference",
-  "cff-reference",
   "citation-file-format",
   "rs2md",
   "uncrlf"
