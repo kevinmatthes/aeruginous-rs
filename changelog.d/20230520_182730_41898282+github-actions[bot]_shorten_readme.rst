@@ -7,11 +7,11 @@
 ..
 .. - A bullet item for the Added category.
 ..
-.. Changed
-.. .......
-..
-.. - A bullet item for the Changed category.
-..
+Changed
+.......
+
+- README:  unite sections "Introduction" and "Meaning of the Name"
+
 .. Deprecated
 .. ..........
 ..
