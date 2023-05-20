@@ -105,7 +105,6 @@ jobs:
             kevinmatthes
           branch: documentation/mirror
           branch-suffix: timestamp
-          delete-branch: true
           labels: |
             documentation
           milestone: 3
