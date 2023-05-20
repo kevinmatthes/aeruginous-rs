@@ -46,15 +46,11 @@ authors:
 keywords:
   - Rust
   - aeruginous
-  - aeruginous-graph-description
-  - agd
   - cff
   - cffref
   - cffreference
   - cff-reference
   - citation-file-format
-  - graph-description
-  - graphs
   - rs2md
   - uncrlf
 license: GPL-3.0
