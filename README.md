@@ -31,7 +31,6 @@ The Aeruginous Open Source Development Toolbox.
 1. [License](#license)
 1. [Introduction](#introduction)
 1. [Installation](#installation)
-1. [Meaning of the Name](#meaning-of-the-name)
 1. [Supported Subcommands](#supported-subcommands)
    1. [`cffreference`](#cffreference)
    1. [`rs2md`](#rs2md)
@@ -73,6 +72,13 @@ can be found in [`LICENSEs`][lcnss].
 
 `aeruginous` is a Rust application providing several development utilities.
 
+When searching a name for this project, one main requirement was to reflect
+both the originally intended main purpose of tracking time as well as the
+coding language this CLI is written in, Rust.  The adjective *aeruginous*
+fulfills both criteria as it means that the described noun has patina, a
+special form of rust which appears after a certain period of time has
+passed.
+
 Originally, it was planned to be a time tracking CLI but during the
 development of the first stable version, certain common tasks needed to be
 fulfilled repeatedly.  Since the application already had a somehow stable
@@ -100,15 +106,6 @@ installation from the current repository state.
 ```bash
 cargo install --git https://github.com/kevinmatthes/aeruginous-rs
 ```
-
-## Meaning of the Name
-
-When searching a name for this project, one main requirement was to reflect
-both the originally intended main purpose of tracking time as well as the
-coding language this CLI is written in, Rust.  The adjective *aeruginous*
-fulfills both criteria as it means that the described noun has patina, a
-special form of rust which appears after a certain period of time has
-passed.
 
 ## Supported Subcommands
 
