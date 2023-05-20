@@ -136,22 +136,6 @@ Added
 
 - tests/pattern_buffer.rs:  creation
 
-- Cargo.toml:  project keyword ``aeruginous-graph-description``
-
-- Cargo.toml:  project keyword ``agd``
-
-- Cargo.toml:  project keyword ``graph-description``
-
-- Cargo.toml:  project keyword ``graphs``
-
-- CITATION.cff:  project keyword ``aeruginous-graph-description``
-
-- CITATION.cff:  project keyword ``agd``
-
-- CITATION.cff:  project keyword ``graph-description``
-
-- CITATION.cff:  project keyword ``graphs``
-
 - graph-description:  creation
 
 - README:  document graph-description
