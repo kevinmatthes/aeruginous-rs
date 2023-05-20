@@ -40,7 +40,7 @@ updates:
       - kevinmatthes
     commit-message:
       prefix: '[Dependabot] '
-    milestone: 3
+    milestone: 4
 
   - package-ecosystem: github-actions
     directory: /
@@ -51,6 +51,6 @@ updates:
       - kevinmatthes
     commit-message:
       prefix: '[Dependabot] '
-    milestone: 3
+    milestone: 4
 
 ################################################################################

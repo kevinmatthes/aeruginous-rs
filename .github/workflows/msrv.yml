@@ -87,7 +87,7 @@ jobs:
           branch-suffix: timestamp
           labels: |
             enhancement
-          milestone: 3
+          milestone: 4
           title: '[Enhancement] Upgrade MSRV'
 
 ################################################################################

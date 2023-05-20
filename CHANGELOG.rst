@@ -50,6 +50,214 @@ All pending changelog entries are stored in `changelog.d`_.
 
 .. scriv-insert-here
 
+.. _changelog-1.0.0:
+
+1.0.0 — 2023-05-20
+------------------
+
+Added
+.....
+
+- Cargo.toml:  project keyword ``uncrlf``
+
+- README:  document uncrlf
+
+- uncrlf:  creation
+
+- src/pattern/io_processor.rs:  PatternIOProcessor::io_write
+
+- src/pattern/io_processor.rs:  PatternIOProcessor::io_write_silently
+
+- src/pattern/writer.rs:  PatternWriter::truncate
+
+- src/pattern/writer.rs:  PatternWriter::truncate_silently
+
+- src/pattern/reader.rs:  impl PatternReader for Option<PathBuf>
+
+- src/pattern/writer.rs:  impl PatternWriter for Option<PathBuf>
+
+- src/traits/append_as_line.rs:  AppendAsLine
+
+- src/traits/append_as_line.rs:  creation
+
+- src/traits/mod.rs:  creation
+
+- src/traits/prefer.rs:  creation
+
+- src/traits/prefer.rs:  Prefer
+
+- tests/prefer.rs:  creation
+
+- src/macros.rs:  creation
+
+- src/macros.rs:  getters
+
+- src/macros.rs:  implement
+
+- tests/getters.rs:  creation
+
+- tests/implement.rs:  creation
+
+- tests/pattern_writer.rs:  creation
+
+- src/traits/convert_buffer.rs:  ConvertBuffer
+
+- src/traits/convert_buffer.rs:  creation
+
+- tests/convert_buffer.rs:  creation
+
+- tests/running.rs:  creation
+
+- src/graph_description.rs:  creation
+
+- src/graph_description.rs:  AgdTokens
+
+- src/graph_description.rs:  AeruginousGraphDescription
+
+- tests/graph_description.rs:  creation
+
+- dependency:  Rust crate ``anstyle``
+
+- documentation:  software licenses of ``anstyle`` crate
+
+- graphs/invalid/delimiters.agd:  creation
+
+- graphs/invalid/more_delimiters.agd:  creation
+
+- graphs/invalid/question_mark.agd:  creation
+
+- graphs/invalid/too_long_comments.agd:  creation
+
+- graphs/invalid/too_long_comments_and_typo.agd:  creation
+
+- graphs/examples/comment.agd:  creation
+
+- tests/append_as_line.rs:  creation
+
+- tests/pattern_buffer.rs:  creation
+
+- graph-description:  creation
+
+- README:  document graph-description
+
+- lints:  deny dead code
+
+- lints:  deny unused imports
+
+- lints:  deny unused macros
+
+- lints:  deny unused parentheses
+
+- src/traits/colour_message.rs:  creation
+
+- src/traits/colour_message.rs:  ColourMessage
+
+- tests/traits/colour_message.rs:  creation
+
+- Cargo.toml:  project keyword ``cff``
+
+- Cargo.toml:  project keyword ``cffref``
+
+- Cargo.toml:  project keyword ``cff-reference``
+
+- Cargo.toml:  project keyword ``citation-file-format``
+
+- CITATION.cff:  project keyword ``cff``
+
+- CITATION.cff:  project keyword ``cffref``
+
+- CITATION.cff:  project keyword ``cff-reference``
+
+- CITATION.cff:  project keyword ``citation-file-format``
+
+- src/version.rs:  Version::new
+
+- tests/version.rs:  creation
+
+- graphs/examples/etc.agd:  creation
+
+- src/macros.rs:  ceprint
+
+- src/macros.rs:  ceprintln
+
+- graphs/invalid/bad_spacing.agd:  creation
+
+- graphs/invalid/missing_line_feed.agd:  creation
+
+- graphs/invalid/wrong_order.agd:  creation
+
+- lints:  deny unused assignments
+
+- lints:  deny unused function results of functions marked ``#[must_use]``
+
+- lints:  deny unused parenthesis
+
+- lints:  deny unused variables
+
+- src/traits/to_stderr.rs:  creation
+
+- src/traits/to_stderr.rs:  ToStderr
+
+- tests/to_stderr.rs:  creation
+
+- CI:  code coverage update on mirroring PR
+
+- README:  mention current code coverage in summary section
+
+- README:  comment out AGD mode description for intermediate release
+
+- src/application.rs:  comment out AGD mode for intermediate release
+
+Changed
+.......
+
+- use own macros to render getter methods
+
+- CI:  mirroring workflow now creates PR for changes
+
+- CI:  MSRV upgrade workflow now creates PR for changes
+
+- PatternReader:  rely on std::fs::read_to_string
+
+- apply new features of sysexits v0.6.0
+
+- README:  unite sections "Introduction" and "Meaning of the Name"
+
+- MSRV:  1.69.0
+
+Fixed
+.....
+
+- PatternIOProcessor::io and PatternIOProcessor::io_silent did not truncate the
+  output file before writing to it
+
+Removed
+.......
+
+- PatternIOProcessor::process
+
+- PatternReader::read_bytes
+
+- PatternReader::read_string
+
+- PatternWriter::write_bytes
+
+- PatternWriter::write_string
+
+- Running::create
+
+- Version::ParsingError
+
+- PatternAppendAsLine
+
+- src/pattern/append_as_line.rs
+
+- Bors:  configuration
+
+- README:  Bors badge
+
+- README:  notes on deprecated symbols
+
 .. _changelog-0.2.1:
 
 0.2.1 — 2023-04-25
