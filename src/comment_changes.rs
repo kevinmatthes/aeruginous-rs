@@ -68,10 +68,10 @@ impl CommentChanges {
   /// - [`Self::open_repository`]
   /// - [`Self::query_last_n_commits`]
   /// - [`Self::report_changes`]
-  pub fn main(&mut self) -> Result<()> {
+  pub fn main(&mut self, output_directory: &str) -> Result<()> {
     self.open_repository()?;
     self.changes = self.query_last_n_commits()?;
-    self.report_changes()
+    self.report_changes(output_directory)
   }
 
   /// Create a new instance from the command line arguments.
@@ -166,7 +166,7 @@ impl CommentChanges {
   ///
   /// - [`Self::branch_name`]
   /// - [`Self::who_am_i`]
-  pub fn report_changes(&self) -> Result<()> {
+  pub fn report_changes(&self, output_directory: &str) -> Result<()> {
     let mut changelog = String::new();
 
     for (category, vector) in &self.changes {
@@ -184,7 +184,7 @@ impl CommentChanges {
     let user = self.who_am_i()?.replace(' ', "_");
 
     PathBuf::from(format!(
-      "changelog.d/{}_{user}_{}.rst",
+      "{output_directory}/{}_{user}_{}.rst",
       chrono::Local::now().format("%Y%m%d_%H%M%S"),
       branch.split('/').last().unwrap_or("HEAD")
     ))
