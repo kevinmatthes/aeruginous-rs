@@ -43,6 +43,17 @@ pub enum Action {
     output_file: Option<PathBuf>,
   },
 
+  /// Create comments on the commits of a branch in this repository.
+  CommentChanges {
+    /// The delimiter to separate a category from the change description.
+    #[arg(short = 'd')]
+    delimiter: String,
+
+    /// The count of commits to analyse, defaulting to infinity, if omitted.
+    #[arg(aliases = ["count"], short = 'n')]
+    depth: Option<usize>,
+  },
+
   /*
   /// Rate an Aeruginous Graph Description (AGD).
   #[command(aliases = ["agd"])]
@@ -195,6 +206,9 @@ impl Action {
         output_file,
       } => (|s: String| -> String { Self::cffreference(&s) })
         .io_append(input_file, output_file),
+      Self::CommentChanges { delimiter, depth } => {
+        crate::CommentChanges::new(*depth, delimiter.to_string()).main()
+      }
       /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)
