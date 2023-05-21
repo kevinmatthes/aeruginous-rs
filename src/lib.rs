@@ -214,12 +214,14 @@
   unused_imports,
   unused_macros,
   unused_must_use,
+  unused_mut,
   unused_parens,
   unused_variables
 )]
 #![allow(clippy::multiple_crate_versions)]
 
 mod application;
+mod comment_changes;
 mod graph_description;
 mod macros;
 mod pattern;
@@ -229,6 +231,7 @@ mod version;
 
 pub use crate::{
   application::{Action, Clap as Application},
+  comment_changes::CommentChanges,
   graph_description::{
     GraphDescription as AeruginousGraphDescription, Tokens as AgdTokens,
   },
