@@ -35,12 +35,27 @@ pub enum Action {
   #[command(aliases = ["cffref", "cff-reference"])]
   Cffreference {
     /// The CFF file to read from, defaulting to [`std::io::Stdin`], if omitted.
-    #[arg(short = 'i')]
+    #[arg(aliases = ["input"], short = 'i')]
     input_file: Option<PathBuf>,
 
     /// The CFF file to write to, defaulting to [`std::io::Stdout`], if omitted.
-    #[arg(short = 'o')]
+    #[arg(aliases = ["output"], short = 'o')]
     output_file: Option<PathBuf>,
+  },
+
+  /// Create comments on the commits of a branch in this repository.
+  CommentChanges {
+    /// The delimiter to separate a category from the change description.
+    #[arg(short = 'd')]
+    delimiter: String,
+
+    /// The count of commits to analyse, defaulting to infinity, if omitted.
+    #[arg(aliases = ["count"], short = 'n')]
+    depth: Option<usize>,
+
+    /// The direcotry to write the generated fragment to.
+    #[arg(aliases = ["dir", "directory", "output"], short = 'o')]
+    output_directory: Option<String>,
   },
 
   /*
@@ -64,27 +79,27 @@ pub enum Action {
 
     /// The Rust files to read from, defaulting to [`std::io::Stdin`], if
     /// omitted.
-    #[arg(short = 'i')]
+    #[arg(aliases = ["input"], short = 'i')]
     input_files: Vec<PathBuf>,
 
     /// The Markdown file to write to, defaulting to [`std::io::Stdout`], if
     /// omitted.
-    #[arg(short = 'o')]
+    #[arg(aliases = ["output"], short = 'o')]
     output_file: Option<PathBuf>,
   },
 
   /// Remove CRLFs from the given file.
   Uncrlf {
     /// The file to edit; overrides `input_file` and `output_file`.
-    #[arg(short = 'e')]
+    #[arg(aliases = ["edit"], short = 'e')]
     file_to_edit: Option<PathBuf>,
 
     /// The file to read from, defaulting to [`std::io::Stdin`], if omitted.
-    #[arg(short = 'i')]
+    #[arg(aliases = ["input"], short = 'i')]
     input_file: Option<PathBuf>,
 
     /// The file to write to, defaulting to [`std::io::Stdout`], if omitted.
-    #[arg(short = 'o')]
+    #[arg(aliases = ["output"], short = 'o')]
     output_file: Option<PathBuf>,
   },
 }
@@ -195,6 +210,12 @@ impl Action {
         output_file,
       } => (|s: String| -> String { Self::cffreference(&s) })
         .io_append(input_file, output_file),
+      Self::CommentChanges {
+        delimiter,
+        depth,
+        output_directory,
+      } => crate::CommentChanges::new(*depth, delimiter.to_string())
+        .main(output_directory.as_ref().map_or(".", |directory| directory)),
       /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)

@@ -52,10 +52,12 @@
 //! 1. [Installation](#installation)
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cffreference`](#cffreference)
+//!    1. [`comment-changes`](#comment-changes)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //! <!--
 //!    1. [`cffreference`](#cffreference)
+//!    1. [`comment-changes`](#comment-changes)
 //!    1. [`graph-description`](#graph-description)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
@@ -147,6 +149,16 @@
 //! from [`std::io::Stdin`].  Likewise, omitting the output file will cause
 //! `cffreference` to write to [`std::io::Stdout`].
 //!
+//! ### `comment-changes`
+//!
+//! > To be called with:
+//! >
+//! > - `comment-changes`
+//!
+//! It is a good practice to document changes to the code base in a CHANGELOG.
+//! This mode will read the recent commit messages and try to create a fragment
+//! for the CHANGELOG.
+//!
 //! <!--
 //! ### `graph-description`
 //!
@@ -214,12 +226,14 @@
   unused_imports,
   unused_macros,
   unused_must_use,
+  unused_mut,
   unused_parens,
   unused_variables
 )]
 #![allow(clippy::multiple_crate_versions)]
 
 mod application;
+mod comment_changes;
 mod graph_description;
 mod macros;
 mod pattern;
@@ -229,6 +243,7 @@ mod version;
 
 pub use crate::{
   application::{Action, Clap as Application},
+  comment_changes::CommentChanges,
   graph_description::{
     GraphDescription as AeruginousGraphDescription, Tokens as AgdTokens,
   },
