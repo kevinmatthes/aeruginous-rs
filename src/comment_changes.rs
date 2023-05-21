@@ -205,7 +205,7 @@ impl CommentChanges {
   /// - [`sysexits::ExitCode::DataErr`]
   /// - [`sysexits::ExitCode::Unavailable`]
   /// - See [`Self::open_repository`].
-  pub fn who_am_i(&self) -> Result<String> {
+  pub fn who_am_i(&mut self) -> Result<String> {
     match &self.repository {
       Some(repository) => {
         repository
