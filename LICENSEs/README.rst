@@ -39,8 +39,12 @@
 .. _clap-rs/clap/LICENSE-Apache-2.0:  clap-rs/clap/LICENSE-Apache-2.0
 .. _clap-rs/clap/LICENSE-MIT:  clap-rs/clap/LICENSE-MIT
 ..
+.. _git2:  https://github.com/rust-lang/git2-rs
+..
 .. _rust-cli/anstyle/LICENSE-Apache-2.0:  rust-cli/anstyle/LICENSE-Apache-2.0
 .. _rust-cli/anstyle/LICENSE-MIT:  rust-cli/anstyle/LICENSE-MIT
+.. _rust-lang/git2-rs/LICENSE-Apache-2.0:  rust-lang/git2-rs/LICENSE-Apache-2.0
+.. _rust-lang/git2-rs/LICENSE-MIT:  rust-lang/git2-rs/LICENSE-MIT
 ..
 .. _sorairolake/sysexits-rs/LICENSE-Apache-2.0:
     sorairolake/sysexits-rs/LICENSE-Apache-2.0
@@ -100,6 +104,21 @@ Rust Crates
   - Apache-2.0:  https://github.com/clap-rs/clap/blob/master/LICENSE-APACHE
 
   - MIT:  https://github.com/clap-rs/clap/blob/master/LICENSE-MIT
+
+`git2`_
+.......
+
+- local copies:
+
+  - Apache-2.0:  `rust-lang/git2-rs/LICENSE-Apache-2.0`_
+
+  - MIT:  `rust-lang/git2-rs/LICENSE-MIT`_
+
+- original licenses:
+
+  - Apache-2.0:  https://github.com/rust-lang/git2-rs/blob/master/LICENSE-APACHE
+
+  - MIT:  https://github.com/rust-lang/git2-rs/blob/master/LICENSE-MIT
 
 `sysexits`_
 ...........

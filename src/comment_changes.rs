@@ -38,17 +38,14 @@ pub struct CommentChanges {
 }
 
 impl CommentChanges {
-  /// Which is the current branch?
+  /// What is the name of the current branch?
   ///
   /// # Errors
   ///
-  /// - [`sysexits::ExitCode::Software`]
   /// - [`sysexits::ExitCode::Unavailable`]
-  pub fn branch_name(&self) -> Result<String> {
-    self
-      .repository
-      .as_ref()
-      .map_or(Err(ExitCode::Software), |repository| {
+  pub fn branch_name(&mut self) -> Result<String> {
+    match &self.repository {
+      Some(repository) => {
         repository
           .head()
           .map_or(Err(ExitCode::Unavailable), |reference| {
@@ -56,7 +53,12 @@ impl CommentChanges {
               .name()
               .map_or(Err(ExitCode::Unavailable), |name| Ok(name.to_string()))
           })
-      })
+      }
+      None => {
+        self.open_repository()?;
+        self.branch_name()
+      }
+    }
   }
 
   /// Analyse the latest changes and create a report.
@@ -104,13 +106,14 @@ impl CommentChanges {
   ///
   /// # Errors
   ///
-  /// - [`sysexits::ExitCode::Software`]
   /// - [`sysexits::ExitCode::Unavailable`]
-  pub fn query_last_n_commits(&self) -> Result<HashMap<String, Vec<String>>> {
+  pub fn query_last_n_commits(
+    &mut self,
+  ) -> Result<HashMap<String, Vec<String>>> {
     let mut result = HashMap::new();
 
-    match self.repository.as_ref() {
-      Some(repository) => match repository.revwalk() {
+    if let Some(repository) = self.repository.as_ref() {
+      match repository.revwalk() {
         Ok(mut revwalk) => match revwalk.push_head() {
           Ok(()) => {
             let mut count = 1;
@@ -153,8 +156,10 @@ impl CommentChanges {
           Err(_) => Err(ExitCode::Unavailable),
         },
         Err(_) => Err(ExitCode::Unavailable),
-      },
-      None => Err(ExitCode::Software),
+      }
+    } else {
+      self.open_repository()?;
+      self.query_last_n_commits()
     }
   }
 
@@ -166,7 +171,7 @@ impl CommentChanges {
   ///
   /// - [`Self::branch_name`]
   /// - [`Self::who_am_i`]
-  pub fn report_changes(&self, output_directory: &str) -> Result<()> {
+  pub fn report_changes(&mut self, output_directory: &str) -> Result<()> {
     let mut changelog = String::new();
 
     for (category, vector) in &self.changes {
