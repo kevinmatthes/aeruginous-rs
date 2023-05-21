@@ -159,6 +159,52 @@
 //! This mode will read the recent commit messages and try to create a fragment
 //! for the CHANGELOG.
 //!
+//! This mode requires the specification of a delimiter separating the CHANGELOG
+//! category from an entry for that category.  The application will browse the
+//! Git history for commits which contain that delimiter in their first
+//! paragraphs, often referred to as a commit's summary, and split the summaries
+//! at the first occurence of that delimiter.  Users are free to search either
+//! the entire commit history or just a specific number of commits.  Each commit
+//! which does not contain the delimiter in its summary will be skipped.  The
+//! resulting changelog fragment will be stored either in the current working
+//! directory or in the given alternative directory, at option.  The file name
+//! will consist of a time stamp, the configured username, and some information
+//! on the current branch.  The file format will be reStructured Text (RST).
+//!
+//! As an example, a repository might contain these four commits:
+//!
+//! 1. `Added ::= source file a.rs`
+//! 2. `Added ::= source file b.rs`
+//! 3. `Update c.rs`
+//! 4. `Fixed ::= known bug in d.rs`
+//!
+//! To extract the changes from only these four commits, the application would
+//! need to be called with the following command.
+//!
+//! ```bash
+//! aeruginous comment-changes -d ' ::= ' -n 4 -o directory/
+//! ```
+//!
+//! If this command is invoked by a user named Emma Xample on 1st January 1970
+//! at 01.23 am with the branch `e-xample/test` being checked out, the resulting
+//! fragment will be stored as `directory/19700101_012345_Emma_Xample_test.rst`.
+//! The file contents will be the following:
+//!
+//! ```rst
+//! Added
+//! .....
+//!
+//! - source file a.rs
+//!
+//! - source file b.rs
+//!
+//! Fixed
+//! .....
+//!
+//! - known bug in d.rs
+//!
+//! ```
+//!
 //! <!--
 //! ### `graph-description`
 //!
