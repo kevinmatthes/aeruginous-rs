@@ -54,7 +54,7 @@ pub enum Action {
     depth: Option<usize>,
 
     /// The direcotry to write the generated fragment to.
-    #[arg(aliases = ["dir", "directory"], short = 'o')]
+    #[arg(aliases = ["dir", "directory", "output"], short = 'o')]
     output_directory: Option<String>,
   },
 
