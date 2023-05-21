@@ -52,10 +52,12 @@
 //! 1. [Installation](#installation)
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cffreference`](#cffreference)
+//!    1. [`comment-changes`](#comment-changes)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //! <!--
 //!    1. [`cffreference`](#cffreference)
+//!    1. [`comment-changes`](#comment-changes)
 //!    1. [`graph-description`](#graph-description)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
@@ -146,6 +148,16 @@
 //! If the input file is omitted, the input information are attemted to be read
 //! from [`std::io::Stdin`].  Likewise, omitting the output file will cause
 //! `cffreference` to write to [`std::io::Stdout`].
+//!
+//! ### `comment-changes`
+//!
+//! > To be called with:
+//! >
+//! > - `comment-changes`
+//!
+//! It is a good practice to document changes to the code base in a CHANGELOG.
+//! This mode will read the recent commit messages and try to create a fragment
+//! for the CHANGELOG.
 //!
 //! <!--
 //! ### `graph-description`
