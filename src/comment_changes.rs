@@ -43,6 +43,7 @@ impl CommentChanges {
   /// # Errors
   ///
   /// - [`sysexits::ExitCode::Unavailable`]
+  /// - See [`Self::open_repository`].
   pub fn branch_name(&mut self) -> Result<String> {
     match &self.repository {
       Some(repository) => {
@@ -107,6 +108,7 @@ impl CommentChanges {
   /// # Errors
   ///
   /// - [`sysexits::ExitCode::Unavailable`]
+  /// - See [`Self::open_repository`].
   pub fn query_last_n_commits(
     &mut self,
   ) -> Result<HashMap<String, Vec<String>>> {
@@ -202,11 +204,10 @@ impl CommentChanges {
   ///
   /// - [`sysexits::ExitCode::DataErr`]
   /// - [`sysexits::ExitCode::Unavailable`]
+  /// - See [`Self::open_repository`].
   pub fn who_am_i(&self) -> Result<String> {
-    self
-      .repository
-      .as_ref()
-      .map_or(Err(ExitCode::Software), |repository| {
+    match &self.repository {
+      Some(repository) => {
         repository
           .config()
           .map_or(Err(ExitCode::Unavailable), |config| {
@@ -218,7 +219,12 @@ impl CommentChanges {
               Ok,
             )
           })
-      })
+      }
+      None => {
+        self.open_repository()?;
+        self.who_am_i()
+      }
+    }
   }
 }
 
