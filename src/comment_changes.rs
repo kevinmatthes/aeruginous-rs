@@ -39,20 +39,35 @@ pub struct CommentChanges {
 
 impl CommentChanges {
   /// Which is the current branch?
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::Software`]
+  /// - [`sysexits::ExitCode::Unavailable`]
   pub fn branch_name(&self) -> Result<String> {
-    match self.repository.as_ref() {
-      Some(repository) => match repository.head() {
-        Ok(reference) => match reference.name() {
-          Some(name) => Ok(name.to_string()),
-          None => Err(ExitCode::Unavailable),
-        },
-        Err(_) => Err(ExitCode::Unavailable),
-      },
-      None => Err(ExitCode::Software),
-    }
+    self
+      .repository
+      .as_ref()
+      .map_or(Err(ExitCode::Software), |repository| {
+        repository
+          .head()
+          .map_or(Err(ExitCode::Unavailable), |reference| {
+            reference
+              .name()
+              .map_or(Err(ExitCode::Unavailable), |name| Ok(name.to_string()))
+          })
+      })
   }
 
   /// Analyse the latest changes and create a report.
+  ///
+  /// # Errors
+  ///
+  /// See
+  ///
+  /// - [`Self::open_repository`]
+  /// - [`Self::query_last_n_commits`]
+  /// - [`Self::report_changes`]
   pub fn main(&mut self) -> Result<()> {
     self.open_repository()?;
     self.changes = self.query_last_n_commits()?;
@@ -60,6 +75,7 @@ impl CommentChanges {
   }
 
   /// Create a new instance from the command line arguments.
+  #[must_use]
   pub fn new(depth: Option<usize>, delimiter: String) -> Self {
     Self {
       changes: HashMap::new(),
@@ -70,20 +86,26 @@ impl CommentChanges {
   }
 
   /// Open this repository.
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::Usage`]
   pub fn open_repository(&mut self) -> Result<()> {
-    match Repository::open(".") {
-      Ok(repository) => {
-        self.repository = Some(repository);
-        Ok(())
-      }
-      Err(_) => {
-        eprintln!("This is not a Git repository.");
-        Err(ExitCode::Usage)
-      }
+    if let Ok(repository) = Repository::open(".") {
+      self.repository = Some(repository);
+      Ok(())
+    } else {
+      eprintln!("This is not a Git repository.");
+      Err(ExitCode::Usage)
     }
   }
 
   /// Query the given amount of commits.
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::Software`]
+  /// - [`sysexits::ExitCode::Unavailable`]
   pub fn query_last_n_commits(&self) -> Result<HashMap<String, Vec<String>>> {
     let mut result = HashMap::new();
 
@@ -111,7 +133,7 @@ impl CommentChanges {
                           result.insert(category.to_string(), Vec::new());
                         }
 
-                        let mut changes = result[category].to_vec();
+                        let mut changes = result[category].clone();
                         changes.push(change.to_string());
                         result.insert(category.to_string(), changes);
                       }
@@ -137,6 +159,13 @@ impl CommentChanges {
   }
 
   /// Report the logged changes.
+  ///
+  /// # Errors
+  ///
+  /// See
+  ///
+  /// - [`Self::branch_name`]
+  /// - [`Self::who_am_i`]
   pub fn report_changes(&self) -> Result<()> {
     let mut changelog = String::new();
 
@@ -152,34 +181,39 @@ impl CommentChanges {
     }
 
     let branch = self.branch_name()?;
-    let user = self.who_am_i()?.replace(" ", "_");
+    let user = self.who_am_i()?.replace(' ', "_");
 
     PathBuf::from(format!(
       "changelog.d/{}_{user}_{}.rst",
       chrono::Local::now().format("%Y%m%d_%H%M%S"),
-      match branch.split("/").last() {
-        Some(name) => name,
-        None => "HEAD",
-      }
+      branch.split('/').last().unwrap_or("HEAD")
     ))
     .write(Box::new(changelog))
   }
 
   /// Who is configured as user?
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::DataErr`]
+  /// - [`sysexits::ExitCode::Unavailable`]
   pub fn who_am_i(&self) -> Result<String> {
-    match &self.repository {
-      Some(repository) => match repository.config() {
-        Ok(config) => match config.get_string("user.name") {
-          Ok(string) => Ok(string),
-          Err(_) => {
-            eprintln!("There is no Git user name configured, yet.");
-            Err(ExitCode::DataErr)
-          }
-        },
-        Err(_) => Err(ExitCode::Unavailable),
-      },
-      None => Err(ExitCode::Software),
-    }
+    self
+      .repository
+      .as_ref()
+      .map_or(Err(ExitCode::Software), |repository| {
+        repository
+          .config()
+          .map_or(Err(ExitCode::Unavailable), |config| {
+            config.get_string("user.name").map_or_else(
+              |_| {
+                eprintln!("There is no Git user name configured, yet.");
+                Err(ExitCode::DataErr)
+              },
+              Ok,
+            )
+          })
+      })
   }
 }
 
