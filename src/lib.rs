@@ -167,7 +167,7 @@
 //! search either the entire commit history or just a specific number of
 //! commits.  Each commit which does not contain that delimiter in its summary
 //! will be skipped.  The resulting changelog fragment will be stored either in
-//! the current working directory or in the given alternative, existing
+//! the current working directory or in the given alternative, already existing
 //! directory.  The file name will consist of a time stamp, the configured Git
 //! username, and some information on the current branch.  The file format will
 //! be reStructured Text (RST).
