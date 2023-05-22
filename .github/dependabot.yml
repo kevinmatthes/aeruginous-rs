@@ -39,7 +39,7 @@ updates:
     assignees:
       - kevinmatthes
     commit-message:
-      prefix: '[Dependabot] '
+      prefix: 'Changed::='
     milestone: 4
 
   - package-ecosystem: github-actions
@@ -50,7 +50,7 @@ updates:
     assignees:
       - kevinmatthes
     commit-message:
-      prefix: '[Dependabot] '
+      prefix: 'Changed::='
     milestone: 4
 
 ################################################################################
