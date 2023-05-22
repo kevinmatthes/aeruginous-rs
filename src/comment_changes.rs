@@ -51,13 +51,17 @@ impl CommentChanges {
 
     let Some(repository) = &self.repository else { unreachable!() };
 
-    repository
-      .head()
-      .map_or(Err(ExitCode::Unavailable), |reference| {
+    repository.head().map_or_else(
+      |error| {
+        eprintln!("{error}");
+        Err(ExitCode::Unavailable)
+      },
+      |reference| {
         reference
           .name()
           .map_or(Err(ExitCode::Unavailable), |name| Ok(name.to_string()))
-      })
+      },
+    )
   }
 
   /// Analyse the latest changes and create a report.
@@ -131,9 +135,9 @@ impl CommentChanges {
               }
             }
 
-            match oid {
-              Ok(oid) => match repository.find_commit(oid) {
-                Ok(commit) => match commit.summary() {
+            if let Ok(oid) = oid {
+              if let Ok(commit) = repository.find_commit(oid) {
+                match commit.summary() {
                   Some(summary) => {
                     if let Some((category, change)) =
                       summary.split_once(&self.delimiter)
@@ -148,10 +152,14 @@ impl CommentChanges {
                     }
                   }
                   None => return Err(ExitCode::Unavailable),
-                },
-                Err(_) => return Err(ExitCode::Unavailable),
-              },
-              Err(_) => return Err(ExitCode::Unavailable),
+                }
+              } else {
+                eprintln!("Commit {oid} does not seem to exist.");
+                return Err(ExitCode::DataErr);
+              }
+            } else {
+              eprintln!("There were not enough commits fetched on checkout.");
+              return Err(ExitCode::Usage);
             }
 
             count += 1;
@@ -159,9 +167,15 @@ impl CommentChanges {
 
           Ok(result)
         }
-        Err(_) => Err(ExitCode::Unavailable),
+        Err(error) => {
+          eprintln!("{error}");
+          Err(ExitCode::Unavailable)
+        }
       },
-      Err(_) => Err(ExitCode::Unavailable),
+      Err(error) => {
+        eprintln!("{error}");
+        Err(ExitCode::Unavailable)
+      }
     }
   }
 
@@ -212,9 +226,12 @@ impl CommentChanges {
 
     let Some(repository) = &self.repository else { unreachable!() };
 
-    repository
-      .config()
-      .map_or(Err(ExitCode::Unavailable), |config| {
+    repository.config().map_or_else(
+      |error| {
+        eprintln!("{error}");
+        Err(ExitCode::Unavailable)
+      },
+      |config| {
         config.get_string("user.name").map_or_else(
           |_| {
             eprintln!("There is no Git username configured, yet.");
@@ -222,7 +239,8 @@ impl CommentChanges {
           },
           Ok,
         )
-      })
+      },
+    )
   }
 }
 

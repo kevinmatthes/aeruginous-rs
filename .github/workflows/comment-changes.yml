@@ -43,11 +43,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.5.2
+        with:
+          fetch-depth: 0
+
       - uses: fregante/setup-git-user@v2.0.1
+
       - run: |
           rustup update
           cargo r -- comment-changes -d ::= -o changelog.d/
-          git commit -am 'Create summary of recent changes'
+          git add changelog.d/
+          git commit -m 'Create summary of recent changes'
           git push
 
 ################################################################################
