@@ -55,7 +55,7 @@ jobs:
         uses: fregante/setup-git-user@v2.0.1
 
       - name: cargo
-        run: \
+        run: |
           cargo update \
           && git add . \
           && git commit --allow-empty -m \
