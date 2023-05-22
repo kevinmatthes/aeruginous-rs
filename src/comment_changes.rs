@@ -154,13 +154,13 @@ impl CommentChanges {
                   None => return Err(ExitCode::Unavailable),
                 },
                 Err(_) => {
-                  eprintln!("There is no such commit {oid}.");
+                  eprintln!("Commit {oid} does not seem to exist.");
                   return Err(ExitCode::DataErr);
                 }
               },
-              Err(error) => {
-                eprintln!("Here is the bug:  {error}!");
-                return Err(ExitCode::Unavailable);
+              Err(_) => {
+                eprintln!("There were not enough commits fetched on checkout.");
+                return Err(ExitCode::Usage);
               }
             }
 
