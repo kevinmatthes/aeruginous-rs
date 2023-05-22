@@ -32,6 +32,9 @@
 name: comment-changes
 
 on:
+  pull_request:
+    types:
+      - opened
   workflow_dispatch:
 
 permissions:
@@ -45,6 +48,7 @@ jobs:
       - uses: actions/checkout@v3.5.2
         with:
           fetch-depth: 0
+          ref: ${{ github.head_ref }}
 
       - uses: fregante/setup-git-user@v2.0.1
 
