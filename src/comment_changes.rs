@@ -135,9 +135,9 @@ impl CommentChanges {
               }
             }
 
-            match oid {
-              Ok(oid) => match repository.find_commit(oid) {
-                Ok(commit) => match commit.summary() {
+            if let Ok(oid) = oid {
+              if let Ok(commit) = repository.find_commit(oid) {
+                match commit.summary() {
                   Some(summary) => {
                     if let Some((category, change)) =
                       summary.split_once(&self.delimiter)
@@ -152,16 +152,14 @@ impl CommentChanges {
                     }
                   }
                   None => return Err(ExitCode::Unavailable),
-                },
-                Err(_) => {
-                  eprintln!("Commit {oid} does not seem to exist.");
-                  return Err(ExitCode::DataErr);
                 }
-              },
-              Err(_) => {
-                eprintln!("There were not enough commits fetched on checkout.");
-                return Err(ExitCode::Usage);
+              } else {
+                eprintln!("Commit {oid} does not seem to exist.");
+                return Err(ExitCode::DataErr);
               }
+            } else {
+              eprintln!("There were not enough commits fetched on checkout.");
+              return Err(ExitCode::Usage);
             }
 
             count += 1;
