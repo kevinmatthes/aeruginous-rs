@@ -154,8 +154,8 @@ impl CommentChanges {
                   None => return Err(ExitCode::Unavailable),
                 },
                 Err(error) => {
-                  eprintln!("{error}");
-                  return Err(ExitCode::Unavailable);
+                  eprintln!("{error}\nThere is no such commit.",);
+                  return Err(ExitCode::Usage);
                 }
               },
               Err(error) => {
