@@ -51,13 +51,17 @@ impl CommentChanges {
 
     let Some(repository) = &self.repository else { unreachable!() };
 
-    repository
-      .head()
-      .map_or(Err(ExitCode::Unavailable), |reference| {
+    repository.head().map_or_else(
+      |error| {
+        eprintln!("{error}");
+        Err(ExitCode::Unavailable)
+      },
+      |reference| {
         reference
           .name()
           .map_or(Err(ExitCode::Unavailable), |name| Ok(name.to_string()))
-      })
+      },
+    )
   }
 
   /// Analyse the latest changes and create a report.
@@ -149,9 +153,15 @@ impl CommentChanges {
                   }
                   None => return Err(ExitCode::Unavailable),
                 },
-                Err(_) => return Err(ExitCode::Unavailable),
+                Err(error) => {
+                  eprintln!("{error}");
+                  return Err(ExitCode::Unavailable);
+                }
               },
-              Err(_) => return Err(ExitCode::Unavailable),
+              Err(error) => {
+                eprintln!("{error}");
+                return Err(ExitCode::Unavailable);
+              }
             }
 
             count += 1;
@@ -159,9 +169,15 @@ impl CommentChanges {
 
           Ok(result)
         }
-        Err(_) => Err(ExitCode::Unavailable),
+        Err(error) => {
+          eprintln!("{error}");
+          Err(ExitCode::Unavailable)
+        }
       },
-      Err(_) => Err(ExitCode::Unavailable),
+      Err(error) => {
+        eprintln!("{error}");
+        Err(ExitCode::Unavailable)
+      }
     }
   }
 
@@ -212,9 +228,12 @@ impl CommentChanges {
 
     let Some(repository) = &self.repository else { unreachable!() };
 
-    repository
-      .config()
-      .map_or(Err(ExitCode::Unavailable), |config| {
+    repository.config().map_or_else(
+      |error| {
+        eprintln!("{error}");
+        Err(ExitCode::Unavailable)
+      },
+      |config| {
         config.get_string("user.name").map_or_else(
           |_| {
             eprintln!("There is no Git username configured, yet.");
@@ -222,7 +241,8 @@ impl CommentChanges {
           },
           Ok,
         )
-      })
+      },
+    )
   }
 }
 
