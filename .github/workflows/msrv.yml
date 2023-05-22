@@ -75,10 +75,9 @@ jobs:
                   >> changelog.d/msrv.rst \
           && git add .clippy.toml Cargo.toml changelog.d/msrv.rst \
           && git commit --allow-empty -m \
-                 "`git config --list \
-                 | grep user\.name \
-                 | cut -d= -f2`:  Upgrade MSRV to `rustc --version \
-                                                   | cut -d' ' -f2`"
+                 "[` \
+                    git config --list | grep user\.name | cut -d= -f2 \
+                  `] Upgrade MSRV to `rustc --version | cut -d\  -f2`"
 
       - name: pr
         uses: peter-evans/create-pull-request@v5.0.1
