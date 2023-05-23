@@ -57,13 +57,13 @@ pub enum Action {
     #[arg(aliases = ["hyperlink"], long, short = 'l')]
     link: Vec<String>,
 
-    /// The hyperlinks' targets.
-    #[arg(long, short = 't')]
-    target: Vec<String>,
-
     /// The direcotry to write the generated fragment to.
     #[arg(aliases = ["dir", "directory"], long = "output", short = 'o')]
     output_directory: Option<String>,
+
+    /// The hyperlinks' targets.
+    #[arg(long, short = 't')]
+    target: Vec<String>,
   },
 
   /*
