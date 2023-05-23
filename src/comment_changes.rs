@@ -142,12 +142,15 @@ impl CommentChanges {
                     if let Some((category, change)) =
                       summary.trim().split_once(&self.delimiter)
                     {
+                      let category = category.trim();
+                      let change = change.trim();
+
                       if !result.contains_key(category) {
-                        result.insert(category.trim().to_string(), Vec::new());
+                        result.insert(category.to_string(), Vec::new());
                       }
 
                       let mut changes = result[category].clone();
-                      changes.push(change.trim().to_string());
+                      changes.push(change.to_string());
                       result.insert(category.to_string(), changes);
                     }
                   }
