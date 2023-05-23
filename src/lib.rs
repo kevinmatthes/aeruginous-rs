@@ -153,6 +153,7 @@
 //!
 //! > To be called with:
 //! >
+//! > - `changelog`
 //! > - `comment-changes`
 //!
 //! It is a good practice to document changes to the code base in a CHANGELOG.
