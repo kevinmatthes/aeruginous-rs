@@ -33,6 +33,9 @@ pub struct CommentChanges {
   /// The count of commits to analyse.
   depth: Option<usize>,
 
+  /// The hyperlinks to define in the output file.
+  hyperlinks: Vec<(String, String)>,
+
   /// This repository.
   repository: Option<Repository>,
 }
@@ -80,11 +83,16 @@ impl CommentChanges {
 
   /// Create a new instance from the command line arguments.
   #[must_use]
-  pub fn new(depth: Option<usize>, delimiter: String) -> Self {
+  pub fn new(
+    depth: Option<usize>,
+    delimiter: String,
+    hyperlinks: Vec<(String, String)>,
+  ) -> Self {
     Self {
       changes: HashMap::new(),
       delimiter,
       depth,
+      hyperlinks,
       repository: None,
     }
   }
@@ -189,6 +197,14 @@ impl CommentChanges {
   /// - [`Self::who_am_i`]
   pub fn report_changes(&mut self, output_directory: &str) -> Result<()> {
     let mut changelog = String::new();
+
+    for (abbreviation, target) in &self.hyperlinks {
+      changelog.append_as_line(format!(".. _{abbreviation}:  {target}"));
+    }
+
+    if !self.hyperlinks.is_empty() {
+      changelog.push('\n');
+    }
 
     for (category, vector) in &self.changes {
       changelog.append_as_line(format!(
