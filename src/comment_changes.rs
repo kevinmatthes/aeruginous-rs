@@ -146,7 +146,7 @@ impl CommentChanges {
                       let change = change.trim().to_string();
 
                       if !result.contains_key(category) {
-                        result.insert(category), Vec::new());
+                        result.insert(category, Vec::new());
                       }
 
                       let mut changes = result[category].clone();
