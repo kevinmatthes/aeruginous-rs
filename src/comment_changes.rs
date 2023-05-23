@@ -145,11 +145,11 @@ impl CommentChanges {
                       let category = category.trim().to_string();
                       let change = change.trim().to_string();
 
-                      if !result.contains_key(category) {
+                      if !result.contains_key(&category) {
                         result.insert(category, Vec::new());
                       }
 
-                      let mut changes = result[category].clone();
+                      let mut changes = result[&category].clone();
                       changes.push(change);
                       result.insert(category, changes);
                     }
