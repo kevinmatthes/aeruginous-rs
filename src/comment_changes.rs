@@ -142,16 +142,16 @@ impl CommentChanges {
                     if let Some((category, change)) =
                       summary.trim().split_once(&self.delimiter)
                     {
-                      let category = category.trim();
-                      let change = change.trim();
+                      let category = category.trim().to_string();
+                      let change = change.trim().to_string();
 
                       if !result.contains_key(category) {
-                        result.insert(category.to_string(), Vec::new());
+                        result.insert(category), Vec::new());
                       }
 
                       let mut changes = result[category].clone();
-                      changes.push(change.to_string());
-                      result.insert(category.to_string(), changes);
+                      changes.push(change);
+                      result.insert(category, changes);
                     }
                   }
                   None => return Err(ExitCode::Unavailable),
