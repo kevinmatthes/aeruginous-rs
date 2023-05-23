@@ -68,6 +68,7 @@ impl CommentChanges {
   }
 
   /// Generate the changelog fragment.
+  #[must_use]
   pub fn generate_changelog_fragment(&self) -> String {
     let mut result = String::new();
 
