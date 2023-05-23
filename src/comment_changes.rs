@@ -67,6 +67,32 @@ impl CommentChanges {
     )
   }
 
+  /// Generate the changelog fragment.
+  pub fn generate_changelog_fragment(&self) -> String {
+    let mut result = String::new();
+
+    for (link_name, target) in &self.hyperlinks {
+      result.append_as_line(format!(".. {link_name}:  {target}"));
+    }
+
+    if !self.hyperlinks.is_empty() {
+      result.push('\n');
+    }
+
+    for (category, changes) in &self.changes {
+      result.append_as_line(format!(
+        "{category}\n{}\n",
+        ".".repeat(category.len())
+      ));
+
+      for change in changes {
+        result.append_as_line(format!("- {change}\n"));
+      }
+    }
+
+    result
+  }
+
   /// Analyse the latest changes and create a report.
   ///
   /// # Errors
@@ -77,7 +103,7 @@ impl CommentChanges {
   /// - [`Self::query_last_n_commits`]
   /// - [`Self::report_changes`]
   pub fn main(&mut self, output_directory: &str) -> Result<()> {
-    self.changes = self.query_last_n_commits()?;
+    self.update_changes()?;
     self.report_changes(output_directory)
   }
 
@@ -199,27 +225,6 @@ impl CommentChanges {
   /// - [`Self::branch_name`]
   /// - [`Self::who_am_i`]
   pub fn report_changes(&mut self, output_directory: &str) -> Result<()> {
-    let mut changelog = String::new();
-
-    for (abbreviation, target) in &self.hyperlinks {
-      changelog.append_as_line(format!(".. _{abbreviation}:  {target}"));
-    }
-
-    if !self.hyperlinks.is_empty() {
-      changelog.push('\n');
-    }
-
-    for (category, vector) in &self.changes {
-      changelog.append_as_line(format!(
-        "{category}\n{}\n",
-        ".".repeat(category.len())
-      ));
-
-      for item in vector {
-        changelog.append_as_line(format!("- {item}\n"));
-      }
-    }
-
     let branch = self.branch_name()?;
     let user = self.who_am_i()?.replace(' ', "_");
 
@@ -228,7 +233,17 @@ impl CommentChanges {
       chrono::Local::now().format("%Y%m%d_%H%M%S"),
       branch.split('/').last().unwrap_or("HEAD")
     ))
-    .write(Box::new(changelog))
+    .write(Box::new(self.generate_changelog_fragment()))
+  }
+
+  /// Update the changes retrieved by this instance.
+  ///
+  /// # Errors
+  ///
+  /// See [`Self::query_last_n_commits`].
+  pub fn update_changes(&mut self) -> Result<()> {
+    self.changes = self.query_last_n_commits()?;
+    Ok(())
   }
 
   /// Who is configured as user?
