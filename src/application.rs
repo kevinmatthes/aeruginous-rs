@@ -35,15 +35,16 @@ pub enum Action {
   #[command(aliases = ["cffref", "cff-reference"])]
   Cffreference {
     /// The CFF file to read from, defaulting to [`std::io::Stdin`], if omitted.
-    #[arg(aliases = ["input"], short = 'i')]
+    #[arg(long = "input", short = 'i')]
     input_file: Option<PathBuf>,
 
     /// The CFF file to write to, defaulting to [`std::io::Stdout`], if omitted.
-    #[arg(aliases = ["output"], short = 'o')]
+    #[arg(long = "output", short = 'o')]
     output_file: Option<PathBuf>,
   },
 
   /// Create comments on the commits of a branch in this repository.
+  #[command(aliases = ["changelog"])]
   CommentChanges {
     /// The delimiter to separate a category from the change description.
     #[arg(long, short = 'd')]
@@ -57,13 +58,13 @@ pub enum Action {
     #[arg(aliases = ["hyperlink"], long, short = 'l')]
     link: Vec<String>,
 
+    /// The direcotry to write the generated fragment to.
+    #[arg(aliases = ["dir", "directory"], long = "output", short = 'o')]
+    output_directory: Option<String>,
+
     /// The hyperlinks' targets.
     #[arg(long, short = 't')]
     target: Vec<String>,
-
-    /// The direcotry to write the generated fragment to.
-    #[arg(aliases = ["dir", "directory", "output"], long, short = 'o')]
-    output_directory: Option<String>,
   },
 
   /*
@@ -87,27 +88,27 @@ pub enum Action {
 
     /// The Rust files to read from, defaulting to [`std::io::Stdin`], if
     /// omitted.
-    #[arg(aliases = ["input"], short = 'i')]
+    #[arg(long = "input", short = 'i')]
     input_files: Vec<PathBuf>,
 
     /// The Markdown file to write to, defaulting to [`std::io::Stdout`], if
     /// omitted.
-    #[arg(aliases = ["output"], short = 'o')]
+    #[arg(long = "output", short = 'o')]
     output_file: Option<PathBuf>,
   },
 
   /// Remove CRLFs from the given file.
   Uncrlf {
     /// The file to edit; overrides `input_file` and `output_file`.
-    #[arg(aliases = ["edit"], short = 'e')]
+    #[arg(long = "edit", short = 'e')]
     file_to_edit: Option<PathBuf>,
 
     /// The file to read from, defaulting to [`std::io::Stdin`], if omitted.
-    #[arg(aliases = ["input"], short = 'i')]
+    #[arg(long = "input", short = 'i')]
     input_file: Option<PathBuf>,
 
     /// The file to write to, defaulting to [`std::io::Stdout`], if omitted.
-    #[arg(aliases = ["output"], short = 'o')]
+    #[arg(long = "output", short = 'o')]
     output_file: Option<PathBuf>,
   },
 }
