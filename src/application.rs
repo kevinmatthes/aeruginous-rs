@@ -46,15 +46,23 @@ pub enum Action {
   /// Create comments on the commits of a branch in this repository.
   CommentChanges {
     /// The delimiter to separate a category from the change description.
-    #[arg(short = 'd')]
+    #[arg(long, short = 'd')]
     delimiter: String,
 
     /// The count of commits to analyse, defaulting to infinity, if omitted.
-    #[arg(aliases = ["count"], short = 'n')]
+    #[arg(aliases = ["count"], long, short = 'n')]
     depth: Option<usize>,
 
+    /// The hyperlinks to add as comments.
+    #[arg(aliases = ["hyperlink"], long, short = 'l')]
+    link: Vec<String>,
+
+    /// The hyperlinks' targets.
+    #[arg(long, short = 't')]
+    target: Vec<String>,
+
     /// The direcotry to write the generated fragment to.
-    #[arg(aliases = ["dir", "directory", "output"], short = 'o')]
+    #[arg(aliases = ["dir", "directory", "output"], long, short = 'o')]
     output_directory: Option<String>,
   },
 
@@ -213,9 +221,19 @@ impl Action {
       Self::CommentChanges {
         delimiter,
         depth,
+        link,
+        target,
         output_directory,
-      } => crate::CommentChanges::new(*depth, delimiter.to_string())
-        .main(output_directory.as_ref().map_or(".", |directory| directory)),
+      } => crate::CommentChanges::new(
+        *depth,
+        delimiter.to_string(),
+        link
+          .iter()
+          .zip(target.iter())
+          .map(|(a, b)| (a.to_string(), b.to_string()))
+          .collect(),
+      )
+      .main(output_directory.as_ref().map_or(".", |directory| directory)),
       /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)
