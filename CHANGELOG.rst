@@ -50,6 +50,71 @@ All pending changelog entries are stored in `changelog.d`_.
 
 .. scriv-insert-here
 
+.. _changelog-1.1.0:
+
+1.1.0 — 2023-05-23
+------------------
+
+Added
+.....
+
+- README:  document comment-changes
+
+- comment-changes:  creation
+
+- lints:  deny unused ``mut`` keyword
+
+- src/comment_changes.rs:  creation
+
+- Cargo.lock:  dependencies of ``git2``
+
+- Cargo.toml:  dependency ``git2``
+
+- documentation:  software licenses of ``git2`` crate
+
+- CITATION.cff:  project keyword ``comment-changes``
+
+- tests/comment_changes.rs:  creation
+
+- GitHub Action workflow:  ``cargo update`` on demand
+
+- GitHub Action workflow:  ``comment-changes`` on demand
+
+- CI:  run ``comment-changes`` on PR creation
+
+- comment-changes:  ignore whitespaces around delimiter
+
+- comment-changes:  link resolution for target file
+
+- CITATION.cff:  project keyword ``changelog``
+
+- README:  verbose example for ``comment-changes``
+
+- CLI:  allow for long argument parameter names
+
+- Cargo.toml:  project keyword ``changelog``
+
+Changed
+.......
+
+- ``cargo update``
+
+- CI:  commit message of MSRV upgrade
+
+- CI:  commit messages of README mirroring workflow
+
+Fixed
+.....
+
+- CI:  settings of MSRV upgrade workflow
+
+- CI:  settings of README mirroring workflow
+
+Removed
+.......
+
+- CI:  Scriv fragment creation workflow
+
 .. _changelog-1.0.0:
 
 1.0.0 — 2023-05-20
