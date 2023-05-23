@@ -140,15 +140,18 @@ impl CommentChanges {
                 match commit.summary() {
                   Some(summary) => {
                     if let Some((category, change)) =
-                      summary.split_once(&self.delimiter)
+                      summary.trim().split_once(&self.delimiter)
                     {
-                      if !result.contains_key(category) {
-                        result.insert(category.to_string(), Vec::new());
+                      let category = category.trim().to_string();
+                      let change = change.trim().to_string();
+
+                      if !result.contains_key(&category) {
+                        result.insert(category.clone(), Vec::new());
                       }
 
-                      let mut changes = result[category].clone();
-                      changes.push(change.to_string());
-                      result.insert(category.to_string(), changes);
+                      let mut changes = result[&category].clone();
+                      changes.push(change);
+                      result.insert(category, changes);
                     }
                   }
                   None => return Err(ExitCode::Unavailable),
