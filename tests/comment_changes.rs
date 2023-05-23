@@ -34,4 +34,24 @@ fn branch_name_repository_previously_opened() {
   assert!(cc.branch_name().is_ok());
 }
 
+#[test]
+fn generate_changelog_fragment_no_links() {
+  let mut cc = CommentChanges::new(None, '/'.to_string(), vec![]);
+  cc.update_changes().unwrap();
+
+  assert!(!cc.generate_changelog_fragment().is_empty());
+}
+
+#[test]
+fn generate_changelog_fragment_with_links() {
+  let mut cc = CommentChanges::new(
+    None,
+    '/'.to_string(),
+    vec![("hyperlink".to_string(), "target".to_string())],
+  );
+  cc.update_changes().unwrap();
+
+  assert!(!cc.generate_changelog_fragment().is_empty());
+}
+
 /******************************************************************************/
