@@ -21,14 +21,14 @@ use aeruginous::CommentChanges;
 
 #[test]
 fn branch_name_repository_implicitly_opened() {
-  let mut cc = CommentChanges::new(None, String::new());
+  let mut cc = CommentChanges::new(None, String::new(), vec![]);
 
   assert!(cc.branch_name().is_ok());
 }
 
 #[test]
 fn branch_name_repository_previously_opened() {
-  let mut cc = CommentChanges::new(None, String::new());
+  let mut cc = CommentChanges::new(None, String::new(), vec![]);
   cc.open_repository().unwrap();
 
   assert!(cc.branch_name().is_ok());
