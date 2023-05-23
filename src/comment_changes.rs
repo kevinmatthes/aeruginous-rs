@@ -140,14 +140,14 @@ impl CommentChanges {
                 match commit.summary() {
                   Some(summary) => {
                     if let Some((category, change)) =
-                      summary.split_once(&self.delimiter)
+                      summary.trim().split_once(&self.delimiter)
                     {
                       if !result.contains_key(category) {
-                        result.insert(category.to_string(), Vec::new());
+                        result.insert(category.trim().to_string(), Vec::new());
                       }
 
                       let mut changes = result[category].clone();
-                      changes.push(change.to_string());
+                      changes.push(change.trim().to_string());
                       result.insert(category.to_string(), changes);
                     }
                   }
