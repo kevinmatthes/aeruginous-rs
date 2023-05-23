@@ -44,6 +44,7 @@ pub enum Action {
   },
 
   /// Create comments on the commits of a branch in this repository.
+  #[command(aliases = ["changelog"])]
   CommentChanges {
     /// The delimiter to separate a category from the change description.
     #[arg(long, short = 'd')]
