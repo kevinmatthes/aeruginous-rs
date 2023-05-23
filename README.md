@@ -44,7 +44,7 @@ The Aeruginous Open Source Development Toolbox.
    1. [`uncrlf`](#uncrlf)
 -->
 
-The current code coverage is **<!-- cov -->55.23%<!-- cov -->**.
+The current code coverage is **<!-- cov -->55.90%<!-- cov -->**.
 
 ## License
 
@@ -134,6 +134,7 @@ from [`std::io::Stdin`].  Likewise, omitting the output file will cause
 
 > To be called with:
 >
+> - `changelog`
 > - `comment-changes`
 
 It is a good practice to document changes to the code base in a CHANGELOG.
@@ -155,16 +156,20 @@ be reStructured Text (RST).
 
 As an example, a repository might contain these four commits:
 
-1. `Added ::= source file a.rs`
-2. `Added ::= source file b.rs`
+1. ```Added ::= source file `a.rs`_```
+2. ```Added ::= source file `b.rs`_```
 3. `Update c.rs`
-4. `Fixed ::= known bug in d.rs`
+4. ```Fixed ::= known bug in `d.rs`_```
 
 To extract the changes from only these four commits, the application would
 need to be called with the following command.
 
 ```bash
-aeruginous comment-changes -d ' ::= ' -n 4 -o directory/
+aeruginous comment-changes \
+  -d ::= \
+  -n 4 \
+  -o directory/ \
+  -l a.rs -t src/a.rs -l b.rs -t src/b.rs -l d.rs -t src/d.rs
 ```
 
 If this command is invoked by a user named Emma Xample on 1st January 1970
@@ -173,17 +178,21 @@ fragment will be stored as `directory/19700101_012345_Emma_Xample_test.rst`.
 The file contents will be the following:
 
 ```rst
+.. _a.rs:  src/a.rs
+.. _b.rs:  src/b.rs
+.. _d.rs:  src/d.rs
+
 Added
 .....
 
-- source file a.rs
+- source file `a.rs`_
 
-- source file b.rs
+- source file `b.rs`_
 
 Fixed
 .....
 
-- known bug in d.rs
+- known bug in `d.rs`_
 
 ```
 
