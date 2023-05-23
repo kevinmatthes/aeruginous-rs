@@ -1,5 +1,5 @@
-Added 
-......
+Added
+.....
 
--  comment-changes:  link resolution for target file
+- comment-changes:  link resolution for target file
 
