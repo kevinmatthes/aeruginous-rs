@@ -53,15 +53,9 @@
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`comment-changes`](#comment-changes)
-//!    1. [`rs2md`](#rs2md)
-//!    1. [`uncrlf`](#uncrlf)
-//! <!--
-//!    1. [`cffreference`](#cffreference)
-//!    1. [`comment-changes`](#comment-changes)
 //!    1. [`graph-description`](#graph-description)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
-//! -->
 //!
 //! The current code coverage is **<!-- cov -->62.82%<!-- cov -->**.
 //!
@@ -215,7 +209,6 @@
 //!
 //! ```
 //!
-//! <!--
 //! ### `graph-description`
 //!
 //! > To be called with:
@@ -229,7 +222,6 @@
 //!
 //! This mode is not finished, yet, but it can already detect some issues
 //! regarding given input files.
-//! -->
 //!
 //! ### `rs2md`
 //!
