@@ -100,9 +100,8 @@ impl CommentChanges {
   ///
   /// See
   ///
-  /// - [`Self::open_repository`]
-  /// - [`Self::query_last_n_commits`]
   /// - [`Self::report_changes`]
+  /// - [`Self::update_changes`]
   pub fn main(&mut self, output_directory: &str) -> Result<()> {
     self.update_changes()?;
     self.report_changes(output_directory)
