@@ -234,11 +234,9 @@ impl Action {
           .collect(),
       )
       .main(output_directory.as_ref().map_or(".", |directory| directory)),
-      /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)
       }
-      */
       Self::Rs2md {
         extract_inner,
         extract_outer,
