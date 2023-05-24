@@ -43,28 +43,20 @@ jobs:
     name: run
     runs-on: ubuntu-latest
     steps:
-      - name: rustup
-        run: rustup update
+      - run: rustup update
 
-      - name: checkout
-        uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.2
         with:
           persist-credentials: false
 
-      - name: user
-        uses: fregante/setup-git-user@v2.0.1
+      - uses: fregante/setup-git-user@v2.0.1
 
-      - name: cargo
-        run: |
-          cargo update \
-          && git add . \
-          && git commit --allow-empty -m \
-                 "[`git config --list \
-                 | grep user\.name \
-                 | cut -d= -f2`] cargo update"
+      - run: |
+          cargo update
+          git add .
+          git commit --allow-empty -m 'Changed ::= ``cargo update``'
 
-      - name: pr
-        uses: peter-evans/create-pull-request@v5.0.1
+      - uses: peter-evans/create-pull-request@v5.0.1
         with:
           assignees: |
             kevinmatthes
