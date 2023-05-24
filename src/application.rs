@@ -67,7 +67,6 @@ pub enum Action {
     target: Vec<String>,
   },
 
-  /*
   /// Rate an Aeruginous Graph Description (AGD).
   #[command(aliases = ["agd"])]
   GraphDescription {
@@ -75,7 +74,7 @@ pub enum Action {
     #[arg(short = 'i')]
     input_file: Option<PathBuf>,
   },
-  */
+
   /// Extract Markdown code from Rust documentation comments.
   Rs2md {
     /// Whether to extract Rust documentation line comments starting with `///`.
