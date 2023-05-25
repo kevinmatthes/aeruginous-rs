@@ -59,6 +59,11 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - if: ${{ matrix.subcommand }} == 'nextest r'
+        uses: taiki-e/install-action@v2.8.7
+        with:
+          tool: nextest
+
       - run: cargo ${{ matrix.subcommand }}
     strategy:
       matrix:
@@ -68,6 +73,7 @@ jobs:
           - clippy
           - d
           - fmt --check
+          - nextest r
           - t
 
   cffconvert:
