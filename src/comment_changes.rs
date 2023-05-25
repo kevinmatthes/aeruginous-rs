@@ -73,7 +73,7 @@ impl CommentChanges {
     let mut result = String::new();
 
     for (link_name, target) in &self.hyperlinks {
-      result.append_as_line(format!(".. {link_name}:  {target}"));
+      result.append_as_line(format!(".. _{link_name}:  {target}"));
     }
 
     if !self.hyperlinks.is_empty() {
