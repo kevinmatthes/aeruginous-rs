@@ -24,6 +24,9 @@ use sysexits::{ExitCode, Result};
 
 /// Create comments on the latest changes to this repository.
 pub struct CommentChanges {
+  /// The allowed categories.
+  categories: Vec<String>,
+
   /// The changes to report.
   changes: HashMap<String, Vec<String>>,
 
@@ -113,8 +116,10 @@ impl CommentChanges {
     depth: Option<usize>,
     delimiter: String,
     hyperlinks: Vec<(String, String)>,
+    categories: Vec<String>,
   ) -> Self {
     Self {
+      categories,
       changes: HashMap::new(),
       delimiter,
       depth,
@@ -176,16 +181,20 @@ impl CommentChanges {
                     if let Some((category, change)) =
                       summary.trim().split_once(&self.delimiter)
                     {
-                      let category = category.trim().to_string();
-                      let change = change.trim().to_string();
+                      if self.categories.is_empty()
+                        || self.categories.iter().any(|c| c == category)
+                      {
+                        let category = category.trim().to_string();
+                        let change = change.trim().to_string();
 
-                      if !result.contains_key(&category) {
-                        result.insert(category.clone(), Vec::new());
+                        if !result.contains_key(&category) {
+                          result.insert(category.clone(), Vec::new());
+                        }
+
+                        let mut changes = result[&category].clone();
+                        changes.push(change);
+                        result.insert(category, changes);
                       }
-
-                      let mut changes = result[&category].clone();
-                      changes.push(change);
-                      result.insert(category, changes);
                     }
                   }
                   None => return Err(ExitCode::Unavailable),

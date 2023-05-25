@@ -46,6 +46,10 @@ pub enum Action {
   /// Create comments on the commits of a branch in this repository.
   #[command(aliases = ["changelog"])]
   CommentChanges {
+    /// Only these categories shall be used to generate comments.
+    #[arg(long, short = 'c')]
+    category: Vec<String>,
+
     /// The delimiter to separate a category from the change description.
     #[arg(long, short = 'd')]
     delimiter: String,
@@ -220,6 +224,7 @@ impl Action {
       } => (|s: String| -> String { Self::cffreference(&s) })
         .io_append(input_file, output_file),
       Self::CommentChanges {
+        category,
         delimiter,
         depth,
         link,
@@ -233,6 +238,7 @@ impl Action {
           .zip(target.iter())
           .map(|(a, b)| (a.to_string(), b.to_string()))
           .collect(),
+        category.clone(),
       )
       .main(output_directory.as_ref().map_or(".", |directory| directory)),
       /*
