@@ -21,14 +21,14 @@ use aeruginous::CommentChanges;
 
 #[test]
 fn branch_name_repository_implicitly_opened() {
-  let mut cc = CommentChanges::new(None, String::new(), vec![]);
+  let mut cc = CommentChanges::new(None, String::new(), vec![], vec![]);
 
   assert!(cc.branch_name().is_ok());
 }
 
 #[test]
 fn branch_name_repository_previously_opened() {
-  let mut cc = CommentChanges::new(None, String::new(), vec![]);
+  let mut cc = CommentChanges::new(None, String::new(), vec![], vec![]);
   cc.open_repository().unwrap();
 
   assert!(cc.branch_name().is_ok());
@@ -36,7 +36,7 @@ fn branch_name_repository_previously_opened() {
 
 #[test]
 fn generate_changelog_fragment_no_links() {
-  let mut cc = CommentChanges::new(None, '/'.to_string(), vec![]);
+  let mut cc = CommentChanges::new(None, '/'.to_string(), vec![], vec![]);
   cc.update_changes().unwrap();
 
   assert!(!cc.generate_changelog_fragment().is_empty());
@@ -48,6 +48,7 @@ fn generate_changelog_fragment_with_links() {
     None,
     '/'.to_string(),
     vec![("hyperlink".to_string(), "target".to_string())],
+    vec![],
   );
   cc.update_changes().unwrap();
 
