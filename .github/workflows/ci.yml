@@ -65,6 +65,7 @@ jobs:
         subcommand:
           - c
           - clippy
+          - d
           - fmt --check
           - t
 
