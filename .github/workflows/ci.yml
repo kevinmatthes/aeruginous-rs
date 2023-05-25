@@ -63,6 +63,7 @@ jobs:
     strategy:
       matrix:
         subcommand:
+          - b
           - c
           - clippy
           - d
