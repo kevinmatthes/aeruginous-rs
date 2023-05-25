@@ -55,4 +55,27 @@ fn generate_changelog_fragment_with_links() {
   assert!(!cc.generate_changelog_fragment().is_empty());
 }
 
+#[test]
+fn resolve_links() {
+  assert_eq!(
+    CommentChanges::new(None, String::new(), vec![], vec![]).resolve_links(),
+    String::new()
+  );
+  assert_eq!(
+    CommentChanges::new(
+      None,
+      String::new(),
+      vec![
+        ("a.rs".to_string(), "src/a.rs".to_string()),
+        ("b.rs".to_string(), "src/b.rs".to_string()),
+        ("d.rs".to_string(), "src/d.rs".to_string())
+      ],
+      vec![]
+    )
+    .resolve_links(),
+    ".. _a.rs:  src/a.rs\n.. _b.rs:  src/b.rs\n.. _d.rs:  src/d.rs\n\n"
+      .to_string()
+  );
+}
+
 /******************************************************************************/
