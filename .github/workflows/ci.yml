@@ -52,14 +52,14 @@ jobs:
     name: cargo
     runs-on: ubuntu-latest
     steps:
+      - run: rustup update
+
       - uses: actions/checkout@v3.5.2
         with:
           fetch-depth: 0
           persist-credentials: false
 
-      - run: |
-          rustup update
-          cargo ${{ matrix.subcommand }}
+      - run: cargo ${{ matrix.subcommand }}
     strategy:
       matrix:
         subcommand:
