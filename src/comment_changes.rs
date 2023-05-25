@@ -73,15 +73,7 @@ impl CommentChanges {
   /// Generate the changelog fragment.
   #[must_use]
   pub fn generate_changelog_fragment(&self) -> String {
-    let mut result = String::new();
-
-    for (link_name, target) in &self.hyperlinks {
-      result.append_as_line(format!(".. _{link_name}:  {target}"));
-    }
-
-    if !self.hyperlinks.is_empty() {
-      result.push('\n');
-    }
+    let mut result = self.resolve_links();
 
     for (category, changes) in &self.changes {
       result.append_as_line(format!(
@@ -243,6 +235,22 @@ impl CommentChanges {
       branch.split('/').last().unwrap_or("HEAD")
     ))
     .write(Box::new(self.generate_changelog_fragment()))
+  }
+
+  /// Assemble the links for the resulting report.
+  #[must_use]
+  pub fn resolve_links(&self) -> String {
+    let mut result = String::new();
+
+    if !self.hyperlinks.is_empty() {
+      for (link_name, target) in &self.hyperlinks {
+        result.append_as_line(format!(".. _{link_name}:  {target}"));
+      }
+
+      result.push('\n');
+    }
+
+    result
   }
 
   /// Update the changes retrieved by this instance.
