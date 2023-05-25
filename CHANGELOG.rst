@@ -50,6 +50,29 @@ All pending changelog entries are stored in `changelog.d`_.
 
 .. scriv-insert-here
 
+.. _changelog-1.1.1:
+
+1.1.1 — 2023-05-25
+------------------
+
+Added
+.....
+
+- comment-changes:  category checker
+
+- tests/comment_changes.rs:  test case for link resolution
+
+- src/comment_changes.rs:  CommentChanges::resolve_links
+
+Fixed
+.....
+
+- src/comment_changes.rs:  link correct method in documentation
+
+- CI:  ``cargo update`` workflow now meets ``comment-changes`` requirements
+
+- comment-changes:  missing ``_`` in link resolution
+
 .. _changelog-1.1.0:
 
 1.1.0 — 2023-05-23
