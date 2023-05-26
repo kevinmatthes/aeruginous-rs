@@ -40,11 +40,7 @@ pub struct Version {
 }
 
 impl Version {
-  crate::getters!(@fn @cp
-    major: usize,
-    minor: usize,
-    patch: usize
-  );
+  crate::getters!(@fn @cp major: usize, minor: usize, patch: usize);
 
   /// Create a new version instance.
   #[must_use]

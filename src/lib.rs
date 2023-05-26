@@ -290,6 +290,7 @@
 
 mod application;
 mod comment_changes;
+mod graph;
 mod graph_description;
 mod macros;
 mod pattern;
@@ -300,6 +301,7 @@ mod version;
 pub use crate::{
   application::{Action, Clap as Application},
   comment_changes::CommentChanges,
+  graph::{EdgeType, Edges, Graph, VertexData, Vertices},
   graph_description::{
     GraphDescription as AeruginousGraphDescription, Tokens as AgdTokens,
   },

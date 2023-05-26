@@ -32,9 +32,7 @@ pub struct Running {
 }
 
 impl Running {
-  crate::getters!(@fn @ref
-    beginning: DateTime<Local>
-  );
+  crate::getters!(@fn @ref beginning: DateTime<Local>);
 
   /// Construct a new running instance.
   #[must_use]
