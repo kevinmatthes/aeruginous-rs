@@ -45,42 +45,26 @@ jobs:
     name: upgrade
     runs-on: ubuntu-latest
     steps:
-      - name: rustup
-        run: rustup update
+      - run: rustup update
 
-      - name: checkout
-        uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.2
         with:
           persist-credentials: false
 
-      - name: user
-        uses: fregante/setup-git-user@v2.0.1
+      - uses: fregante/setup-git-user@v2.0.1
 
-      - name: upgrade
-        run: |
-          sed s/^msrv\ =\ \".*\"/msrv\ =\ \"`rustc --version \
-                                             | cut -d' ' -f2`\"/g \
-              .clippy.toml >> .clippy.toml.tmp \
-          && mv .clippy.toml.tmp .clippy.toml \
-          && sed s/^rust-version\ =\ \".*\"/rust-version\ =\ \"`rustc \
-                                                                --version \
-                                                                | cut -d' ' \
-                                                                      -f2`\"/g \
-                 Cargo.toml >> Cargo.toml.tmp \
-          && mv Cargo.toml.tmp Cargo.toml \
-          && echo Changed > changelog.d/msrv.rst \
-          && echo ....... >> changelog.d/msrv.rst \
-          && echo >> changelog.d/msrv.rst \
-          && echo "- MSRV:  `rustc --version | cut -d' ' -f2`" \
-                  >> changelog.d/msrv.rst \
-          && git add .clippy.toml Cargo.toml changelog.d/msrv.rst \
-          && git commit --allow-empty -m \
-                 "[` \
-                    git config --list | grep user\.name | cut -d= -f2 \
-                  `] Upgrade MSRV to `rustc --version | cut -d\  -f2`"
+      - run: |
+          MSRV=$(rustc --version | cut d\  -f2)
+          sed s/^msrv\ =\ \".*\"/msrv\ =\ \"$(MSRV)"/g \
+              .clippy.toml >> .clippy.toml.tmp
+          mv .clippy.toml.tmp .clippy.toml
+          sed s/^rust-version\ =\ \".*\"/rust-version\ =\ \"$(MSRV)\"/g \
+              Cargo.toml >> Cargo.toml.tmp
+          mv Cargo.toml.tmp Cargo.toml
+          git add .clippy.toml Cargo.toml
+          git commit --allow-empty -m "Changed ::= MSRV:  $(MSRV)"
 
-      - name: pr
-        uses: peter-evans/create-pull-request@v5.0.1
+      - uses: peter-evans/create-pull-request@v5.0.1
         with:
           assignees: |
             kevinmatthes
@@ -89,6 +73,6 @@ jobs:
           labels: |
             enhancement
           milestone: 4
-          title: '[Enhancement] Upgrade MSRV'
+          title: '[GitHub Actions] Upgrade MSRV'
 
 ################################################################################
