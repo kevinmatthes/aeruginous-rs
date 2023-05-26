@@ -226,8 +226,79 @@ fn vertex_data_send_edge() {
 }
 
 #[test]
+fn vertices_add_vertex() {
+  let mut v = Vertices::<i32>::default();
+
+  assert!(v.add_vertex("a"));
+  assert!(!v.add_vertex("a"));
+}
+
+#[test]
+fn vertices_equality() {
+  let mut vertices_1 = Vertices::<i32>::default();
+  let mut vertices_2 = Vertices::<i32>::default();
+
+  vertices_1.add_vertex("a");
+  vertices_2.add_vertex("a");
+
+  assert_eq!(vertices_1, vertices_2);
+  assert_eq!(vertices_2, vertices_1);
+
+  vertices_2.add_vertex("b");
+
+  assert_ne!(vertices_1, vertices_2);
+  assert_ne!(vertices_2, vertices_1);
+}
+
+#[test]
 fn vertices_method_equality() {
   assert_eq!(Vertices::<i32>::new(), Vertices::default());
+}
+
+#[test]
+fn vertices_move_by() {
+  let mut vertices_1 = Vertices::default();
+  let mut vertices_2 = Vertices::default();
+
+  vertices_1.add_vertex("a");
+  vertices_2.add_vertex("a");
+
+  assert_eq!(vertices_1, vertices_2);
+  assert_eq!(vertices_2, vertices_1);
+
+  vertices_2.move_by(&128, &256, &512);
+
+  assert_ne!(vertices_1, vertices_2);
+  assert_ne!(vertices_2, vertices_1);
+}
+
+#[test]
+fn vertices_scale_1() {
+  let mut vertices_1 = Vertices::default();
+  let mut vertices_2 = Vertices::default();
+
+  vertices_1.add_vertex("a");
+  vertices_2.add_vertex("a");
+
+  assert_eq!(vertices_1, vertices_2);
+  assert_eq!(vertices_2, vertices_1);
+
+  vertices_2.scale(&2);
+
+  assert_eq!(vertices_1, vertices_2);
+  assert_eq!(vertices_2, vertices_1);
+}
+
+#[test]
+fn vertices_unequality() {
+  let mut vertices_1 = Vertices::<i32>::default();
+  let mut vertices_2 = Vertices::<i32>::default();
+
+  vertices_1.add_vertex("a");
+  vertices_2.add_vertex("b");
+
+  assert_ne!(vertices_1, vertices_2);
+  assert_ne!(vertices_2, vertices_1);
 }
 
 /******************************************************************************/
