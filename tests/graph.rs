@@ -77,13 +77,13 @@ fn edges_add_directed_edges() {
   e.add_directed_edge("b", "c");
   e.add_directed_edge("c", "a");
 
-  assert!(e.contains(EdgeType::directed("a", "b")));
-  assert!(e.contains(EdgeType::directed("b", "c")));
-  assert!(e.contains(EdgeType::directed("c", "a")));
+  assert!(e.contains(&EdgeType::directed("a", "b")));
+  assert!(e.contains(&EdgeType::directed("b", "c")));
+  assert!(e.contains(&EdgeType::directed("c", "a")));
 
-  assert!(!e.contains(EdgeType::directed("b", "a")));
-  assert!(!e.contains(EdgeType::directed("c", "b")));
-  assert!(!e.contains(EdgeType::directed("a", "c")));
+  assert!(!e.contains(&EdgeType::directed("b", "a")));
+  assert!(!e.contains(&EdgeType::directed("c", "b")));
+  assert!(!e.contains(&EdgeType::directed("a", "c")));
 }
 
 #[test]
@@ -94,18 +94,51 @@ fn edges_add_undirected_edges() {
   e.add_undirected_edge("b", "c");
   e.add_undirected_edge("c", "a");
 
-  assert!(e.contains(EdgeType::undirected("a", "b")));
-  assert!(e.contains(EdgeType::undirected("b", "c")));
-  assert!(e.contains(EdgeType::undirected("c", "a")));
+  assert!(e.contains(&EdgeType::undirected("a", "b")));
+  assert!(e.contains(&EdgeType::undirected("b", "c")));
+  assert!(e.contains(&EdgeType::undirected("c", "a")));
 
-  assert!(e.contains(EdgeType::undirected("b", "a")));
-  assert!(e.contains(EdgeType::undirected("c", "b")));
-  assert!(e.contains(EdgeType::undirected("a", "c")));
+  assert!(e.contains(&EdgeType::undirected("b", "a")));
+  assert!(e.contains(&EdgeType::undirected("c", "b")));
+  assert!(e.contains(&EdgeType::undirected("a", "c")));
+}
+
+#[test]
+fn edges_equality_1() {
+  let mut edges_a = Edges::default();
+  let mut edges_b = Edges::default();
+
+  edges_a.add_undirected_edge("a", "b");
+  edges_b.add_undirected_edge("a", "b");
+
+  assert_eq!(edges_a, edges_b);
+}
+
+#[test]
+fn edges_equality_2() {
+  let mut edges_a = Edges::default();
+  let mut edges_b = Edges::default();
+
+  edges_a.add_undirected_edge("a", "b");
+  edges_b.add_undirected_edge("b", "a");
+
+  assert_eq!(edges_a, edges_b);
 }
 
 #[test]
 fn edges_method_equality() {
   assert_eq!(Edges::new(), Edges::default());
+}
+
+#[test]
+fn edges_unequality() {
+  let mut edges_a = Edges::default();
+  let mut edges_b = Edges::default();
+
+  edges_a.add_directed_edge("", "");
+  edges_b.add_undirected_edge("", "");
+
+  assert_ne!(edges_a, edges_b);
 }
 
 #[test]
@@ -177,6 +210,11 @@ fn vertex_data_send_edge() {
   assert_eq!(vertex.degree(), 1);
   assert_eq!(vertex.ingoing(), 0);
   assert_eq!(vertex.outgoing(), 1);
+}
+
+#[test]
+fn vertices_method_equality() {
+  assert_eq!(Vertices::<i32>::new(), Vertices::default());
 }
 
 /******************************************************************************/
