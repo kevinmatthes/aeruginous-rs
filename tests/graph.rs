@@ -69,4 +69,43 @@ fn edge_type_equality_undirected() {
   );
 }
 
+#[test]
+fn edges_add_directed_edges() {
+  let mut e = Edges::default();
+
+  e.add_directed_edge("a", "b");
+  e.add_directed_edge("b", "c");
+  e.add_directed_edge("c", "a");
+
+  assert!(e.contains(EdgeType::directed("a", "b")));
+  assert!(e.contains(EdgeType::directed("b", "c")));
+  assert!(e.contains(EdgeType::directed("c", "a")));
+
+  assert!(!e.contains(EdgeType::directed("b", "a")));
+  assert!(!e.contains(EdgeType::directed("c", "b")));
+  assert!(!e.contains(EdgeType::directed("a", "c")));
+}
+
+#[test]
+fn edges_add_undirected_edges() {
+  let mut e = Edges::default();
+
+  e.add_undirected_edge("a", "b");
+  e.add_undirected_edge("b", "c");
+  e.add_undirected_edge("c", "a");
+
+  assert!(e.contains(EdgeType::undirected("a", "b")));
+  assert!(e.contains(EdgeType::undirected("b", "c")));
+  assert!(e.contains(EdgeType::undirected("c", "a")));
+
+  assert!(e.contains(EdgeType::undirected("b", "a")));
+  assert!(e.contains(EdgeType::undirected("c", "b")));
+  assert!(e.contains(EdgeType::undirected("a", "c")));
+}
+
+#[test]
+fn edges_method_equality() {
+  assert_eq!(Edges::new(), Edges::default());
+}
+
 /******************************************************************************/
