@@ -20,7 +20,7 @@
 use crate::getters;
 use std::{
   collections::{HashMap, HashSet},
-  ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign},
+  ops::{Add, AddAssign, MulAssign},
 };
 
 /// The possible edge types.
@@ -106,7 +106,7 @@ impl std::hash::Hash for EdgeType {
 }
 
 /// A set of edges.
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug)]
 pub struct Edges {
   /// The held edges.
   edges: HashSet<EdgeType>,
@@ -125,14 +125,14 @@ impl Edges {
 
   /// Check whether there is a certain edge.
   #[must_use]
-  pub fn contains(&self, edge: EdgeType) -> bool {
+  pub fn contains(&self, edge: &EdgeType) -> bool {
     match edge {
-      EdgeType::DirectedEdge { departure, arrival } => self
-        .edges
-        .contains(&EdgeType::directed(&departure, &arrival)),
+      EdgeType::DirectedEdge { departure, arrival } => {
+        self.edges.contains(&EdgeType::directed(departure, arrival))
+      }
       EdgeType::UndirectedEdge { one, two } => {
-        self.edges.contains(&EdgeType::undirected(&one, &two))
-          || self.edges.contains(&EdgeType::undirected(&two, &one))
+        self.edges.contains(&EdgeType::undirected(one, two))
+          || self.edges.contains(&EdgeType::undirected(two, one))
       }
     }
   }
@@ -146,9 +146,26 @@ impl Edges {
   }
 }
 
+impl Eq for Edges {}
+
 impl Default for Edges {
   fn default() -> Self {
     Self::new()
+  }
+}
+
+impl PartialEq for Edges {
+  fn eq(&self, other: &Self) -> bool {
+    let mut result = true;
+
+    for edge in &self.edges {
+      if !other.contains(edge) {
+        result = false;
+        break;
+      }
+    }
+
+    result
   }
 }
 
@@ -156,15 +173,7 @@ impl Default for Edges {
 #[derive(Eq, PartialEq)]
 pub struct Graph<T>
 where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + Mul
-    + MulAssign
-    + Sub
-    + SubAssign,
+  T: Add + AddAssign + Clone + From<u8> + MulAssign,
 {
   /// The held edges.
   edges: Edges,
@@ -175,16 +184,7 @@ where
 
 impl<T> Graph<T>
 where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + From<u8>
-    + Mul
-    + MulAssign
-    + Sub
-    + SubAssign,
+  T: Add + AddAssign + Clone + From<u8> + MulAssign,
 {
   getters!(@fn @ref edges: Edges, vertices: Vertices<T>);
 
@@ -217,16 +217,7 @@ where
 
 impl<T> Default for Graph<T>
 where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + From<u8>
-    + Mul
-    + MulAssign
-    + Sub
-    + SubAssign,
+  T: Add + AddAssign + Clone + From<u8> + MulAssign,
 {
   fn default() -> Self {
     Self::new()
@@ -237,15 +228,7 @@ where
 #[derive(Clone, Debug)]
 pub struct VertexData<T>
 where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + Mul
-    + MulAssign
-    + Sub
-    + SubAssign,
+  T: Add + AddAssign + Clone + MulAssign,
 {
   /// The sum of in- and outgoing edges of this vertex.
   degree: usize,
@@ -268,15 +251,7 @@ where
 
 impl<T> VertexData<T>
 where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + Mul
-    + MulAssign
-    + Sub
-    + SubAssign,
+  T: Add + AddAssign + Clone + MulAssign,
 {
   getters!(@fn @cp degree: usize, ingoing: usize, outgoing: usize);
   getters!(@fn @ref x: T, y: T, z: T);
@@ -336,31 +311,13 @@ where
 }
 
 impl<T> Eq for VertexData<T> where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + Mul
-    + MulAssign
-    + PartialEq
-    + Sub
-    + SubAssign
+  T: Add + AddAssign + Clone + MulAssign + PartialEq
 {
 }
 
 impl<T> Default for VertexData<T>
 where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + From<u8>
-    + Mul
-    + MulAssign
-    + Sub
-    + SubAssign,
+  T: Add + AddAssign + Clone + From<u8> + MulAssign,
 {
   fn default() -> Self {
     Self::new(0.into(), 0.into(), 0.into())
@@ -369,16 +326,7 @@ where
 
 impl<T> PartialEq for VertexData<T>
 where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + Mul
-    + MulAssign
-    + PartialEq
-    + Sub
-    + SubAssign,
+  T: Add + AddAssign + Clone + MulAssign + PartialEq,
 {
   fn eq(&self, other: &Self) -> bool {
     self.x == other.x && self.y == other.y && self.z == other.z
@@ -386,18 +334,10 @@ where
 }
 
 /// A set of vertices.
-#[derive(Eq, PartialEq)]
+#[derive(Debug)]
 pub struct Vertices<T>
 where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + Mul
-    + MulAssign
-    + Sub
-    + SubAssign,
+  T: Add + AddAssign + Clone + MulAssign,
 {
   /// The held vertices.
   vertices: HashMap<String, VertexData<T>>,
@@ -405,16 +345,7 @@ where
 
 impl<T> Vertices<T>
 where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + From<u8>
-    + Mul
-    + MulAssign
-    + Sub
-    + SubAssign,
+  T: Add + AddAssign + Clone + From<u8> + MulAssign,
 {
   /// Update these vertices due to a directed edge.
   pub fn add_directed_edge(&mut self, departure: &str, arrival: &str) {
@@ -493,21 +424,40 @@ where
   }
 }
 
+impl<T> Eq for Vertices<T> where
+  T: Add + AddAssign + Clone + From<u8> + MulAssign + PartialEq
+{
+}
+
 impl<T> Default for Vertices<T>
 where
-  T: Add
-    + AddAssign
-    + Clone
-    + Div
-    + DivAssign
-    + From<u8>
-    + Mul
-    + MulAssign
-    + Sub
-    + SubAssign,
+  T: Add + AddAssign + Clone + From<u8> + MulAssign,
 {
   fn default() -> Self {
     Self::new()
+  }
+}
+
+impl<T> PartialEq for Vertices<T>
+where
+  T: Add + AddAssign + Clone + From<u8> + MulAssign + PartialEq,
+{
+  fn eq(&self, other: &Self) -> bool {
+    let mut result = true;
+
+    for (label, vertex) in &self.vertices {
+      if other.vertices.get(label).is_none() {
+        result = false;
+        break;
+      }
+
+      if &other.vertices[label] != vertex {
+        result = false;
+        break;
+      }
+    }
+
+    result
   }
 }
 
