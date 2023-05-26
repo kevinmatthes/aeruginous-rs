@@ -156,12 +156,14 @@ impl Default for Edges {
 
 impl PartialEq for Edges {
   fn eq(&self, other: &Self) -> bool {
-    let mut result = true;
+    let mut result = self.edges.len() == other.edges.len();
 
-    for edge in &self.edges {
-      if !other.contains(edge) {
-        result = false;
-        break;
+    if result {
+      for edge in &self.edges {
+        if !other.contains(edge) {
+          result = false;
+          break;
+        }
       }
     }
 
@@ -443,17 +445,19 @@ where
   T: Add + AddAssign + Clone + From<u8> + MulAssign + PartialEq,
 {
   fn eq(&self, other: &Self) -> bool {
-    let mut result = true;
+    let mut result = self.vertices.len() == other.vertices.len();
 
-    for (label, vertex) in &self.vertices {
-      if other.vertices.get(label).is_none() {
-        result = false;
-        break;
-      }
+    if result {
+      for (label, vertex) in &self.vertices {
+        if other.vertices.get(label).is_none() {
+          result = false;
+          break;
+        }
 
-      if &other.vertices[label] != vertex {
-        result = false;
-        break;
+        if &other.vertices[label] != vertex {
+          result = false;
+          break;
+        }
       }
     }
 
