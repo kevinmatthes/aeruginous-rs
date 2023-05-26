@@ -172,7 +172,7 @@ impl PartialEq for Edges {
 }
 
 /// A graph.
-#[derive(Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq)]
 pub struct Graph<T>
 where
   T: Add + AddAssign + Clone + From<u8> + MulAssign,
