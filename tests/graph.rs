@@ -112,6 +112,12 @@ fn edges_equality_1() {
   edges_b.add_undirected_edge("a", "b");
 
   assert_eq!(edges_a, edges_b);
+  assert_eq!(edges_b, edges_a);
+
+  edges_b.add_undirected_edge("c", "d");
+
+  assert_ne!(edges_a, edges_b);
+  assert_ne!(edges_b, edges_a);
 }
 
 #[test]
@@ -123,6 +129,12 @@ fn edges_equality_2() {
   edges_b.add_undirected_edge("b", "a");
 
   assert_eq!(edges_a, edges_b);
+  assert_eq!(edges_b, edges_a);
+
+  edges_b.add_undirected_edge("c", "d");
+
+  assert_ne!(edges_a, edges_b);
+  assert_ne!(edges_b, edges_a);
 }
 
 #[test]
@@ -139,6 +151,7 @@ fn edges_unequality() {
   edges_b.add_undirected_edge("", "");
 
   assert_ne!(edges_a, edges_b);
+  assert_ne!(edges_b, edges_a);
 }
 
 #[test]
