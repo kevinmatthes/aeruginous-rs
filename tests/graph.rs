@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::{EdgeType, Edges, Graph, Vertices};
+use aeruginous::{EdgeType, Edges, Graph, VertexData, Vertices};
 
 #[test]
 fn edge_type_equality_directed() {
@@ -106,6 +106,77 @@ fn edges_add_undirected_edges() {
 #[test]
 fn edges_method_equality() {
   assert_eq!(Edges::new(), Edges::default());
+}
+
+#[test]
+fn vertex_data_connect_edge() {
+  let mut vertex = VertexData::<i32>::default();
+  vertex.connect_edge();
+
+  assert_eq!(vertex, VertexData::default());
+  assert_eq!(vertex.degree(), 1);
+  assert_eq!(vertex.ingoing(), 1);
+  assert_eq!(vertex.outgoing(), 1);
+}
+
+#[test]
+fn vertex_data_getters() {
+  let vertex = VertexData::new(128, 256, 512);
+
+  assert_eq!(vertex.x(), &128);
+  assert_eq!(vertex.y(), &256);
+  assert_eq!(vertex.z(), &512);
+}
+
+#[test]
+fn vertex_data_method_equality() {
+  assert_eq!(VertexData::new(0, 0, 0), VertexData::default());
+}
+
+#[test]
+fn vertex_data_move_by() {
+  let mut vertex = VertexData::new(128, 256, 512);
+  vertex.move_by(512, 256, 128);
+
+  assert_eq!(vertex, VertexData::new(640, 512, 640));
+}
+
+#[test]
+fn vertex_data_move_to() {
+  let mut vertex = VertexData::new(128, 256, 512);
+  vertex.move_to(0, 0, 0);
+
+  assert_eq!(vertex, VertexData::default());
+}
+
+#[test]
+fn vertex_data_receive_edge() {
+  let mut vertex = VertexData::<i32>::default();
+  vertex.receive_edge();
+
+  assert_eq!(vertex, VertexData::default());
+  assert_eq!(vertex.degree(), 1);
+  assert_eq!(vertex.ingoing(), 1);
+  assert_eq!(vertex.outgoing(), 0);
+}
+
+#[test]
+fn vertex_data_scale() {
+  let mut vertex = VertexData::new(128, 256, 512);
+  vertex.scale(2);
+
+  assert_eq!(vertex, VertexData::new(256, 512, 1024));
+}
+
+#[test]
+fn vertex_data_send_edge() {
+  let mut vertex = VertexData::<i32>::default();
+  vertex.send_edge();
+
+  assert_eq!(vertex, VertexData::default());
+  assert_eq!(vertex.degree(), 1);
+  assert_eq!(vertex.ingoing(), 0);
+  assert_eq!(vertex.outgoing(), 1);
 }
 
 /******************************************************************************/
