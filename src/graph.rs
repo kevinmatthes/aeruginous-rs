@@ -180,7 +180,7 @@ where
     + Clone
     + Div
     + DivAssign
-    + From<i32>
+    + From<u8>
     + Mul
     + MulAssign
     + Sub
@@ -222,7 +222,7 @@ where
     + Clone
     + Div
     + DivAssign
-    + From<i32>
+    + From<u8>
     + Mul
     + MulAssign
     + Sub
@@ -234,7 +234,7 @@ where
 }
 
 /// The metadata of a vertex.
-#[derive(Clone, Eq, PartialEq)]
+#[derive(Clone, Debug)]
 pub struct VertexData<T>
 where
   T: Add
@@ -335,6 +335,20 @@ where
   }
 }
 
+impl<T> Eq for VertexData<T> where
+  T: Add
+    + AddAssign
+    + Clone
+    + Div
+    + DivAssign
+    + Mul
+    + MulAssign
+    + PartialEq
+    + Sub
+    + SubAssign
+{
+}
+
 impl<T> Default for VertexData<T>
 where
   T: Add
@@ -342,7 +356,7 @@ where
     + Clone
     + Div
     + DivAssign
-    + From<i32>
+    + From<u8>
     + Mul
     + MulAssign
     + Sub
@@ -350,6 +364,24 @@ where
 {
   fn default() -> Self {
     Self::new(0.into(), 0.into(), 0.into())
+  }
+}
+
+impl<T> PartialEq for VertexData<T>
+where
+  T: Add
+    + AddAssign
+    + Clone
+    + Div
+    + DivAssign
+    + Mul
+    + MulAssign
+    + PartialEq
+    + Sub
+    + SubAssign,
+{
+  fn eq(&self, other: &Self) -> bool {
+    self.x == other.x && self.y == other.y && self.z == other.z
   }
 }
 
@@ -378,7 +410,7 @@ where
     + Clone
     + Div
     + DivAssign
-    + From<i32>
+    + From<u8>
     + Mul
     + MulAssign
     + Sub
@@ -468,7 +500,7 @@ where
     + Clone
     + Div
     + DivAssign
-    + From<i32>
+    + From<u8>
     + Mul
     + MulAssign
     + Sub
