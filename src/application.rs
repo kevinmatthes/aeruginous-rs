@@ -63,8 +63,13 @@ pub enum Action {
     link: Vec<String>,
 
     /// The direcotry to write the generated fragment to.
-    #[arg(aliases = ["dir", "directory"], long = "output", short = 'o')]
-    output_directory: Option<String>,
+    #[arg(
+      aliases = ["dir", "directory"],
+      default_value = ".",
+      long = "output",
+      short = 'o'
+    )]
+    output_directory: String,
 
     /// The hyperlinks' targets.
     #[arg(long, short = 't')]
@@ -240,7 +245,7 @@ impl Action {
           .collect(),
         category.clone(),
       )
-      .main(output_directory.as_ref().map_or(".", |directory| directory)),
+      .main(output_directory),
       /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)
