@@ -180,7 +180,7 @@ where
     self.edges.add_undirected_edge(a, b);
   }
 
-  /// Connect the vertices `a` and `b` with an directed edge from `a` to `b`.
+  /// Connect the vertices `a` and `b` with a directed edge from `a` to `b`.
   pub fn connect_a_with_b(&mut self, a: &str, b: &str) {
     self.vertices.add_directed_edge(a, b);
     self.edges.add_directed_edge(a, b);
