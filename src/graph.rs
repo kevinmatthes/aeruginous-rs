@@ -106,7 +106,7 @@ impl std::hash::Hash for EdgeType {
 }
 
 /// A set of edges.
-#[derive(Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq)]
 pub struct Edges {
   /// The held edges.
   edges: HashSet<EdgeType>,
@@ -121,6 +121,20 @@ impl Edges {
   /// Add a new, undirected edge.
   pub fn add_undirected_edge(&mut self, one: &str, two: &str) -> bool {
     self.edges.insert(EdgeType::undirected(one, two))
+  }
+
+  /// Check whether there is a certain edge.
+  #[must_use]
+  pub fn contains(&self, edge: EdgeType) -> bool {
+    match edge {
+      EdgeType::DirectedEdge { departure, arrival } => self
+        .edges
+        .contains(&EdgeType::directed(&departure, &arrival)),
+      EdgeType::UndirectedEdge { one, two } => {
+        self.edges.contains(&EdgeType::undirected(&one, &two))
+          || self.edges.contains(&EdgeType::undirected(&two, &one))
+      }
+    }
   }
 
   /// Create a new instance.
