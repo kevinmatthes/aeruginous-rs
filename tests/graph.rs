@@ -155,6 +155,59 @@ fn edges_unequality() {
 }
 
 #[test]
+fn graph_connect_a_and_b_1() {
+  let mut e = Edges::default();
+  let mut g = Graph::<i32>::default();
+
+  e.add_undirected_edge("a", "b");
+  g.connect_a_and_b("a", "b");
+
+  assert_eq!(g.edges(), &e);
+  assert_eq!(&e, g.edges());
+}
+
+#[test]
+fn graph_connect_a_and_b_2() {
+  let mut e = Edges::default();
+  let mut g = Graph::<i32>::default();
+
+  e.add_undirected_edge("a", "b");
+  g.connect_a_and_b("b", "a");
+
+  assert_eq!(g.edges(), &e);
+  assert_eq!(&e, g.edges());
+}
+
+#[test]
+fn graph_connect_a_with_b() {
+  let mut e = Edges::default();
+  let mut g = Graph::<i32>::default();
+
+  e.add_directed_edge("a", "b");
+  g.connect_a_with_b("a", "b");
+
+  assert_eq!(g.edges(), &e);
+  assert_eq!(&e, g.edges());
+}
+
+#[test]
+fn graph_declare() {
+  let mut g = Graph::<i32>::default();
+  let mut v = Vertices::default();
+
+  g.declare("a");
+  v.add_vertex("a");
+
+  assert_eq!(g.vertices(), &v);
+  assert_eq!(&v, g.vertices());
+}
+
+#[test]
+fn graph_method_equality() {
+  assert_eq!(Graph::<i32>::new(), Graph::default());
+}
+
+#[test]
 fn vertex_data_connect_edge() {
   let mut vertex = VertexData::<i32>::default();
   vertex.connect_edge();
