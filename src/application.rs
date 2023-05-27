@@ -46,6 +46,10 @@ pub enum Action {
   /// Create comments on the commits of a branch in this repository.
   #[command(aliases = ["changelog"])]
   CommentChanges {
+    /// Only these categories shall be used to generate comments.
+    #[arg(long, short = 'c')]
+    category: Vec<String>,
+
     /// The delimiter to separate a category from the change description.
     #[arg(long, short = 'd')]
     delimiter: String,
@@ -54,13 +58,32 @@ pub enum Action {
     #[arg(aliases = ["count"], long, short = 'n')]
     depth: Option<usize>,
 
+    /// The heading's level in the resulting fragment.
+    #[arg(
+      aliases = ["level"],
+      default_value = "3",
+      long,
+      short = 'H',
+      value_parser = clap::value_parser!(u8).range(1..=3)
+    )]
+    heading: u8,
+
+    /// Set categories Added, Changed, Deprecated, Fixed, Removed, and Security.
+    #[arg(long, short = 'k')]
+    keep_a_changelog: bool,
+
     /// The hyperlinks to add as comments.
     #[arg(aliases = ["hyperlink"], long, short = 'l')]
     link: Vec<String>,
 
-    /// The direcotry to write the generated fragment to.
-    #[arg(aliases = ["dir", "directory"], long = "output", short = 'o')]
-    output_directory: Option<String>,
+    /// The directory to write the generated fragment to.
+    #[arg(
+      aliases = ["dir", "directory"],
+      default_value = ".",
+      long = "output",
+      short = 'o'
+    )]
+    output_directory: String,
 
     /// The hyperlinks' targets.
     #[arg(long, short = 't')]
@@ -219,8 +242,11 @@ impl Action {
       } => (|s: String| -> String { Self::cffreference(&s) })
         .io_append(input_file, output_file),
       Self::CommentChanges {
+        category,
         delimiter,
         depth,
+        heading,
+        keep_a_changelog,
         link,
         target,
         output_directory,
@@ -232,8 +258,20 @@ impl Action {
           .zip(target.iter())
           .map(|(a, b)| (a.to_string(), b.to_string()))
           .collect(),
+        if *keep_a_changelog {
+          vec![
+            "Added".to_string(),
+            "Changed".to_string(),
+            "Deprecated".to_string(),
+            "Fixed".to_string(),
+            "Removed".to_string(),
+            "Security".to_string(),
+          ]
+        } else {
+          category.clone()
+        },
       )
-      .main(output_directory.as_ref().map_or(".", |directory| directory)),
+      .main(output_directory, *heading),
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)
       }

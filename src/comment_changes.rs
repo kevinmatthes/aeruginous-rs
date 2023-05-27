@@ -24,6 +24,9 @@ use sysexits::{ExitCode, Result};
 
 /// Create comments on the latest changes to this repository.
 pub struct CommentChanges {
+  /// The allowed categories.
+  categories: Vec<String>,
+
   /// The changes to report.
   changes: HashMap<String, Vec<String>>,
 
@@ -69,21 +72,19 @@ impl CommentChanges {
 
   /// Generate the changelog fragment.
   #[must_use]
-  pub fn generate_changelog_fragment(&self) -> String {
-    let mut result = String::new();
-
-    for (link_name, target) in &self.hyperlinks {
-      result.append_as_line(format!(".. {link_name}:  {target}"));
-    }
-
-    if !self.hyperlinks.is_empty() {
-      result.push('\n');
-    }
+  pub fn generate_changelog_fragment(&self, heading: u8) -> String {
+    let mut result = self.resolve_links();
 
     for (category, changes) in &self.changes {
       result.append_as_line(format!(
         "{category}\n{}\n",
-        ".".repeat(category.len())
+        match heading {
+          1 => "=",
+          2 => "-",
+          3 => ".",
+          _ => unreachable!(),
+        }
+        .repeat(category.len())
       ));
 
       for change in changes {
@@ -102,9 +103,9 @@ impl CommentChanges {
   ///
   /// - [`Self::report_changes`]
   /// - [`Self::update_changes`]
-  pub fn main(&mut self, output_directory: &str) -> Result<()> {
+  pub fn main(&mut self, output_directory: &str, heading: u8) -> Result<()> {
     self.update_changes()?;
-    self.report_changes(output_directory)
+    self.report_changes(output_directory, heading)
   }
 
   /// Create a new instance from the command line arguments.
@@ -113,8 +114,10 @@ impl CommentChanges {
     depth: Option<usize>,
     delimiter: String,
     hyperlinks: Vec<(String, String)>,
+    categories: Vec<String>,
   ) -> Self {
     Self {
+      categories,
       changes: HashMap::new(),
       delimiter,
       depth,
@@ -179,13 +182,17 @@ impl CommentChanges {
                       let category = category.trim().to_string();
                       let change = change.trim().to_string();
 
-                      if !result.contains_key(&category) {
-                        result.insert(category.clone(), Vec::new());
-                      }
+                      if self.categories.is_empty()
+                        || self.categories.iter().any(|c| c == &category)
+                      {
+                        if !result.contains_key(&category) {
+                          result.insert(category.clone(), Vec::new());
+                        }
 
-                      let mut changes = result[&category].clone();
-                      changes.push(change);
-                      result.insert(category, changes);
+                        let mut changes = result[&category].clone();
+                        changes.push(change);
+                        result.insert(category, changes);
+                      }
                     }
                   }
                   None => return Err(ExitCode::Unavailable),
@@ -224,7 +231,11 @@ impl CommentChanges {
   ///
   /// - [`Self::branch_name`]
   /// - [`Self::who_am_i`]
-  pub fn report_changes(&mut self, output_directory: &str) -> Result<()> {
+  pub fn report_changes(
+    &mut self,
+    output_directory: &str,
+    heading: u8,
+  ) -> Result<()> {
     let branch = self.branch_name()?;
     let user = self.who_am_i()?.replace(' ', "_");
 
@@ -233,7 +244,23 @@ impl CommentChanges {
       chrono::Local::now().format("%Y%m%d_%H%M%S"),
       branch.split('/').last().unwrap_or("HEAD")
     ))
-    .write(Box::new(self.generate_changelog_fragment()))
+    .write(Box::new(self.generate_changelog_fragment(heading)))
+  }
+
+  /// Assemble the links for the resulting report.
+  #[must_use]
+  pub fn resolve_links(&self) -> String {
+    let mut result = String::new();
+
+    if !self.hyperlinks.is_empty() {
+      for (link_name, target) in &self.hyperlinks {
+        result.append_as_line(format!(".. _{link_name}:  {target}"));
+      }
+
+      result.push('\n');
+    }
+
+    result
   }
 
   /// Update the changes retrieved by this instance.

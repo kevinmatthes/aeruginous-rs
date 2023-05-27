@@ -42,89 +42,50 @@ jobs:
   bors:
     name: bors
     needs:
+      - cargo
       - cffconvert
-      - check
-      - clippy
-      - rustfmt
-      - test
     runs-on: ubuntu-latest
     steps:
-      - name: success
-        run: bash -c 'exit 0'
+      - run: bash -c 'exit 0'
+
+  cargo:
+    name: cargo
+    runs-on: ubuntu-latest
+    steps:
+      - run: rustup update
+
+      - uses: actions/checkout@v3.5.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - if: matrix.subcommand == 'nextest r'
+        uses: taiki-e/install-action@v2.8.8
+        with:
+          tool: nextest
+
+      - run: cargo ${{ matrix.subcommand }}
+    strategy:
+      matrix:
+        subcommand:
+          - b
+          - c
+          - clippy
+          - d
+          - fmt --check
+          - nextest r
+          - t
 
   cffconvert:
     name: cffconvert
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.2
         with:
           persist-credentials: false
 
-      - name: cffconvert
-        uses: citation-file-format/cffconvert-github-action@2.0.0
+      - uses: citation-file-format/cffconvert-github-action@2.0.0
         with:
           args: --validate
-
-  check:
-    name: check
-    runs-on: ubuntu-latest
-    steps:
-      - name: rustup
-        run: rustup update
-
-      - name: checkout
-        uses: actions/checkout@v3.5.2
-        with:
-          persist-credentials: false
-
-      - name: cargo
-        run: cargo c
-
-  clippy:
-    name: clippy
-    runs-on: ubuntu-latest
-    steps:
-      - name: rustup
-        run: rustup update
-
-      - name: checkout
-        uses: actions/checkout@v3.5.2
-        with:
-          persist-credentials: false
-
-      - name: cargo
-        run: cargo clippy
-
-  rustfmt:
-    name: rustfmt
-    runs-on: ubuntu-latest
-    steps:
-      - name: rustup
-        run: rustup update
-
-      - name: checkout
-        uses: actions/checkout@v3.5.2
-        with:
-          persist-credentials: false
-
-      - name: cargo
-        run: cargo fmt --check
-
-  test:
-    name: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: rustup
-        run: rustup update
-
-      - name: checkout
-        uses: actions/checkout@v3.5.2
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: cargo
-        run: cargo t
 
 ################################################################################

@@ -57,7 +57,7 @@
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //!
-//! The current code coverage is **<!-- cov -->62.82%<!-- cov -->**.
+//! The current code coverage is **<!-- cov -->69.63%<!-- cov -->**.
 //!
 //! ## License
 //!
@@ -282,7 +282,7 @@
 
 mod application;
 mod comment_changes;
-mod graph_description;
+mod graphing;
 mod macros;
 mod pattern;
 mod running;
@@ -292,8 +292,9 @@ mod version;
 pub use crate::{
   application::{Action, Clap as Application},
   comment_changes::CommentChanges,
-  graph_description::{
-    GraphDescription as AeruginousGraphDescription, Tokens as AgdTokens,
+  graphing::{
+    AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
+    Vertices,
   },
   pattern::{
     Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
@@ -312,6 +313,6 @@ pub const SELF_DESCRIPTION: &str =
   "The Aeruginous Open Source Development Toolbox";
 
 /// This crate's version.
-pub const VERSION: &str = "v1.1.0";
+pub const VERSION: &str = "v1.1.2";
 
 /******************************************************************************/
