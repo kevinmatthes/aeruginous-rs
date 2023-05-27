@@ -173,12 +173,12 @@ impl CommentChanges {
                     if let Some((category, change)) =
                       summary.trim().split_once(&self.delimiter)
                     {
-                      if self.categories.is_empty()
-                        || self.categories.iter().any(|c| c == category)
-                      {
-                        let category = category.trim().to_string();
-                        let change = change.trim().to_string();
+                      let category = category.trim().to_string();
+                      let change = change.trim().to_string();
 
+                      if self.categories.is_empty()
+                        || self.categories.iter().any(|c| c == &category)
+                      {
                         if !result.contains_key(&category) {
                           result.insert(category.clone(), Vec::new());
                         }

@@ -32,9 +32,6 @@
 name: comment-changes
 
 on:
-  pull_request:
-    types:
-      - opened
   workflow_dispatch:
 
 permissions:
@@ -54,7 +51,8 @@ jobs:
 
       - run: |
           rustup update
-          cargo r -- comment-changes -d ::= -o changelog.d/
+          cargo r -- comment-changes -d ::= -o changelog.d/ \
+            -c Added -c Changed -c Deprecated -c Fixed -c Removed -c Security
           git add changelog.d/
           git commit -m 'Create summary of recent changes'
           git push
