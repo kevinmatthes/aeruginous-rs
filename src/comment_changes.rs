@@ -72,13 +72,19 @@ impl CommentChanges {
 
   /// Generate the changelog fragment.
   #[must_use]
-  pub fn generate_changelog_fragment(&self) -> String {
+  pub fn generate_changelog_fragment(&self, heading: u8) -> String {
     let mut result = self.resolve_links();
 
     for (category, changes) in &self.changes {
       result.append_as_line(format!(
         "{category}\n{}\n",
-        ".".repeat(category.len())
+        match heading {
+          1 => "=",
+          2 => "-",
+          3 => ".",
+          _ => unreachable!(),
+        }
+        .repeat(category.len())
       ));
 
       for change in changes {
@@ -97,9 +103,9 @@ impl CommentChanges {
   ///
   /// - [`Self::report_changes`]
   /// - [`Self::update_changes`]
-  pub fn main(&mut self, output_directory: &str) -> Result<()> {
+  pub fn main(&mut self, output_directory: &str, heading: u8) -> Result<()> {
     self.update_changes()?;
-    self.report_changes(output_directory)
+    self.report_changes(output_directory, heading)
   }
 
   /// Create a new instance from the command line arguments.
@@ -225,7 +231,11 @@ impl CommentChanges {
   ///
   /// - [`Self::branch_name`]
   /// - [`Self::who_am_i`]
-  pub fn report_changes(&mut self, output_directory: &str) -> Result<()> {
+  pub fn report_changes(
+    &mut self,
+    output_directory: &str,
+    heading: u8,
+  ) -> Result<()> {
     let branch = self.branch_name()?;
     let user = self.who_am_i()?.replace(' ', "_");
 
@@ -234,7 +244,7 @@ impl CommentChanges {
       chrono::Local::now().format("%Y%m%d_%H%M%S"),
       branch.split('/').last().unwrap_or("HEAD")
     ))
-    .write(Box::new(self.generate_changelog_fragment()))
+    .write(Box::new(self.generate_changelog_fragment(heading)))
   }
 
   /// Assemble the links for the resulting report.

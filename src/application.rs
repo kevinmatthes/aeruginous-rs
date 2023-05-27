@@ -58,6 +58,16 @@ pub enum Action {
     #[arg(aliases = ["count"], long, short = 'n')]
     depth: Option<usize>,
 
+    /// The heading's level in the resulting fragment.
+    #[arg(
+      aliases = ["level"],
+      default_value = "3",
+      long,
+      short = 'H',
+      value_parser = clap::value_parser!(u8).range(1..=3)
+    )]
+    heading: u8,
+
     /// Set categories Added, Changed, Deprecated, Fixed, Removed, and Security.
     #[arg(long, short = 'k')]
     keep_a_changelog: bool,
@@ -66,7 +76,7 @@ pub enum Action {
     #[arg(aliases = ["hyperlink"], long, short = 'l')]
     link: Vec<String>,
 
-    /// The direcotry to write the generated fragment to.
+    /// The directory to write the generated fragment to.
     #[arg(
       aliases = ["dir", "directory"],
       default_value = ".",
@@ -236,6 +246,7 @@ impl Action {
         category,
         delimiter,
         depth,
+        heading,
         keep_a_changelog,
         link,
         target,
@@ -261,7 +272,7 @@ impl Action {
           category.clone()
         },
       )
-      .main(output_directory),
+      .main(output_directory, *heading),
       /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)

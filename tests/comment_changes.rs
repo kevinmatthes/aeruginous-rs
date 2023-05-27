@@ -39,7 +39,7 @@ fn generate_changelog_fragment_no_links() {
   let mut cc = CommentChanges::new(None, '/'.to_string(), vec![], vec![]);
   cc.update_changes().unwrap();
 
-  assert!(!cc.generate_changelog_fragment().is_empty());
+  assert!(!cc.generate_changelog_fragment(3).is_empty());
 }
 
 #[test]
@@ -52,7 +52,7 @@ fn generate_changelog_fragment_with_links() {
   );
   cc.update_changes().unwrap();
 
-  assert!(!cc.generate_changelog_fragment().is_empty());
+  assert!(!cc.generate_changelog_fragment(3).is_empty());
 }
 
 #[test]
