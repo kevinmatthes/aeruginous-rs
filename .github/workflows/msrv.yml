@@ -54,7 +54,7 @@ jobs:
       - uses: fregante/setup-git-user@v2.0.1
 
       - run: |
-          MSRV=$(rustc --version | cut d\  -f2)
+          MSRV=$(rustc --version | cut -d\  -f2)
           sed s/^msrv\ =\ \".*\"/msrv\ =\ \"$(MSRV)"/g \
               .clippy.toml >> .clippy.toml.tmp
           mv .clippy.toml.tmp .clippy.toml
