@@ -260,14 +260,16 @@ impl Action {
           .map(|(a, b)| (a.to_string(), b.to_string()))
           .collect(),
         if *keep_a_changelog {
-          vec![
+          let mut categories = vec![
             "Added".to_string(),
             "Changed".to_string(),
             "Deprecated".to_string(),
             "Fixed".to_string(),
             "Removed".to_string(),
             "Security".to_string(),
-          ]
+          ];
+          categories.append(&mut category.clone());
+          categories
         } else {
           category.clone()
         },
