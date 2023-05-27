@@ -290,8 +290,7 @@
 
 mod application;
 mod comment_changes;
-mod graph;
-mod graph_description;
+mod graphing;
 mod macros;
 mod pattern;
 mod running;
@@ -301,9 +300,9 @@ mod version;
 pub use crate::{
   application::{Action, Clap as Application},
   comment_changes::CommentChanges,
-  graph::{EdgeType, Edges, Graph, VertexData, Vertices},
-  graph_description::{
-    GraphDescription as AeruginousGraphDescription, Tokens as AgdTokens,
+  graphing::{
+    AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
+    Vertices,
   },
   pattern::{
     Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
