@@ -58,6 +58,10 @@ pub enum Action {
     #[arg(aliases = ["count"], long, short = 'n')]
     depth: Option<usize>,
 
+    /// Set categories Added, Changed, Deprecated, Fixed, Removed, and Security.
+    #[arg(long, short = 'k')]
+    keep_a_changelog: bool,
+
     /// The hyperlinks to add as comments.
     #[arg(aliases = ["hyperlink"], long, short = 'l')]
     link: Vec<String>,
@@ -232,6 +236,7 @@ impl Action {
         category,
         delimiter,
         depth,
+        keep_a_changelog,
         link,
         target,
         output_directory,
@@ -243,7 +248,18 @@ impl Action {
           .zip(target.iter())
           .map(|(a, b)| (a.to_string(), b.to_string()))
           .collect(),
-        category.clone(),
+        if *keep_a_changelog {
+          vec![
+            "Added".to_string(),
+            "Changed".to_string(),
+            "Deprecated".to_string(),
+            "Fixed".to_string(),
+            "Removed".to_string(),
+            "Security".to_string(),
+          ]
+        } else {
+          category.clone()
+        },
       )
       .main(output_directory),
       /*
