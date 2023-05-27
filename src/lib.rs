@@ -57,7 +57,7 @@
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //!
-//! The current code coverage is **<!-- cov -->69.63%<!-- cov -->**.
+//! The current code coverage is **<!-- cov -->69.33%<!-- cov -->**.
 //!
 //! ## License
 //!
