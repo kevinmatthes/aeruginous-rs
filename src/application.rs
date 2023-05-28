@@ -58,6 +58,22 @@ pub enum Action {
     #[arg(aliases = ["count"], long, short = 'n')]
     depth: Option<usize>,
 
+    /// The target format of the resulting fragment.
+    #[arg(
+      aliases = ["format"],
+      default_value = "rst",
+      long,
+      short = 'f',
+      value_parser = |f: &str| {
+        if ["md", "rst"].contains(&f) {
+          Ok(f.to_string())
+        } else {
+          Err(format!("extension '{f}' is not supported, yet"))
+        }
+      }
+    )]
+    extension: String,
+
     /// The heading's level in the resulting fragment.
     #[arg(
       aliases = ["level"],
@@ -246,6 +262,7 @@ impl Action {
         category,
         delimiter,
         depth,
+        extension,
         heading,
         keep_a_changelog,
         link,
@@ -274,7 +291,7 @@ impl Action {
           category.clone()
         },
       )
-      .main(output_directory, *heading),
+      .main(output_directory, *heading, extension),
       /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)
