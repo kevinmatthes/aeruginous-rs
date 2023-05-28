@@ -61,6 +61,8 @@ anstyle = "1.0.0"
 chrono = "0.4.24"
 clap = { version = "4.3.0", features = ["derive"] }
 git2 = "0.17.1"
+ron = "0.8.0"
+serde = { version = "1.0.163", features = ["derive"] }
 sysexits = "0.6.0"
 
 ################################################################################
