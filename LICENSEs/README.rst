@@ -41,6 +41,9 @@
 ..
 .. _git2:  https://github.com/rust-lang/git2-rs
 ..
+.. _ron:  https://github.com/ron-rs/ron
+.. _ron-rs/ron/LICENSE-Apache-2.0:  ron-rs/ron/LICENSE-Apache-2.0
+.. _ron-rs/ron/LICENSE-MIT:  ron-rs/ron/LICENSE-MIT
 .. _rust-cli/anstyle/LICENSE-Apache-2.0:  rust-cli/anstyle/LICENSE-Apache-2.0
 .. _rust-cli/anstyle/LICENSE-MIT:  rust-cli/anstyle/LICENSE-MIT
 .. _rust-lang/git2-rs/LICENSE-Apache-2.0:  rust-lang/git2-rs/LICENSE-Apache-2.0
@@ -119,6 +122,21 @@ Rust Crates
   - Apache-2.0:  https://github.com/rust-lang/git2-rs/blob/master/LICENSE-APACHE
 
   - MIT:  https://github.com/rust-lang/git2-rs/blob/master/LICENSE-MIT
+
+`ron`_
+......
+
+- local copies:
+
+  - Apache-2.0:  `ron-rs/ron/LICENSE-Apache-2.0`_
+
+  - MIT:  `ron-rs/ron/LICENSE-MIT`_
+
+- original licenses:
+
+  - Apache-2.0:  https://github.com/ron-rs/ron/blob/master/LICENSE-APACHE
+
+  - MIT:  https://github.com/ron-rs/ron/blob/master/LICENSE-MIT
 
 `sysexits`_
 ...........
