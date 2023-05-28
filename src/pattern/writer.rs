@@ -206,4 +206,21 @@ impl Writer for std::io::Stdout {
   }
 }
 
+impl Writer for String {
+  fn behaviour(
+    &self,
+    buffer: Box<dyn PatternBuffer>,
+    append: bool,
+    show_error_messages: bool,
+    truncate: bool,
+  ) -> Result<()> {
+    PathBuf::from(&self).behaviour(
+      buffer,
+      append,
+      show_error_messages,
+      truncate,
+    )
+  }
+}
+
 /******************************************************************************/
