@@ -72,20 +72,28 @@ impl CommentChanges {
 
   /// Generate the changelog fragment.
   #[must_use]
-  pub fn generate_changelog_fragment(&self, heading: u8) -> String {
-    let mut result = self.resolve_links();
+  pub fn generate_changelog_fragment(
+    &self,
+    heading: u8,
+    extension: &str,
+  ) -> String {
+    let mut result = self.resolve_links(extension);
 
     for (category, changes) in &self.changes {
-      result.append_as_line(format!(
-        "{category}\n{}\n",
-        match heading {
-          1 => "=",
-          2 => "-",
-          3 => ".",
-          _ => unreachable!(),
-        }
-        .repeat(category.len())
-      ));
+      result.append_as_line(match extension {
+        "md" => format!("{} {category}\n", "#".repeat(heading.into())),
+        "rst" => format!(
+          "{category}\n{}\n",
+          match heading {
+            1 => "=",
+            2 => "-",
+            3 => ".",
+            _ => unreachable!(),
+          }
+          .repeat(category.len())
+        ),
+        _ => unreachable!(),
+      });
 
       for change in changes {
         result.append_as_line(format!("- {change}\n"));
@@ -103,9 +111,14 @@ impl CommentChanges {
   ///
   /// - [`Self::report_changes`]
   /// - [`Self::update_changes`]
-  pub fn main(&mut self, output_directory: &str, heading: u8) -> Result<()> {
+  pub fn main(
+    &mut self,
+    output_directory: &str,
+    heading: u8,
+    extension: &str,
+  ) -> Result<()> {
     self.update_changes()?;
-    self.report_changes(output_directory, heading)
+    self.report_changes(output_directory, heading, extension)
   }
 
   /// Create a new instance from the command line arguments.
@@ -235,26 +248,33 @@ impl CommentChanges {
     &mut self,
     output_directory: &str,
     heading: u8,
+    extension: &str,
   ) -> Result<()> {
     let branch = self.branch_name()?;
     let user = self.who_am_i()?.replace(' ', "_");
 
     PathBuf::from(format!(
-      "{output_directory}/{}_{user}_{}.rst",
+      "{output_directory}/{}_{user}_{}.{extension}",
       chrono::Local::now().format("%Y%m%d_%H%M%S"),
       branch.split('/').last().unwrap_or("HEAD")
     ))
-    .write(Box::new(self.generate_changelog_fragment(heading)))
+    .write(Box::new(
+      self.generate_changelog_fragment(heading, extension),
+    ))
   }
 
   /// Assemble the links for the resulting report.
   #[must_use]
-  pub fn resolve_links(&self) -> String {
+  pub fn resolve_links(&self, extension: &str) -> String {
     let mut result = String::new();
 
     if !self.hyperlinks.is_empty() {
       for (link_name, target) in &self.hyperlinks {
-        result.append_as_line(format!(".. _{link_name}:  {target}"));
+        result.append_as_line(match extension {
+          "md" => format!("[{link_name}]:  {target}"),
+          "rst" => format!(".. _{link_name}:  {target}"),
+          _ => unreachable!(),
+        });
       }
 
       result.push('\n');
