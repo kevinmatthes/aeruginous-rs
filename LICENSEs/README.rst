@@ -49,6 +49,9 @@
 .. _rust-lang/git2-rs/LICENSE-Apache-2.0:  rust-lang/git2-rs/LICENSE-Apache-2.0
 .. _rust-lang/git2-rs/LICENSE-MIT:  rust-lang/git2-rs/LICENSE-MIT
 ..
+.. _serde:  https://github.com/serde-rs/serde
+.. _serde-rs/serde/LICENSE-Apache-2.0:  serde-rs/serde/LICENSE-Apache-2.0
+.. _serde-rs/serde/LICENSE-MIT:  serde-rs/serde/LICENSE-MIT
 .. _sorairolake/sysexits-rs/LICENSE-Apache-2.0:
     sorairolake/sysexits-rs/LICENSE-Apache-2.0
 .. _sorairolake/sysexits-rs/LICENSE-MIT:  sorairolake/sysexits-rs/LICENSE-MIT
@@ -63,8 +66,8 @@ This directory contains copies of the licenses of the Rust crates required by
 the software this repository defines.
 
 Each dependency's name is linked with the original repository.  For each
-dependency, the link to the original license file is given as well as the
-location of a copy being stored in this repository.
+dependency, the link to the original license files is given as well as the
+location of copies being stored in this repository.
 
 Rust Crates
 -----------
@@ -137,6 +140,21 @@ Rust Crates
   - Apache-2.0:  https://github.com/ron-rs/ron/blob/master/LICENSE-APACHE
 
   - MIT:  https://github.com/ron-rs/ron/blob/master/LICENSE-MIT
+
+`serde`_
+........
+
+- local copies:
+
+  - Apache-2.0:  `serde-rs/serde/LICENSE-Apache-2.0`_
+
+  - MIT:  `serde-rs/serde/LICENSE-Apache-2.0`_
+
+- original licenses:
+
+  - Apache-2.0:  https://github.com/serde-rs/serde/blob/master/LICENSE-APACHE
+
+  - MIT:  https://github.com/serde-rs/serde/blob/master/LICENSE-MIT
 
 `sysexits`_
 ...........
