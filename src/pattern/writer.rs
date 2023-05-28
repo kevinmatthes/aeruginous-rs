@@ -223,4 +223,21 @@ impl Writer for String {
   }
 }
 
+impl Writer for &str {
+  fn behaviour(
+    &self,
+    buffer: Box<dyn PatternBuffer>,
+    append: bool,
+    show_error_messages: bool,
+    truncate: bool,
+  ) -> Result<()> {
+    PathBuf::from(&self).behaviour(
+      buffer,
+      append,
+      show_error_messages,
+      truncate,
+    )
+  }
+}
+
 /******************************************************************************/
