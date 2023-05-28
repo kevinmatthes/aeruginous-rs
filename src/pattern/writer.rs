@@ -108,10 +108,10 @@ pub trait Writer {
 
 /// Add an implementation of the trait for a certain type.
 #[macro_export]
-macro_rules! impl_writer_for {
+macro_rules! impl_pattern_writer_for {
   ( @all $T:ty ) => {
-    impl_writer_for!(@option $T);
-    impl_writer_for!(@ref $T);
+    impl_pattern_writer_for!(@option $T);
+    impl_pattern_writer_for!(@ref $T);
   };
   ( @option $T:ty ) => {
     impl $crate::PatternWriter for $T {
@@ -155,9 +155,10 @@ macro_rules! impl_writer_for {
   };
 }
 
-impl_writer_for!(@all Option<PathBuf>);
-impl_writer_for!(@all Option<String>);
-impl_writer_for!(@option Option<&str>);
+impl_pattern_writer_for!(@all Option<PathBuf>);
+impl_pattern_writer_for!(@all Option<String>);
+impl_pattern_writer_for!(@option Option<&str>);
+impl_pattern_writer_for!(@ref PathBuf);
 
 impl Writer for PathBuf {
   fn behaviour(
