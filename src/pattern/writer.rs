@@ -156,6 +156,7 @@ macro_rules! impl_writer_for_option_t {
 
 impl_writer_for_option_t!(@both Option<PathBuf>);
 impl_writer_for_option_t!(@both Option<String>);
+impl_writer_for_option_t!(@main Option<&str>);
 
 impl Writer for PathBuf {
   fn behaviour(
