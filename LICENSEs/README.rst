@@ -148,7 +148,7 @@ Rust Crates
 
   - Apache-2.0:  `serde-rs/serde/LICENSE-Apache-2.0`_
 
-  - MIT:  `serde-rs/serde/LICENSE-Apache-2.0`_
+  - MIT:  `serde-rs/serde/LICENSE-MIT`_
 
 - original licenses:
 
