@@ -156,6 +156,7 @@ macro_rules! impl_pattern_writer_for {
 }
 
 impl_pattern_writer_for!(@all Option<PathBuf>);
+impl_pattern_writer_for!(@option Option<&PathBuf>);
 impl_pattern_writer_for!(@all Option<String>);
 impl_pattern_writer_for!(@option Option<&str>);
 impl_pattern_writer_for!(@ref PathBuf);
