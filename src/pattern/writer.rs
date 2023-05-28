@@ -154,39 +154,8 @@ macro_rules! impl_writer_for_option_t {
   };
 }
 
-impl Writer for Option<PathBuf> {
-  fn behaviour(
-    &self,
-    buffer: Box<dyn PatternBuffer>,
-    append: bool,
-    show_error_messages: bool,
-    truncate: bool,
-  ) -> Result<()> {
-    match self {
-      Some(path) => {
-        Writer::behaviour(path, buffer, append, show_error_messages, truncate)
-      }
-      None => std::io::stdout().behaviour(
-        buffer,
-        append,
-        show_error_messages,
-        truncate,
-      ),
-    }
-  }
-}
-
-impl Writer for &Option<PathBuf> {
-  fn behaviour(
-    &self,
-    buffer: Box<dyn PatternBuffer>,
-    append: bool,
-    show_error_messages: bool,
-    truncate: bool,
-  ) -> Result<()> {
-    (*self).behaviour(buffer, append, show_error_messages, truncate)
-  }
-}
+impl_writer_for_option_t!(@both Option<PathBuf>);
+impl_writer_for_option_t!(@both Option<String>);
 
 impl Writer for PathBuf {
   fn behaviour(
