@@ -106,6 +106,54 @@ pub trait Writer {
   }
 }
 
+/// Add an implementation of the trait for a certain `Option<T>`.
+macro_rules! impl_writer_for_option_t {
+  ( @both $T:ty ) => {
+    impl_writer_for_option_t!(@main $T);
+    impl_writer_for_option_t!(@ref $T);
+  };
+  ( @main $T:ty ) => {
+    impl $crate::PatternWriter for $T {
+      fn behaviour(
+        &self,
+        buffer: Box<dyn PatternBuffer>,
+        append: bool,
+        show_error_messages: bool,
+        truncate: bool,
+      ) -> Result<()> {
+        match self {
+          Some(thing) => Writer::behaviour(
+            thing,
+            buffer,
+            append,
+            show_error_messages,
+            truncate,
+          ),
+          None => std::io::stdout().behaviour(
+            buffer,
+            append,
+            show_error_messages,
+            truncate,
+          ),
+        }
+      }
+    }
+  };
+  ( @ref $T:ty ) => {
+    impl $crate::PatternWriter for &$T {
+      fn behaviour(
+        &self,
+        buffer: Box<dyn PatternBuffer>,
+        append: bool,
+        show_error_messages: bool,
+        truncate: bool,
+      ) -> Result<()> {
+        (*self).behaviour(buffer, append, show_error_messages, truncate)
+      }
+    }
+  };
+}
+
 impl Writer for Option<PathBuf> {
   fn behaviour(
     &self,
