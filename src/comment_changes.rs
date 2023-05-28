@@ -19,7 +19,7 @@
 
 use crate::{AppendAsLine, PatternWriter};
 use git2::Repository;
-use std::{collections::HashMap, path::PathBuf};
+use std::collections::HashMap;
 use sysexits::{ExitCode, Result};
 
 /// Create comments on the latest changes to this repository.
@@ -37,7 +37,7 @@ pub struct CommentChanges {
   depth: Option<usize>,
 
   /// The hyperlinks to define in the output file.
-  hyperlinks: Vec<(String, String)>,
+  hyperlinks: HashMap<String, String>,
 
   /// This repository.
   repository: Option<Repository>,
@@ -126,7 +126,7 @@ impl CommentChanges {
   pub fn new(
     depth: Option<usize>,
     delimiter: String,
-    hyperlinks: Vec<(String, String)>,
+    hyperlinks: HashMap<String, String>,
     categories: Vec<String>,
   ) -> Self {
     Self {
@@ -251,16 +251,23 @@ impl CommentChanges {
     extension: &str,
   ) -> Result<()> {
     let branch = self.branch_name()?;
+    let content = if extension == "ron" {
+      ron::ser::to_string_pretty(
+        &Fragment::new(&self.hyperlinks, &self.changes),
+        ron::ser::PrettyConfig::default().indentor("  ".to_string()),
+      )
+      .map_or(Err(ExitCode::DataErr), Ok)?
+    } else {
+      self.generate_changelog_fragment(heading, extension)
+    };
     let user = self.who_am_i()?.replace(' ', "_");
 
-    PathBuf::from(format!(
+    format!(
       "{output_directory}/{}_{user}_{}.{extension}",
       chrono::Local::now().format("%Y%m%d_%H%M%S"),
       branch.split('/').last().unwrap_or("HEAD")
-    ))
-    .write(Box::new(
-      self.generate_changelog_fragment(heading, extension),
-    ))
+    )
+    .write(Box::new(content))
   }
 
   /// Assemble the links for the resulting report.
@@ -322,6 +329,30 @@ impl CommentChanges {
         )
       },
     )
+  }
+}
+
+/// The fragment type for exporting the harvested changes.
+#[derive(serde::Deserialize, serde::Serialize)]
+pub struct Fragment {
+  /// The hyperlinks to references for further reading.
+  references: HashMap<String, String>,
+
+  /// The harvested changes.
+  changes: HashMap<String, Vec<String>>,
+}
+
+impl Fragment {
+  /// Create a new instance.
+  #[must_use]
+  pub fn new(
+    references: &HashMap<String, String>,
+    changes: &HashMap<String, Vec<String>>,
+  ) -> Self {
+    Self {
+      references: references.clone(),
+      changes: changes.clone(),
+    }
   }
 }
 

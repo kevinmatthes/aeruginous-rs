@@ -65,7 +65,7 @@ pub enum Action {
       long,
       short = 'f',
       value_parser = |f: &str| {
-        if ["md", "rst"].contains(&f) {
+        if ["md", "ron", "rst"].contains(&f) {
           Ok(f.to_string())
         } else {
           Err(format!("extension '{f}' is not supported, yet"))
