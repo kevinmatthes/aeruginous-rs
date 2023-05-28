@@ -299,7 +299,7 @@ mod version;
 
 pub use crate::{
   application::{Action, Clap as Application},
-  comment_changes::CommentChanges,
+  comment_changes::{CommentChanges, Fragment},
   graphing::{
     AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
     Vertices,
