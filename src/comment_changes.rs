@@ -106,6 +106,21 @@ impl CommentChanges {
     result
   }
 
+  /// Insert a new change into this instance's set of changes.
+  fn insert_change(
+    map: &mut HashMap<String, Vec<String>>,
+    category: String,
+    change: String,
+  ) {
+    if !map.contains_key(&category) {
+      map.insert(category.clone(), Vec::new());
+    }
+
+    let mut changes = map[&category].clone();
+    changes.push(change);
+    map.insert(category, changes);
+  }
+
   /// Analyse the latest changes and create a report.
   ///
   /// # Errors
@@ -119,8 +134,9 @@ impl CommentChanges {
     output_directory: &str,
     heading: u8,
     extension: &str,
+    fallback_category: &Option<String>,
   ) -> Result<()> {
-    self.update_changes()?;
+    self.query_last_n_commits(fallback_category)?;
     self.report_changes(output_directory, heading, extension)
   }
 
@@ -170,18 +186,19 @@ impl CommentChanges {
   /// - See [`Self::open_repository`].
   pub fn query_last_n_commits(
     &mut self,
-  ) -> Result<HashMap<String, Vec<String>>> {
+    fallback_category: &Option<String>,
+  ) -> Result<()> {
     if self.repository.is_none() {
       self.open_repository()?;
     }
 
     let Some(repository) = &self.repository else { unreachable!() };
-    let mut result = HashMap::new();
 
     match repository.revwalk() {
       Ok(mut revwalk) => match revwalk.push_head() {
         Ok(()) => {
           let mut count = 1;
+          let mut result = HashMap::new();
 
           for oid in revwalk {
             if let Some(depth) = self.depth {
@@ -202,18 +219,25 @@ impl CommentChanges {
                   {
                     let category = category.trim().to_string();
                     let change = change.trim().to_string();
+                    let valid_category =
+                      self.categories.iter().any(|c| c == &category);
 
-                    if self.categories.is_empty()
-                      || self.categories.iter().any(|c| c == &category)
-                    {
-                      if !result.contains_key(&category) {
-                        result.insert(category.clone(), Vec::new());
-                      }
-
-                      let mut changes = result[&category].clone();
-                      changes.push(change);
-                      result.insert(category, changes);
+                    if self.categories.is_empty() || valid_category {
+                      Self::insert_change(&mut result, category, change);
+                    } else if !valid_category && fallback_category.is_some() {
+                      let Some(fallback) = fallback_category else { unreachable!() };
+                      Self::insert_change(
+                        &mut result,
+                        fallback.to_string(),
+                        change,
+                      );
                     }
+                  } else if let Some(fallback) = fallback_category {
+                    Self::insert_change(
+                      &mut result,
+                      fallback.to_string(),
+                      message.trim().to_string(),
+                    );
                   }
                 }
               } else {
@@ -228,7 +252,9 @@ impl CommentChanges {
             count += 1;
           }
 
-          Ok(result)
+          self.changes = result;
+
+          Ok(())
         }
         Err(error) => {
           eprintln!("{error}");
@@ -294,16 +320,6 @@ impl CommentChanges {
     }
 
     result
-  }
-
-  /// Update the changes retrieved by this instance.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::query_last_n_commits`].
-  pub fn update_changes(&mut self) -> Result<()> {
-    self.changes = self.query_last_n_commits()?;
-    Ok(())
   }
 
   /// Who is configured as user?
