@@ -46,6 +46,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   release:
@@ -53,15 +54,21 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(fromJson('["major", "minor", "patch"]'), inputs.release)
     steps:
-      - name: checkout
-        uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.2
 
-      - name: release-bump2version-scriv
-        uses: kevinmatthes/release-bump2version-scriv@v0.2.3
+      - uses: kevinmatthes/release-bump2version-scriv@v0.2.3
         with:
           release: ${{ inputs.release }}
 
-      - name: push
-        run: git push
+      - uses: peter-evans/create-pull-request@v5.0.1
+        with:
+          assignees: |
+            kevinmatthes
+          branch: documentation/release
+          branch-suffix: timestamp
+          labels: |
+            documentation
+          milestone: 4
+          title: '[Documentation] Release'
 
 ################################################################################
