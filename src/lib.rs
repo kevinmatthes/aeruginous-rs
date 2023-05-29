@@ -289,6 +289,7 @@
 #![allow(clippy::multiple_crate_versions)]
 
 mod application;
+mod cffreference;
 mod comment_changes;
 mod graphing;
 mod macros;
@@ -299,6 +300,7 @@ mod version;
 
 pub use crate::{
   application::{Action, Clap as Application},
+  cffreference::Cffreference,
   comment_changes::{CommentChanges, Fragment},
   graphing::{
     AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
