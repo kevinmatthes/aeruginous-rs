@@ -24,6 +24,9 @@ use sysexits::{ExitCode, Result};
 
 /// Create comments on the latest changes to this repository.
 pub struct CommentChanges {
+  /// Whether to query the commit messages' bodies rather than their summaries.
+  body: bool,
+
   /// The allowed categories.
   categories: Vec<String>,
 
@@ -128,8 +131,10 @@ impl CommentChanges {
     delimiter: String,
     hyperlinks: HashMap<String, String>,
     categories: Vec<String>,
+    body: bool,
   ) -> Self {
     Self {
+      body,
       categories,
       changes: HashMap::new(),
       delimiter,
@@ -187,28 +192,29 @@ impl CommentChanges {
 
             if let Ok(oid) = oid {
               if let Ok(commit) = repository.find_commit(oid) {
-                match commit.summary() {
-                  Some(summary) => {
-                    if let Some((category, change)) =
-                      summary.trim().split_once(&self.delimiter)
+                if let Some(message) = if self.body {
+                  commit.body()
+                } else {
+                  commit.summary()
+                } {
+                  if let Some((category, change)) =
+                    message.trim().split_once(&self.delimiter)
+                  {
+                    let category = category.trim().to_string();
+                    let change = change.trim().to_string();
+
+                    if self.categories.is_empty()
+                      || self.categories.iter().any(|c| c == &category)
                     {
-                      let category = category.trim().to_string();
-                      let change = change.trim().to_string();
-
-                      if self.categories.is_empty()
-                        || self.categories.iter().any(|c| c == &category)
-                      {
-                        if !result.contains_key(&category) {
-                          result.insert(category.clone(), Vec::new());
-                        }
-
-                        let mut changes = result[&category].clone();
-                        changes.push(change);
-                        result.insert(category, changes);
+                      if !result.contains_key(&category) {
+                        result.insert(category.clone(), Vec::new());
                       }
+
+                      let mut changes = result[&category].clone();
+                      changes.push(change);
+                      result.insert(category, changes);
                     }
                   }
-                  None => return Err(ExitCode::Unavailable),
                 }
               } else {
                 eprintln!("Commit {oid} does not seem to exist.");
