@@ -61,7 +61,9 @@ jobs:
           sed s/^rust-version\ =\ \".*\"/rust-version\ =\ \"$MSRV\"/g \
               Cargo.toml >> Cargo.toml.tmp
           mv Cargo.toml.tmp Cargo.toml
-          git add .clippy.toml Cargo.toml
+          sed "s/MSRV-.*-green$/MSRV-"$MSRV"-green/g" src/lib.rs >> lib.rs
+          mv lib.rs src/
+          git add .clippy.toml Cargo.toml src/lib.rs
           git commit --allow-empty -m "Changed ::= MSRV:  "$MSRV
 
       - uses: peter-evans/create-pull-request@v5.0.1
