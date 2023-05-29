@@ -127,7 +127,7 @@ pub enum Action {
     /// The Rust files to read from, defaulting to [`std::io::Stdin`], if
     /// omitted.
     #[arg(long = "input", short = 'i')]
-    input_files: Vec<PathBuf>,
+    input_file: Vec<PathBuf>,
 
     /// The Markdown file to write to, defaulting to [`std::io::Stdout`], if
     /// omitted.
@@ -223,12 +223,12 @@ impl Action {
       Self::Rs2md {
         extract_inner,
         extract_outer,
-        input_files,
+        input_file,
         output_file,
       } => (|s: String| -> String {
         Self::rs2md(&s, *extract_inner, *extract_outer)
       })
-      .io(input_files, output_file),
+      .io(input_file, output_file),
       Self::Uncrlf {
         file_to_edit,
         input_file,
