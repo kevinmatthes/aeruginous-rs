@@ -46,6 +46,10 @@ pub enum Action {
   /// Create comments on the commits of a branch in this repository.
   #[command(aliases = ["changelog"])]
   CommentChanges {
+    /// Work with the commit messages' bodies instead of their summaries.
+    #[arg(long, short = 'b')]
+    body: bool,
+
     /// Only these categories shall be used to generate comments.
     #[arg(long, short = 'c')]
     category: Vec<String>,
@@ -259,6 +263,7 @@ impl Action {
       } => (|s: String| -> String { Self::cffreference(&s) })
         .io_append(input_file, output_file),
       Self::CommentChanges {
+        body,
         category,
         delimiter,
         depth,
@@ -290,6 +295,7 @@ impl Action {
         } else {
           category.clone()
         },
+        *body,
       )
       .main(output_directory, *heading, extension),
       /*
