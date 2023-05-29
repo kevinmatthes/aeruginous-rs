@@ -41,7 +41,7 @@ fn branch_name_repository_previously_opened() {
 fn generate_changelog_fragment_no_links() {
   let mut cc =
     CommentChanges::new(None, '/'.to_string(), HashMap::new(), vec![], false);
-  cc.update_changes().unwrap();
+  cc.query_last_n_commits(&None).unwrap();
 
   assert!(!cc.generate_changelog_fragment(3, "rst").is_empty());
 }
@@ -55,7 +55,7 @@ fn generate_changelog_fragment_with_links() {
     vec![],
     false,
   );
-  cc.update_changes().unwrap();
+  cc.query_last_n_commits(&None).unwrap();
 
   assert!(!cc.generate_changelog_fragment(3, "rst").is_empty());
 }
