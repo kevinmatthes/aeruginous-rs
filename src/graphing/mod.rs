@@ -17,12 +17,12 @@
 |                                                                              |
 \******************************************************************************/
 
+mod agd;
 mod graph;
-mod graph_description;
 
-pub use graph::{EdgeType, Edges, Graph, VertexData, Vertices};
-pub use graph_description::{
+pub use agd::{
   GraphDescription as AeruginousGraphDescription, Tokens as AgdTokens,
 };
+pub use graph::{EdgeType, Edges, Graph, VertexData, Vertices};
 
 /******************************************************************************/
