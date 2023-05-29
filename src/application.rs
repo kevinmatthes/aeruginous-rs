@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{AppendAsLine, PatternIOProcessor, Prefer};
+use crate::{PatternIOProcessor, Prefer};
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 use sysexits::Result;
@@ -32,16 +32,7 @@ use sysexits::Result;
 #[derive(Subcommand)]
 pub enum Action {
   /// Extract the citation information from a given and valid CFF file.
-  #[command(aliases = ["cffref", "cff-reference"])]
-  Cffreference {
-    /// The CFF file to read from, defaulting to [`std::io::Stdin`], if omitted.
-    #[arg(long = "input", short = 'i')]
-    input_file: Option<PathBuf>,
-
-    /// The CFF file to write to, defaulting to [`std::io::Stdout`], if omitted.
-    #[arg(long = "output", short = 'o')]
-    output_file: Option<PathBuf>,
-  },
+  Cffreference(crate::Cffreference),
 
   /// Create comments on the commits of a branch in this repository.
   #[command(aliases = ["changelog"])]
@@ -161,81 +152,6 @@ pub enum Action {
 }
 
 impl Action {
-  /// Extract the citation information from a given and valid CFF file.
-  fn cffreference(s: &str) -> String {
-    let mut buffer = String::new();
-    let mut has_preferred_citation = false;
-    let mut has_type = false;
-    let mut references = false;
-
-    for line in s.lines() {
-      if references {
-        match line.chars().next() {
-          Some(' ' | '-') => {}
-          _ => {
-            references = false;
-          }
-        }
-      }
-
-      if !line.is_empty()
-        && !line.starts_with('#')
-        && !line.starts_with("---")
-        && !line.starts_with("...")
-        && !line.starts_with("cff-version:")
-        && !line.starts_with("message:")
-        && !line.starts_with("references:")
-        && !references
-      {
-        if line.starts_with("preferred-citation:") {
-          has_preferred_citation = true;
-        } else if line.starts_with("type:") {
-          has_type = true;
-        }
-
-        buffer.append_as_line(line);
-      } else if line.starts_with("references:") {
-        references = true;
-      }
-    }
-
-    if has_preferred_citation {
-      let mut preferred_citation_reached = false;
-      let mut result = String::new();
-
-      for line in buffer.lines() {
-        if preferred_citation_reached && line.starts_with(' ') {
-          result.push_str(&("  ".to_string() + line + "\n"));
-        } else if preferred_citation_reached {
-          preferred_citation_reached = false;
-        }
-
-        if line.starts_with("preferred-citation:") {
-          preferred_citation_reached = true;
-        }
-      }
-
-      let mut lines = result.lines();
-
-      lines
-        .next()
-        .map_or_else(String::new, |l| "  - ".to_string() + l.trim() + "\n")
-        + &lines.map(|l| l.to_string() + "\n").collect::<String>()
-    } else {
-      let mut lines = buffer.lines();
-
-      (if has_type {
-        lines
-          .next()
-          .map_or_else(String::new, |l| "  - ".to_string() + l.trim() + "\n")
-      } else {
-        "  - type: software\n".to_string()
-      }) + &lines
-        .map(|l| "    ".to_string() + l + "\n")
-        .collect::<String>()
-    }
-  }
-
   /// Extract Markdown code from Rust documentation comments.
   fn rs2md(s: &str, extract_inner: bool, extract_outer: bool) -> String {
     s.lines()
@@ -261,11 +177,7 @@ impl Action {
   /// See [`PatternIOProcessor::io`].
   pub fn run(&self) -> Result<()> {
     match self {
-      Self::Cffreference {
-        input_file,
-        output_file,
-      } => (|s: String| -> String { Self::cffreference(&s) })
-        .io_append(input_file, output_file),
+      Self::Cffreference(c) => c.main(),
       Self::CommentChanges {
         body,
         category,
