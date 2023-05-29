@@ -78,6 +78,10 @@ pub enum Action {
     )]
     extension: String,
 
+    /// The default category to assign.
+    #[arg(long, short = 'C')]
+    fallback_category: Option<String>,
+
     /// The heading's level in the resulting fragment.
     #[arg(
       aliases = ["level"],
@@ -268,6 +272,7 @@ impl Action {
         delimiter,
         depth,
         extension,
+        fallback_category,
         heading,
         keep_a_changelog,
         link,
@@ -297,7 +302,7 @@ impl Action {
         },
         *body,
       )
-      .main(output_directory, *heading, extension),
+      .main(output_directory, *heading, extension, fallback_category),
       /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)
