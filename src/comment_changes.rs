@@ -127,8 +127,8 @@ impl CommentChanges {
   ///
   /// See
   ///
+  /// - [`Self::query_last_n_commits`]
   /// - [`Self::report_changes`]
-  /// - [`Self::update_changes`]
   pub fn main(
     &mut self,
     output_directory: &str,
