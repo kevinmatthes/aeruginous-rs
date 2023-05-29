@@ -50,6 +50,81 @@ All pending changelog entries are stored in `changelog.d`_.
 
 .. scriv-insert-here
 
+.. _changelog-1.1.3:
+
+1.1.3 — 2023-05-29
+------------------
+
+Added
+.....
+
+- comment-changes:  allow for three different heading levels
+
+- comment-changes:  make ``-c`` and ``-k`` options stack
+
+- comment-changes:  support for Markdown fragments
+
+- impl PatternWriter for Option<&PathBuf>
+
+- impl PatternWriter for &PathBuf
+
+- macro ``impl_pattern_writer_for``
+
+- impl PatternWriter for Option<&str>
+
+- impl PatternWriter for &Option<String>
+
+- impl PatternWriter for Option<String>
+
+- impl PatternWriter for &str
+
+- impl PatternWriter for String
+
+- documentation:  software licenses of ``serde`` crate
+
+- documentation:  software licenses of ``ron`` crate
+
+- comment-changes:  allow for RON fragments
+
+- dependency:  Rust crate ``serde``
+
+- dependency:  Rust crate ``ron``
+
+- comment-changes:  query commit message bodies on demand
+
+- comment-changes:  allow for fallback category
+
+- CFF:  entry for ``chrono`` v0.4.25
+
+- src/cffreference.rs:  Cffreference
+
+- src/cffreference.rs:  creation
+
+Changed
+.......
+
+- src/graph_description.rs:  move to src/graphing/
+
+- src/graph.rs:  move to src/graphing/
+
+- src/graphing/graph_description.rs:  rename to src/graphing/agd.rs
+
+- move cffreference logic to own source file
+
+- CI:  release workflow submits changes as PR
+
+Fixed
+.....
+
+- README:  wrong copyright years
+
+- comment-changes:  quit on empty commit messages
+
+Removed
+.......
+
+- CommentChanges::update_changes
+
 .. _changelog-1.1.2:
 
 1.1.2 — 2023-05-27
