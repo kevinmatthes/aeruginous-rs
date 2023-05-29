@@ -46,6 +46,10 @@ pub enum Action {
   /// Create comments on the commits of a branch in this repository.
   #[command(aliases = ["changelog"])]
   CommentChanges {
+    /// Work with the commit messages' bodies instead of their summaries.
+    #[arg(long, short = 'b')]
+    body: bool,
+
     /// Only these categories shall be used to generate comments.
     #[arg(long, short = 'c')]
     category: Vec<String>,
@@ -57,6 +61,22 @@ pub enum Action {
     /// The count of commits to analyse, defaulting to infinity, if omitted.
     #[arg(aliases = ["count"], long, short = 'n')]
     depth: Option<usize>,
+
+    /// The target format of the resulting fragment.
+    #[arg(
+      aliases = ["format"],
+      default_value = "rst",
+      long,
+      short = 'f',
+      value_parser = |f: &str| {
+        if ["md", "ron", "rst"].contains(&f) {
+          Ok(f.to_string())
+        } else {
+          Err(format!("extension '{f}' is not supported, yet"))
+        }
+      }
+    )]
+    extension: String,
 
     /// The heading's level in the resulting fragment.
     #[arg(
@@ -243,9 +263,11 @@ impl Action {
       } => (|s: String| -> String { Self::cffreference(&s) })
         .io_append(input_file, output_file),
       Self::CommentChanges {
+        body,
         category,
         delimiter,
         depth,
+        extension,
         heading,
         keep_a_changelog,
         link,
@@ -273,8 +295,9 @@ impl Action {
         } else {
           category.clone()
         },
+        *body,
       )
-      .main(output_directory, *heading),
+      .main(output_directory, *heading, extension),
       /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)

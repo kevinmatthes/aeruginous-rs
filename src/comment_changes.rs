@@ -19,11 +19,14 @@
 
 use crate::{AppendAsLine, PatternWriter};
 use git2::Repository;
-use std::{collections::HashMap, path::PathBuf};
+use std::collections::HashMap;
 use sysexits::{ExitCode, Result};
 
 /// Create comments on the latest changes to this repository.
 pub struct CommentChanges {
+  /// Whether to query the commit messages' bodies rather than their summaries.
+  body: bool,
+
   /// The allowed categories.
   categories: Vec<String>,
 
@@ -37,7 +40,7 @@ pub struct CommentChanges {
   depth: Option<usize>,
 
   /// The hyperlinks to define in the output file.
-  hyperlinks: Vec<(String, String)>,
+  hyperlinks: HashMap<String, String>,
 
   /// This repository.
   repository: Option<Repository>,
@@ -72,20 +75,28 @@ impl CommentChanges {
 
   /// Generate the changelog fragment.
   #[must_use]
-  pub fn generate_changelog_fragment(&self, heading: u8) -> String {
-    let mut result = self.resolve_links();
+  pub fn generate_changelog_fragment(
+    &self,
+    heading: u8,
+    extension: &str,
+  ) -> String {
+    let mut result = self.resolve_links(extension);
 
     for (category, changes) in &self.changes {
-      result.append_as_line(format!(
-        "{category}\n{}\n",
-        match heading {
-          1 => "=",
-          2 => "-",
-          3 => ".",
-          _ => unreachable!(),
-        }
-        .repeat(category.len())
-      ));
+      result.append_as_line(match extension {
+        "md" => format!("{} {category}\n", "#".repeat(heading.into())),
+        "rst" => format!(
+          "{category}\n{}\n",
+          match heading {
+            1 => "=",
+            2 => "-",
+            3 => ".",
+            _ => unreachable!(),
+          }
+          .repeat(category.len())
+        ),
+        _ => unreachable!(),
+      });
 
       for change in changes {
         result.append_as_line(format!("- {change}\n"));
@@ -103,9 +114,14 @@ impl CommentChanges {
   ///
   /// - [`Self::report_changes`]
   /// - [`Self::update_changes`]
-  pub fn main(&mut self, output_directory: &str, heading: u8) -> Result<()> {
+  pub fn main(
+    &mut self,
+    output_directory: &str,
+    heading: u8,
+    extension: &str,
+  ) -> Result<()> {
     self.update_changes()?;
-    self.report_changes(output_directory, heading)
+    self.report_changes(output_directory, heading, extension)
   }
 
   /// Create a new instance from the command line arguments.
@@ -113,10 +129,12 @@ impl CommentChanges {
   pub fn new(
     depth: Option<usize>,
     delimiter: String,
-    hyperlinks: Vec<(String, String)>,
+    hyperlinks: HashMap<String, String>,
     categories: Vec<String>,
+    body: bool,
   ) -> Self {
     Self {
+      body,
       categories,
       changes: HashMap::new(),
       delimiter,
@@ -174,28 +192,29 @@ impl CommentChanges {
 
             if let Ok(oid) = oid {
               if let Ok(commit) = repository.find_commit(oid) {
-                match commit.summary() {
-                  Some(summary) => {
-                    if let Some((category, change)) =
-                      summary.trim().split_once(&self.delimiter)
+                if let Some(message) = if self.body {
+                  commit.body()
+                } else {
+                  commit.summary()
+                } {
+                  if let Some((category, change)) =
+                    message.trim().split_once(&self.delimiter)
+                  {
+                    let category = category.trim().to_string();
+                    let change = change.trim().to_string();
+
+                    if self.categories.is_empty()
+                      || self.categories.iter().any(|c| c == &category)
                     {
-                      let category = category.trim().to_string();
-                      let change = change.trim().to_string();
-
-                      if self.categories.is_empty()
-                        || self.categories.iter().any(|c| c == &category)
-                      {
-                        if !result.contains_key(&category) {
-                          result.insert(category.clone(), Vec::new());
-                        }
-
-                        let mut changes = result[&category].clone();
-                        changes.push(change);
-                        result.insert(category, changes);
+                      if !result.contains_key(&category) {
+                        result.insert(category.clone(), Vec::new());
                       }
+
+                      let mut changes = result[&category].clone();
+                      changes.push(change);
+                      result.insert(category, changes);
                     }
                   }
-                  None => return Err(ExitCode::Unavailable),
                 }
               } else {
                 eprintln!("Commit {oid} does not seem to exist.");
@@ -235,26 +254,40 @@ impl CommentChanges {
     &mut self,
     output_directory: &str,
     heading: u8,
+    extension: &str,
   ) -> Result<()> {
     let branch = self.branch_name()?;
+    let content = if extension == "ron" {
+      ron::ser::to_string_pretty(
+        &Fragment::new(&self.hyperlinks, &self.changes),
+        ron::ser::PrettyConfig::default().indentor("  ".to_string()),
+      )
+      .map_or(Err(ExitCode::DataErr), Ok)?
+    } else {
+      self.generate_changelog_fragment(heading, extension)
+    };
     let user = self.who_am_i()?.replace(' ', "_");
 
-    PathBuf::from(format!(
-      "{output_directory}/{}_{user}_{}.rst",
+    format!(
+      "{output_directory}/{}_{user}_{}.{extension}",
       chrono::Local::now().format("%Y%m%d_%H%M%S"),
       branch.split('/').last().unwrap_or("HEAD")
-    ))
-    .write(Box::new(self.generate_changelog_fragment(heading)))
+    )
+    .write(Box::new(content))
   }
 
   /// Assemble the links for the resulting report.
   #[must_use]
-  pub fn resolve_links(&self) -> String {
+  pub fn resolve_links(&self, extension: &str) -> String {
     let mut result = String::new();
 
     if !self.hyperlinks.is_empty() {
       for (link_name, target) in &self.hyperlinks {
-        result.append_as_line(format!(".. _{link_name}:  {target}"));
+        result.append_as_line(match extension {
+          "md" => format!("[{link_name}]:  {target}"),
+          "rst" => format!(".. _{link_name}:  {target}"),
+          _ => unreachable!(),
+        });
       }
 
       result.push('\n');
@@ -302,6 +335,30 @@ impl CommentChanges {
         )
       },
     )
+  }
+}
+
+/// The fragment type for exporting the harvested changes.
+#[derive(serde::Deserialize, serde::Serialize)]
+pub struct Fragment {
+  /// The hyperlinks to references for further reading.
+  references: HashMap<String, String>,
+
+  /// The harvested changes.
+  changes: HashMap<String, Vec<String>>,
+}
+
+impl Fragment {
+  /// Create a new instance.
+  #[must_use]
+  pub fn new(
+    references: &HashMap<String, String>,
+    changes: &HashMap<String, Vec<String>>,
+  ) -> Self {
+    Self {
+      references: references.clone(),
+      changes: changes.clone(),
+    }
   }
 }
 

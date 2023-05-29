@@ -63,7 +63,7 @@
 //!    1. [`uncrlf`](#uncrlf)
 //! -->
 //!
-//! The current code coverage is **<!-- cov -->69.13%<!-- cov -->**.
+//! The current code coverage is **<!-- cov -->65.83%<!-- cov -->**.
 //!
 //! ## License
 //!
@@ -299,7 +299,7 @@ mod version;
 
 pub use crate::{
   application::{Action, Clap as Application},
-  comment_changes::CommentChanges,
+  comment_changes::{CommentChanges, Fragment},
   graphing::{
     AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
     Vertices,

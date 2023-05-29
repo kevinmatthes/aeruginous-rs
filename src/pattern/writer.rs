@@ -106,39 +106,60 @@ pub trait Writer {
   }
 }
 
-impl Writer for Option<PathBuf> {
-  fn behaviour(
-    &self,
-    buffer: Box<dyn PatternBuffer>,
-    append: bool,
-    show_error_messages: bool,
-    truncate: bool,
-  ) -> Result<()> {
-    match self {
-      Some(path) => {
-        Writer::behaviour(path, buffer, append, show_error_messages, truncate)
+/// Add an implementation of the trait for a certain type.
+#[macro_export]
+macro_rules! impl_pattern_writer_for {
+  ( @all $T:ty ) => {
+    impl_pattern_writer_for!(@option $T);
+    impl_pattern_writer_for!(@ref $T);
+  };
+  ( @option $T:ty ) => {
+    impl $crate::PatternWriter for $T {
+      fn behaviour(
+        &self,
+        buffer: Box<dyn PatternBuffer>,
+        append: bool,
+        show_error_messages: bool,
+        truncate: bool,
+      ) -> Result<()> {
+        match self {
+          Some(thing) => Writer::behaviour(
+            thing,
+            buffer,
+            append,
+            show_error_messages,
+            truncate,
+          ),
+          None => std::io::stdout().behaviour(
+            buffer,
+            append,
+            show_error_messages,
+            truncate,
+          ),
+        }
       }
-      None => std::io::stdout().behaviour(
-        buffer,
-        append,
-        show_error_messages,
-        truncate,
-      ),
     }
-  }
+  };
+  ( @ref $T:ty ) => {
+    impl $crate::PatternWriter for &$T {
+      fn behaviour(
+        &self,
+        buffer: Box<dyn PatternBuffer>,
+        append: bool,
+        show_error_messages: bool,
+        truncate: bool,
+      ) -> Result<()> {
+        (*self).behaviour(buffer, append, show_error_messages, truncate)
+      }
+    }
+  };
 }
 
-impl Writer for &Option<PathBuf> {
-  fn behaviour(
-    &self,
-    buffer: Box<dyn PatternBuffer>,
-    append: bool,
-    show_error_messages: bool,
-    truncate: bool,
-  ) -> Result<()> {
-    (*self).behaviour(buffer, append, show_error_messages, truncate)
-  }
-}
+impl_pattern_writer_for!(@all Option<PathBuf>);
+impl_pattern_writer_for!(@option Option<&PathBuf>);
+impl_pattern_writer_for!(@all Option<String>);
+impl_pattern_writer_for!(@option Option<&str>);
+impl_pattern_writer_for!(@ref PathBuf);
 
 impl Writer for PathBuf {
   fn behaviour(
@@ -203,6 +224,40 @@ impl Writer for std::io::Stdout {
     let string = buffer.as_ref().try_into_string()?;
     print!("{string}");
     Ok(())
+  }
+}
+
+impl Writer for String {
+  fn behaviour(
+    &self,
+    buffer: Box<dyn PatternBuffer>,
+    append: bool,
+    show_error_messages: bool,
+    truncate: bool,
+  ) -> Result<()> {
+    PathBuf::from(&self).behaviour(
+      buffer,
+      append,
+      show_error_messages,
+      truncate,
+    )
+  }
+}
+
+impl Writer for &str {
+  fn behaviour(
+    &self,
+    buffer: Box<dyn PatternBuffer>,
+    append: bool,
+    show_error_messages: bool,
+    truncate: bool,
+  ) -> Result<()> {
+    PathBuf::from(&self).behaviour(
+      buffer,
+      append,
+      show_error_messages,
+      truncate,
+    )
   }
 }
 
