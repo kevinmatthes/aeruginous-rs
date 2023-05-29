@@ -1,7 +1,6 @@
 <!------------------------------------------------------------------------->
 
 [ci]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci/badge.svg
-[ci-url]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci
 [crates-io]:  https://img.shields.io/crates/v/aeruginous
 [crates-io-url]:  https://crates.io/crates/aeruginous
 [docs-rs]:  https://docs.rs/aeruginous/badge.svg
@@ -11,6 +10,7 @@
 [lcns]:  https://img.shields.io/github/license/kevinmatthes/aeruginous-rs
 [lcnss]:  https://github.com/kevinmatthes/aeruginous-rs/tree/main/LICENSEs
 [lst]:  https://img.shields.io/github/last-commit/kevinmatthes/aeruginous-rs
+[msrv]:  https://img.shields.io/badge/MSRV-1.69.0-green
 [repository]:  https://github.com/kevinmatthes/aeruginous-rs
 
 <!------------------------------------------------------------------------->
@@ -19,12 +19,13 @@
 
 ## Summary
 
-[![][ci]][ci-url]
+[![][ci]][repository]
 [![][crates-io]][crates-io-url]
 [![][docs-rs]][docs-rs-url]
 [![][downloads]][crates-io-url]
 [![][lst]][repository]
 [![][lcns]][repository]
+[![][msrv]][repository]
 
 The Aeruginous Open Source Development Toolbox.
 
