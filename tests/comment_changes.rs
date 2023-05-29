@@ -22,14 +22,16 @@ use std::collections::HashMap;
 
 #[test]
 fn branch_name_repository_implicitly_opened() {
-  let mut cc = CommentChanges::new(None, String::new(), HashMap::new(), vec![]);
+  let mut cc =
+    CommentChanges::new(None, String::new(), HashMap::new(), vec![], false);
 
   assert!(cc.branch_name().is_ok());
 }
 
 #[test]
 fn branch_name_repository_previously_opened() {
-  let mut cc = CommentChanges::new(None, String::new(), HashMap::new(), vec![]);
+  let mut cc =
+    CommentChanges::new(None, String::new(), HashMap::new(), vec![], false);
   cc.open_repository().unwrap();
 
   assert!(cc.branch_name().is_ok());
@@ -38,7 +40,7 @@ fn branch_name_repository_previously_opened() {
 #[test]
 fn generate_changelog_fragment_no_links() {
   let mut cc =
-    CommentChanges::new(None, '/'.to_string(), HashMap::new(), vec![]);
+    CommentChanges::new(None, '/'.to_string(), HashMap::new(), vec![], false);
   cc.update_changes().unwrap();
 
   assert!(!cc.generate_changelog_fragment(3, "rst").is_empty());
@@ -51,6 +53,7 @@ fn generate_changelog_fragment_with_links() {
     '/'.to_string(),
     HashMap::from([("hyperlink".to_string(), "target".to_string())]),
     vec![],
+    false,
   );
   cc.update_changes().unwrap();
 
@@ -60,7 +63,7 @@ fn generate_changelog_fragment_with_links() {
 #[test]
 fn resolve_links() {
   assert_eq!(
-    CommentChanges::new(None, String::new(), HashMap::new(), vec![])
+    CommentChanges::new(None, String::new(), HashMap::new(), vec![], false)
       .resolve_links("rst"),
     String::new()
   );
@@ -87,7 +90,8 @@ fn resolve_links() {
         ("b.rs".to_string(), "src/b.rs".to_string()),
         ("d.rs".to_string(), "src/d.rs".to_string())
       ]),
-      vec![]
+      vec![],
+      false
     )
     .resolve_links("rst")
   ));
