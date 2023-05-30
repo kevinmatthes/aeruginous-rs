@@ -118,6 +118,18 @@ impl Cffreference {
     |s: String| -> String { Self::logic(&s) }
       .io_append(&self.input_file, &self.output_file)
   }
+
+  /// Create a new instance.
+  #[must_use]
+  pub const fn new(
+    input_file: Option<PathBuf>,
+    output_file: Option<PathBuf>,
+  ) -> Self {
+    Self {
+      input_file,
+      output_file,
+    }
+  }
 }
 
 /******************************************************************************/
