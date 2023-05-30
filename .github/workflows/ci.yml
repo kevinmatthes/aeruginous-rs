@@ -86,6 +86,15 @@ jobs:
 
       - uses: citation-file-format/cffconvert-github-action@2.0.0
         with:
-          args: --validate
+          args: --validate -i ${{ matrix.cff }}
+    strategy:
+      matrix:
+        cff:
+          - CITATION.cff
+          - cffs/input_1.cff
+          - cffs/input_2.cff
+          - cffs/input_3.cff
+          - cffs/input_4.cff
+          - cffs/input_5.cff
 
 ################################################################################
