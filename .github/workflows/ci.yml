@@ -96,5 +96,7 @@ jobs:
           - cffs/input_3.cff
           - cffs/input_4.cff
           - cffs/input_5.cff
+          - cffs/input_6.cff
+          - cffs/input_7.cff
 
 ################################################################################
