@@ -54,5 +54,7 @@ make_test!(2 -> data_after_references);
 make_test!(3 -> has_type);
 make_test!(4 -> has_preferred_citation);
 make_test!(5 -> data_after_preferred_citation);
+make_test!(6 -> has_both_preferred_citation_and_type);
+make_test!(7 -> has_both_type_and_preferred_citation);
 
 /******************************************************************************/
