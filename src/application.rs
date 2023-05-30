@@ -35,75 +35,7 @@ pub enum Action {
   Cffreference(crate::Cffreference),
 
   /// Create comments on the commits of a branch in this repository.
-  #[command(aliases = ["changelog"])]
-  CommentChanges {
-    /// Work with the commit messages' bodies instead of their summaries.
-    #[arg(long, short = 'b')]
-    body: bool,
-
-    /// Only these categories shall be used to generate comments.
-    #[arg(long, short = 'c')]
-    category: Vec<String>,
-
-    /// The delimiter to separate a category from the change description.
-    #[arg(long, short = 'd')]
-    delimiter: String,
-
-    /// The count of commits to analyse, defaulting to infinity, if omitted.
-    #[arg(aliases = ["count"], long, short = 'n')]
-    depth: Option<usize>,
-
-    /// The target format of the resulting fragment.
-    #[arg(
-      aliases = ["format"],
-      default_value = "rst",
-      long,
-      short = 'f',
-      value_parser = |f: &str| {
-        if ["md", "ron", "rst"].contains(&f) {
-          Ok(f.to_string())
-        } else {
-          Err(format!("extension '{f}' is not supported, yet"))
-        }
-      }
-    )]
-    extension: String,
-
-    /// The default category to assign.
-    #[arg(long, short = 'C')]
-    fallback_category: Option<String>,
-
-    /// The heading's level in the resulting fragment.
-    #[arg(
-      aliases = ["level"],
-      default_value = "3",
-      long,
-      short = 'H',
-      value_parser = clap::value_parser!(u8).range(1..=3)
-    )]
-    heading: u8,
-
-    /// Set categories Added, Changed, Deprecated, Fixed, Removed, and Security.
-    #[arg(long, short = 'k')]
-    keep_a_changelog: bool,
-
-    /// The hyperlinks to add as comments.
-    #[arg(aliases = ["hyperlink"], long, short = 'l')]
-    link: Vec<String>,
-
-    /// The directory to write the generated fragment to.
-    #[arg(
-      aliases = ["dir", "directory"],
-      default_value = ".",
-      long = "output",
-      short = 'o'
-    )]
-    output_directory: String,
-
-    /// The hyperlinks' targets.
-    #[arg(long, short = 't')]
-    target: Vec<String>,
-  },
+  CommentChanges(crate::CommentChanges),
 
   /*
   /// Rate an Aeruginous Graph Description (AGD).
@@ -178,43 +110,7 @@ impl Action {
   pub fn run(&self) -> Result<()> {
     match self {
       Self::Cffreference(c) => c.main(),
-      Self::CommentChanges {
-        body,
-        category,
-        delimiter,
-        depth,
-        extension,
-        fallback_category,
-        heading,
-        keep_a_changelog,
-        link,
-        target,
-        output_directory,
-      } => crate::CommentChanges::new(
-        *depth,
-        delimiter.to_string(),
-        link
-          .iter()
-          .zip(target.iter())
-          .map(|(a, b)| (a.to_string(), b.to_string()))
-          .collect(),
-        if *keep_a_changelog {
-          let mut categories = vec![
-            "Added".to_string(),
-            "Changed".to_string(),
-            "Deprecated".to_string(),
-            "Fixed".to_string(),
-            "Removed".to_string(),
-            "Security".to_string(),
-          ];
-          categories.append(&mut category.clone());
-          categories
-        } else {
-          category.clone()
-        },
-        *body,
-      )
-      .main(output_directory, *heading, extension, fallback_category),
+      Self::CommentChanges(c) => c.main(),
       /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)
