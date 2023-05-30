@@ -1,0 +1,63 @@
+# Parser settings.
+cff-version: 1.2.0
+message: Please cite this software using these information.
+
+# Version information.
+date-released: 1970-01-01
+version: 1.2.3
+
+# Project information.
+abstract: An abstract.
+authors:
+  - alias: example
+    family-names: Xample
+    given-names: Emma
+keywords:
+  - keyword
+license: GPL-3.0
+
+# References.
+references:
+  - type: software
+    date-released: 2023-05-27
+    version: 1.1.2
+    abstract: The Aeruginous Open Source Development Toolbox.
+    authors:
+      - alias: kevinmatthes
+        family-names: Matthes
+        given-names: Kevin
+    keywords:
+      - Rust
+      - aeruginous
+      - cff
+      - cffref
+      - cffreference
+      - cff-reference
+      - changelog
+      - citation-file-format
+      - comment-changes
+      - rs2md
+      - uncrlf
+    license: GPL-3.0
+    repository-artifact: https://crates.io/crates/aeruginous
+    repository-code: https://github.com/kevinmatthes/aeruginous-rs
+    title: aeruginous-rs
+    url: https://github.com/kevinmatthes/aeruginous-rs
+
+# The preferred citation.
+preferred-citation:
+  type: software
+  date-released: 1970-01-01
+  version: 1.2.3
+  abstract: An abstract.
+  authors:
+    - alias: example
+      family-names: Xample
+      given-names: Emma
+  keywords:
+    - keyword
+  license: GPL-3.0
+  title: Sample CFF for Unit Tests
+
+# Project information.
+title: Sample CFF for Unit Tests
