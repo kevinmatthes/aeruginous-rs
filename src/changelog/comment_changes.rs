@@ -365,7 +365,7 @@ impl Logic {
   pub fn report(&mut self) -> Result<()> {
     let content = if self.cli.extension == "ron" {
       ron::ser::to_string_pretty(
-        &Fragment::new(&self.hyperlinks, &self.changes),
+        &crate::Fragment::new(&self.hyperlinks, &self.changes),
         ron::ser::PrettyConfig::default().indentor("  ".to_string()),
       )
       .map_or(Err(ExitCode::DataErr), Ok)?
