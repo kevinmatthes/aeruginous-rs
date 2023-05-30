@@ -23,7 +23,7 @@ use std::collections::HashMap;
 use sysexits::{ExitCode, Result};
 
 /// Create comments on the latest changes to this repository.
-pub struct CommentChanges {
+pub struct CommentChangesData {
   /// Whether to query the commit messages' bodies rather than their summaries.
   body: bool,
 
@@ -46,7 +46,7 @@ pub struct CommentChanges {
   repository: Option<Repository>,
 }
 
-impl CommentChanges {
+impl CommentChangesData {
   /// What is the name of the current branch?
   ///
   /// # Errors
