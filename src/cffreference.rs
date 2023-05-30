@@ -98,13 +98,10 @@ impl CffreferenceLogic {
   /// Extract the citation information from a given and valid CFF file.
   fn logic(&mut self, s: &str) -> String {
     for line in s.lines() {
-      if self.references_reached {
-        match line.chars().next() {
-          Some(' ' | '-') => {}
-          _ => {
-            self.references_reached = false;
-          }
-        }
+      if self.references_reached
+        && !matches!(line.chars().next(), Some(' ' | '-'))
+      {
+        self.references_reached = false;
       }
 
       if !line.is_empty()
@@ -147,20 +144,18 @@ impl CffreferenceLogic {
 
       lines
         .next()
-        .map_or_else(String::new, |l| "  - ".to_string() + l.trim() + "\n")
-        + &lines.map(|l| l.to_string() + "\n").collect::<String>()
+        .map_or_else(String::new, |l| format!("  - {}\n", l.trim()))
+        + &lines.map(|l| format!("{l}\n")).collect::<String>()
     } else {
       let mut lines = self.cff_data.lines();
 
       (if self.properties.has_type() {
         lines
           .next()
-          .map_or_else(String::new, |l| "  - ".to_string() + l.trim() + "\n")
+          .map_or_else(String::new, |l| format!("  - {}\n", l.trim()))
       } else {
         "  - type: software\n".to_string()
-      }) + &lines
-        .map(|l| "    ".to_string() + l + "\n")
-        .collect::<String>()
+      }) + &lines.map(|l| format!("    {l}\n")).collect::<String>()
     }
   }
 
