@@ -110,6 +110,15 @@ impl Reader for std::io::Stdin {
   }
 }
 
+impl Reader for &str {
+  fn behaviour(
+    &self,
+    show_error_messages: bool,
+  ) -> Result<Box<dyn PatternBuffer>> {
+    PathBuf::from(self).behaviour(show_error_messages)
+  }
+}
+
 impl Reader for &Vec<PathBuf> {
   fn behaviour(
     &self,
