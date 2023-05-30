@@ -17,13 +17,13 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::CommentChanges;
+use aeruginous::CommentChangesData;
 use std::collections::HashMap;
 
 #[test]
 fn branch_name_repository_implicitly_opened() {
   let mut cc =
-    CommentChanges::new(None, String::new(), HashMap::new(), vec![], false);
+    CommentChangesData::new(None, String::new(), HashMap::new(), vec![], false);
 
   assert!(cc.branch_name().is_ok());
 }
@@ -31,7 +31,7 @@ fn branch_name_repository_implicitly_opened() {
 #[test]
 fn branch_name_repository_previously_opened() {
   let mut cc =
-    CommentChanges::new(None, String::new(), HashMap::new(), vec![], false);
+    CommentChangesData::new(None, String::new(), HashMap::new(), vec![], false);
   cc.open_repository().unwrap();
 
   assert!(cc.branch_name().is_ok());
@@ -39,8 +39,13 @@ fn branch_name_repository_previously_opened() {
 
 #[test]
 fn generate_changelog_fragment_no_links() {
-  let mut cc =
-    CommentChanges::new(None, '/'.to_string(), HashMap::new(), vec![], false);
+  let mut cc = CommentChangesData::new(
+    None,
+    '/'.to_string(),
+    HashMap::new(),
+    vec![],
+    false,
+  );
   cc.query_last_n_commits(&None).unwrap();
 
   assert!(!cc.generate_changelog_fragment(3, "rst").is_empty());
@@ -48,7 +53,7 @@ fn generate_changelog_fragment_no_links() {
 
 #[test]
 fn generate_changelog_fragment_with_links() {
-  let mut cc = CommentChanges::new(
+  let mut cc = CommentChangesData::new(
     None,
     '/'.to_string(),
     HashMap::from([("hyperlink".to_string(), "target".to_string())]),
@@ -63,7 +68,7 @@ fn generate_changelog_fragment_with_links() {
 #[test]
 fn resolve_links() {
   assert_eq!(
-    CommentChanges::new(None, String::new(), HashMap::new(), vec![], false)
+    CommentChangesData::new(None, String::new(), HashMap::new(), vec![], false)
       .resolve_links("rst"),
     String::new()
   );
@@ -82,7 +87,7 @@ fn resolve_links() {
       .to_string(),
   ]
   .contains(
-    &CommentChanges::new(
+    &CommentChangesData::new(
       None,
       String::new(),
       HashMap::from([
