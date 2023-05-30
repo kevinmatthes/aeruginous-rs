@@ -1,0 +1,12 @@
+  - type: software
+    date-released: 1970-01-01
+    version: 1.2.3
+    abstract: An abstract.
+    authors:
+      - alias: example
+        family-names: Xample
+        given-names: Emma
+    keywords:
+      - keyword
+    license: GPL-3.0
+    title: Sample CFF for Unit Tests
