@@ -17,11 +17,12 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{AppendAsLine, PatternIOProcessor};
+use crate::{AppendAsLine, PatternReader, PatternWriter};
 use std::path::PathBuf;
+use sysexits::Result;
 
 /// Extract the citation information from a given and valid CFF file.
-#[derive(clap::Parser)]
+#[derive(clap::Parser, Clone)]
 #[command(aliases = ["cffref", "cff-reference"])]
 pub struct Cffreference {
   /// The CFF file to read from, defaulting to [`std::io::Stdin`], if omitted.
@@ -34,19 +35,74 @@ pub struct Cffreference {
 }
 
 impl Cffreference {
-  /// Extract the citation information from a given and valid CFF file.
-  fn logic(s: &str) -> String {
-    let mut buffer = String::new();
-    let mut has_preferred_citation = false;
-    let mut has_type = false;
-    let mut references = false;
+  /// Process the input data.
+  ///
+  /// # Errors
+  ///
+  /// See
+  ///
+  /// - [`crate::PatternBuffer::try_into_string`]
+  /// - [`PatternReader::read`]
+  /// - [`PatternWriter::append`]
+  pub fn main(&self) -> Result<()> {
+    self.wrap().main()
+  }
 
+  /// Create a new instance.
+  #[must_use]
+  pub const fn new(
+    input_file: Option<PathBuf>,
+    output_file: Option<PathBuf>,
+  ) -> Self {
+    Self {
+      input_file,
+      output_file,
+    }
+  }
+
+  /// Create a logic instance.
+  fn wrap(&self) -> CffreferenceLogic {
+    CffreferenceLogic {
+      cff_data: String::new(),
+      cff_reference: String::new(),
+      io: self.clone(),
+      preferred_citation_reached: false,
+      properties: CffreferenceProperties::default(),
+      references_reached: false,
+    }
+  }
+}
+
+/// The internal logic of this mode.
+struct CffreferenceLogic {
+  /// The held CFF data.
+  cff_data: String,
+
+  /// The CFF reference object to write to the output stream.
+  cff_reference: String,
+
+  /// The streams to operate on.
+  io: Cffreference,
+
+  /// Whether the `preferred-citation` was already reached.
+  preferred_citation_reached: bool,
+
+  /// The properties of the given CFF file.
+  properties: CffreferenceProperties,
+
+  /// Whether the `references` were already reached.
+  references_reached: bool,
+}
+
+impl CffreferenceLogic {
+  /// Extract the citation information from a given and valid CFF file.
+  fn logic(&mut self, s: &str) -> String {
     for line in s.lines() {
-      if references {
+      if self.references_reached {
         match line.chars().next() {
           Some(' ' | '-') => {}
           _ => {
-            references = false;
+            self.references_reached = false;
           }
         }
       }
@@ -58,46 +114,45 @@ impl Cffreference {
         && !line.starts_with("cff-version:")
         && !line.starts_with("message:")
         && !line.starts_with("references:")
-        && !references
+        && !self.references_reached
       {
         if line.starts_with("preferred-citation:") {
-          has_preferred_citation = true;
+          self.properties.find_preferred_citation();
         } else if line.starts_with("type:") {
-          has_type = true;
+          self.properties.find_type();
         }
 
-        buffer.append_as_line(line);
+        self.cff_data.append_as_line(line);
       } else if line.starts_with("references:") {
-        references = true;
+        self.references_reached = true;
       }
     }
 
-    if has_preferred_citation {
-      let mut preferred_citation_reached = false;
-      let mut result = String::new();
-
-      for line in buffer.lines() {
-        if preferred_citation_reached && line.starts_with(' ') {
-          result.push_str(&("  ".to_string() + line + "\n"));
-        } else if preferred_citation_reached {
-          preferred_citation_reached = false;
+    if self.properties.has_preferred_citation() {
+      for line in self.cff_data.lines() {
+        if self.preferred_citation_reached && line.starts_with(' ') {
+          self
+            .cff_reference
+            .push_str(&("  ".to_string() + line + "\n"));
+        } else if self.preferred_citation_reached {
+          self.preferred_citation_reached = false;
         }
 
         if line.starts_with("preferred-citation:") {
-          preferred_citation_reached = true;
+          self.preferred_citation_reached = true;
         }
       }
 
-      let mut lines = result.lines();
+      let mut lines = self.cff_reference.lines();
 
       lines
         .next()
         .map_or_else(String::new, |l| "  - ".to_string() + l.trim() + "\n")
         + &lines.map(|l| l.to_string() + "\n").collect::<String>()
     } else {
-      let mut lines = buffer.lines();
+      let mut lines = self.cff_data.lines();
 
-      (if has_type {
+      (if self.properties.has_type() {
         lines
           .next()
           .map_or_else(String::new, |l| "  - ".to_string() + l.trim() + "\n")
@@ -113,22 +168,65 @@ impl Cffreference {
   ///
   /// # Errors
   ///
-  /// See [`PatternIOProcessor::io_append`].
-  pub fn main(&self) -> sysexits::Result<()> {
-    |s: String| -> String { Self::logic(&s) }
-      .io_append(&self.input_file, &self.output_file)
+  /// See
+  ///
+  /// - [`crate::PatternBuffer::try_into_string`]
+  /// - [`PatternReader::read`]
+  /// - [`PatternWriter::append`]
+  fn main(&mut self) -> Result<()> {
+    self.io.output_file.clone().append(Box::new(
+      self.logic(&self.io.input_file.read()?.try_into_string()?),
+    ))
+  }
+}
+
+/// Some information about the found information.
+#[derive(Default)]
+enum CffreferenceProperties {
+  /// The given CFF has both an explicit type and a preferred citation.
+  BothPreferredCitationAndType,
+
+  /// The given CFF has neither an explicit type nor a preferred citation.
+  #[default]
+  NeitherPreferredCitationNorType,
+
+  /// The given CFF has a preferred citation.
+  PreferredCitation,
+
+  /// The given CFF has an explicit type.
+  Type,
+}
+
+impl CffreferenceProperties {
+  /// A preferred citation was found.
+  fn find_preferred_citation(&mut self) {
+    if matches!(self, Self::NeitherPreferredCitationNorType) {
+      *self = Self::PreferredCitation;
+    } else if matches!(self, Self::Type) {
+      *self = Self::BothPreferredCitationAndType;
+    }
   }
 
-  /// Create a new instance.
-  #[must_use]
-  pub const fn new(
-    input_file: Option<PathBuf>,
-    output_file: Option<PathBuf>,
-  ) -> Self {
-    Self {
-      input_file,
-      output_file,
+  /// An explicit type was found.
+  fn find_type(&mut self) {
+    if matches!(self, Self::NeitherPreferredCitationNorType) {
+      *self = Self::Type;
+    } else if matches!(self, Self::PreferredCitation) {
+      *self = Self::BothPreferredCitationAndType;
     }
+  }
+
+  /// Is there a preferred citation defined?
+  const fn has_preferred_citation(&self) -> bool {
+    matches!(
+      self,
+      Self::PreferredCitation | Self::BothPreferredCitationAndType
+    )
+  }
+
+  /// Is there an explicit type given?
+  const fn has_type(&self) -> bool {
+    matches!(self, Self::Type | Self::BothPreferredCitationAndType)
   }
 }
 
