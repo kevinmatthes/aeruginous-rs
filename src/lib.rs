@@ -302,7 +302,7 @@ mod version;
 pub use crate::{
   application::{Action, Clap as Application},
   cffreference::Cffreference,
-  comment_changes::{CommentChanges, Fragment},
+  comment_changes::{CommentChangesData, Fragment},
   graphing::{
     AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
     Vertices,
