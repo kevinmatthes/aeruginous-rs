@@ -190,7 +190,7 @@ impl Action {
         link,
         target,
         output_directory,
-      } => crate::CommentChanges::new(
+      } => crate::CommentChangesData::new(
         *depth,
         delimiter.to_string(),
         link
