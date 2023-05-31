@@ -360,7 +360,7 @@ impl Logic {
     }
   }
 
-  pub fn report(&mut self) -> Result<()> {
+  fn report(&mut self) -> Result<()> {
     let content = if self.cli.extension == "ron" {
       ron::ser::to_string_pretty(
         &crate::Fragment::new(&self.hyperlinks, &self.changes),
