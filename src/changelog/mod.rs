@@ -18,7 +18,9 @@
 \******************************************************************************/
 
 mod comment_changes;
+mod fragment;
 
-pub use comment_changes::{CommentChanges, Fragment};
+pub use comment_changes::CommentChanges;
+pub use fragment::Fragment;
 
 /******************************************************************************/
