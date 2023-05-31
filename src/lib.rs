@@ -291,7 +291,7 @@
 
 mod application;
 mod cffreference;
-mod comment_changes;
+mod changelog;
 mod graphing;
 mod macros;
 mod pattern;
@@ -302,7 +302,7 @@ mod version;
 pub use crate::{
   application::{Action, Clap as Application},
   cffreference::Cffreference,
-  comment_changes::{CommentChanges, Fragment},
+  changelog::{CommentChanges, Fragment},
   graphing::{
     AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
     Vertices,

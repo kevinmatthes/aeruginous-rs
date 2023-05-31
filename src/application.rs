@@ -84,7 +84,6 @@ pub enum Action {
 }
 
 impl Action {
-  /// Extract Markdown code from Rust documentation comments.
   fn rs2md(s: &str, extract_inner: bool, extract_outer: bool) -> String {
     s.lines()
       .map(str::trim_start)
