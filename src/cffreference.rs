@@ -60,42 +60,28 @@ impl Cffreference {
     }
   }
 
-  /// Create a logic instance.
-  fn wrap(&self) -> CffreferenceLogic {
-    CffreferenceLogic {
+  fn wrap(&self) -> Logic {
+    Logic {
       cff_data: String::new(),
       cff_reference: String::new(),
       io: self.clone(),
       preferred_citation_reached: false,
-      properties: CffreferenceProperties::default(),
+      properties: Properties::default(),
       references_reached: false,
     }
   }
 }
 
-/// The internal logic of this mode.
-struct CffreferenceLogic {
-  /// The held CFF data.
+struct Logic {
   cff_data: String,
-
-  /// The CFF reference object to write to the output stream.
   cff_reference: String,
-
-  /// The streams to operate on.
   io: Cffreference,
-
-  /// Whether the `preferred-citation` was already reached.
   preferred_citation_reached: bool,
-
-  /// The properties of the given CFF file.
-  properties: CffreferenceProperties,
-
-  /// Whether the `references` were already reached.
+  properties: Properties,
   references_reached: bool,
 }
 
-impl CffreferenceLogic {
-  /// Extract the citation information from a given and valid CFF file.
+impl Logic {
   fn logic(&mut self, s: &str) -> String {
     for line in s.lines() {
       if self.references_reached
@@ -159,15 +145,6 @@ impl CffreferenceLogic {
     }
   }
 
-  /// Run the CFF data extraction.
-  ///
-  /// # Errors
-  ///
-  /// See
-  ///
-  /// - [`crate::PatternBuffer::try_into_string`]
-  /// - [`PatternReader::read`]
-  /// - [`PatternWriter::append`]
   fn main(&mut self) -> Result<()> {
     self.io.output_file.clone().append(Box::new(
       self.logic(&self.io.input_file.read()?.try_into_string()?),
@@ -175,25 +152,18 @@ impl CffreferenceLogic {
   }
 }
 
-/// Some information about the found information.
 #[derive(Default)]
-enum CffreferenceProperties {
-  /// The given CFF has both an explicit type and a preferred citation.
+enum Properties {
   BothPreferredCitationAndType,
 
-  /// The given CFF has neither an explicit type nor a preferred citation.
   #[default]
   NeitherPreferredCitationNorType,
 
-  /// The given CFF has a preferred citation.
   PreferredCitation,
-
-  /// The given CFF has an explicit type.
   Type,
 }
 
-impl CffreferenceProperties {
-  /// A preferred citation was found.
+impl Properties {
   fn find_preferred_citation(&mut self) {
     if matches!(self, Self::NeitherPreferredCitationNorType) {
       *self = Self::PreferredCitation;
@@ -202,7 +172,6 @@ impl CffreferenceProperties {
     }
   }
 
-  /// An explicit type was found.
   fn find_type(&mut self) {
     if matches!(self, Self::NeitherPreferredCitationNorType) {
       *self = Self::Type;
@@ -211,7 +180,6 @@ impl CffreferenceProperties {
     }
   }
 
-  /// Is there a preferred citation defined?
   const fn has_preferred_citation(&self) -> bool {
     matches!(
       self,
@@ -219,7 +187,6 @@ impl CffreferenceProperties {
     )
   }
 
-  /// Is there an explicit type given?
   const fn has_type(&self) -> bool {
     matches!(self, Self::Type | Self::BothPreferredCitationAndType)
   }
