@@ -17,18 +17,26 @@
 |                                                                              |
 \******************************************************************************/
 
-mod append_as_line;
-mod colour_message;
-mod convert_buffer;
-mod prefer;
-mod to_ron;
-mod to_stderr;
+use sysexits::Result;
 
-pub use append_as_line::AppendAsLine;
-pub use colour_message::ColourMessage;
-pub use convert_buffer::ConvertBuffer;
-pub use prefer::Prefer;
-pub use to_ron::ToRon;
-pub use to_stderr::ToStderr;
+/// Convert this instance into a RON string.
+pub trait ToRon: serde::Serialize {
+  /// Convert an instance implementing [`serde::Serialize`] to valid RON.
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::DataErr`]
+  fn to_ron(&self, indentation_width: usize) -> Result<String>;
+}
+
+impl<T: serde::Serialize> ToRon for T {
+  fn to_ron(&self, indentation_width: usize) -> Result<String> {
+    ron::ser::to_string_pretty(
+      self,
+      ron::ser::PrettyConfig::default().indentor(" ".repeat(indentation_width)),
+    )
+    .map_or(Err(sysexits::ExitCode::DataErr), Ok)
+  }
+}
 
 /******************************************************************************/

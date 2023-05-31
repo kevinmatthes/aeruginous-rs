@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{AppendAsLine, PatternWriter};
+use crate::{AppendAsLine, PatternWriter, ToRon};
 use git2::Repository;
 use std::collections::HashMap;
 use sysexits::{ExitCode, Result};
@@ -362,11 +362,7 @@ impl Logic {
 
   fn report(&mut self) -> Result<()> {
     let content = if self.cli.extension == "ron" {
-      ron::ser::to_string_pretty(
-        &crate::Fragment::new(&self.hyperlinks, &self.changes),
-        ron::ser::PrettyConfig::default().indentor("  ".to_string()),
-      )
-      .map_or(Err(ExitCode::DataErr), Ok)?
+      crate::Fragment::new(&self.hyperlinks, &self.changes).to_ron(2)?
     } else {
       self.generate()
     };
