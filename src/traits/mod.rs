@@ -21,12 +21,14 @@ mod append_as_line;
 mod colour_message;
 mod convert_buffer;
 mod prefer;
+mod to_ron;
 mod to_stderr;
 
 pub use append_as_line::AppendAsLine;
 pub use colour_message::ColourMessage;
 pub use convert_buffer::ConvertBuffer;
 pub use prefer::Prefer;
+pub use to_ron::ToRon;
 pub use to_stderr::ToStderr;
 
 /******************************************************************************/
