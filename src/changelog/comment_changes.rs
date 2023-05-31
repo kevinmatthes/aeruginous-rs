@@ -228,9 +228,7 @@ impl Logic {
     category: String,
     change: String,
   ) {
-    if !map.contains_key(&category) {
-      map.insert(category.clone(), Vec::new());
-    }
+    map.entry(category.clone()).or_default();
 
     let mut changes = map[&category].clone();
     changes.push(change);
@@ -403,30 +401,6 @@ impl Logic {
     }
 
     result
-  }
-}
-
-/// The fragment type for exporting the harvested changes.
-#[derive(serde::Deserialize, serde::Serialize)]
-pub struct Fragment {
-  /// The hyperlinks to references for further reading.
-  references: HashMap<String, String>,
-
-  /// The harvested changes.
-  changes: HashMap<String, Vec<String>>,
-}
-
-impl Fragment {
-  /// Create a new instance.
-  #[must_use]
-  pub fn new(
-    references: &HashMap<String, String>,
-    changes: &HashMap<String, Vec<String>>,
-  ) -> Self {
-    Self {
-      references: references.clone(),
-      changes: changes.clone(),
-    }
   }
 }
 
