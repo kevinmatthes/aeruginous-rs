@@ -64,7 +64,7 @@ jobs:
           branch-suffix: timestamp
           labels: |
             enhancement
-          milestone: 4
+          milestone: 5
           title: '[GitHub Actions] cargo update'
 
 ################################################################################
