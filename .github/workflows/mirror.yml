@@ -110,7 +110,7 @@ jobs:
           branch-suffix: timestamp
           labels: |
             documentation
-          milestone: 4
+          milestone: 5
           title: '[GitHub Actions] Mirror README.md from src/lib.rs'
 
 ################################################################################
