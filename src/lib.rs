@@ -20,10 +20,12 @@
 //! <!------------------------------------------------------------------------->
 //!
 //! [ci]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci/badge.svg
+//! [crate]:  https://crates.io/crates/aeruginous
 //! [crates-io]:  https://img.shields.io/crates/v/aeruginous
-//! [crates-io-url]:  https://crates.io/crates/aeruginous
-//! [docs-rs]:  https://docs.rs/aeruginous/badge.svg
-//! [docs-rs-url]:  https://docs.rs/aeruginous
+//! [deps]:  https://deps.rs/repo/github/kevinmatthes/aeruginous-rs/status.svg
+//! [deps-rs]:  https://deps.rs/repo/github/kevinmatthes/aeruginous-rs
+//! [docs]:  https://docs.rs/aeruginous/badge.svg
+//! [docs-rs]:  https://docs.rs/aeruginous
 //! [downloads]:  https://img.shields.io/crates/d/aeruginous
 //! [gpl3]:  https://github.com/kevinmatthes/aeruginous-rs/blob/main/LICENSE
 //! [lcns]:  https://img.shields.io/github/license/kevinmatthes/aeruginous-rs
@@ -39,9 +41,10 @@
 //! ## Summary
 //!
 //! [![][ci]][repository]
-//! [![][crates-io]][crates-io-url]
-//! [![][docs-rs]][docs-rs-url]
-//! [![][downloads]][crates-io-url]
+//! [![][crates-io]][crate]
+//! [![][deps]][deps-rs]
+//! [![][docs]][docs-rs]
+//! [![][downloads]][crate]
 //! [![][lst]][repository]
 //! [![][lcns]][repository]
 //! [![][msrv]][repository]
