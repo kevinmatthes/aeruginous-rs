@@ -244,8 +244,8 @@ references:
     title: clap
     url: https://docs.rs/clap
   - type: software
-    date-released: 2023-05-29
-    version: 0.4.25
+    date-released: 2023-05-31
+    version: 0.4.26
     abstract: Date and time library for Rust
     authors:
       - alias: quodlibetor
