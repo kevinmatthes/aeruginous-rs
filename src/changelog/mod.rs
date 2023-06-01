@@ -19,8 +19,13 @@
 
 mod comment_changes;
 mod fragment;
+mod section;
+
+/// The references known to RONLOG-related instances.
+pub type RonlogReferences = std::collections::HashMap<String, String>;
 
 pub use comment_changes::CommentChanges;
 pub use fragment::Fragment;
+pub use section::Section as RonlogSection;
 
 /******************************************************************************/

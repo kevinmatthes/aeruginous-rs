@@ -17,59 +17,28 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::RonlogReferences;
+use aeruginous::RonlogSection;
 use std::collections::HashMap;
 
-/// The fragment type for exporting the harvested changes.
-#[derive(Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
-pub struct Fragment {
-  /// The hyperlinks to references for further reading.
-  references: RonlogReferences,
+#[test]
+fn move_fragments() {
+  let references = [
+    ("a".to_string(), "b".to_string()),
+    ("c".to_string(), "d".to_string()),
+  ];
+  let mut section = RonlogSection::new(
+    aeruginous::Fragment::new(
+      &HashMap::from(references.clone()),
+      &HashMap::new(),
+    ),
+    "v1.2.3",
+    None,
+    None,
+  )
+  .unwrap();
 
-  /// The harvested changes.
-  changes: HashMap<String, Vec<String>>,
-}
-
-impl Fragment {
-  crate::getters!(@fn @ref
-    references: RonlogReferences,
-    changes: HashMap<String, Vec<String>>
-  );
-
-  /// Add another instance's contents to this one's.
-  pub fn merge(&mut self, other: Self) {
-    for (link, target) in other.references {
-      self.references.entry(link).or_insert(target);
-    }
-
-    for (category, changes) in other.changes {
-      self.changes.entry(category.clone()).or_default();
-
-      let mut change_list = self.changes[&category].clone();
-      change_list.append(&mut changes.clone());
-      self.changes.insert(category, change_list);
-    }
-  }
-
-  /// Move all known references out of this instance.
-  #[must_use]
-  pub fn move_references(&mut self) -> RonlogReferences {
-    let result = self.references.clone();
-    self.references.clear();
-    result
-  }
-
-  /// Create a new instance.
-  #[must_use]
-  pub fn new(
-    references: &RonlogReferences,
-    changes: &HashMap<String, Vec<String>>,
-  ) -> Self {
-    Self {
-      references: references.clone(),
-      changes: changes.clone(),
-    }
-  }
+  assert_eq!(section.move_references(), HashMap::from(references));
+  assert!(section.references().is_empty());
 }
 
 /******************************************************************************/

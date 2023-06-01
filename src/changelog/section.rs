@@ -17,39 +17,37 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::RonlogReferences;
-use std::collections::HashMap;
+use crate::{Fragment, RonlogReferences, Version};
+use chrono::{DateTime, Local};
+use std::str::FromStr;
 
-/// The fragment type for exporting the harvested changes.
-#[derive(Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
-pub struct Fragment {
-  /// The hyperlinks to references for further reading.
+/// A RONLOG section.
+#[derive(serde::Deserialize, serde::Serialize)]
+pub struct Section {
+  /// The references of this section.
   references: RonlogReferences,
 
-  /// The harvested changes.
-  changes: HashMap<String, Vec<String>>,
+  /// The version this section documents.
+  version: Version,
+
+  /// The date the version this section is about was published.
+  released: DateTime<Local>,
+
+  /// The introductory text.
+  introduction: Option<String>,
+
+  /// The held fragment.
+  changes: Fragment,
 }
 
-impl Fragment {
+impl Section {
   crate::getters!(@fn @ref
     references: RonlogReferences,
-    changes: HashMap<String, Vec<String>>
+    version: Version,
+    released: DateTime<Local>,
+    introduction: Option<String>,
+    changes: Fragment
   );
-
-  /// Add another instance's contents to this one's.
-  pub fn merge(&mut self, other: Self) {
-    for (link, target) in other.references {
-      self.references.entry(link).or_insert(target);
-    }
-
-    for (category, changes) in other.changes {
-      self.changes.entry(category.clone()).or_default();
-
-      let mut change_list = self.changes[&category].clone();
-      change_list.append(&mut changes.clone());
-      self.changes.insert(category, change_list);
-    }
-  }
 
   /// Move all known references out of this instance.
   #[must_use]
@@ -60,15 +58,29 @@ impl Fragment {
   }
 
   /// Create a new instance.
-  #[must_use]
+  ///
+  /// # Errors
+  ///
+  /// See [`Version::from_str`].
   pub fn new(
-    references: &RonlogReferences,
-    changes: &HashMap<String, Vec<String>>,
-  ) -> Self {
-    Self {
-      references: references.clone(),
-      changes: changes.clone(),
+    mut changes: Fragment,
+    version: &str,
+    introduction: Option<String>,
+    references: Option<RonlogReferences>,
+  ) -> sysexits::Result<Self> {
+    let mut references = references.unwrap_or_default();
+
+    for (link, target) in changes.move_references() {
+      references.entry(link).or_insert(target);
     }
+
+    Ok(Self {
+      references,
+      version: Version::from_str(version)?,
+      released: Local::now(),
+      introduction,
+      changes,
+    })
   }
 }
 
