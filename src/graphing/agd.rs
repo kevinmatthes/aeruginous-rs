@@ -61,19 +61,16 @@ impl GraphDescription {
     tokens: Vec<Tokens>
   );
 
-  /// Assume that the next token is going to be a comment.
   fn assume_comment(&mut self) {
     self.comment_depth += 1;
     self.pending_token = Some(Tokens::Comment);
   }
 
-  /// Assume that the next token is going to be an identifier.
   fn assume_identifier(&mut self, character: char) {
     self.buffer.push(character);
     self.pending_token = Some(Tokens::Identifier(self.count_identifiers));
   }
 
-  /// Assume that the next token is going to be a line feed.
   fn assume_line_feed(&mut self) {
     self.line += 1;
     self.position = 0;
@@ -173,14 +170,12 @@ impl GraphDescription {
     Ok(result)
   }
 
-  /// Push the pending token and match the current character.
   fn finalise_pending_token(&mut self, token: Tokens, character: char) {
     self.tokens.push(token);
     self.pending_token = None;
     self.match_character(character);
   }
 
-  /// Check whether there is a trailing line feed in the given source file.
   fn has_no_trailing_line_feed(&self) -> Result<bool> {
     if matches!(self.tokens.last(), Some(Tokens::LineFeed(_)) | None) {
       Ok(false)
@@ -226,7 +221,6 @@ impl GraphDescription {
     }
   }
 
-  /// Match an input character against the possible redirections.
   fn match_character(&mut self, character: char) {
     match character {
       '\n' => self.assume_line_feed(),
@@ -258,7 +252,6 @@ impl GraphDescription {
     }
   }
 
-  /// Push an identifier to the list of tokens.
   fn push_identifier(&mut self) {
     let identifier = self.buffer.clone();
     self.buffer.clear();
@@ -279,7 +272,6 @@ impl GraphDescription {
     }
   }
 
-  /// Push a string literal to the list of tokens.
   fn push_string(&mut self) {
     self.string_literals.push(self.buffer.clone());
     self.tokens.push(Tokens::StringLiteral(self.count_strings));
@@ -289,7 +281,6 @@ impl GraphDescription {
     self.count_strings += 1;
   }
 
-  /// Push an unexpected character to the list of tokens.
   fn push_unexpected(&mut self, character: char) {
     self.tokens.push(Tokens::Unexpected {
       character,
@@ -386,7 +377,6 @@ impl GraphDescription {
     }
   }
 
-  /// Check whether the source file starts with obsolete spaces.
   fn starts_with_obsolete_spaces(&self) -> Result<bool> {
     if matches!(self.tokens.first(), Some(Tokens::Space(_))) {
       ceprintln!(
