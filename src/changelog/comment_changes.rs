@@ -143,7 +143,7 @@ struct Logic {
   categories: Vec<String>,
   changes: HashMap<String, Vec<String>>,
   cli: CommentChanges,
-  hyperlinks: HashMap<String, String>,
+  hyperlinks: crate::RonlogReferences,
   repository: Option<Repository>,
   user: String,
 }
