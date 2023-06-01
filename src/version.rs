@@ -27,7 +27,7 @@ use sysexits::ExitCode;
 /// application needs to be stored together with the time frames.  If a
 /// conversion should be necessary, `aeruginous` will take care about the
 /// required adjustments.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
 pub struct Version {
   /// The major version.
   major: usize,
