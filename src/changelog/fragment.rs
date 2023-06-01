@@ -17,13 +17,14 @@
 |                                                                              |
 \******************************************************************************/
 
+use crate::RonlogReferences;
 use std::collections::HashMap;
 
 /// The fragment type for exporting the harvested changes.
 #[derive(Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 pub struct Fragment {
   /// The hyperlinks to references for further reading.
-  references: HashMap<String, String>,
+  references: RonlogReferences,
 
   /// The harvested changes.
   changes: HashMap<String, Vec<String>>,
@@ -45,10 +46,18 @@ impl Fragment {
     }
   }
 
+  /// Move all known references out of this instance.
+  #[must_use]
+  pub fn move_references(&mut self) -> RonlogReferences {
+    let result = self.references.clone();
+    self.references.clear();
+    result
+  }
+
   /// Create a new instance.
   #[must_use]
   pub fn new(
-    references: &HashMap<String, String>,
+    references: &RonlogReferences,
     changes: &HashMap<String, Vec<String>>,
   ) -> Self {
     Self {
