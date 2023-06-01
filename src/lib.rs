@@ -193,7 +193,7 @@
 //! ```
 //!
 //! If this command is invoked by a user named Emma Xample on 1st January 1970
-//! at 01.23 am with the branch `e-xample/test` being checked out, the resulting
+//! at 01.23 am with the branch `example/test` being checked out, the resulting
 //! fragment will be stored as `directory/19700101_012345_Emma_Xample_test.rst`.
 //! The file contents will be the following:
 //!
