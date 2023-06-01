@@ -66,4 +66,17 @@ fn merge() {
   );
 }
 
+#[test]
+fn move_fragments() {
+  let references = [
+    ("a".to_string(), "b".to_string()),
+    ("c".to_string(), "d".to_string()),
+  ];
+  let mut fragment =
+    Fragment::new(&HashMap::from(references.clone()), &HashMap::new());
+
+  assert_eq!(fragment.move_references(), HashMap::from(references));
+  assert!(fragment.references().is_empty());
+}
+
 /******************************************************************************/
