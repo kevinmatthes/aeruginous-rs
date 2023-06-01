@@ -31,6 +31,11 @@ pub struct Fragment {
 }
 
 impl Fragment {
+  crate::getters!(@fn @ref
+    references: RonlogReferences,
+    changes: HashMap<String, Vec<String>>
+  );
+
   /// Add another instance's contents to this one's.
   pub fn merge(&mut self, other: Self) {
     for (link, target) in other.references {
