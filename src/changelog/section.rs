@@ -18,20 +18,20 @@
 \******************************************************************************/
 
 use crate::{Fragment, RonlogReferences, Version};
-use chrono::Local;
+use chrono::{DateTime, Local};
 use std::str::FromStr;
 
 /// A RONLOG section.
 #[derive(serde::Deserialize, serde::Serialize)]
 pub struct Section {
   /// The references of this section.
-  references: crate::RonlogReferences,
+  references: RonlogReferences,
 
   /// The version this section documents.
-  version: crate::Version,
+  version: Version,
 
   /// The date the version this section is about was published.
-  released: chrono::DateTime<Local>,
+  released: DateTime<Local>,
 
   /// The introductory text.
   introduction: Option<String>,
@@ -41,6 +41,14 @@ pub struct Section {
 }
 
 impl Section {
+  crate::getters!(@fn @ref
+    references: RonlogReferences,
+    version: Version,
+    released: DateTime<Local>,
+    introduction: Option<String>,
+    changes: Fragment
+  );
+
   /// Create a new instance.
   ///
   /// # Errors
