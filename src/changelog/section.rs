@@ -49,6 +49,14 @@ impl Section {
     changes: Fragment
   );
 
+  /// Move all known references out of this instance.
+  #[must_use]
+  pub fn move_references(&mut self) -> RonlogReferences {
+    let result = self.references.clone();
+    self.references.clear();
+    result
+  }
+
   /// Create a new instance.
   ///
   /// # Errors
