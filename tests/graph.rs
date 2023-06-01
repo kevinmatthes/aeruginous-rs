@@ -343,6 +343,29 @@ fn vertices_scale_1() {
 }
 
 #[test]
+fn vertices_scale_2() {
+  let mut vertices_1 = Vertices::default();
+  let mut vertices_2 = Vertices::default();
+
+  vertices_1.add_vertex("a");
+  vertices_2.add_vertex("a");
+
+  assert_eq!(vertices_1, vertices_2);
+  assert_eq!(vertices_2, vertices_1);
+
+  vertices_1.move_by(&128, &256, &512);
+  vertices_2.move_by(&256, &512, &1024);
+
+  assert_ne!(vertices_1, vertices_2);
+  assert_ne!(vertices_2, vertices_1);
+
+  vertices_1.scale(&2);
+
+  assert_eq!(vertices_1, vertices_2);
+  assert_eq!(vertices_2, vertices_1);
+}
+
+#[test]
 fn vertices_unequality() {
   let mut vertices_1 = Vertices::<i32>::default();
   let mut vertices_2 = Vertices::<i32>::default();
