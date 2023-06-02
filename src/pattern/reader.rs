@@ -127,13 +127,14 @@ impl Reader for &Vec<PathBuf> {
     if self.is_empty() {
       stdin().behaviour(show_error_messages)
     } else {
-      let mut result = Vec::<u8>::new();
+      let mut result = Vec::new();
 
       for file in *self {
-        let mut bytes = Reader::behaviour(file, show_error_messages)?
-          .as_ref()
-          .try_into_bytes()?;
-        result.append(&mut bytes);
+        result.append(
+          &mut Reader::behaviour(file, show_error_messages)?
+            .as_ref()
+            .try_into_bytes()?,
+        );
       }
 
       Ok(Box::new(result))
