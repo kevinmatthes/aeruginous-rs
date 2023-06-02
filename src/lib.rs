@@ -305,7 +305,10 @@ mod version;
 pub use crate::{
   application::{Action, Clap as Application},
   cffreference::Cffreference,
-  changelog::{CommentChanges, Fragment, RonlogReferences, RonlogSection},
+  changelog::{
+    CommentChanges, Fragment, Ronlog, RonlogAction, RonlogReferences,
+    RonlogSection,
+  },
   graphing::{
     AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
     Vertices,
