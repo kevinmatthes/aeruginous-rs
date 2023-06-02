@@ -26,11 +26,11 @@ use sysexits::Result;
 #[command(aliases = ["cffref", "cff-reference"])]
 pub struct Cffreference {
   /// The CFF file to read from, defaulting to [`std::io::Stdin`], if omitted.
-  #[arg(long = "input", short = 'i')]
+  #[arg(long = "input", short)]
   input_file: Option<PathBuf>,
 
   /// The CFF file to write to, defaulting to [`std::io::Stdout`], if omitted.
-  #[arg(long = "output", short = 'o')]
+  #[arg(long = "output", short)]
   output_file: Option<PathBuf>,
 }
 
