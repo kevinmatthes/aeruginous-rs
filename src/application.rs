@@ -46,6 +46,9 @@ pub enum Action {
     input_file: Option<PathBuf>,
   },
   */
+  /// Interact with RON CHANGELOGs.
+  Ronlog(crate::Ronlog),
+
   /// Extract Markdown code from Rust documentation comments.
   Rs2md {
     /// Whether to extract Rust documentation line comments starting with `///`.
@@ -58,12 +61,12 @@ pub enum Action {
 
     /// The Rust files to read from, defaulting to [`std::io::Stdin`], if
     /// omitted.
-    #[arg(long = "input", short = 'i')]
+    #[arg(long = "input", short)]
     input_file: Vec<PathBuf>,
 
     /// The Markdown file to write to, defaulting to [`std::io::Stdout`], if
     /// omitted.
-    #[arg(long = "output", short = 'o')]
+    #[arg(long = "output", short)]
     output_file: Option<PathBuf>,
   },
 
@@ -74,11 +77,11 @@ pub enum Action {
     file_to_edit: Option<PathBuf>,
 
     /// The file to read from, defaulting to [`std::io::Stdin`], if omitted.
-    #[arg(long = "input", short = 'i')]
+    #[arg(long = "input", short)]
     input_file: Option<PathBuf>,
 
     /// The file to write to, defaulting to [`std::io::Stdout`], if omitted.
-    #[arg(long = "output", short = 'o')]
+    #[arg(long = "output", short)]
     output_file: Option<PathBuf>,
   },
 }
@@ -115,6 +118,7 @@ impl Action {
         crate::AeruginousGraphDescription::main(input_file)
       }
       */
+      Self::Ronlog(r) => r.main(),
       Self::Rs2md {
         extract_inner,
         extract_outer,
