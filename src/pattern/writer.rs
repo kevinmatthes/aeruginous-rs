@@ -207,8 +207,7 @@ impl Writer for std::io::Stderr {
     _: bool,
     _: bool,
   ) -> Result<()> {
-    let string = buffer.as_ref().try_into_string()?;
-    eprint!("{string}");
+    eprint!("{}", buffer.as_ref().try_into_string()?);
     Ok(())
   }
 }
@@ -221,8 +220,7 @@ impl Writer for std::io::Stdout {
     _: bool,
     _: bool,
   ) -> Result<()> {
-    let string = buffer.as_ref().try_into_string()?;
-    print!("{string}");
+    print!("{}", buffer.as_ref().try_into_string()?);
     Ok(())
   }
 }
