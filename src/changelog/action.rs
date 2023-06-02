@@ -47,7 +47,7 @@ impl std::str::FromStr for Action {
     match s {
       "init" => Ok(Self::Init),
       "release" => Ok(Self::Release),
-      _ => Err(format!("the mode '{s}' is not yet supported")),
+      _ => Err(format!("the mode '{s}' is not supported, yet")),
     }
   }
 }
