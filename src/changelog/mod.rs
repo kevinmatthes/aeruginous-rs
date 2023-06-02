@@ -17,15 +17,19 @@
 |                                                                              |
 \******************************************************************************/
 
+mod action;
 mod comment_changes;
 mod fragment;
+mod ronlog;
 mod section;
 
 /// The references known to RONLOG-related instances.
 pub type RonlogReferences = std::collections::HashMap<String, String>;
 
+pub use action::Action as RonlogAction;
 pub use comment_changes::CommentChanges;
 pub use fragment::Fragment;
+pub use ronlog::Ronlog;
 pub use section::Section as RonlogSection;
 
 /******************************************************************************/
