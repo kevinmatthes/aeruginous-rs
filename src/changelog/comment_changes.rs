@@ -378,7 +378,7 @@ impl Logic {
       self.branch.split('/').last().unwrap_or("HEAD"),
       self.cli.extension
     )
-    .write(Box::new(content))
+    .append(Box::new(content))
   }
 
   fn resolve(&self) -> String {
