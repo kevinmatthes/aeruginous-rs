@@ -17,19 +17,39 @@
 |                                                                              |
 \******************************************************************************/
 
-mod action;
-mod comment_changes;
-mod fragment;
-mod ronlog;
-mod section;
+/// The action to execute on a given RONLOG.
+#[derive(Clone, Copy)]
+pub enum Action {
+  /// Initialise a new RONLOG.
+  Init,
 
-/// The references known to RONLOG-related instances.
-pub type RonlogReferences = std::collections::HashMap<String, String>;
+  /// Create the RONLOG section for a new version.
+  Release,
+}
 
-pub use action::Action as RonlogAction;
-pub use comment_changes::CommentChanges;
-pub use fragment::Fragment;
-pub use ronlog::Ronlog;
-pub use section::Section as RonlogSection;
+impl std::fmt::Display for Action {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    write!(
+      f,
+      "{}",
+      match self {
+        Self::Init => "init",
+        Self::Release => "release",
+      }
+    )
+  }
+}
+
+impl std::str::FromStr for Action {
+  type Err = String;
+
+  fn from_str(s: &str) -> Result<Self, String> {
+    match s {
+      "init" => Ok(Self::Init),
+      "release" => Ok(Self::Release),
+      _ => Err(format!("the mode '{s}' is not supported, yet")),
+    }
+  }
+}
 
 /******************************************************************************/

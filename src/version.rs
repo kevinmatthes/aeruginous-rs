@@ -120,13 +120,17 @@ impl std::str::FromStr for Version {
       ),
     };
 
-    match (major_version, minor_version, patch_level) {
-      (Ok(major), Ok(minor), Ok(patch)) => Ok(Self {
+    if let (Ok(major), Ok(minor), Ok(patch)) =
+      (major_version, minor_version, patch_level)
+    {
+      Ok(Self {
         major,
         minor,
         patch,
-      }),
-      _ => Err(ExitCode::DataErr),
+      })
+    } else {
+      eprintln!("This version is invalid.");
+      Err(ExitCode::DataErr)
     }
   }
 }

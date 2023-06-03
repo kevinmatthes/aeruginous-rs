@@ -57,12 +57,14 @@
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`comment-changes`](#comment-changes)
+//!    1. [`ronlog`](#ronlog)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //! <!--
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`comment-changes`](#comment-changes)
 //!    1. [`graph-description`](#graph-description)
+//!    1. [`ronlog`](#ronlog)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //! -->
@@ -235,6 +237,15 @@
 //! regarding given input files.
 //! -->
 //!
+//! ### `ronlog`
+//!
+//! > To be called with:
+//! >
+//! > - `ronlog`
+//!
+//! This mode will collect the RON fragments created by `comment-changes` and
+//! assemble them to a RON CHANGELOG.
+//!
 //! ### `rs2md`
 //!
 //! > To be called with:
@@ -305,7 +316,10 @@ mod version;
 pub use crate::{
   application::{Action, Clap as Application},
   cffreference::Cffreference,
-  changelog::{CommentChanges, Fragment, RonlogReferences, RonlogSection},
+  changelog::{
+    CommentChanges, Fragment, Ronlog, RonlogAction, RonlogReferences,
+    RonlogSection,
+  },
   graphing::{
     AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
     Vertices,
@@ -316,7 +330,8 @@ pub use crate::{
   },
   running::Running,
   traits::{
-    AppendAsLine, ColourMessage, ConvertBuffer, Prefer, ToRon, ToStderr,
+    AppendAsLine, ColourMessage, ConvertBuffer, FromRon, Prefer, ToRon,
+    ToStderr,
   },
   version::Version,
 };

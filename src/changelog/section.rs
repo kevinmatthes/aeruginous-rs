@@ -49,6 +49,19 @@ impl Section {
     changes: Fragment
   );
 
+  /// Add further changes.
+  pub fn add_changes(&mut self, changes: Fragment) {
+    self.changes.merge(changes);
+
+    for (link, target) in self.changes.move_references() {
+      self
+        .references
+        .entry(link)
+        .and_modify(|t| *t = target.clone())
+        .or_insert(target);
+    }
+  }
+
   /// Move all known references out of this instance.
   #[must_use]
   pub fn move_references(&mut self) -> RonlogReferences {
@@ -71,7 +84,10 @@ impl Section {
     let mut references = references.unwrap_or_default();
 
     for (link, target) in changes.move_references() {
-      references.entry(link).or_insert(target);
+      references
+        .entry(link)
+        .and_modify(|t| *t = target.clone())
+        .or_insert(target);
     }
 
     Ok(Self {

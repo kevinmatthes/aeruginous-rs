@@ -17,19 +17,22 @@
 |                                                                              |
 \******************************************************************************/
 
-mod action;
-mod comment_changes;
-mod fragment;
-mod ronlog;
-mod section;
+use sysexits::Result;
 
-/// The references known to RONLOG-related instances.
-pub type RonlogReferences = std::collections::HashMap<String, String>;
+/// Convert this instance into a RON string.
+pub trait FromRon<'a>: serde::Deserialize<'a> {
+  /// Create an instance implementing [`serde::Deserialize`] from valid RON.
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::DataErr`]
+  fn from_ron(ron: &'a str) -> Result<Self>;
+}
 
-pub use action::Action as RonlogAction;
-pub use comment_changes::CommentChanges;
-pub use fragment::Fragment;
-pub use ronlog::Ronlog;
-pub use section::Section as RonlogSection;
+impl<'a, T: serde::Deserialize<'a>> FromRon<'a> for T {
+  fn from_ron(ron: &'a str) -> Result<Self> {
+    ron::de::from_str(ron).map_or(Err(sysexits::ExitCode::DataErr), Ok)
+  }
+}
 
 /******************************************************************************/
