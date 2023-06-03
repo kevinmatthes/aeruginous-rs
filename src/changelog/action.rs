@@ -18,7 +18,7 @@
 \******************************************************************************/
 
 /// The action to execute on a given RONLOG.
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Action {
   /// Initialise a new RONLOG.
   Init,
