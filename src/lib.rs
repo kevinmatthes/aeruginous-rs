@@ -120,8 +120,8 @@
 //!
 //! ## Installation
 //!
-//! To download the latest stable version from [`crates.io`][crates-io-url], run
-//! the following command.
+//! To download the latest stable version from [`crates.io`][crate], run the
+//! following command.
 //!
 //! ```bash
 //! cargo install aeruginous

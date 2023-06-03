@@ -62,6 +62,37 @@ impl Section {
     }
   }
 
+  /// Add another instance's contents this one's.
+  pub fn merge(&mut self, mut other: Self) {
+    if self.version == other.version {
+      self.add_changes(other.changes.clone());
+
+      match &self.introduction {
+        Some(introduction_1) => {
+          if let Some(introduction_2) = &other.introduction {
+            let mut introduction_1 = introduction_1.clone();
+
+            introduction_1.push('\n');
+            introduction_1.push_str(introduction_2.as_str());
+
+            self.introduction = Some(introduction_1);
+          }
+        }
+        None => self.introduction = other.introduction.clone(),
+      }
+
+      for (link, target) in other.move_references() {
+        self
+          .references
+          .entry(link)
+          .and_modify(|t| *t = target.clone())
+          .or_insert(target);
+      }
+
+      self.released = self.released.max(other.released);
+    }
+  }
+
   /// Move all known references out of this instance.
   #[must_use]
   pub fn move_references(&mut self) -> RonlogReferences {
@@ -97,6 +128,27 @@ impl Section {
       introduction,
       changes,
     })
+  }
+}
+
+impl Eq for Section {}
+
+impl Ord for Section {
+  /// [`crate::RonlogSection`]s are sorted by their versions.
+  fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+    self.version.cmp(&other.version)
+  }
+}
+
+impl PartialEq for Section {
+  fn eq(&self, other: &Self) -> bool {
+    self.version == other.version
+  }
+}
+
+impl PartialOrd for Section {
+  fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    Some(self.cmp(other))
   }
 }
 

@@ -33,27 +33,40 @@ struct Changelog {
 
 impl Changelog {
   fn add_section(&mut self, section: RonlogSection) {
-    self.sections.insert(0, section);
+    for s in &mut self.sections {
+      if s == &section {
+        s.merge(section);
+        return;
+      }
+    }
+
+    self
+      .sections
+      .insert(self.sections.partition_point(|s| s > &section), section);
   }
 
   fn init(
     path: &PathBuf,
     message: Option<String>,
+    references: RonlogReferences,
     force: bool,
   ) -> Result<bool> {
     let result = !path.exists();
 
     if result || force {
-      path.truncate(Box::new(Self::new(message).to_ron(2)?))?;
+      path.truncate(Box::new(Self::new(message, references).to_ron(2)?))?;
     }
 
     Ok(result)
   }
 
   #[must_use]
-  fn new(introduction: Option<String>) -> Self {
+  const fn new(
+    introduction: Option<String>,
+    references: RonlogReferences,
+  ) -> Self {
     Self {
-      references: RonlogReferences::new(),
+      references,
       introduction,
       sections: Vec::new(),
     }
@@ -62,11 +75,17 @@ impl Changelog {
 
 struct Logic {
   cli: Ronlog,
+  hyperlinks: RonlogReferences,
 }
 
 impl Logic {
   fn init(&self, message: Option<String>) -> Result<()> {
-    if Changelog::init(&self.cli.output_file, message, self.cli.force)? {
+    if Changelog::init(
+      &self.cli.output_file,
+      message,
+      self.hyperlinks.clone(),
+      self.cli.force,
+    )? {
       println!(
         "Successfully initialised new CHANGELOG in '{}'.",
         self.cli.output_file.display()
@@ -90,7 +109,15 @@ impl Logic {
     }
   }
 
-  fn main(&self) -> Result<()> {
+  fn main(&mut self) -> Result<()> {
+    self.hyperlinks = self
+      .cli
+      .link
+      .iter()
+      .zip(self.cli.target.iter())
+      .map(|(a, b)| (a.to_string(), b.to_string()))
+      .collect();
+
     match self.cli.action {
       RonlogAction::Init => self.init(self.cli.message.clone()),
       RonlogAction::Release => self.release(),
@@ -103,7 +130,11 @@ impl Logic {
         Fragment::default(),
         version,
         self.cli.message.clone(),
-        None,
+        if self.hyperlinks.is_empty() {
+          None
+        } else {
+          Some(self.hyperlinks.clone())
+        },
       )?;
 
       if !self.cli.output_file.exists() {
@@ -165,9 +196,17 @@ pub struct Ronlog {
   #[arg(long, short)]
   message: Option<String>,
 
+  /// The hyperlinks to add.
+  #[arg(aliases = ["hyperlink"], long, short)]
+  link: Vec<String>,
+
   /// The RONLOG to modify.
   #[arg(default_value = "CHANGELOG.ron", long = "output", short)]
   output_file: PathBuf,
+
+  /// The hyperlinks' targets.
+  #[arg(long, short)]
+  target: Vec<String>,
 
   /// The version to use.
   #[arg(long, short)]
@@ -185,7 +224,10 @@ impl Ronlog {
   }
 
   fn wrap(&self) -> Logic {
-    Logic { cli: self.clone() }
+    Logic {
+      cli: self.clone(),
+      hyperlinks: RonlogReferences::new(),
+    }
   }
 }
 
