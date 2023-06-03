@@ -18,7 +18,8 @@
 \******************************************************************************/
 
 use crate::{
-  PatternWriter, RonlogAction, RonlogReferences, RonlogSection, ToRon,
+  FromRon, PatternReader, PatternWriter, RonlogAction, RonlogReferences,
+  RonlogSection, ToRon,
 };
 use std::path::PathBuf;
 use sysexits::{ExitCode, Result};
@@ -31,14 +32,15 @@ struct Changelog {
 }
 
 impl Changelog {
-  fn init(path: &str, force: bool) -> Result<bool> {
-    let mut path = PathBuf::from(path);
-    path.push("CHANGELOG.ron");
-
+  fn init(
+    path: &PathBuf,
+    message: Option<String>,
+    force: bool,
+  ) -> Result<bool> {
     let result = !path.exists();
 
     if result || force {
-      path.truncate(Box::new(Self::default().to_ron(2)?))?;
+      path.truncate(Box::new(Self::new(message).to_ron(2)?))?;
     }
 
     Ok(result)
@@ -54,36 +56,30 @@ impl Changelog {
   }
 }
 
-impl Default for Changelog {
-  fn default() -> Self {
-    Self::new(None)
-  }
-}
-
 struct Logic {
   cli: Ronlog,
 }
 
 impl Logic {
-  fn init(&self) -> Result<()> {
-    if Changelog::init(&self.cli.directory, self.cli.force)? {
+  fn init(&self, message: Option<String>) -> Result<()> {
+    if Changelog::init(&self.cli.output_file, message, self.cli.force)? {
       println!(
         "Successfully initialised new CHANGELOG in '{}'.",
-        self.cli.directory
+        self.cli.output_file.display()
       );
 
       Ok(())
     } else if self.cli.force {
       println!(
         "Successfully re-initialised CHANGELOG in '{}'.",
-        self.cli.directory
+        self.cli.output_file.display()
       );
 
       Ok(())
     } else {
       println!(
         "Use `--force` to overwrite the existing CHANGELOG in '{}'.",
-        self.cli.directory
+        self.cli.output_file.display()
       );
 
       Err(ExitCode::Usage)
@@ -91,12 +87,23 @@ impl Logic {
   }
 
   fn main(&self) -> Result<()> {
-    if matches!(self.cli.action, RonlogAction::Init) {
-      self.init()
-    } else {
-      println!("{}", self.cli.action);
-      Ok(())
+    match self.cli.action {
+      RonlogAction::Init => self.init(self.cli.message.clone()),
+      RonlogAction::Release => self.release(),
     }
+  }
+
+  fn release(&self) -> Result<()> {
+    if !self.cli.output_file.exists() {
+      self.init(None)?;
+    }
+
+    let ronlog =
+      Changelog::from_ron(&self.cli.output_file.read()?.try_into_string()?)?;
+
+    println!("{}", ronlog.to_ron(2)?);
+
+    Ok(())
   }
 }
 
@@ -106,13 +113,21 @@ pub struct Ronlog {
   /// The action on a certain RONLOG.
   action: RonlogAction,
 
-  /// The directory to work on.
-  #[arg(default_value = ".", long, short)]
-  directory: String,
-
   /// Whether to enforce this action.
   #[arg(long, short)]
   force: bool,
+
+  /// The fragment storage to process.
+  #[arg(default_value = ".", long = "input", short)]
+  input_directory: String,
+
+  /// A message to add as introduction.
+  #[arg(long, short)]
+  message: Option<String>,
+
+  /// The RONLOG to modify.
+  #[arg(default_value = "CHANGELOG.ron", long = "output", short)]
+  output_file: PathBuf,
 }
 
 impl Ronlog {
@@ -120,6 +135,7 @@ impl Ronlog {
   ///
   /// # Errors
   ///
+  /// See [`sysexits::ExitCode`].
   pub fn main(&self) -> Result<()> {
     self.wrap().main()
   }
