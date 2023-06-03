@@ -21,7 +21,7 @@ use crate::RonlogReferences;
 use std::collections::HashMap;
 
 /// The fragment type for exporting the harvested changes.
-#[derive(Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
+#[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 pub struct Fragment {
   /// The hyperlinks to references for further reading.
   references: RonlogReferences,
