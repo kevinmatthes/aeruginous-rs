@@ -18,7 +18,7 @@
 \******************************************************************************/
 
 /// The action to execute on a given RONLOG.
-#[derive(clap::Parser, Clone, Copy)]
+#[derive(Clone, Copy)]
 pub enum Action {
   /// Initialise a new RONLOG.
   Init,
