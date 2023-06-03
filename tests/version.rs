@@ -22,6 +22,14 @@ use std::str::FromStr;
 use sysexits::ExitCode;
 
 #[test]
+fn cmp() {
+  assert!(Version::new(0, 0, 1) > Version::new(0, 0, 0));
+  assert!(Version::new(0, 1, 0) > Version::new(0, 0, 2));
+  assert!(Version::new(1, 0, 0) > Version::new(0, 2, 0));
+  assert!(Version::new(2, 0, 0) > Version::new(1, 0, 0));
+}
+
+#[test]
 fn fmt_crate_version_constant() {
   assert_eq!(VERSION, format!("{}", Version::from_str(VERSION).unwrap()));
 }

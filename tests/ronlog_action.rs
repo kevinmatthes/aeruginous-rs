@@ -17,41 +17,31 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::{Fragment, RonlogSection};
-use std::collections::HashMap;
+use aeruginous::RonlogAction;
+use std::str::FromStr;
 
 #[test]
-fn add_changes() {
-  let references = [
-    ("a".to_string(), "b".to_string()),
-    ("c".to_string(), "d".to_string()),
-  ];
-  let mut section =
-    RonlogSection::new(Fragment::default(), "v1.2.3", None, None).unwrap();
-  section.add_changes(Fragment::new(
-    &HashMap::from(references.clone()),
-    &HashMap::new(),
-  ));
-
-  assert_eq!(section.references(), &HashMap::from(references));
+fn error() {
+  assert_eq!(
+    Err("the mode '' is not supported, yet".to_string()),
+    RonlogAction::from_str("")
+  );
 }
 
 #[test]
-fn move_references() {
-  let references = [
-    ("a".to_string(), "b".to_string()),
-    ("c".to_string(), "d".to_string()),
-  ];
-  let mut section = RonlogSection::new(
-    Fragment::new(&HashMap::from(references.clone()), &HashMap::new()),
-    "v1.2.3",
-    None,
-    None,
-  )
-  .unwrap();
+fn init() {
+  assert_eq!(
+    RonlogAction::Init,
+    RonlogAction::from_str(&format!("{}", RonlogAction::Init)).unwrap()
+  );
+}
 
-  assert_eq!(section.move_references(), HashMap::from(references));
-  assert!(section.references().is_empty());
+#[test]
+fn release() {
+  assert_eq!(
+    RonlogAction::Release,
+    RonlogAction::from_str(&format!("{}", RonlogAction::Release)).unwrap()
+  );
 }
 
 /******************************************************************************/

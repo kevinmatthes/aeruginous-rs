@@ -17,6 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
+use std::cmp::Ordering;
 use sysexits::ExitCode;
 
 /// The version information data structure.
@@ -65,6 +66,36 @@ impl Version {
   /// Modify the patch level of this version instance.
   pub fn set_patch(&mut self, patch: usize) {
     self.patch = patch;
+  }
+}
+
+impl Ord for Version {
+  /// [`Version`]s are sorted by their parts.
+  ///
+  /// # Examples
+  ///
+  /// ```rust
+  /// use aeruginous::Version;
+  ///
+  /// assert!(Version::new(0, 0, 1) > Version::new(0, 0, 0));
+  /// assert!(Version::new(0, 1, 0) > Version::new(0, 0, 2));
+  /// assert!(Version::new(1, 0, 0) > Version::new(0, 2, 0));
+  /// assert!(Version::new(2, 0, 0) > Version::new(1, 0, 0));
+  /// ```
+  fn cmp(&self, other: &Self) -> Ordering {
+    match self.major.cmp(&other.major) {
+      Ordering::Equal => match self.minor.cmp(&other.minor) {
+        Ordering::Equal => self.patch.cmp(&other.patch),
+        cmp => cmp,
+      },
+      cmp => cmp,
+    }
+  }
+}
+
+impl PartialOrd for Version {
+  fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+    Some(self.cmp(other))
   }
 }
 
