@@ -33,7 +33,16 @@ struct Changelog {
 
 impl Changelog {
   fn add_section(&mut self, section: RonlogSection) {
-    self.sections.insert(0, section);
+    for s in &mut self.sections {
+      if s == &section {
+        s.merge(section);
+        return;
+      }
+    }
+
+    self
+      .sections
+      .insert(self.sections.partition_point(|s| s > &section), section);
   }
 
   fn init(
