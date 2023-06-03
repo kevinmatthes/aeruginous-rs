@@ -17,20 +17,33 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::RonlogSection;
+use aeruginous::{Fragment, RonlogSection};
 use std::collections::HashMap;
 
 #[test]
-fn move_fragments() {
+fn add_changes() {
+  let references = [
+    ("a".to_string(), "b".to_string()),
+    ("c".to_string(), "d".to_string()),
+  ];
+  let mut section =
+    RonlogSection::new(Fragment::default(), "v1.2.3", None, None).unwrap();
+  section.add_changes(Fragment::new(
+    &HashMap::from(references.clone()),
+    &HashMap::new(),
+  ));
+
+  assert_eq!(section.references(), &HashMap::from(references));
+}
+
+#[test]
+fn move_references() {
   let references = [
     ("a".to_string(), "b".to_string()),
     ("c".to_string(), "d".to_string()),
   ];
   let mut section = RonlogSection::new(
-    aeruginous::Fragment::new(
-      &HashMap::from(references.clone()),
-      &HashMap::new(),
-    ),
+    Fragment::new(&HashMap::from(references.clone()), &HashMap::new()),
     "v1.2.3",
     None,
     None,
