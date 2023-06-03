@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{AppendAsLine, Fragment, RonlogReferences, Version};
+use crate::{Fragment, RonlogReferences, Version};
 use chrono::{DateTime, Local};
 use std::str::FromStr;
 
@@ -71,8 +71,10 @@ impl Section {
         Some(introduction_1) => {
           if let Some(introduction_2) = &other.introduction {
             let mut introduction_1 = introduction_1.clone();
+
             introduction_1.push('\n');
-            introduction_1.append_as_line(introduction_2.as_str());
+            introduction_1.push_str(introduction_2.as_str());
+
             self.introduction = Some(introduction_1);
           }
         }
