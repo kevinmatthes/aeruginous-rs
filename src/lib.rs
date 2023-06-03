@@ -16,7 +16,7 @@
 |  along with this program.  If not, see <https://www.gnu.org/licenses/>.      |
 |                                                                              |
 \******************************************************************************/
-
+ 
 //! <!------------------------------------------------------------------------->
 //!
 //! [ci]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci/badge.svg
