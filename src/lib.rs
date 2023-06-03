@@ -57,12 +57,14 @@
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`comment-changes`](#comment-changes)
+//!    1. [`ronlog`](#ronlog)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //! <!--
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`comment-changes`](#comment-changes)
 //!    1. [`graph-description`](#graph-description)
+//!    1. [`ronlog`](#ronlog)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //! -->
@@ -234,6 +236,15 @@
 //! This mode is not finished, yet, but it can already detect some issues
 //! regarding given input files.
 //! -->
+//!
+//! ### `ronlog`
+//!
+//! > To be called with:
+//! >
+//! > - `ronlog`
+//!
+//! This mode will collect the RON fragments created by `comment-changes` and
+//! assemble them to a RON CHANGELOG.
 //!
 //! ### `rs2md`
 //!
