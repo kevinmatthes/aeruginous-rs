@@ -18,8 +18,8 @@
 \******************************************************************************/
 
 use crate::{
-  FromRon, PatternReader, PatternWriter, RonlogAction, RonlogReferences,
-  RonlogSection, ToRon,
+  Fragment, FromRon, PatternReader, PatternWriter, RonlogAction,
+  RonlogReferences, RonlogSection, ToRon,
 };
 use std::path::PathBuf;
 use sysexits::{ExitCode, Result};
@@ -32,6 +32,10 @@ struct Changelog {
 }
 
 impl Changelog {
+  fn add_section(&mut self, section: RonlogSection) {
+    self.sections.insert(0, section);
+  }
+
   fn init(
     path: &PathBuf,
     message: Option<String>,
@@ -94,16 +98,52 @@ impl Logic {
   }
 
   fn release(&self) -> Result<()> {
-    if !self.cli.output_file.exists() {
-      self.init(None)?;
+    if let Some(version) = &self.cli.version {
+      let mut section = RonlogSection::new(
+        Fragment::default(),
+        version,
+        self.cli.message.clone(),
+        None,
+      )?;
+
+      if !self.cli.output_file.exists() {
+        self.init(None)?;
+      }
+
+      for entry in std::fs::read_dir(&self.cli.input_directory)? {
+        let entry = entry?.path();
+
+        if entry
+          .extension()
+          .map_or(false, |e| e.to_str().map_or(false, |e| e == "ron"))
+        {
+          if let Ok(fragment) =
+            Fragment::from_ron(&entry.read()?.try_into_string()?)
+          {
+            section.add_changes(fragment);
+            std::fs::remove_file(entry)?;
+          }
+        }
+      }
+
+      let mut ronlog =
+        Changelog::from_ron(&self.cli.output_file.read()?.try_into_string()?)?;
+
+      for (link, target) in section.move_references() {
+        ronlog
+          .references
+          .entry(link)
+          .and_modify(|t| *t = target.clone())
+          .or_insert(target);
+      }
+
+      ronlog.add_section(section);
+
+      self.cli.output_file.truncate(Box::new(ronlog.to_ron(2)?))
+    } else {
+      eprintln!("No `--version` information provided for this mode.");
+      Err(ExitCode::Usage)
     }
-
-    let ronlog =
-      Changelog::from_ron(&self.cli.output_file.read()?.try_into_string()?)?;
-
-    println!("{}", ronlog.to_ron(2)?);
-
-    Ok(())
   }
 }
 
@@ -128,6 +168,10 @@ pub struct Ronlog {
   /// The RONLOG to modify.
   #[arg(default_value = "CHANGELOG.ron", long = "output", short)]
   output_file: PathBuf,
+
+  /// The version to use.
+  #[arg(long, short)]
+  version: Option<String>,
 }
 
 impl Ronlog {
