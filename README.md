@@ -50,7 +50,7 @@ The Aeruginous Open Source Development Toolbox.
    1. [`uncrlf`](#uncrlf)
 -->
 
-The current code coverage is **<!-- cov -->62.38%<!-- cov -->**.
+The current code coverage is **<!-- cov -->62.15%<!-- cov -->**.
 
 ## License
 
@@ -101,8 +101,8 @@ of only a time tracker.
 
 ## Installation
 
-To download the latest stable version from [`crates.io`][crates-io-url], run
-the following command.
+To download the latest stable version from [`crates.io`][crate], run the
+following command.
 
 ```bash
 cargo install aeruginous
