@@ -39,7 +39,11 @@ impl Fragment {
   /// Add another instance's contents to this one's.
   pub fn merge(&mut self, other: Self) {
     for (link, target) in other.references {
-      self.references.entry(link).or_insert(target);
+      self
+        .references
+        .entry(link)
+        .and_modify(|t| *t = target.clone())
+        .or_insert(target);
     }
 
     for (category, changes) in other.changes {
@@ -69,6 +73,12 @@ impl Fragment {
       references: references.clone(),
       changes: changes.clone(),
     }
+  }
+}
+
+impl Default for Fragment {
+  fn default() -> Self {
+    Self::new(&RonlogReferences::new(), &HashMap::new())
   }
 }
 

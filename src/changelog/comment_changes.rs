@@ -27,15 +27,15 @@ use sysexits::{ExitCode, Result};
 #[command(aliases = ["changelog"])]
 pub struct CommentChanges {
   /// Work with the commit messages' bodies instead of their summaries.
-  #[arg(long, short = 'b')]
+  #[arg(long, short)]
   body: bool,
 
   /// Only these categories shall be used to generate comments.
-  #[arg(long, short = 'c')]
+  #[arg(long, short)]
   category: Vec<String>,
 
   /// The delimiter to separate a category from the change description.
-  #[arg(long, short = 'd')]
+  #[arg(long, short)]
   delimiter: String,
 
   /// The count of commits to analyse, defaulting to infinity, if omitted.
@@ -73,11 +73,11 @@ pub struct CommentChanges {
   heading: u8,
 
   /// Set categories Added, Changed, Deprecated, Fixed, Removed, and Security.
-  #[arg(long, short = 'k')]
+  #[arg(long, short)]
   keep_a_changelog: bool,
 
   /// The hyperlinks to add as comments.
-  #[arg(aliases = ["hyperlink"], long, short = 'l')]
+  #[arg(aliases = ["hyperlink"], long, short)]
   link: Vec<String>,
 
   /// The directory to write the generated fragment to.
@@ -85,12 +85,12 @@ pub struct CommentChanges {
       aliases = ["dir", "directory"],
       default_value = ".",
       long = "output",
-      short = 'o'
+      short
     )]
   output_directory: String,
 
   /// The hyperlinks' targets.
-  #[arg(long, short = 't')]
+  #[arg(long, short)]
   target: Vec<String>,
 }
 
@@ -378,7 +378,7 @@ impl Logic {
       self.branch.split('/').last().unwrap_or("HEAD"),
       self.cli.extension
     )
-    .write(Box::new(content))
+    .append(Box::new(content))
   }
 
   fn resolve(&self) -> String {
