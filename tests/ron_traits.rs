@@ -17,16 +17,19 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::ToRon;
+use aeruginous::{FromRon, ToRon};
 
 #[test]
 fn i32_number_struct() {
-  #[derive(serde::Serialize)]
+  #[derive(Debug, Eq, serde::Deserialize, serde::Serialize, PartialEq)]
   struct Number {
     n: i32,
   }
 
-  assert_eq!(&Number { n: 42 }.to_ron(2).unwrap(), "(\n  n: 42,\n)");
+  assert_eq!(
+    Number::from_ron(&Number { n: 42 }.to_ron(2).unwrap()).unwrap(),
+    Number { n: 42 }
+  );
 }
 
 /******************************************************************************/
