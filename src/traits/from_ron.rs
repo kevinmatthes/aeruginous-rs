@@ -19,7 +19,7 @@
 
 use sysexits::Result;
 
-/// Convert this instance into a RON string.
+/// Create an instance from a RON string.
 pub trait FromRon<'a>: serde::Deserialize<'a> {
   /// Create an instance implementing [`serde::Deserialize`] from valid RON.
   ///
