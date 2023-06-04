@@ -50,6 +50,81 @@ All pending changelog entries are stored in `changelog.d`_.
 
 .. scriv-insert-here
 
+.. _changelog-2.1.0:
+
+2.1.0 — 2023-06-04
+------------------
+
+Added
+.....
+
+- README:  deps.rs badge
+
+- tests/ronlog_section.rs
+
+- Fragment::changes
+
+- Fragment::references
+
+- Fragment::move_references
+
+- RonlogReferences
+
+- RonlogSection
+
+- src/changelog/section.rs:  creation
+
+- README:  document ronlog
+
+- RonlogSection::add_changes
+
+- impl Default for Fragment
+
+- Version:  error message for parsing failure
+
+- FromRon
+
+- src/traits/from_ron.rs:  creation
+
+- ronlog:  creation
+
+- RonlogAction
+
+- Ronlog
+
+- src/changelog/ronlog.rs:  creation
+
+- src/changelog/action.rs:  creation
+
+- tests/ronlog_action.rs:  creation
+
+- impl PartialOrd for Version
+
+- impl Ord for Version
+
+- CFF:  entry for ``clap`` v4.3.1
+
+- tests/ron_traits.rs
+
+Changed
+.......
+
+- src/application.rs:  simplify source code
+
+- comment-changes:  simplify source code
+
+- cffreference:  simplify source code
+
+Fixed
+.....
+
+- comment-changes:  amend existing fragments
+
+Removed
+.......
+
+- tests/to_ron.rs
+
 .. _changelog-2.0.0:
 
 2.0.0 — 2023-06-01
