@@ -21,13 +21,6 @@ use std::cmp::Ordering;
 use sysexits::ExitCode;
 
 /// The version information data structure.
-///
-/// Future releases of `aeruginous` might introduce changes due to which the
-/// respective previous version's data would become invalid.  In order to offer
-/// the possibility of an automatic conversion, the version information of the
-/// application needs to be stored together with the time frames.  If a
-/// conversion should be necessary, `aeruginous` will take care about the
-/// required adjustments.
 #[derive(Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 pub struct Version {
   /// The major version.
