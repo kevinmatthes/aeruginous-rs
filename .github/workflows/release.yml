@@ -60,6 +60,8 @@ jobs:
         with:
           python-version: 3.11
 
+      - uses: fregante/setup-git-user@v2.0.1
+
       - run: echo bump2version > requirements.txt
 
       - uses: py-actions/py-dependency-install@v4.0.0
