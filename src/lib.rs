@@ -31,7 +31,7 @@
 //! [lcns]:  https://img.shields.io/github/license/kevinmatthes/aeruginous-rs
 //! [lcnss]:  https://github.com/kevinmatthes/aeruginous-rs/tree/main/LICENSEs
 //! [lst]:  https://img.shields.io/github/last-commit/kevinmatthes/aeruginous-rs
-//! [msrv]:  https://img.shields.io/badge/MSRV-1.69.0-green
+//! [msrv]:  https://img.shields.io/badge/MSRV-1.70.0-green
 //! [repository]:  https://github.com/kevinmatthes/aeruginous-rs
 //!
 //! <!------------------------------------------------------------------------->
