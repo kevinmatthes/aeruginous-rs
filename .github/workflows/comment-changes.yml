@@ -51,7 +51,7 @@ jobs:
 
       - run: |
           rustup update
-          cargo r -- comment-changes -d ::= -o changelog.d/ -k
+          cargo r -- comment-changes -d ::= -f ron -k -o changelog.d/
           git add changelog.d/
           git commit -m 'Create summary of recent changes'
           git push
