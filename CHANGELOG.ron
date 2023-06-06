@@ -3,5 +3,28 @@
     "Keep a Changelog": "https://keepachangelog.com/en/1.0.0/",
   },
   introduction: Some("All notable changes to this project are documented in this file.\nIts format is based on `Keep a Changelog`_."),
-  sections: [],
+  sections: [
+    (
+      references: {},
+      version: (
+        major: 2,
+        minor: 1,
+        patch: 1,
+      ),
+      released: "2023-06-06T13:03:06.150645852+00:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Changed": [
+            "CI:  assemble RONLOG on release",
+            "CI:  create RON fragments",
+          ],
+          "Added": [
+            "CHANGELOG.ron",
+          ],
+        },
+      ),
+    ),
+  ],
 )
