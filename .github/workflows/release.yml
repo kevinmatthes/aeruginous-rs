@@ -56,9 +56,24 @@ jobs:
     steps:
       - uses: actions/checkout@v3.5.2
 
-      - uses: kevinmatthes/release-bump2version-scriv@v0.2.3
+      - uses: actions/setup-python@v4.5.0
         with:
-          release: ${{ inputs.release }}
+          python-version: 3.11
+
+      - uses: fregante/setup-git-user@v2.0.1
+
+      - run: echo bump2version > requirements.txt
+
+      - uses: py-actions/py-dependency-install@v4.0.0
+
+      - run: |
+          rm requirements.txt
+          bump2version ${{ inputs.release }}
+          rustup update
+          cargo r -- ronlog release -i changelog.d/ \
+            -v `cargo r -- --version | cut -d\  -f 2`
+          git add .
+          git commit -m '[GitHub Actions] Assemble CHANGELOG'
 
       - uses: peter-evans/create-pull-request@v5.0.1
         with:
