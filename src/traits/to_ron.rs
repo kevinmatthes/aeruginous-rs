@@ -35,7 +35,10 @@ impl<T: serde::Serialize> ToRon for T {
       self,
       ron::ser::PrettyConfig::default().indentor(" ".repeat(indentation_width)),
     )
-    .map_or(Err(sysexits::ExitCode::DataErr), Ok)
+    .map_or(Err(sysexits::ExitCode::DataErr), |mut s| {
+      s.push('\n');
+      Ok(s)
+    })
   }
 }
 
