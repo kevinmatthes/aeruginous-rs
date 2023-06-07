@@ -20,17 +20,15 @@
 mod append_as_line;
 mod colour_message;
 mod convert_buffer;
-mod from_ron;
 mod prefer;
-mod to_ron;
+mod rusty_object_notation;
 mod to_stderr;
 
 pub use append_as_line::AppendAsLine;
 pub use colour_message::ColourMessage;
 pub use convert_buffer::ConvertBuffer;
-pub use from_ron::FromRon;
 pub use prefer::Prefer;
-pub use to_ron::ToRon;
+pub use rusty_object_notation::{FromRon, ToRon};
 pub use to_stderr::ToStderr;
 
 /******************************************************************************/

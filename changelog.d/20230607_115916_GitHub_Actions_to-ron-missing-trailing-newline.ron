@@ -1,0 +1,18 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "move FromRon and ToRon to one source file",
+    ],
+    "Fixed": [
+      "ToRon::to_ron:  missing trailing newline at the end",
+    ],
+    "Added": [
+      "src/traits/rusty_object_notation.rs",
+    ],
+    "Removed": [
+      "src/traits/to_ron.rs",
+      "src/traits/from_ron.rs",
+    ],
+  },
+)

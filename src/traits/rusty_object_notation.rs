@@ -19,6 +19,22 @@
 
 use sysexits::Result;
 
+/// Create an instance from a RON string.
+pub trait FromRon<'a>: serde::Deserialize<'a> {
+  /// Create an instance implementing [`serde::Deserialize`] from valid RON.
+  ///
+  /// # Errors
+  ///
+  /// - [`sysexits::ExitCode::DataErr`]
+  fn from_ron(ron: &'a str) -> Result<Self>;
+}
+
+impl<'a, T: serde::Deserialize<'a>> FromRon<'a> for T {
+  fn from_ron(ron: &'a str) -> Result<Self> {
+    ron::de::from_str(ron).map_or(Err(sysexits::ExitCode::DataErr), Ok)
+  }
+}
+
 /// Convert this instance into a RON string.
 pub trait ToRon: serde::Serialize {
   /// Convert an instance implementing [`serde::Serialize`] to valid RON.
@@ -35,7 +51,10 @@ impl<T: serde::Serialize> ToRon for T {
       self,
       ron::ser::PrettyConfig::default().indentor(" ".repeat(indentation_width)),
     )
-    .map_or(Err(sysexits::ExitCode::DataErr), Ok)
+    .map_or(Err(sysexits::ExitCode::DataErr), |mut s| {
+      s.push('\n');
+      Ok(s)
+    })
   }
 }
 
