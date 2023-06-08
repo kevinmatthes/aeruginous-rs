@@ -60,7 +60,7 @@ jobs:
           persist-credentials: false
 
       - if: matrix.subcommand == 'nextest r'
-        uses: taiki-e/install-action@v2.9.3
+        uses: taiki-e/install-action@v2.9.4
         with:
           tool: nextest
 
