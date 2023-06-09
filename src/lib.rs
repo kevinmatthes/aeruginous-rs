@@ -58,6 +58,7 @@
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`cff-release-today`](#cff-release-today)
 //!    1. [`comment-changes`](#comment-changes)
+//!    1. [`increment-version`](#increment-version)
 //!    1. [`ronlog`](#ronlog)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
@@ -66,6 +67,7 @@
 //!    1. [`cff-release-today`](#cff-release-today)
 //!    1. [`comment-changes`](#comment-changes)
 //!    1. [`graph-description`](#graph-description)
+//!    1. [`increment-version`](#increment-version)
 //!    1. [`ronlog`](#ronlog)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
@@ -251,6 +253,18 @@
 //! This mode is not finished, yet, but it can already detect some issues
 //! regarding given input files.
 //! -->
+//!
+//! ### `increment-version`
+//!
+//! > To be called with:
+//! >
+//! > - incver
+//! > - inc-ver
+//! > - incrementversion
+//! > - increment-version
+//!
+//! This subcommand will increment the hard-coded version strings in the given
+//! files by the specified version range.
 //!
 //! ### `ronlog`
 //!
