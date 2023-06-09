@@ -37,20 +37,24 @@ The Aeruginous Open Source Development Toolbox.
 1. [Installation](#installation)
 1. [Supported Subcommands](#supported-subcommands)
    1. [`cffreference`](#cffreference)
+   1. [`cff-release-today`](#cff-release-today)
    1. [`comment-changes`](#comment-changes)
+   1. [`increment-version`](#increment-version)
    1. [`ronlog`](#ronlog)
    1. [`rs2md`](#rs2md)
    1. [`uncrlf`](#uncrlf)
 <!--
    1. [`cffreference`](#cffreference)
+   1. [`cff-release-today`](#cff-release-today)
    1. [`comment-changes`](#comment-changes)
    1. [`graph-description`](#graph-description)
+   1. [`increment-version`](#increment-version)
    1. [`ronlog`](#ronlog)
    1. [`rs2md`](#rs2md)
    1. [`uncrlf`](#uncrlf)
 -->
 
-The current code coverage is **<!-- cov -->62.43%<!-- cov -->**.
+The current code coverage is **<!-- cov -->59.41%<!-- cov -->**.
 
 ## License
 
@@ -122,6 +126,7 @@ cargo install --git https://github.com/kevinmatthes/aeruginous-rs
 > To be called with:
 >
 > - `cffref`
+> - `cff-ref`
 > - `cffreference`
 > - `cff-reference`
 
@@ -135,6 +140,18 @@ and pastes it at the end of the given output file.
 If the input file is omitted, the input information are attemted to be read
 from [`std::io::Stdin`].  Likewise, omitting the output file will cause
 `cffreference` to write to [`std::io::Stdout`].
+
+### `cff-release-today`
+
+> To be called with:
+>
+> - `cffrel`
+> - `cff-rel`
+> - `cffreleasetoday`
+> - `cff-release-today`
+
+This subcommand will set the release date in the given `CITATION.cff` to the
+present day.
 
 ### `comment-changes`
 
@@ -217,6 +234,18 @@ English ensuring that no programming skills at all are required to learn it.
 This mode is not finished, yet, but it can already detect some issues
 regarding given input files.
 -->
+
+### `increment-version`
+
+> To be called with:
+>
+> - incver
+> - inc-ver
+> - incrementversion
+> - increment-version
+
+This subcommand will increment the hard-coded version strings in the given
+files by the specified version range.
 
 ### `ronlog`
 
