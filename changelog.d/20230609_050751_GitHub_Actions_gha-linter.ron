@@ -1,0 +1,14 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CI:  lint GitHub Action workflows",
+    ],
+    "Fixed": [
+      "CI:  Bash style issues",
+    ],
+    "Changed": [
+      "``cargo update`` (#316)",
+    ],
+  },
+)
