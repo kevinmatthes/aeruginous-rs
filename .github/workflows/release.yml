@@ -55,25 +55,22 @@ jobs:
     if: contains(fromJson('["major", "minor", "patch"]'), inputs.release)
     steps:
       - uses: actions/checkout@v3.5.2
-
-      - uses: actions/setup-python@v4.6.1
-        with:
-          python-version: 3.11
-
       - uses: fregante/setup-git-user@v2.0.1
 
-      - run: echo bump2version > requirements.txt
-
-      - uses: py-actions/py-dependency-install@v4.0.0
-
       - run: |
-          rm requirements.txt
-          bump2version ${{ inputs.release }}
           rustup update
+          cargo r -- increment-version -v 2.1.0 -r ${{ inputs.release }} \
+            -e .github/workflows/release.yml \
+            -e CITATION.cff \
+            -e Cargo.lock \
+            -e Cargo.toml \
+            -e changelog.d/scriv.ini \
+            -e src/lib.rs
           cargo r -- ronlog release -i changelog.d/ \
             -v "$(cargo r -- --version | cut -d\  -f2)"
           git add .
-          git commit -m '[GitHub Actions] Assemble CHANGELOG'
+          git commit -m \
+            '[GitHub Actions] Assemble CHANGELOG and Increment Versions'
 
       - uses: peter-evans/create-pull-request@v5.0.1
         with:
