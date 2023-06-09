@@ -79,11 +79,10 @@ jobs:
       - name: ratio
         run: |
           cargo tarpaulin
-          sed "s/<!-- cov -->.*<!-- cov -->/<!-- cov -->$(
-            pycobertura show -f csv --delimiter , cobertura.xml
-            | grep TOTAL
-            | cut -d, -f4
-            )<!-- cov -->/g" src/lib.rs >> lib.rs
+          sed "s/<!-- cov -->.*<!-- cov -->/<!-- cov -->$( \
+            pycobertura show -f csv --delimiter , cobertura.xml | \
+            grep TOTAL | \
+            cut -d, -f4)<!-- cov -->/g" src/lib.rs >> lib.rs
           mv lib.rs src/
           git add src/lib.rs
           git commit --allow-empty -m \
