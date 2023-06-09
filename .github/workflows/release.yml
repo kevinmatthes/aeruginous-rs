@@ -59,8 +59,10 @@ jobs:
 
       - run: |
           rustup update
-          cargo r -- increment-version -v 2.1.0 -r ${{ inputs.release }} \
-            -e .github/workflows/release.yml \
+          cargo r -- increment-version \
+            -v $(cat .version) \
+            -r ${{ inputs.release }} \
+            -e .version \
             -e CITATION.cff \
             -e Cargo.lock \
             -e Cargo.toml \
