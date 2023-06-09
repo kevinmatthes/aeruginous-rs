@@ -17,9 +17,11 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternIOProcessor, Prefer};
+use crate::{
+  AppendAsLine, PatternIOProcessor, PatternReader, PatternWriter, Prefer,
+};
 use clap::{Parser, Subcommand};
-use std::path::PathBuf;
+use std::{io::BufRead, path::PathBuf, str::FromStr};
 use sysexits::Result;
 
 /// The supported application modes.
@@ -33,6 +35,13 @@ use sysexits::Result;
 pub enum Action {
   /// Extract the citation information from a given and valid CFF file.
   Cffreference(crate::Cffreference),
+
+  /// Increment the release date in CFFs.
+  #[command(aliases = ["cffrel", "cff-rel", "cffreleasetoday"])]
+  CffReleaseToday {
+    /// The file to work on.
+    file_to_edit: PathBuf,
+  },
 
   /// Create comments on the commits of a branch in this repository.
   CommentChanges(crate::CommentChanges),
@@ -128,6 +137,26 @@ impl Action {
   pub fn run(&self) -> Result<()> {
     match self {
       Self::Cffreference(c) => c.main(),
+      Self::CffReleaseToday { file_to_edit } => {
+        let mut buffer = String::new();
+
+        for line in
+          std::io::BufReader::new(std::fs::File::open(file_to_edit)?).lines()
+        {
+          let line = line?;
+
+          if line.starts_with("date-released:") {
+            buffer.append_as_line(format!(
+              "date-released: {}",
+              chrono::Local::now().date_naive().format("%Y-%m-%d")
+            ));
+          } else {
+            buffer.append_as_line(line);
+          }
+        }
+
+        file_to_edit.truncate(Box::new(buffer))
+      }
       Self::CommentChanges(c) => c.main(),
       /*
       Self::GraphDescription { input_file } => {
@@ -139,9 +168,6 @@ impl Action {
         old_version,
         range,
       } => {
-        use crate::{PatternReader, PatternWriter};
-        use std::str::FromStr;
-
         let v = crate::Version::from_str(old_version)?
           .increment(*range)
           .to_string();
