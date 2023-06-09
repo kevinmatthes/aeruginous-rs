@@ -112,6 +112,6 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_GITHUB_ACTIONS: true
-        uses: super-linter/super-linter@v5.0.0
+        uses: super-linter/super-linter/slim@v5.0.0
 
 ################################################################################
