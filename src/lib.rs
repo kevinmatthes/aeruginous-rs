@@ -56,12 +56,14 @@
 //! 1. [Installation](#installation)
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cffreference`](#cffreference)
+//!    1. [`cff-release-today`](#cff-release-today)
 //!    1. [`comment-changes`](#comment-changes)
 //!    1. [`ronlog`](#ronlog)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //! <!--
 //!    1. [`cffreference`](#cffreference)
+//!    1. [`cff-release-today`](#cff-release-today)
 //!    1. [`comment-changes`](#comment-changes)
 //!    1. [`graph-description`](#graph-description)
 //!    1. [`ronlog`](#ronlog)
@@ -141,6 +143,7 @@
 //! > To be called with:
 //! >
 //! > - `cffref`
+//! > - `cff-ref`
 //! > - `cffreference`
 //! > - `cff-reference`
 //!
@@ -154,6 +157,18 @@
 //! If the input file is omitted, the input information are attemted to be read
 //! from [`std::io::Stdin`].  Likewise, omitting the output file will cause
 //! `cffreference` to write to [`std::io::Stdout`].
+//!
+//! ### `cff-release-today`
+//!
+//! > To be called with:
+//! >
+//! > - `cffrel`
+//! > - `cff-rel`
+//! > - `cffreleasetoday`
+//! > - `cff-release-today`
+//!
+//! This subcommand will set the release date in the given `CITATION.cff` to the
+//! present day.
 //!
 //! ### `comment-changes`
 //!
