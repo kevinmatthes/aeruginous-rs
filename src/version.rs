@@ -59,7 +59,9 @@ impl FromStr for Range {
       "major" => Ok(Self::Major),
       "minor" => Ok(Self::Minor),
       "patch" => Ok(Self::Patch),
-      _ => Err("please specify either 'major', 'minor', or 'patch'"),
+      _ => {
+        Err("please specify either 'major', 'minor', or 'patch'".to_string())
+      }
     }
   }
 }
