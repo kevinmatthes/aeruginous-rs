@@ -54,7 +54,7 @@ jobs:
       - run: |
           cargo update
           git add .
-          git commit --allow-empty -m 'Changed ::= ``cargo update``'
+          git commit --allow-empty -m "Changed ::= \`\`cargo update\`\`"
 
       - uses: peter-evans/create-pull-request@v5.0.1
         with:

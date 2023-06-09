@@ -883,24 +883,4 @@ Changed
 
 - Cargo.toml:  change project description
 
-.. _changelog-0.0.0:
-
-0.0.0 — 2023-03-04
-------------------
-
-Added
-.....
-
-- Cargo.toml:  creation
-
-- .gitignore:  creation
-
-- LICENSE:  GPL-3.0
-
-- README:  creation
-
-- repository:  creation
-
-- src/main.rs:  creation
-
 .. -------------------------------------------------------------------------- ..

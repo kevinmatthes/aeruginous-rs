@@ -71,7 +71,7 @@ jobs:
           bump2version ${{ inputs.release }}
           rustup update
           cargo r -- ronlog release -i changelog.d/ \
-            -v `cargo r -- --version | cut -d\  -f 2`
+            -v "$(cargo r -- --version | cut -d\  -f2)"
           git add .
           git commit -m '[GitHub Actions] Assemble CHANGELOG'
 

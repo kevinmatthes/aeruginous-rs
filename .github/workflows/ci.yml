@@ -44,6 +44,7 @@ jobs:
     needs:
       - cargo
       - cffconvert
+      - super-linter
     runs-on: ubuntu-latest
     steps:
       - run: bash -c 'exit 0'
@@ -98,5 +99,19 @@ jobs:
           - cffs/input_5.cff
           - cffs/input_6.cff
           - cffs/input_7.cff
+
+  super-linter:
+    name: super-linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.5.2
+        with:
+          persist-credentials: false
+
+      - env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_GITHUB_ACTIONS: true
+        uses: super-linter/super-linter/slim@v5.0.0
 
 ################################################################################
