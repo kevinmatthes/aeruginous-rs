@@ -24,7 +24,7 @@ use std::{
 };
 use sysexits::ExitCode;
 
-/// The range to increment a version by.
+/// The range to increment a [`Version`] by.
 #[derive(Clone, Copy)]
 pub enum Range {
   /// Create a SemVer major release.
@@ -52,14 +52,14 @@ impl Display for Range {
 }
 
 impl FromStr for Range {
-  type Err = ExitCode;
+  type Err = String;
 
   fn from_str(s: &str) -> Result<Self, Self::Err> {
     match s {
       "major" => Ok(Self::Major),
       "minor" => Ok(Self::Minor),
       "patch" => Ok(Self::Patch),
-      _ => Err(ExitCode::DataErr),
+      _ => Err("please specify either 'major', 'minor', or 'patch'"),
     }
   }
 }
