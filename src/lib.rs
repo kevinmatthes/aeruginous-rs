@@ -293,6 +293,7 @@
   deprecated,
   missing_docs,
   rustdoc::broken_intra_doc_links,
+  unreachable_code,
   unused_assignments,
   unused_imports,
   unused_macros,
@@ -333,7 +334,7 @@ pub use crate::{
     AppendAsLine, ColourMessage, ConvertBuffer, FromRon, Prefer, ToRon,
     ToStderr,
   },
-  version::Version,
+  version::{Range as VersionRange, Version},
 };
 
 /// This crate's name.
