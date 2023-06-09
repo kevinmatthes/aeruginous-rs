@@ -23,7 +23,7 @@ use sysexits::Result;
 
 /// Extract the citation information from a given and valid CFF file.
 #[derive(clap::Parser, Clone)]
-#[command(aliases = ["cffref", "cff-reference"])]
+#[command(aliases = ["cffref", "cff-ref", "cff-reference"])]
 pub struct Cffreference {
   /// The CFF file to read from, defaulting to [`std::io::Stdin`], if omitted.
   #[arg(long = "input", short)]

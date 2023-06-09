@@ -17,11 +17,59 @@
 |                                                                              |
 \******************************************************************************/
 
-use std::cmp::Ordering;
+use std::{
+  cmp::Ordering,
+  fmt::{Display, Formatter, Result as FmtResult},
+  str::FromStr,
+};
 use sysexits::ExitCode;
 
+/// The range to increment a [`Version`] by.
+#[derive(Clone, Copy)]
+pub enum Range {
+  /// Create a SemVer major release.
+  Major,
+
+  /// Create a SemVer minor release.
+  Minor,
+
+  /// Create a SemVer patch release.
+  Patch,
+}
+
+impl Display for Range {
+  fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+    write!(
+      f,
+      "{}",
+      match self {
+        Self::Major => "major",
+        Self::Minor => "minor",
+        Self::Patch => "patch",
+      }
+    )
+  }
+}
+
+impl FromStr for Range {
+  type Err = String;
+
+  fn from_str(s: &str) -> Result<Self, Self::Err> {
+    match s {
+      "major" => Ok(Self::Major),
+      "minor" => Ok(Self::Minor),
+      "patch" => Ok(Self::Patch),
+      _ => {
+        Err("please specify either 'major', 'minor', or 'patch'".to_string())
+      }
+    }
+  }
+}
+
 /// The version information data structure.
-#[derive(Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
+#[derive(
+  Clone, Copy, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize,
+)]
 pub struct Version {
   /// The major version.
   major: usize,
@@ -35,6 +83,24 @@ pub struct Version {
 
 impl Version {
   crate::getters!(@fn @cp major: usize, minor: usize, patch: usize);
+
+  /// Increment this instance by a [`crate::VersionRange`].
+  pub fn increment(&mut self, range: Range) -> &mut Self {
+    match range {
+      Range::Major => {
+        self.major += 1;
+        self.minor = 0;
+        self.patch = 0;
+      }
+      Range::Minor => {
+        self.minor += 1;
+        self.patch = 0;
+      }
+      Range::Patch => self.patch += 1,
+    }
+
+    self
+  }
 
   /// Create a new version instance.
   #[must_use]
@@ -92,17 +158,17 @@ impl PartialOrd for Version {
   }
 }
 
-impl std::fmt::Display for Version {
+impl Display for Version {
   /// The string representation of a version instance.
   ///
   /// The given version instance will be formatted into a string using the
   /// format `v<major>.<minor>.<patch>`.
-  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+  fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
     write!(f, "v{}.{}.{}", self.major, self.minor, self.patch)
   }
 }
 
-impl std::str::FromStr for Version {
+impl FromStr for Version {
   type Err = ExitCode;
 
   /// Create a new version instance from a string slice.

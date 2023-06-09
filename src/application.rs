@@ -17,9 +17,11 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternIOProcessor, Prefer};
+use crate::{
+  AppendAsLine, PatternIOProcessor, PatternReader, PatternWriter, Prefer,
+};
 use clap::{Parser, Subcommand};
-use std::path::PathBuf;
+use std::{io::BufRead, path::PathBuf, str::FromStr};
 use sysexits::Result;
 
 /// The supported application modes.
@@ -34,6 +36,13 @@ pub enum Action {
   /// Extract the citation information from a given and valid CFF file.
   Cffreference(crate::Cffreference),
 
+  /// Increment the release date in CFFs.
+  #[command(aliases = ["cffrel", "cff-rel", "cffreleasetoday"])]
+  CffReleaseToday {
+    /// The file to work on.
+    file_to_edit: PathBuf,
+  },
+
   /// Create comments on the commits of a branch in this repository.
   CommentChanges(crate::CommentChanges),
 
@@ -46,6 +55,22 @@ pub enum Action {
     input_file: Option<PathBuf>,
   },
   */
+  /// Increment a hard-coded version string in some files.
+  #[command(aliases = ["incver", "inc-ver", "incrementversion"])]
+  IncrementVersion {
+    /// The files to work on.
+    #[arg(long = "edit", short = 'e')]
+    file_to_edit: Vec<PathBuf>,
+
+    /// The old version to search for and replace.
+    #[arg(long, short = 'v')]
+    old_version: String,
+
+    /// The increment range.
+    #[arg(long, short)]
+    range: crate::VersionRange,
+  },
+
   /// Interact with RON CHANGELOGs.
   Ronlog(crate::Ronlog),
 
@@ -112,12 +137,55 @@ impl Action {
   pub fn run(&self) -> Result<()> {
     match self {
       Self::Cffreference(c) => c.main(),
+      Self::CffReleaseToday { file_to_edit } => {
+        let mut buffer = String::new();
+
+        for line in
+          std::io::BufReader::new(std::fs::File::open(file_to_edit)?).lines()
+        {
+          let line = line?;
+
+          if line.starts_with("date-released:") {
+            buffer.append_as_line(format!(
+              "date-released: {}",
+              chrono::Local::now().date_naive().format("%Y-%m-%d")
+            ));
+          } else {
+            buffer.append_as_line(line);
+          }
+        }
+
+        file_to_edit.truncate(Box::new(buffer))
+      }
       Self::CommentChanges(c) => c.main(),
       /*
       Self::GraphDescription { input_file } => {
         crate::AeruginousGraphDescription::main(input_file)
       }
       */
+      Self::IncrementVersion {
+        file_to_edit,
+        old_version,
+        range,
+      } => {
+        let v = crate::Version::from_str(old_version)?
+          .increment(*range)
+          .to_string();
+        let v = v.strip_prefix('v').unwrap_or(&v);
+
+        for file in file_to_edit {
+          file.truncate(Box::new(
+            file
+              .read()?
+              .try_into_string()?
+              .split(old_version.strip_prefix('v').unwrap_or(old_version))
+              .collect::<Vec<&str>>()
+              .join(v.strip_prefix('v').unwrap_or(v)),
+          ))?;
+        }
+
+        Ok(())
+      }
       Self::Ronlog(r) => r.main(),
       Self::Rs2md {
         extract_inner,
