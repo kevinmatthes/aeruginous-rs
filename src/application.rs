@@ -56,7 +56,7 @@ pub enum Action {
   },
   */
   /// Increment a hard-coded version string in some files.
-  #[command(aliases = ["incver", "inc-ver"])]
+  #[command(aliases = ["incver", "inc-ver", "increment-version"])]
   IncrementVersion {
     /// The files to work on.
     #[arg(long = "edit", short = 'e')]
