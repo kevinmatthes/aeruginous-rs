@@ -54,7 +54,7 @@ name = "aeruginous"
 readme = "README.md"
 repository = "https://github.com/kevinmatthes/aeruginous-rs"
 rust-version = "1.70.0"
-version = "2.1.0"
+version = "2.2.0"
 
 [dependencies]
 anstyle = "1.0.0"
