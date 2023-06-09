@@ -46,6 +46,22 @@ pub enum Action {
     input_file: Option<PathBuf>,
   },
   */
+  /// Increment a hard-coded version string in some files.
+  #[command(aliases = ["incver", "inc-ver"])]
+  IncrementVersion {
+    /// The files to work on.
+    #[arg(long = "edit", short = 'e')]
+    file_to_edit: Vec<PathBuf>,
+
+    /// The old version to search for and replace.
+    #[arg(long, short = 'v')]
+    old_version: String,
+
+    /// The increment range.
+    #[arg(long, short)]
+    range: crate::VersionRange,
+  },
+
   /// Interact with RON CHANGELOGs.
   Ronlog(crate::Ronlog),
 
@@ -118,6 +134,32 @@ impl Action {
         crate::AeruginousGraphDescription::main(input_file)
       }
       */
+      Self::IncrementVersion {
+        file_to_edit,
+        old_version,
+        range,
+      } => {
+        use crate::{PatternReader, PatternWriter};
+        use std::str::FromStr;
+
+        let v = crate::Version::from_str(old_version)?
+          .increment(*range)
+          .to_string();
+        let v = v.strip_prefix('v').unwrap_or(&v);
+
+        for file in file_to_edit {
+          file.truncate(Box::new(
+            file
+              .read()?
+              .try_into_string()?
+              .split(old_version.strip_prefix('v').unwrap_or(old_version))
+              .collect::<Vec<&str>>()
+              .join(v.strip_prefix('v').unwrap_or(v)),
+          ))?;
+        }
+
+        Ok(())
+      }
       Self::Ronlog(r) => r.main(),
       Self::Rs2md {
         extract_inner,
