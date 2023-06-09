@@ -68,6 +68,7 @@ jobs:
             -e Cargo.toml \
             -e changelog.d/scriv.ini \
             -e src/lib.rs
+          cargo r -- cff-release-today CITATION.cff
           cargo r -- ronlog release -i changelog.d/ \
             -v "$(cargo r -- --version | cut -d\  -f2)"
           git add .
