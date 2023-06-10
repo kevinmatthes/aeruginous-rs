@@ -49,10 +49,20 @@ keywords:
   - cff
   - cffref
   - cffreference
+  - cffrel
+  - cffreleasetoday
+  - cff-ref
   - cff-reference
+  - cff-rel
+  - cff-release-today
   - changelog
   - citation-file-format
   - comment-changes
+  - incrementversion
+  - increment-version
+  - incver
+  - inc-ver
+  - ronlog
   - rs2md
   - uncrlf
 license: GPL-3.0
