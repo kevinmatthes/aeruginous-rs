@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Removed": [
+      "CFF:  entries of outdated versions",
+    ],
+    "Added": [
+      "CFF:  entry for ``clap`` v4.3.3",
+    ],
+  },
+)
