@@ -60,7 +60,7 @@ jobs:
       - run: |
           rustup update
           cargo r -- increment-version \
-            -v $(cat .version) \
+            -v "$(cat .version)" \
             -r ${{ inputs.release }} \
             -e .version \
             -e CITATION.cff \
