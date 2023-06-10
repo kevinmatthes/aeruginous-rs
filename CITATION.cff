@@ -62,6 +62,7 @@ keywords:
   - increment-version
   - incver
   - inc-ver
+  - ronlog
   - rs2md
   - uncrlf
 license: GPL-3.0
