@@ -59,6 +59,7 @@ keywords:
   - citation-file-format
   - comment-changes
   - incrementversion
+  - increment-version
   - rs2md
   - uncrlf
 license: GPL-3.0
