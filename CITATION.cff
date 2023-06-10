@@ -60,6 +60,7 @@ keywords:
   - comment-changes
   - incrementversion
   - increment-version
+  - incver
   - rs2md
   - uncrlf
 license: GPL-3.0
