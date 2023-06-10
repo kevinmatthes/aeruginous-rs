@@ -64,64 +64,6 @@ url: https://github.com/kevinmatthes/aeruginous-rs
 # References.
 references:
   - type: software
-    date-released: 2023-01-28
-    version: 0.4.1
-    abstract: The system exit codes as defined by <sysexits.h> for Rust
-    authors:
-      - alias: sorairolake
-        family-names: Sakai
-        given-names: Shun
-      - alias: kevinmatthes
-        family-names: Matthes
-        given-names: Kevin
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/sysexits
-    repository-code: https://github.com/sorairolake/sysexits-rs
-    title: sysexits-rs
-    url: https://docs.rs/sysexits
-  - type: software
-    date-released: 2023-02-28
-    version: 4.1.8
-    abstract: A full featured, fast Command Line Argument Parser for Rust
-    authors:
-      - alias: kbknapp
-        family-names: Knapp
-        given-names: Kevin B.
-      - name: The Clap Community
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/clap
-    repository-code: https://github.com/clap-rs/clap
-    title: clap
-    url: https://docs.rs/clap
-  - type: software
-    date-released: 2023-03-12
-    version: 0.4.24
-    abstract: Date and time library for Rust
-    authors:
-      - alias: quodlibetor
-        family-names: Maister
-        given-names: Brandon W.
-      - alias: djc
-        family-names: Ochtman
-        given-names: Dirkjan
-      - alias: lifthrasiir
-        family-names: Seonghoon
-        given-names: Kang
-      - alias: esheppa
-        family-names: Sheppard
-        given-names: Eric
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/chrono
-    repository-code: https://github.com/chronotope/chrono
-    title: chrono
-    url: https://docs.rs/chrono
-  - type: software
     abstract: CITATION.cff files are plain text files with human- and machine-readable citation information for software. Code developers can include them in their repositories to let others know how to correctly cite their software. This is the specification for the Citation File Format.
     authors:
       - family-names: Druskat
@@ -176,40 +118,6 @@ references:
     license: "CC-BY-4.0"
     doi: 10.5281/zenodo.5171937
   - type: software
-    date-released: 2023-04-01
-    version: 0.5.0
-    abstract: The system exit codes as defined by <sysexits.h> for Rust
-    authors:
-      - alias: sorairolake
-        family-names: Sakai
-        given-names: Shun
-      - alias: kevinmatthes
-        family-names: Matthes
-        given-names: Kevin
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/sysexits
-    repository-code: https://github.com/sorairolake/sysexits-rs
-    title: sysexits-rs
-    url: https://docs.rs/sysexits
-  - type: software
-    date-released: 2023-04-19
-    version: 4.2.4
-    abstract: A full featured, fast Command Line Argument Parser for Rust
-    authors:
-      - alias: kbknapp
-        family-names: Knapp
-        given-names: Kevin B.
-      - name: The Clap Community
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/clap
-    repository-code: https://github.com/clap-rs/clap
-    title: clap
-    url: https://docs.rs/clap
-  - type: software
     date-released: 2023-05-15
     version: 0.6.0
     abstract: The system exit codes as defined by <sysexits.h> for Rust
@@ -227,22 +135,6 @@ references:
     repository-code: https://github.com/sorairolake/sysexits-rs
     title: sysexits-rs
     url: https://docs.rs/sysexits
-  - type: software
-    date-released: 2023-05-19
-    version: 4.3.0
-    abstract: A full featured, fast Command Line Argument Parser for Rust
-    authors:
-      - alias: kbknapp
-        family-names: Knapp
-        given-names: Kevin B.
-      - name: The Clap Community
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/clap
-    repository-code: https://github.com/clap-rs/clap
-    title: clap
-    url: https://docs.rs/clap
   - type: software
     date-released: 2023-05-31
     version: 0.4.26
@@ -267,35 +159,3 @@ references:
     repository-code: https://github.com/chronotope/chrono
     title: chrono
     url: https://docs.rs/chrono
-  - type: software
-    date-released: 2023-06-02
-    version: 4.3.1
-    abstract: A full featured, fast Command Line Argument Parser for Rust
-    authors:
-      - alias: kbknapp
-        family-names: Knapp
-        given-names: Kevin B.
-      - name: The Clap Community
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/clap
-    repository-code: https://github.com/clap-rs/clap
-    title: clap
-    url: https://docs.rs/clap
-  - type: software
-    date-released: 2023-06-05
-    version: 4.3.2
-    abstract: A full featured, fast Command Line Argument Parser for Rust
-    authors:
-      - alias: kbknapp
-        family-names: Knapp
-        given-names: Kevin B.
-      - name: The Clap Community
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/clap
-    repository-code: https://github.com/clap-rs/clap
-    title: clap
-    url: https://docs.rs/clap
