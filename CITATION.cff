@@ -58,6 +58,7 @@ keywords:
   - changelog
   - citation-file-format
   - comment-changes
+  - incrementversion
   - rs2md
   - uncrlf
 license: GPL-3.0
