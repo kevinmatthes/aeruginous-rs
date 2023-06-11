@@ -17,17 +17,31 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::{Version, VERSION};
+use aeruginous::{Version, VersionRange, VERSION};
 use std::str::FromStr;
 use sysexits::ExitCode;
 
-#[test]
-fn cmp() {
-  assert!(Version::new(0, 0, 1) > Version::new(0, 0, 0));
-  assert!(Version::new(0, 1, 0) > Version::new(0, 0, 2));
-  assert!(Version::new(1, 0, 0) > Version::new(0, 2, 0));
-  assert!(Version::new(2, 0, 0) > Version::new(1, 0, 0));
+macro_rules! make_test {
+  (
+    @cmp
+    $name:ident ->
+    $major_1:tt $minor_1:tt $patch_1:tt >
+    $major_2:tt $minor_2:tt $patch_2:tt
+  ) => {
+    #[test]
+    fn $name() {
+      assert!(
+        Version::new($major_1, $minor_1, $patch_1)
+          > Version::new($major_2, $minor_2, $patch_2)
+      );
+    }
+  };
 }
+
+make_test!(@cmp cmp_1 -> 0 0 1 > 0 0 0);
+make_test!(@cmp cmp_2 -> 0 1 0 > 0 0 2);
+make_test!(@cmp cmp_3 -> 1 0 0 > 0 2 0);
+make_test!(@cmp cmp_4 -> 2 0 0 > 1 0 0);
 
 #[test]
 fn fmt_crate_version_constant() {
@@ -156,6 +170,30 @@ fn from_str_valid_v_prefix() {
   assert_eq!(Version::from_str("v1"), Ok(Version::new(1, 0, 0)));
   assert_eq!(Version::from_str("v1.2"), Ok(Version::new(1, 2, 0)));
   assert_eq!(Version::from_str("v1.2.3"), Ok(Version::new(1, 2, 3)));
+}
+
+#[test]
+fn increment_major() {
+  assert_eq!(
+    Version::new(1, 2, 3).increment(VersionRange::Major),
+    &Version::new(2, 0, 0)
+  );
+}
+
+#[test]
+fn increment_minor() {
+  assert_eq!(
+    Version::new(1, 2, 3).increment(VersionRange::Minor),
+    &Version::new(1, 3, 0)
+  );
+}
+
+#[test]
+fn increment_patch() {
+  assert_eq!(
+    Version::new(1, 2, 3).increment(VersionRange::Patch),
+    &Version::new(1, 2, 4)
+  );
 }
 
 #[test]

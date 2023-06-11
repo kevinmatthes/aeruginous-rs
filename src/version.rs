@@ -25,7 +25,7 @@ use std::{
 use sysexits::ExitCode;
 
 /// The range to increment a [`Version`] by.
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Range {
   /// Create a SemVer major release.
   Major,

@@ -22,7 +22,7 @@ use chrono::{DateTime, Local};
 use std::str::FromStr;
 
 /// A RONLOG section.
-#[derive(serde::Deserialize, serde::Serialize)]
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
 pub struct Section {
   /// The references of this section.
   references: RonlogReferences,
