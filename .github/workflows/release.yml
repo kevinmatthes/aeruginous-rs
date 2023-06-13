@@ -29,8 +29,6 @@
 ##
 ################################################################################
 
-name: release
-
 on:
   workflow_dispatch:
     inputs:
@@ -50,14 +48,27 @@ permissions:
 
 jobs:
   release:
-    name: release
-    runs-on: ubuntu-latest
     if: contains(fromJson('["major", "minor", "patch"]'), inputs.release)
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.5.3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v4.6.1
+        with:
+          python-version: 3.11
+
+      - uses: taiki-e/install-action@v2.11.0
+        with:
+          tool: cargo-tarpaulin
+
       - uses: fregante/setup-git-user@v2.0.1
+      - run: echo pycobertura >> requirements.txt
+      - uses: py-actions/py-dependency-install@v4.0.0
 
       - run: |
+          rm requirements.txt
           rustup update
           cargo r -- increment-version \
             -v "$(cat .version)" \
@@ -71,6 +82,13 @@ jobs:
           cargo r -- cff-release-today CITATION.cff
           cargo r -- ronlog release -i changelog.d/ \
             -v "$(cargo r -- --version | cut -d\  -f2)"
+          cargo tarpaulin
+          sed "s/<!-- cov -->.*<!-- cov -->/<!-- cov -->$( \
+            pycobertura show -f csv --delimiter , cobertura.xml | \
+            grep TOTAL | \
+            cut -d, -f4)<!-- cov -->/g" src/lib.rs >> lib.rs
+          mv lib.rs src/
+          cargo r -- rs2md -i src/lib.rs --outer -o README.md
           git add .
           git commit -m \
             '[GitHub Actions] Assemble CHANGELOG and Increment Versions'
