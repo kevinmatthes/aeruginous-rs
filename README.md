@@ -256,6 +256,12 @@ files by the specified version range.
 This mode will collect the RON fragments created by `comment-changes` and
 assemble them to a RON CHANGELOG.
 
+A RONLOG consists of multiple sections, sorted descendingly by the
+respective versions they are documenting.  New sections are inserted into
+that sorted list without breaking the sorting.  For example, if a particular
+RONLOG should contain sections for some versions v1.0.0, v0.2.0, and v0.1.0,
+a new section on v0.3.0 would be inserted between v1.0.0 and v0.2.0.
+
 ### `rs2md`
 
 > To be called with:
