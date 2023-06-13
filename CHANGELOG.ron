@@ -9,6 +9,20 @@
       version: (
         major: 2,
         minor: 2,
+        patch: 1,
+      ),
+      released: "2023-06-13T11:01:31.401467661+00:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {},
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 2,
+        minor: 2,
         patch: 0,
       ),
       released: "2023-06-12T17:20:37.365121131+00:00",
@@ -16,6 +30,16 @@
       changes: (
         references: {},
         changes: {
+          "Removed": [
+            "CFF:  entries of outdated versions",
+            "bump2version:  configuration",
+            "src/traits/to_ron.rs",
+            "src/traits/from_ron.rs",
+          ],
+          "Fixed": [
+            "CI:  Bash style issues",
+            "ToRon::to_ron:  missing trailing newline at the end",
+          ],
           "Changed": [
             "``cargo update`` (#316)",
             "MSRV:  1.70.0",
@@ -24,12 +48,6 @@
             "move FromRon and ToRon to one source file",
             "CI:  assemble RONLOG on release",
             "CI:  create RON fragments",
-          ],
-          "Removed": [
-            "CFF:  entries of outdated versions",
-            "bump2version:  configuration",
-            "src/traits/to_ron.rs",
-            "src/traits/from_ron.rs",
           ],
           "Added": [
             "CI:  lint GitHub Action workflows",
@@ -55,10 +73,6 @@
             "VersionRange",
             "src/traits/rusty_object_notation.rs",
             "CHANGELOG.ron",
-          ],
-          "Fixed": [
-            "CI:  Bash style issues",
-            "ToRon::to_ron:  missing trailing newline at the end",
           ],
         },
       ),
