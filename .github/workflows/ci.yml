@@ -85,7 +85,7 @@ jobs:
           - d
           - fmt --check
           - nextest r
-          - t
+          - t --doc
 
   cffconvert:
     name: cffconvert
