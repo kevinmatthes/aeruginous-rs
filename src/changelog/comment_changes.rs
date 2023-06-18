@@ -89,6 +89,10 @@ pub struct CommentChanges {
     )]
   output_directory: String,
 
+  /// The commit to stop at.
+  #[arg(long, short = 'S')]
+  stop_at: Option<git2::Oid>,
+
   /// The hyperlinks' targets.
   #[arg(long, short)]
   target: Vec<String>,
@@ -121,6 +125,7 @@ impl CommentChanges {
       keep_a_changelog: false,
       link: Vec::new(),
       output_directory: ".".to_string(),
+      stop_at: None,
       target: Vec::new(),
     }
   }
@@ -296,6 +301,12 @@ impl Logic {
               }
 
               if let Ok(oid) = oid {
+                if let Some(stop_at) = self.cli.stop_at {
+                  if stop_at == oid {
+                    break;
+                  }
+                }
+
                 if let Ok(commit) = repository.find_commit(oid) {
                   if let Some(message) = if self.cli.body {
                     commit.body()
