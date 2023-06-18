@@ -170,8 +170,8 @@ references:
     title: chrono
     url: https://docs.rs/chrono
   - type: software
-    date-released: 2023-06-09
-    version: 4.3.3
+    date-released: 2023-06-14
+    version: 4.3.4
     abstract: A full featured, fast Command Line Argument Parser for Rust
     authors:
       - alias: kbknapp
