@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "comment-changes:  stop at certain commit SHA; fixes #336",
+    ],
+  },
+)
