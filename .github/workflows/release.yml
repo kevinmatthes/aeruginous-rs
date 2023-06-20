@@ -32,6 +32,11 @@
 name: release
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - .version
   workflow_dispatch:
 
 permissions:
