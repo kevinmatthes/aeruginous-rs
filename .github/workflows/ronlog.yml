@@ -23,13 +23,13 @@
 ##  BRIEF       Release a new version of this project.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
-##  FILE        release.yml
+##  FILE        ronlog.yml
 ##  NOTE        See `LICENSE' for full license.
 ##              See `README.md' for project details.
 ##
 ################################################################################
 
-name: release
+name: ronlog
 
 on:
   workflow_dispatch:
