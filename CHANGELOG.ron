@@ -9,6 +9,35 @@
       version: (
         major: 2,
         minor: 2,
+        patch: 1,
+      ),
+      released: "2023-06-20T19:13:09.041861006+00:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "CFF:  entry for ``clap`` v4.3.4",
+            "CI:  real release workflow",
+            "comment-changes:  stop at certain commit SHA; fixes #336",
+            "CFF:  entry for ``clap`` v4.3.5",
+          ],
+          "Fixed": [
+            "CI:  redundant test runs",
+          ],
+          "Changed": [
+            "CI:  rename release preparation workflow to ``ronlog.yml``",
+            "README:  enhance documentation of RONLOG mode",
+            "CI:  mirror README from src/lib.rs during release workflow",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 2,
+        minor: 2,
         patch: 0,
       ),
       released: "2023-06-12T17:20:37.365121131+00:00",
@@ -16,21 +45,6 @@
       changes: (
         references: {},
         changes: {
-          "Changed": [
-            "``cargo update`` (#316)",
-            "MSRV:  1.70.0",
-            "increment versions with Aeruginous",
-            "move documentation of v0.0.0 to RONLOG",
-            "move FromRon and ToRon to one source file",
-            "CI:  assemble RONLOG on release",
-            "CI:  create RON fragments",
-          ],
-          "Removed": [
-            "CFF:  entries of outdated versions",
-            "bump2version:  configuration",
-            "src/traits/to_ron.rs",
-            "src/traits/from_ron.rs",
-          ],
           "Added": [
             "CI:  lint GitHub Action workflows",
             "CFF:  project keyword ``ronlog``",
@@ -56,9 +70,24 @@
             "src/traits/rusty_object_notation.rs",
             "CHANGELOG.ron",
           ],
+          "Changed": [
+            "``cargo update`` (#316)",
+            "MSRV:  1.70.0",
+            "increment versions with Aeruginous",
+            "move documentation of v0.0.0 to RONLOG",
+            "move FromRon and ToRon to one source file",
+            "CI:  assemble RONLOG on release",
+            "CI:  create RON fragments",
+          ],
           "Fixed": [
             "CI:  Bash style issues",
             "ToRon::to_ron:  missing trailing newline at the end",
+          ],
+          "Removed": [
+            "CFF:  entries of outdated versions",
+            "bump2version:  configuration",
+            "src/traits/to_ron.rs",
+            "src/traits/from_ron.rs",
           ],
         },
       ),
