@@ -43,7 +43,7 @@ impl std::fmt::Display for Action {
 impl std::str::FromStr for Action {
   type Err = String;
 
-  fn from_str(s: &str) -> Result<Self, String> {
+  fn from_str(s: &str) -> Result<Self, Self::Err> {
     match s {
       "init" => Ok(Self::Init),
       "release" => Ok(Self::Release),
