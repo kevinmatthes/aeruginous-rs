@@ -1,9 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Changed": [
-      "README:  enhance documentation of RONLOG mode",
-      "CI:  mirror README from src/lib.rs during release workflow",
-    ],
-  },
-)
