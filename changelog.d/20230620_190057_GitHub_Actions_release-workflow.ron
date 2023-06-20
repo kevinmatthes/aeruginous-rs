@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CI:  real release workflow",
+    ],
+    "Changed": [
+      "CI:  rename release preparation workflow to ``ronlog.yml``",
+    ],
+  },
+)
