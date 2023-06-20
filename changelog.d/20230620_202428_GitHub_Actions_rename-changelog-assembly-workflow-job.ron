@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "CI:  rename RONLOG assembly workflow job",
+    ],
+  },
+)
