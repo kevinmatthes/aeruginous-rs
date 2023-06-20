@@ -49,7 +49,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  release:
+  assembly:
     if: contains(fromJson('["major", "minor", "patch"]'), inputs.release)
     runs-on: ubuntu-latest
     steps:
