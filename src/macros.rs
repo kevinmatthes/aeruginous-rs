@@ -87,6 +87,121 @@ macro_rules! ceprintln {
   };
 }
 
+/// Implement certain common traits for enums.
+///
+/// # `Display`
+///
+/// This mode will implement [`std::fmt::Display`] for the given enum.
+///
+/// ```rust
+/// use aeruginous::enum_trait;
+///
+/// enum E {
+///   A,
+///   B,
+/// }
+///
+/// enum_trait!(E { A -> "a", B -> "b" });
+///
+/// assert_eq!(&E::A.to_string(), "a");
+/// assert_eq!(&E::B.to_string(), "b");
+/// ```
+///
+/// # `FromStr`
+///
+/// This mode will implement [`std::str::FromStr`] for the given enum.
+///
+/// ```rust
+/// use aeruginous::enum_trait;
+/// use std::str::FromStr;
+///
+/// #[derive(Debug, PartialEq)]
+/// enum E {
+///   A,
+///   B,
+/// }
+///
+/// enum_trait!(E { A <- "a", B <- "b" });
+///
+/// assert_eq!(E::from_str("a").unwrap(), E::A);
+/// assert_eq!(E::from_str("b").unwrap(), E::B);
+/// assert!(E::from_str("?").is_err());
+/// ```
+/// # `Display` and `FromStr`
+///
+/// To implement both the [`std::fmt::Display`] and [`std::str::FromStr`] traits
+/// at once, this macro offers a shortcut mode.
+///
+/// ```rust
+/// use aeruginous::enum_trait;
+/// use std::str::FromStr;
+///
+/// #[derive(Debug, PartialEq)]
+/// enum E {
+///   A,
+///   B,
+/// }
+///
+/// enum_trait!(E { A <-> "a", B <-> "b" });
+///
+/// assert_eq!(&E::A.to_string(), "a");
+/// assert_eq!(&E::B.to_string(), "b");
+/// assert_eq!(E::from_str("a").unwrap(), E::A);
+/// assert_eq!(E::from_str("b").unwrap(), E::B);
+/// assert!(E::from_str("?").is_err());
+/// ```
+#[macro_export]
+macro_rules! enum_trait {
+  ( $E:ty { $( $V:ident <-> $s:literal ),+ } ) => {
+    $crate::enum_trait! {
+      $E {
+        $(
+          $V -> $s
+        ),+
+      }
+    }
+
+    $crate::enum_trait! {
+      $E {
+        $(
+          $V <- $s
+        ),+
+      }
+    }
+  };
+
+  ( $E:ty { $( $V:ident -> $s:literal ),+ } ) => {
+    impl std::fmt::Display for $E {
+      fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+          f,
+          "{}",
+          match self {
+            $(
+              Self::$V => $s,
+            )+
+          }
+        )
+      }
+    }
+  };
+
+  ( $E:ty { $( $V:ident <- $s:literal ),+ } ) => {
+    impl std::str::FromStr for $E {
+      type Err = String;
+
+      fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
+        match s {
+          $(
+            $s => Ok(Self::$V),
+          )+
+          _ => Err(format!("'{s}' is not supported, yet")),
+        }
+      }
+    }
+  };
+}
+
 /// Implement getter methods for the given struct fields.
 ///
 /// Getter methods usually only return either a reference to or a copy of the
