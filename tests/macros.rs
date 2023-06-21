@@ -17,10 +17,31 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::getters;
+use aeruginous::{enum_trait, getters, implement};
+use std::str::FromStr;
 
 #[test]
-fn cp_one_field() {
+fn enum_trait() {
+  #[derive(Debug, PartialEq)]
+  enum E {
+    A,
+    B,
+  }
+
+  enum_trait!(E {
+    A <-> "a",
+    B <-> "b"
+  });
+
+  assert_eq!(&E::A.to_string(), "a");
+  assert_eq!(&E::B.to_string(), "b");
+  assert_eq!(E::from_str("a").unwrap(), E::A);
+  assert_eq!(E::from_str("b").unwrap(), E::B);
+  assert!(E::from_str("?").is_err());
+}
+
+#[test]
+fn getters_cp_one_field() {
   struct Example {
     a: i32,
   }
@@ -35,7 +56,7 @@ fn cp_one_field() {
 }
 
 #[test]
-fn cp_two_fields() {
+fn getters_cp_two_fields() {
   struct Example {
     a: i32,
     b: f64,
@@ -53,7 +74,7 @@ fn cp_two_fields() {
 }
 
 #[test]
-fn fn_cp_one_field() {
+fn getters_fn_cp_one_field() {
   struct Example {
     a: i32,
   }
@@ -75,7 +96,7 @@ fn fn_cp_one_field() {
 }
 
 #[test]
-fn fn_cp_two_fields() {
+fn getters_fn_cp_two_fields() {
   struct Example {
     a: i32,
     b: f64,
@@ -100,7 +121,7 @@ fn fn_cp_two_fields() {
 }
 
 #[test]
-fn fn_ref_one_field() {
+fn getters_fn_ref_one_field() {
   struct Example {
     a: String,
   }
@@ -124,7 +145,7 @@ fn fn_ref_one_field() {
 }
 
 #[test]
-fn fn_ref_two_fields() {
+fn getters_fn_ref_two_fields() {
   struct Example {
     a: String,
     b: Vec<i32>,
@@ -152,7 +173,7 @@ fn fn_ref_two_fields() {
 }
 
 #[test]
-fn header() {
+fn getters_header() {
   struct Example {
     a: i32,
     b: f64,
@@ -184,7 +205,7 @@ fn header() {
 }
 
 #[test]
-fn ref_one_field() {
+fn getters_ref_one_field() {
   struct Example {
     a: String,
   }
@@ -201,7 +222,7 @@ fn ref_one_field() {
 }
 
 #[test]
-fn ref_two_fields() {
+fn getters_ref_two_fields() {
   struct Example {
     a: String,
     b: Vec<i32>,
@@ -219,6 +240,37 @@ fn ref_two_fields() {
 
   assert_eq!(example.a(), "string");
   assert_eq!(example.b(), &[1, 2, 3]);
+}
+
+#[test]
+fn implement_one_function() {
+  struct Example;
+
+  implement!(Example;
+    pub fn function() -> i32 {
+      42
+    }
+  );
+
+  assert_eq!(Example::function(), 42);
+}
+
+#[test]
+fn implement_two_functions() {
+  struct Example;
+
+  implement!(Example;
+    pub fn function_one() -> i32 {
+      42
+    },
+
+    pub fn function_two() -> f64 {
+      23.0
+    }
+  );
+
+  assert_eq!(Example::function_one(), 42);
+  assert_eq!(Example::function_two(), 23.0);
 }
 
 /******************************************************************************/
