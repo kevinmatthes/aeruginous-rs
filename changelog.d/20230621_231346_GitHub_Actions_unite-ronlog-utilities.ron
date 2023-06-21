@@ -1,0 +1,22 @@
+(
+  references: {},
+  changes: {
+    "Removed": [
+      "src/changelog/section.rs",
+      "src/changelog/action.rs",
+      "tests/version_range.rs",
+      "tests/ronlog_action.rs",
+      "tests/getters.rs",
+      "tests/implement.rs",
+    ],
+    "Added": [
+      "enum_trait",
+      "tests/macros.rs",
+    ],
+    "Changed": [
+      "move RonlogSection definition to RONLOG source file",
+      "move RonlogAction definition to RONLOG source file",
+      "src/version.rs:  apply new enum_trait macro",
+    ],
+  },
+)
