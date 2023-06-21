@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "CI:  create release on RONLOG assembly",
-    ],
-  },
-)

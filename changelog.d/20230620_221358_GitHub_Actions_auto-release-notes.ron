@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "CI:  settings for the automated release notes",
-    ],
-  },
-)
