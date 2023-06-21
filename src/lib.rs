@@ -185,16 +185,19 @@
 //!
 //! This mode requires the specification of a delimiter separating the CHANGELOG
 //! category from an entry for that category.  The application will browse the
-//! Git history for commits which contain that delimiter in their first
-//! paragraphs, often referred to as the commit's summary, and split the
-//! summaries at the first occurence of that delimiter.  Users are free to
-//! search either the entire commit history or just a specific number of
-//! commits.  Each commit which does not contain that delimiter in its summary
-//! will be skipped.  The resulting changelog fragment will be stored either in
-//! the current working directory or in the given alternative, already existing
-//! directory.  The file name will consist of a time stamp, the configured Git
-//! username, and some information on the current branch.  The file format will
-//! be reStructured Text (RST).
+//! Git history for commits which contain that delimiter in their messages and
+//! split those messages at the first occurence of that delimiter; users are
+//! free to choose whether to prefer the commits' summaries or their bodies,
+//! defaulting to the former.  The count of commits to harvest can be controlled
+//! by either an exact number, a commit SHA to stop at, or by omitting any stop
+//! condition to consider all commits in the entire history.  Each commit which
+//! does not contain the given delimiter in its message will be skipped.  The
+//! resulting CHANGELOG fragment will be stored either in the current working
+//! directory or in the given alternative directory.  The file name will consist
+//! of a time stamp, the configured Git username, and some information on the
+//! current branch.  The file format can be either reStructured Text (RST),
+//! Markdown (MD), or the Rusty Object Notation (RON).  At option, hyperlinks
+//! can be specified.
 //!
 //! As an example, a repository might contain these four commits:
 //!
@@ -211,7 +214,9 @@
 //!   -d ::= \
 //!   -n 4 \
 //!   -o directory/ \
-//!   -l a.rs -t src/a.rs -l b.rs -t src/b.rs -l d.rs -t src/d.rs
+//!   -l a.rs -t src/a.rs \
+//!   -l b.rs -t src/b.rs \
+//!   -l d.rs -t src/d.rs
 //! ```
 //!
 //! If this command is invoked by a user named Emma Xample on 1st January 1970
