@@ -9,6 +9,46 @@
       version: (
         major: 2,
         minor: 2,
+        patch: 2,
+      ),
+      released: "2023-06-21T23:44:36.263854103+00:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "CI:  create release on RONLOG assembly",
+            "enum_trait",
+            "tests/macros.rs",
+            "CI:  settings for the automated release notes",
+          ],
+          "Removed": [
+            "Scriv:  configuration",
+            "src/changelog/section.rs",
+            "src/changelog/action.rs",
+            "tests/version_range.rs",
+            "tests/ronlog_action.rs",
+            "tests/getters.rs",
+            "tests/implement.rs",
+          ],
+          "Changed": [
+            "move RonlogSection definition to RONLOG source file",
+            "move RonlogAction definition to RONLOG source file",
+            "src/version.rs:  apply new enum_trait macro",
+            "comment-changes:  update README description",
+          ],
+          "Fixed": [
+            "CI:  rename RONLOG assembly workflow job",
+            "comment-changes:  create missing target directories",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 2,
+        minor: 2,
         patch: 1,
       ),
       released: "2023-06-20T19:13:09.041861006+00:00",
@@ -22,13 +62,13 @@
             "comment-changes:  stop at certain commit SHA; fixes #336",
             "CFF:  entry for ``clap`` v4.3.5",
           ],
-          "Fixed": [
-            "CI:  redundant test runs",
-          ],
           "Changed": [
             "CI:  rename release preparation workflow to ``ronlog.yml``",
             "README:  enhance documentation of RONLOG mode",
             "CI:  mirror README from src/lib.rs during release workflow",
+          ],
+          "Fixed": [
+            "CI:  redundant test runs",
           ],
         },
       ),
