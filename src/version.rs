@@ -17,11 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use std::{
-  cmp::Ordering,
-  fmt::{Display, Formatter, Result as FmtResult},
-  str::FromStr,
-};
+use std::cmp::Ordering;
 use sysexits::ExitCode;
 
 /// The range to increment a [`Version`] by.
@@ -37,34 +33,11 @@ pub enum Range {
   Patch,
 }
 
-impl Display for Range {
-  fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
-    write!(
-      f,
-      "{}",
-      match self {
-        Self::Major => "major",
-        Self::Minor => "minor",
-        Self::Patch => "patch",
-      }
-    )
-  }
-}
-
-impl FromStr for Range {
-  type Err = String;
-
-  fn from_str(s: &str) -> Result<Self, Self::Err> {
-    match s {
-      "major" => Ok(Self::Major),
-      "minor" => Ok(Self::Minor),
-      "patch" => Ok(Self::Patch),
-      _ => {
-        Err("please specify either 'major', 'minor', or 'patch'".to_string())
-      }
-    }
-  }
-}
+crate::enum_trait!(Range {
+  Major <-> "major",
+  Minor <-> "minor",
+  Patch <-> "patch"
+});
 
 /// The version information data structure.
 #[derive(
@@ -158,17 +131,17 @@ impl PartialOrd for Version {
   }
 }
 
-impl Display for Version {
+impl std::fmt::Display for Version {
   /// The string representation of a version instance.
   ///
   /// The given version instance will be formatted into a string using the
   /// format `v<major>.<minor>.<patch>`.
-  fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     write!(f, "v{}.{}.{}", self.major, self.minor, self.patch)
   }
 }
 
-impl FromStr for Version {
+impl std::str::FromStr for Version {
   type Err = ExitCode;
 
   /// Create a new version instance from a string slice.
@@ -192,7 +165,7 @@ impl FromStr for Version {
   ///
   /// If the parsing fails, [`sysexits::ExitCode::DataErr`] will be returned as
   /// [`Result::Err`].
-  fn from_str(string: &str) -> Result<Self, Self::Err> {
+  fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
     let parts: Vec<&str> = if string.starts_with('v') {
       string.strip_prefix('v').unwrap()
     } else {
