@@ -17,22 +17,35 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{
-  Fragment, FromRon, PatternReader, PatternWriter, RonlogAction,
-  RonlogReferences, RonlogSection, ToRon,
-};
-use std::path::PathBuf;
+use crate::{Fragment, FromRon, PatternReader, PatternWriter, ToRon, Version};
+use chrono::{DateTime, Local};
+use std::{path::PathBuf, str::FromStr};
 use sysexits::{ExitCode, Result};
+
+/// The action to execute on a given RONLOG.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Action {
+  /// Initialise a new RONLOG.
+  Init,
+
+  /// Create the RONLOG section for a new version.
+  Release,
+}
+
+crate::enum_trait!(Action {
+  Init <-> "init",
+  Release <-> "release"
+});
 
 #[derive(serde::Deserialize, serde::Serialize)]
 struct Changelog {
-  references: RonlogReferences,
+  references: References,
   introduction: Option<String>,
-  sections: Vec<RonlogSection>,
+  sections: Vec<Section>,
 }
 
 impl Changelog {
-  fn add_section(&mut self, section: RonlogSection) {
+  fn add_section(&mut self, section: Section) {
     for s in &mut self.sections {
       if s == &section {
         s.merge(section);
@@ -48,7 +61,7 @@ impl Changelog {
   fn init(
     path: &PathBuf,
     message: Option<String>,
-    references: RonlogReferences,
+    references: References,
     force: bool,
   ) -> Result<bool> {
     let result = !path.exists();
@@ -61,10 +74,7 @@ impl Changelog {
   }
 
   #[must_use]
-  const fn new(
-    introduction: Option<String>,
-    references: RonlogReferences,
-  ) -> Self {
+  const fn new(introduction: Option<String>, references: References) -> Self {
     Self {
       references,
       introduction,
@@ -75,7 +85,7 @@ impl Changelog {
 
 struct Logic {
   cli: Ronlog,
-  hyperlinks: RonlogReferences,
+  hyperlinks: References,
 }
 
 impl Logic {
@@ -119,14 +129,14 @@ impl Logic {
       .collect();
 
     match self.cli.action {
-      RonlogAction::Init => self.init(self.cli.message.clone()),
-      RonlogAction::Release => self.release(),
+      Action::Init => self.init(self.cli.message.clone()),
+      Action::Release => self.release(),
     }
   }
 
   fn release(&self) -> Result<()> {
     if let Some(version) = &self.cli.version {
-      let mut section = RonlogSection::new(
+      let mut section = Section::new(
         Fragment::default(),
         version,
         self.cli.message.clone(),
@@ -178,11 +188,14 @@ impl Logic {
   }
 }
 
+/// The references known to RONLOG-related instances.
+pub type References = std::collections::HashMap<String, String>;
+
 /// Interact with RON CHANGELOGs.
 #[derive(clap::Parser, Clone)]
 pub struct Ronlog {
   /// The action on a certain RONLOG.
-  action: RonlogAction,
+  action: Action,
 
   /// Whether to enforce this action.
   #[arg(long, short)]
@@ -226,8 +239,139 @@ impl Ronlog {
   fn wrap(&self) -> Logic {
     Logic {
       cli: self.clone(),
-      hyperlinks: RonlogReferences::new(),
+      hyperlinks: References::new(),
     }
+  }
+}
+
+/// A RONLOG section.
+#[derive(Debug, serde::Deserialize, serde::Serialize)]
+pub struct Section {
+  /// The references of this section.
+  references: References,
+
+  /// The version this section documents.
+  version: Version,
+
+  /// The date the version this section is about was published.
+  released: DateTime<Local>,
+
+  /// The introductory text.
+  introduction: Option<String>,
+
+  /// The held fragment.
+  changes: Fragment,
+}
+
+impl Section {
+  crate::getters!(@fn @ref
+    references: References,
+    version: Version,
+    released: DateTime<Local>,
+    introduction: Option<String>,
+    changes: Fragment
+  );
+
+  /// Add further changes.
+  pub fn add_changes(&mut self, changes: Fragment) {
+    self.changes.merge(changes);
+
+    for (link, target) in self.changes.move_references() {
+      self
+        .references
+        .entry(link)
+        .and_modify(|t| *t = target.clone())
+        .or_insert(target);
+    }
+  }
+
+  /// Add another instance's contents this one's.
+  pub fn merge(&mut self, mut other: Self) {
+    if self.version == other.version {
+      self.add_changes(other.changes.clone());
+
+      match &self.introduction {
+        Some(introduction_1) => {
+          if let Some(introduction_2) = &other.introduction {
+            let mut introduction_1 = introduction_1.clone();
+
+            introduction_1.push('\n');
+            introduction_1.push_str(introduction_2.as_str());
+
+            self.introduction = Some(introduction_1);
+          }
+        }
+        None => self.introduction = other.introduction.clone(),
+      }
+
+      for (link, target) in other.move_references() {
+        self
+          .references
+          .entry(link)
+          .and_modify(|t| *t = target.clone())
+          .or_insert(target);
+      }
+
+      self.released = self.released.max(other.released);
+    }
+  }
+
+  /// Move all known references out of this instance.
+  #[must_use]
+  pub fn move_references(&mut self) -> References {
+    let result = self.references.clone();
+    self.references.clear();
+    result
+  }
+
+  /// Create a new instance.
+  ///
+  /// # Errors
+  ///
+  /// See [`Version::from_str`].
+  pub fn new(
+    mut changes: Fragment,
+    version: &str,
+    introduction: Option<String>,
+    references: Option<References>,
+  ) -> sysexits::Result<Self> {
+    let mut references = references.unwrap_or_default();
+
+    for (link, target) in changes.move_references() {
+      references
+        .entry(link)
+        .and_modify(|t| *t = target.clone())
+        .or_insert(target);
+    }
+
+    Ok(Self {
+      references,
+      version: Version::from_str(version)?,
+      released: Local::now(),
+      introduction,
+      changes,
+    })
+  }
+}
+
+impl Eq for Section {}
+
+impl Ord for Section {
+  /// [`crate::RonlogSection`]s are sorted by their versions.
+  fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+    self.version.cmp(&other.version)
+  }
+}
+
+impl PartialEq for Section {
+  fn eq(&self, other: &Self) -> bool {
+    self.version == other.version
+  }
+}
+
+impl PartialOrd for Section {
+  fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    Some(self.cmp(other))
   }
 }
 
