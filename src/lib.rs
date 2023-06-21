@@ -192,7 +192,7 @@
 //! by either an exact number, a commit SHA to stop at, or by omitting any stop
 //! condition to consider all commits in the entire history.  Each commit which
 //! does not contain the given delimiter in its message will be skipped.  The
-//! resulting changelog fragment will be stored either in the current working
+//! resulting CHANGELOG fragment will be stored either in the current working
 //! directory or in the given alternative directory.  The file name will consist
 //! of a time stamp, the configured Git username, and some information on the
 //! current branch.  The file format can be either reStructured Text (RST),
