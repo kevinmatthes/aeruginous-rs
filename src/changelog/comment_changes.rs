@@ -378,6 +378,10 @@ impl Logic {
       self.generate()
     };
 
+    if !std::path::Path::new(&self.cli.output_directory).try_exists()? {
+      std::fs::create_dir_all(&self.cli.output_directory)?;
+    }
+
     self.get_branch()?;
     self.get_user()?;
 
