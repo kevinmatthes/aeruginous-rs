@@ -57,7 +57,7 @@ rust-version = "1.70.0"
 version = "2.2.1"
 
 [dependencies]
-anstyle = "1.0.0"
+anstyle = "1.0.1"
 chrono = { version = "0.4.26", features = ["serde"] }
 clap = { version = "4.3.5", features = ["derive"] }
 git2 = { version = "0.17.2", default-features = false }
