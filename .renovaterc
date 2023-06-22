@@ -6,7 +6,8 @@
     "dependencies"
   ],
   "lockFileMaintenance": {
-    "enabled": true
+    "enabled": true,
+    "schedule": null
   },
   "packageRules": [
     {
