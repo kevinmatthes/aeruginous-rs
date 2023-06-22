@@ -29,7 +29,7 @@
 ##
 ################################################################################
 
-name: pr
+name: tarpaulin
 
 on:
   pull_request:
@@ -57,7 +57,7 @@ jobs:
         run: rustup update
 
       - name: checkout
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v3.5.2
         with:
           fetch-depth: 0
           persist-credentials: false
