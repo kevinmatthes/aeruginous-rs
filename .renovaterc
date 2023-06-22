@@ -25,5 +25,6 @@
         "github_actions"
       ]
     }
-  ]
+  ],
+  "schedule": null
 }
