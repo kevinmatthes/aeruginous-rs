@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CFF:  entry for ``sysexits`` v0.6.1",
+    ],
+  },
+)
