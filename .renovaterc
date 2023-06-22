@@ -3,27 +3,27 @@
   "commitMessagePrefix": "[Renovate]",
   "dependencyDashboard": true,
   "labels": [
-    "dependencies",
+    "dependencies"
   ],
   "lockFileMaintenance": {
-    "enabled": true,
+    "enabled": true
   },
   "packageRules": [
     {
       "matchManagers": [
-        "cargo",
+        "cargo"
       ],
       "labels": [
-        "rust",
+        "rust"
       ]
     },
     {
       "matchManagers": [
-        "github-actions",
+        "github-actions"
       ],
       "labels": [
-        "github_actions",
+        "github_actions"
       ]
-    },
-  ],
+    }
+  ]
 }
