@@ -1,4 +1,9 @@
 {
+  "assignees": [
+    "kevinmatthes"
+  ],
+  "automerge": false,
+  "automergeStrategy": "squash",
   "commitMessageLowerCase": "never",
   "commitMessagePrefix": "[Renovate]",
   "dependencyDashboard": true,
@@ -14,7 +19,7 @@
       "matchManagers": [
         "cargo"
       ],
-      "labels": [
+      "addLabels": [
         "rust"
       ]
     },
@@ -22,7 +27,7 @@
       "matchManagers": [
         "github-actions"
       ],
-      "labels": [
+      "addLabels": [
         "github_actions"
       ]
     }
