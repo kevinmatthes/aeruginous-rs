@@ -3,7 +3,7 @@
     "kevinmatthes"
   ],
   "autoApprove": true,
-  "automerge": false,
+  "automerge": true,
   "automergeStrategy": "squash",
   "commitMessageLowerCase": "never",
   "commitMessagePrefix": "[Renovate]",
