@@ -35,14 +35,14 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: Release type
-        required: true
         default: patch
-        type: choice
+        description: SemVer release level
         options:
           - major
           - minor
           - patch
+        required: true
+        type: choice
 
 permissions:
   contents: write
@@ -81,8 +81,7 @@ jobs:
             -e Cargo.toml \
             -e src/lib.rs
           cargo r -- cff-release-today CITATION.cff
-          cargo r -- ronlog release -i changelog.d/ \
-            -v "$(cargo r -- --version | cut -d\  -f2)"
+          cargo r -- ronlog release -i changelog.d/ -v "$(cat .version)"
           cargo tarpaulin
           sed "s/<!-- cov -->.*<!-- cov -->/<!-- cov -->$( \
             pycobertura show -f csv --delimiter , cobertura.xml | \
