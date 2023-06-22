@@ -1,3 +1,29 @@
 {
-  dependencyDashboard: true,
+  "commitMessageLowerCase": "never",
+  "commitMessagePrefix": "[Renovate]",
+  "dependencyDashboard": true,
+  "labels": [
+    "dependencies",
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+  },
+  "packageRules": [
+    {
+      "matchManagers": [
+        "cargo",
+      ],
+      "labels": [
+        "rust",
+      ]
+    },
+    {
+      "matchManagers": [
+        "github-actions",
+      ],
+      "labels": [
+        "github_actions",
+      ]
+    },
+  ],
 }
