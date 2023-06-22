@@ -63,6 +63,6 @@ clap = { version = "4.3.5", features = ["derive"] }
 git2 = { version = "0.17.2", default-features = false }
 ron = "0.8.0"
 serde = { version = "1.0.164", features = ["derive"] }
-sysexits = "0.6.0"
+sysexits = "0.6.1"
 
 ################################################################################
