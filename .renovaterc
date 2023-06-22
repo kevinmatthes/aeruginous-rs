@@ -2,6 +2,7 @@
   "assignees": [
     "kevinmatthes"
   ],
+  "autoApprove": true,
   "automerge": false,
   "automergeStrategy": "squash",
   "commitMessageLowerCase": "never",
