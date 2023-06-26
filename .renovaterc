@@ -2,8 +2,6 @@
   "assignees": [
     "kevinmatthes"
   ],
-  "automerge": false,
-  "automergeStrategy": "squash",
   "commitMessageLowerCase": "never",
   "commitMessagePrefix": "[Renovate]",
   "dependencyDashboard": true,
