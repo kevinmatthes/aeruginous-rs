@@ -41,14 +41,14 @@
         "regex",
       ],
       matchPackageNames: [
-        "msrv",
+        "Rust",
       ],
     },
   ],
   regexManagers: [
     {
       datasourceTemplate: "github-releases",
-      depNameTemplate: "msrv",
+      depNameTemplate: "Rust",
       fileMatch: [
         "^\\.clippy\\.toml$",
         "^Cargo\\.toml$",
