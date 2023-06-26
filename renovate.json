@@ -50,8 +50,8 @@
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "msrv",
       "fileMatch": [
-        "^\\.clippy\\.toml$"
-        "^Cargo\\.toml$"
+        "^\\.clippy\\.toml$",
+        "^Cargo\\.toml$",
         "^README\\.md$",
         "^src/lib\\.rs$"
       ],
