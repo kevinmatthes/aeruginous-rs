@@ -55,6 +55,7 @@ jobs:
       - actionlint
       - cargo
       - cffconvert
+      - renovate-linter
     runs-on: ubuntu-latest
     steps:
       - run: bash -c 'exit 0'
@@ -109,5 +110,15 @@ jobs:
           - cffs/input_5.cff
           - cffs/input_6.cff
           - cffs/input_7.cff
+
+  renovate-linter:
+    name: renovate-linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.5.3
+        with:
+          persist-credentials: false
+
+      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v0.1.3
 
 ################################################################################
