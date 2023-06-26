@@ -14,7 +14,6 @@
   ],
   lockFileMaintenance: {
     enabled: true,
-    schedule: null,
   },
   packageRules: [
     {
@@ -63,5 +62,4 @@
       packageNameTemplate: "rust-lang/rust",
     },
   ],
-  schedule: null,
 }
