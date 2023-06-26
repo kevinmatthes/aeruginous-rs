@@ -56,7 +56,7 @@
         "^src/lib\\.rs$",
       ],
       matchStrings: [
-        "msrv.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+        "msrv =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
         "rust-version.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
         "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-green",
       ],
