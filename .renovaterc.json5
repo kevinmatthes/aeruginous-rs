@@ -1,67 +1,67 @@
 {
-  "assignees": [
-    "kevinmatthes"
+  assignees: [
+    "kevinmatthes",
   ],
-  "commitMessageLowerCase": "never",
-  "commitMessagePrefix": "[Renovate]",
-  "dependencyDashboard": true,
-  "dependencyDashboardAutoclose": true,
-  "dependencyDashboardLabels": [
-    "dependencies"
+  commitMessageLowerCase: "never",
+  commitMessagePrefix: "[Renovate]",
+  dependencyDashboard: true,
+  dependencyDashboardAutoclose: true,
+  dependencyDashboardLabels: [
+    "dependencies",
   ],
-  "labels": [
-    "dependencies"
+  labels: [
+    "dependencies",
   ],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": null
+  lockFileMaintenance: {
+    enabled: true,
+    schedule: null,
   },
-  "packageRules": [
+  packageRules: [
     {
-      "addLabels": [
-        "rust"
+      addLabels: [
+        "rust",
       ],
-      "matchManagers": [
-        "cargo"
-      ]
+      matchManagers: [
+        "cargo",
+      ],
     },
     {
-      "addLabels": [
-        "github_actions"
+      addLabels: [
+        "github_actions",
       ],
-      "matchManagers": [
-        "github-actions"
-      ]
+      matchManagers: [
+        "github-actions",
+      ],
     },
     {
-      "addLabels": [
-        "documentation"
+      addLabels: [
+        "documentation",
       ],
-      "matchManagers": [
-        "regex"
+      matchManagers: [
+        "regex",
       ],
-      "matchPackageNames": [
-        "msrv"
-      ]
-    }
+      matchPackageNames: [
+        "msrv",
+      ],
+    },
   ],
-  "regexManagers": [
+  regexManagers: [
     {
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "msrv",
-      "fileMatch": [
+      datasourceTemplate: "github-releases",
+      depNameTemplate: "msrv",
+      fileMatch: [
         "^\\.clippy\\.toml$",
         "^Cargo\\.toml$",
         "^README\\.md$",
-        "^src/lib\\.rs$"
+        "^src/lib\\.rs$",
       ],
-      "matchStrings": [
+      matchStrings: [
         "^msrv = \\\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\\\"$",
         "^rust-version = \\\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\\\"$",
-        "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-green"
+        "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-green",
       ],
-      "packageNameTemplate": "rust-lang/rust"
-    }
+      packageNameTemplate: "rust-lang/rust",
+    },
   ],
-  "schedule": null
+  schedule: null,
 }
