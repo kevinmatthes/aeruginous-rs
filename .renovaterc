@@ -2,7 +2,7 @@
   "assignees": [
     "kevinmatthes"
   ],
-  "automerge": true,
+  "automerge": false,
   "automergeStrategy": "squash",
   "commitMessageLowerCase": "never",
   "commitMessagePrefix": "[Renovate]",
@@ -16,20 +16,67 @@
   },
   "packageRules": [
     {
+      "addLabels": [
+        "rust",
+      ],
       "matchManagers": [
         "cargo"
-      ],
-      "addLabels": [
-        "rust"
       ]
     },
     {
-      "matchManagers": [
-        "github-actions"
-      ],
       "addLabels": [
         "github_actions"
+      ],
+      "matchManagers": [
+        "github-actions"
       ]
+    },
+    {
+      "addLabels": [
+        "documentation"
+      ],
+      "matchManagers": [
+        "regex"
+      ],
+      "matchPackageNames": [
+        "msrv"
+      ]
+    }
+  ],
+  "regexMatchers": [
+    {
+      "dataSourceTemplate": "github-releases",
+      "depNameTemplate": "msrv",
+      "fileMatch": [
+        "^\\.clippy\\.toml$"
+      ],
+      "matchStrings": [
+        "^msrv = \\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\\"$"
+      ],
+      "packageNameTemplate": "rust-lang/rust"
+    },
+    {
+      "dataSourceTemplate": "github-releases",
+      "depNameTemplate": "msrv",
+      "fileMatch": [
+        "^Cargo\\.toml$"
+      ],
+      "matchStrings": [
+        "^rust-version = \\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\\"$"
+      ],
+      "packageNameTemplate": "rust-lang/rust"
+    },
+    {
+      "dataSourceTemplate": "github-releases",
+      "depNameTemplate": "msrv",
+      "fileMatch": [
+        "^README\\.md$",
+        "^src/lib\\.rs$"
+      ],
+      "matchStrings": [
+        "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-green"
+      ],
+      "packageNameTemplate": "rust-lang/rust"
     }
   ],
   "schedule": null
