@@ -55,7 +55,7 @@
         "^\\.clippy\\.toml$"
       ],
       "matchStrings": [
-        "^msrv = \\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\\"$"
+        "^msrv = \\\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\\\"$"
       ],
       "packageNameTemplate": "rust-lang/rust"
     },
