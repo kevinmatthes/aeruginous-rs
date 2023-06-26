@@ -2,8 +2,6 @@
   "assignees": [
     "kevinmatthes"
   ],
-  "automerge": false,
-  "automergeStrategy": "squash",
   "commitMessageLowerCase": "never",
   "commitMessagePrefix": "[Renovate]",
   "dependencyDashboard": true,
@@ -49,7 +47,7 @@
   ],
   "regexManagers": [
     {
-      "dataSourceTemplate": "github-releases",
+      "datasourceTemplate": "github-releases",
       "depNameTemplate": "msrv",
       "fileMatch": [
         "^\\.clippy\\.toml$"
@@ -60,7 +58,7 @@
       "packageNameTemplate": "rust-lang/rust"
     },
     {
-      "dataSourceTemplate": "github-releases",
+      "datasourceTemplate": "github-releases",
       "depNameTemplate": "msrv",
       "fileMatch": [
         "^Cargo\\.toml$"
@@ -71,7 +69,7 @@
       "packageNameTemplate": "rust-lang/rust"
     },
     {
-      "dataSourceTemplate": "github-releases",
+      "datasourceTemplate": "github-releases",
       "depNameTemplate": "msrv",
       "fileMatch": [
         "^README\\.md$",
