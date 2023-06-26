@@ -61,7 +61,7 @@
         "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-green"
       ],
       "packageNameTemplate": "rust-lang/rust"
-    },
+    }
   ],
   "schedule": null
 }
