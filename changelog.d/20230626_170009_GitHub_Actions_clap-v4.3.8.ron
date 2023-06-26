@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CFF:  entry for ``clap`` v4.3.8",
+    ],
+  },
+)
