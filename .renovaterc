@@ -7,6 +7,10 @@
   "commitMessageLowerCase": "never",
   "commitMessagePrefix": "[Renovate]",
   "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": true,
+  "dependencyDashboardLabels": [
+    "dependencies"
+  ],
   "labels": [
     "dependencies"
   ],
