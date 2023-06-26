@@ -152,22 +152,6 @@ references:
     title: chrono
     url: https://docs.rs/chrono
   - type: software
-    date-released: 2023-06-20
-    version: 4.3.5
-    abstract: A full featured, fast Command Line Argument Parser for Rust
-    authors:
-      - alias: kbknapp
-        family-names: Knapp
-        given-names: Kevin B.
-      - name: The Clap Community
-    license:
-      - Apache-2.0
-      - MIT
-    repository-artifact: https://crates.io/crates/clap
-    repository-code: https://github.com/clap-rs/clap
-    title: clap
-    url: https://docs.rs/clap
-  - type: software
     date-released: 2023-06-22
     version: 0.6.1
     abstract: The system exit codes as defined by <sysexits.h> for Rust
@@ -185,3 +169,19 @@ references:
     repository-code: https://github.com/sorairolake/sysexits-rs
     title: sysexits-rs
     url: https://docs.rs/sysexits
+  - type: software
+    date-released: 2023-06-23
+    version: 4.3.8
+    abstract: A full featured, fast Command Line Argument Parser for Rust
+    authors:
+      - alias: kbknapp
+        family-names: Knapp
+        given-names: Kevin B.
+      - name: The Clap Community
+    license:
+      - Apache-2.0
+      - MIT
+    repository-artifact: https://crates.io/crates/clap
+    repository-code: https://github.com/clap-rs/clap
+    title: clap
+    url: https://docs.rs/clap
