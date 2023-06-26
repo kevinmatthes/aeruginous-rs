@@ -47,7 +47,7 @@
       ]
     }
   ],
-  "regexMatchers": [
+  "regexManagers": [
     {
       "dataSourceTemplate": "github-releases",
       "depNameTemplate": "msrv",
