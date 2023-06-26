@@ -19,7 +19,7 @@
   "packageRules": [
     {
       "addLabels": [
-        "rust",
+        "rust"
       ],
       "matchManagers": [
         "cargo"
