@@ -51,35 +51,17 @@
       "depNameTemplate": "msrv",
       "fileMatch": [
         "^\\.clippy\\.toml$"
-      ],
-      "matchStrings": [
-        "^msrv = \\\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\\\"$"
-      ],
-      "packageNameTemplate": "rust-lang/rust"
-    },
-    {
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "msrv",
-      "fileMatch": [
         "^Cargo\\.toml$"
-      ],
-      "matchStrings": [
-        "^rust-version = \\\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\\\"$"
-      ],
-      "packageNameTemplate": "rust-lang/rust"
-    },
-    {
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "msrv",
-      "fileMatch": [
         "^README\\.md$",
         "^src/lib\\.rs$"
       ],
       "matchStrings": [
+        "^msrv = \\\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\\\"$",
+        "^rust-version = \\\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\\\"$",
         "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-green"
       ],
       "packageNameTemplate": "rust-lang/rust"
-    }
+    },
   ],
   "schedule": null
 }
