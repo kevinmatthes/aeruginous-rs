@@ -19,6 +19,7 @@
 
 use crate::{
   AppendAsLine, PatternIOProcessor, PatternReader, PatternWriter, Prefer,
+  VersionRange,
 };
 use clap::{Parser, Subcommand};
 use std::{io::BufRead, path::PathBuf, str::FromStr};
@@ -69,6 +70,10 @@ pub enum Action {
     /// The increment range.
     #[arg(long, short)]
     range: crate::VersionRange,
+
+    /// In case of Rust projects:  which package's version shall be edited?
+    #[arg(long, short = 'R')]
+    rust_package: Option<String>,
   },
 
   /// Interact with RON CHANGELOGs.
@@ -167,21 +172,73 @@ impl Action {
         file_to_edit,
         old_version,
         range,
+        rust_package,
       } => {
+        let cargo_lock = PathBuf::from("Cargo.lock");
+        let cargo_toml = PathBuf::from("Cargo.toml");
         let v = crate::Version::from_str(old_version)?
           .increment(*range)
           .to_string();
         let v = v.strip_prefix('v').unwrap_or(&v);
 
         for file in file_to_edit {
-          file.truncate(Box::new(
-            file
-              .read()?
-              .try_into_string()?
-              .split(old_version.strip_prefix('v').unwrap_or(old_version))
-              .collect::<Vec<&str>>()
-              .join(v.strip_prefix('v').unwrap_or(v)),
-          ))?;
+          let mut edited = false;
+
+          if file == &cargo_lock && rust_package.is_some() {
+            if let Some(rust_package) = rust_package {
+              let mut lock_file = match cargo_lock::Lockfile::load(file) {
+                Ok(l) => Ok(l),
+                Err(cargo_lock::Error::Io(e)) => Err(e.into()),
+                Err(_) => Err(sysexits::ExitCode::Unavailable),
+              }?;
+
+              for package in &mut lock_file.packages {
+                if package.name.as_str() == rust_package {
+                  match range {
+                    VersionRange::Major => {
+                      package.version.major += 1;
+                      package.version.minor = 0;
+                      package.version.patch = 0;
+                    }
+                    VersionRange::Minor => {
+                      package.version.minor += 1;
+                      package.version.patch = 0;
+                    }
+                    VersionRange::Patch => package.version.patch += 1,
+                  }
+
+                  edited = true;
+                  break;
+                }
+              }
+
+              if edited {
+                file.truncate(Box::new(lock_file.clone().to_string()))?;
+              }
+            }
+          } else if file == &cargo_toml {
+            if let Ok(mut manifest) =
+              file.read()?.try_into_string()?.parse::<toml::Table>()
+            {
+              if manifest["package"]["version"].as_str().is_some() {
+                manifest["package"]["version"] = v.into();
+                file.truncate(Box::new(manifest.to_string()))?;
+                edited = true;
+                println!("Cargo.toml edited with TOML parser.");
+              }
+            }
+          }
+
+          if !edited {
+            file.truncate(Box::new(
+              file
+                .read()?
+                .try_into_string()?
+                .split(old_version.strip_prefix('v').unwrap_or(old_version))
+                .collect::<Vec<&str>>()
+                .join(v),
+            ))?;
+          }
         }
 
         Ok(())
