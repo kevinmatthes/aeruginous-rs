@@ -10,6 +10,7 @@
       "increment-version:  special handling of Rust project files; fixes #390",
       "dependency:  Rust crate ``cargo-lock``",
       "dependency:  Rust crate ``toml``",
+      "ceprintlns",
     ],
   },
 )
