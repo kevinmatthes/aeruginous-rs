@@ -17,12 +17,9 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{
-  AppendAsLine, PatternIOProcessor, PatternReader, PatternWriter, Prefer,
-  VersionRange,
-};
+use crate::{AppendAsLine, PatternIOProcessor, PatternWriter, Prefer};
 use clap::{Parser, Subcommand};
-use std::{io::BufRead, path::PathBuf, str::FromStr};
+use std::{io::BufRead, path::PathBuf};
 use sysexits::Result;
 
 /// The supported application modes.
@@ -57,24 +54,7 @@ pub enum Action {
   },
   */
   /// Increment a hard-coded version string in some files.
-  #[command(aliases = ["incver", "inc-ver", "incrementversion"])]
-  IncrementVersion {
-    /// The files to work on.
-    #[arg(long = "edit", short = 'e')]
-    file_to_edit: Vec<PathBuf>,
-
-    /// The old version to search for and replace.
-    #[arg(long, short = 'v')]
-    old_version: String,
-
-    /// The increment range.
-    #[arg(long, short)]
-    range: crate::VersionRange,
-
-    /// In case of Rust projects:  which package's version shall be edited?
-    #[arg(long, short = 'R')]
-    rust_package: Option<String>,
-  },
+  IncrementVersion(crate::IncrementVersion),
 
   /// Interact with RON CHANGELOGs.
   Ronlog(crate::Ronlog),
@@ -168,81 +148,7 @@ impl Action {
         crate::AeruginousGraphDescription::main(input_file)
       }
       */
-      Self::IncrementVersion {
-        file_to_edit,
-        old_version,
-        range,
-        rust_package,
-      } => {
-        let cargo_lock = PathBuf::from("Cargo.lock");
-        let cargo_toml = PathBuf::from("Cargo.toml");
-        let v = crate::Version::from_str(old_version)?
-          .increment(*range)
-          .to_string();
-        let v = v.strip_prefix('v').unwrap_or(&v);
-
-        for file in file_to_edit {
-          let mut edited = false;
-
-          if file == &cargo_lock && rust_package.is_some() {
-            if let Some(rust_package) = rust_package {
-              let mut lock_file = match cargo_lock::Lockfile::load(file) {
-                Ok(l) => Ok(l),
-                Err(cargo_lock::Error::Io(e)) => Err(e.into()),
-                Err(_) => Err(sysexits::ExitCode::Unavailable),
-              }?;
-
-              for package in &mut lock_file.packages {
-                if package.name.as_str() == rust_package {
-                  match range {
-                    VersionRange::Major => {
-                      package.version.major += 1;
-                      package.version.minor = 0;
-                      package.version.patch = 0;
-                    }
-                    VersionRange::Minor => {
-                      package.version.minor += 1;
-                      package.version.patch = 0;
-                    }
-                    VersionRange::Patch => package.version.patch += 1,
-                  }
-
-                  edited = true;
-                  break;
-                }
-              }
-
-              if edited {
-                file.truncate(Box::new(lock_file.clone().to_string()))?;
-              }
-            }
-          } else if file == &cargo_toml {
-            if let Ok(mut manifest) =
-              file.read()?.try_into_string()?.parse::<toml::Table>()
-            {
-              if manifest["package"]["version"].as_str().is_some() {
-                manifest["package"]["version"] = v.into();
-                file.truncate(Box::new(manifest.to_string()))?;
-                edited = true;
-                println!("Cargo.toml edited with TOML parser.");
-              }
-            }
-          }
-
-          if !edited {
-            file.truncate(Box::new(
-              file
-                .read()?
-                .try_into_string()?
-                .split(old_version.strip_prefix('v').unwrap_or(old_version))
-                .collect::<Vec<&str>>()
-                .join(v),
-            ))?;
-          }
-        }
-
-        Ok(())
-      }
+      Self::IncrementVersion(i) => i.main(),
       Self::Ronlog(r) => r.main(),
       Self::Rs2md {
         extract_inner,
