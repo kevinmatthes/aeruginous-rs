@@ -57,6 +57,10 @@
 .. _sorairolake/sysexits-rs/LICENSE-MIT:  sorairolake/sysexits-rs/LICENSE-MIT
 .. _sysexits:  https://github.com/sorairolake/sysexits-rs
 ..
+.. _toml:  https://github.com/toml-rs/toml
+.. _toml-rs/toml/LICENSE-Apache-2.0:  toml-rs/toml/LICENSE-Apache-2.0
+.. _toml-rs/toml/LICENSE-MIT:  toml-rs/toml/LICENSE-MIT
+..
 .. -------------------------------------------------------------------------- ..
 
 LICENSEs
@@ -171,5 +175,21 @@ Rust Crates
     https://github.com/sorairolake/sysexits-rs/blob/develop/LICENSE-APACHE
 
   - MIT:  https://github.com/sorairolake/sysexits-rs/blob/develop/LICENSE-MIT
+
+`toml`_
+.......
+
+- local copies:
+
+  - Apache-2.0:  `toml-rs/toml/LICENSE-Apache-2.0`_
+
+  - MIT:  `toml-rs/toml/LICENSE-MIT`_
+
+- original licenses:
+
+  - Apache-2.0:
+    https://github.com/toml-rs/toml/blob/main/crates/toml/LICENSE-APACHE
+
+  - MIT:  https://github.com/toml-rs/toml/blob/main/crates/toml/LICENSE-MIT
 
 .. -------------------------------------------------------------------------- ..
