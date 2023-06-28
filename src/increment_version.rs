@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternReader, PatternWriter, Version, VersionRange};
+use crate::{ceprintlns, PatternReader, PatternWriter, Version, VersionRange};
 use std::{path::PathBuf, str::FromStr};
 use sysexits::{ExitCode, Result};
 
@@ -132,8 +132,14 @@ impl Logic {
       let mut edited = false;
       let mut lock_file = match cargo_lock::Lockfile::load(file) {
         Ok(l) => Ok(l),
-        Err(cargo_lock::Error::Io(e)) => Err(e.into()),
-        Err(_) => Err(ExitCode::Unavailable),
+        Err(cargo_lock::Error::Io(e)) => {
+          ceprintlns!("Error: "!Red, "{e}");
+          Err(e.into())
+        }
+        Err(_) => {
+          ceprintlns!("Error: "!Red, "unknown error.");
+          Err(ExitCode::Unavailable)
+        }
       }?;
 
       for package in &mut lock_file.packages {
@@ -159,9 +165,11 @@ impl Logic {
       if edited {
         file.truncate(Box::new(lock_file.clone().to_string()))
       } else {
+        ceprintlns!("Package"!Red, "not found.");
         Err(ExitCode::DataErr)
       }
     } else {
+      ceprintlns!("Package"!Red, "not specified.");
       Err(ExitCode::Usage)
     }
   }
@@ -176,9 +184,15 @@ impl Logic {
 
         Ok(())
       } else {
+        ceprintlns!(
+          "Cargo.toml"!Red,
+          "does not contain a `package.version` field."
+        );
+
         Err(ExitCode::DataErr)
       }
     } else {
+      ceprintlns!("Cargo.toml"!Red, "does not seem to be valid TOML.");
       Err(ExitCode::DataErr)
     }
   }
