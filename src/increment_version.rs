@@ -35,7 +35,7 @@ pub struct IncrementVersion {
 
   /// The increment range.
   #[arg(long, short)]
-  range: crate::VersionRange,
+  range: VersionRange,
 
   /// In case of Rust projects:  which package's version shall be edited?
   #[arg(long, short = 'R')]
@@ -58,6 +58,22 @@ impl IncrementVersion {
   /// - [`sysexits::ExitCode::Usage`]
   pub fn main(&self) -> Result<()> {
     self.wrap().main()
+  }
+
+  /// Construct a new instance.
+  #[must_use]
+  pub fn new(
+    file_to_edit: Vec<PathBuf>,
+    old_version: String,
+    range: VersionRange,
+    rust_package: Option<String>,
+  ) -> Self {
+    Self {
+      file_to_edit,
+      old_version,
+      range,
+      rust_package,
+    }
   }
 
   fn wrap(&self) -> Logic {
