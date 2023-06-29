@@ -121,14 +121,8 @@ impl Logic {
       let mut edited = false;
       let mut lock_file = match cargo_lock::Lockfile::load(file) {
         Ok(l) => Ok(l),
-        Err(cargo_lock::Error::Io(e)) => {
-          ceprintlns!("Error: "!Red, "{e}");
-          Err(e.into())
-        }
-        Err(_) => {
-          ceprintlns!("Error: "!Red, "unknown error.");
-          Err(ExitCode::Unavailable)
-        }
+        Err(cargo_lock::Error::Io(e)) => Err(e.into()),
+        Err(_) => Err(ExitCode::Unavailable),
       }?;
 
       for package in &mut lock_file.packages {
