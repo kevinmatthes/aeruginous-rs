@@ -25,8 +25,8 @@ fn success() {
     vec![".version".into(), "Cargo.lock".into(), "Cargo.toml".into()],
     vec!["Cargo.toml".into()],
     VERSION.to_string(),
-    Patch,
-    Some("aeruginous".to_string())
+    Some("aeruginous".to_string()),
+    Patch
   )
   .main()
   .is_ok());
