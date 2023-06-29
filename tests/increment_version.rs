@@ -23,6 +23,7 @@ use aeruginous::{IncrementVersion, VersionRange::Patch, VERSION};
 fn success() {
   assert!(IncrementVersion::new(
     vec![".version".into(), "Cargo.lock".into(), "Cargo.toml".into()],
+    vec!["Cargo.toml".into()],
     VERSION.to_string(),
     Patch,
     Some("aeruginous".to_string())
