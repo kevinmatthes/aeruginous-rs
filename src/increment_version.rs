@@ -202,9 +202,7 @@ impl Logic {
       file
         .read()?
         .try_into_string()?
-        .split(&self.old_version)
-        .collect::<Vec<&str>>()
-        .join(&self.new_version),
+        .replace(&self.old_version, &self.new_version),
     ))
   }
 }
