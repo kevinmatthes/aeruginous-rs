@@ -17,7 +17,9 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{ceprintlns, PatternReader, PatternWriter, Version, VersionRange};
+use crate::{
+  ceprintlns, AppendAsLine, PatternReader, PatternWriter, Version, VersionRange,
+};
 use std::{path::PathBuf, str::FromStr};
 use sysexits::{ExitCode, Result};
 
@@ -29,17 +31,21 @@ pub struct IncrementVersion {
   #[arg(long = "edit", short = 'e')]
   file_to_edit: Vec<PathBuf>,
 
+  /// The files to update and reformat.
+  #[arg(long = "rewrite", short = 'R')]
+  file_to_rewrite: Vec<PathBuf>,
+
   /// The old version to search for and replace.
   #[arg(long, short = 'v')]
   old_version: String,
 
+  /// In case of Rust projects:  which package's version shall be edited?
+  #[arg(long, short)]
+  package: Option<String>,
+
   /// The increment range.
   #[arg(long, short)]
   range: VersionRange,
-
-  /// In case of Rust projects:  which package's version shall be edited?
-  #[arg(long, short = 'R')]
-  rust_package: Option<String>,
 }
 
 impl IncrementVersion {
@@ -64,15 +70,17 @@ impl IncrementVersion {
   #[must_use]
   pub fn new(
     file_to_edit: Vec<PathBuf>,
+    file_to_rewrite: Vec<PathBuf>,
     old_version: String,
+    package: Option<String>,
     range: VersionRange,
-    rust_package: Option<String>,
   ) -> Self {
     Self {
       file_to_edit,
+      file_to_rewrite,
       old_version,
+      package,
       range,
-      rust_package,
     }
   }
 
@@ -108,27 +116,8 @@ impl Logic {
     Ok(())
   }
 
-  fn main(&mut self) -> Result<()> {
-    self.determine_new_version()?;
-
-    for file in &self.cli.file_to_edit {
-      match file
-        .file_name()
-        .ok_or(ExitCode::Usage)?
-        .to_str()
-        .ok_or(ExitCode::DataErr)?
-      {
-        "Cargo.lock" => self.update_cargo_lock(file)?,
-        "Cargo.toml" => self.update_cargo_toml(file)?,
-        _ => self.update_normal_file(file)?,
-      }
-    }
-
-    Ok(())
-  }
-
-  fn update_cargo_lock(&self, file: &PathBuf) -> Result<()> {
-    if let Some(rust_package) = &self.cli.rust_package {
+  fn edit_cargo_lock(&self, file: &PathBuf) -> Result<()> {
+    if let Some(rust_package) = &self.cli.package {
       let mut edited = false;
       let mut lock_file = match cargo_lock::Lockfile::load(file) {
         Ok(l) => Ok(l),
@@ -174,7 +163,74 @@ impl Logic {
     }
   }
 
-  fn update_cargo_toml(&self, file: &PathBuf) -> Result<()> {
+  fn edit_cargo_toml(&self, file: &PathBuf) -> Result<()> {
+    let mut buffer = String::new();
+    let mut package_reached = false;
+    let mut package_updated = false;
+
+    for line in file.read()?.try_into_string()?.lines() {
+      if line.starts_with("[package]") {
+        package_reached = true;
+      }
+
+      if line.starts_with("version")
+        && line.contains(&self.old_version)
+        && package_reached
+        && !package_updated
+      {
+        package_updated = true;
+        buffer
+          .append_as_line(line.replace(&self.old_version, &self.new_version));
+      } else {
+        buffer.append_as_line(line);
+      }
+    }
+
+    file.truncate(Box::new(buffer))
+  }
+
+  fn edit_normal_file(&self, file: &PathBuf) -> Result<()> {
+    file.truncate(Box::new(
+      file
+        .read()?
+        .try_into_string()?
+        .replace(&self.old_version, &self.new_version),
+    ))
+  }
+
+  fn main(&mut self) -> Result<()> {
+    self.determine_new_version()?;
+
+    for file in &self.cli.file_to_edit {
+      match file
+        .file_name()
+        .ok_or(ExitCode::Usage)?
+        .to_str()
+        .ok_or(ExitCode::DataErr)?
+      {
+        "Cargo.lock" => self.edit_cargo_lock(file)?,
+        "Cargo.toml" => self.edit_cargo_toml(file)?,
+        _ => self.edit_normal_file(file)?,
+      }
+    }
+
+    for file in &self.cli.file_to_rewrite {
+      match file
+        .file_name()
+        .ok_or(ExitCode::Usage)?
+        .to_str()
+        .ok_or(ExitCode::DataErr)?
+      {
+        "Cargo.lock" => self.edit_cargo_lock(file)?,
+        "Cargo.toml" => self.rewrite_cargo_toml(file)?,
+        _ => self.edit_normal_file(file)?,
+      }
+    }
+
+    Ok(())
+  }
+
+  fn rewrite_cargo_toml(&self, file: &PathBuf) -> Result<()> {
     if let Ok(mut manifest) =
       file.read()?.try_into_string()?.parse::<toml::Table>()
     {
@@ -195,15 +251,6 @@ impl Logic {
       ceprintlns!("Cargo.toml"!Red, "does not seem to be valid TOML.");
       Err(ExitCode::DataErr)
     }
-  }
-
-  fn update_normal_file(&self, file: &PathBuf) -> Result<()> {
-    file.truncate(Box::new(
-      file
-        .read()?
-        .try_into_string()?
-        .replace(&self.old_version, &self.new_version),
-    ))
   }
 }
 
