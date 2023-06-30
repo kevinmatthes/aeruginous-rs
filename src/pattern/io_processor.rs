@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternReader, PatternWriter};
+use crate::{PatternWriter, ReadFile};
 use sysexits::Result;
 
 /// Read some input, process it, and write it to the intended destination.
@@ -31,7 +31,7 @@ use sysexits::Result;
 ///
 /// This trait shall provide a uniform and convenient interface for processing
 /// logic such that the user can focus on the implementation of the way the read
-/// data shall be processed.  The IO is handled by [`PatternReader`]s and
+/// data shall be processed.  The IO is handled by [`ReadFile`]s and
 /// [`PatternWriter`]s such that one can rely on their semantics.
 pub trait IOProcessor {
   /// The shared logic of all methods.
@@ -53,11 +53,11 @@ pub trait IOProcessor {
   /// # Errors
   ///
   /// The return value shall indicate whether the operation succeeded.
-  /// Implementations should rely on the semantics of [`PatternReader`] and
+  /// Implementations should rely on the semantics of [`ReadFile`] and
   /// [`PatternWriter`] instead of introducing further exit codes.
   fn behaviour(
     &self,
-    input: impl PatternReader,
+    input: impl ReadFile,
     output: impl PatternWriter,
     append: bool,
     show_error_messages: bool,
@@ -69,11 +69,7 @@ pub trait IOProcessor {
   /// # Errors
   ///
   /// See [`Self::behaviour`].
-  fn io(
-    &self,
-    input: impl PatternReader,
-    output: impl PatternWriter,
-  ) -> Result<()> {
+  fn io(&self, input: impl ReadFile, output: impl PatternWriter) -> Result<()> {
     self.behaviour(input, output, false, true, true)
   }
 
@@ -84,7 +80,7 @@ pub trait IOProcessor {
   /// See [`Self::behaviour`].
   fn io_append(
     &self,
-    input: impl PatternReader,
+    input: impl ReadFile,
     output: impl PatternWriter,
   ) -> Result<()> {
     self.behaviour(input, output, true, true, false)
@@ -97,7 +93,7 @@ pub trait IOProcessor {
   /// See [`Self::behaviour`].
   fn io_append_silently(
     &self,
-    input: impl PatternReader,
+    input: impl ReadFile,
     output: impl PatternWriter,
   ) -> Result<()> {
     self.behaviour(input, output, true, false, false)
@@ -110,7 +106,7 @@ pub trait IOProcessor {
   /// See [`Self::behaviour`].
   fn io_silent(
     &self,
-    input: impl PatternReader,
+    input: impl ReadFile,
     output: impl PatternWriter,
   ) -> Result<()> {
     self.behaviour(input, output, false, false, true)
@@ -123,7 +119,7 @@ pub trait IOProcessor {
   /// See [`Self::behaviour`].
   fn io_write(
     &self,
-    input: impl PatternReader,
+    input: impl ReadFile,
     output: impl PatternWriter,
   ) -> Result<()> {
     self.behaviour(input, output, false, true, false)
@@ -136,7 +132,7 @@ pub trait IOProcessor {
   /// See [`Self::behaviour`].
   fn io_write_silently(
     &self,
-    input: impl PatternReader,
+    input: impl ReadFile,
     output: impl PatternWriter,
   ) -> Result<()> {
     self.behaviour(input, output, false, false, false)
@@ -146,15 +142,14 @@ pub trait IOProcessor {
 impl<T: Fn(String) -> String> IOProcessor for T {
   fn behaviour(
     &self,
-    input: impl PatternReader,
+    input: impl ReadFile,
     output: impl PatternWriter,
     append: bool,
     show_error_messages: bool,
     truncate: bool,
   ) -> Result<()> {
-    let lines = input.read()?.as_ref().try_into_string()?;
     output.behaviour(
-      Box::new(self(lines)),
+      Box::new(self(input.read()?)),
       append,
       show_error_messages,
       truncate,
