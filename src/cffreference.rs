@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{AppendAsLine, PatternReader, PatternWriter};
+use crate::{AppendAsLine, PatternWriter, ReadFile};
 use std::path::PathBuf;
 use sysexits::Result;
 
@@ -41,9 +41,8 @@ impl Cffreference {
   ///
   /// See
   ///
-  /// - [`crate::PatternBuffer::try_into_string`]
-  /// - [`PatternReader::read`]
   /// - [`PatternWriter::append`]
+  /// - [`ReadFile::read`]
   pub fn main(&self) -> Result<()> {
     self.wrap().main()
   }
@@ -127,7 +126,7 @@ impl Logic {
   }
 
   fn read(&mut self) -> Result<()> {
-    for line in self.cli.input_file.read()?.try_into_string()?.lines() {
+    for line in self.cli.input_file.read()?.lines() {
       if self.references_reached
         && !matches!(line.chars().next(), Some(' ' | '-'))
       {
