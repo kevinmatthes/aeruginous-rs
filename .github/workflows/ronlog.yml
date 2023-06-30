@@ -102,7 +102,7 @@ jobs:
           branch-suffix: timestamp
           labels: |
             documentation
-          milestone: 5
+          milestone: 6
           title: '[Documentation] Release'
 
 ################################################################################
