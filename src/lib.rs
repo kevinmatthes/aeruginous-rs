@@ -369,12 +369,12 @@ pub use crate::{
   increment_version::IncrementVersion,
   pattern::{
     Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
-    Reader as PatternReader, Writer as PatternWriter,
+    Writer as PatternWriter,
   },
   running::Running,
   traits::{
-    AppendAsLine, ColourMessage, ConvertBuffer, FromRon, Prefer, ToRon,
-    ToStderr,
+    AppendAsLine, ColourMessage, ConvertBuffer, FromRon, Prefer, ReadFile,
+    ToRon, ToStderr,
   },
   version::{Range as VersionRange, Version},
 };

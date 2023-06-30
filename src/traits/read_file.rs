@@ -17,12 +17,12 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{PatternBuffer, ToStderr};
+use crate::ToStderr;
 use std::{io::stdin, path::PathBuf};
 use sysexits::Result;
 
 /// Read from common sources of input.
-pub trait Reader {
+pub trait ReadFile {
   /// The shared logic of all methods.
   ///
   /// This method defines the common behaviour of all methods this trait
@@ -35,17 +35,14 @@ pub trait Reader {
   /// # Errors
   ///
   /// See [`sysexits::ExitCode`].
-  fn behaviour(
-    &self,
-    show_error_messages: bool,
-  ) -> Result<Box<dyn PatternBuffer>>;
+  fn behaviour(&self, show_error_messages: bool) -> Result<String>;
 
   /// Read the input stream(s) and write error messages to [`std::io::Stderr`].
   ///
   /// # Errors
   ///
   /// See [`Self::behaviour`].
-  fn read(&self) -> Result<Box<dyn PatternBuffer>> {
+  fn read(&self) -> Result<String> {
     self.behaviour(true)
   }
 
@@ -54,49 +51,37 @@ pub trait Reader {
   /// # Errors
   ///
   /// See [`Self::behaviour`].
-  fn read_silently(&self) -> Result<Box<dyn PatternBuffer>> {
+  fn read_silently(&self) -> Result<String> {
     self.behaviour(false)
   }
 }
 
-impl Reader for Option<PathBuf> {
-  fn behaviour(
-    &self,
-    show_error_messages: bool,
-  ) -> Result<Box<dyn PatternBuffer>> {
+impl ReadFile for Option<PathBuf> {
+  fn behaviour(&self, show_error_messages: bool) -> Result<String> {
     self.as_ref().map_or_else(
       || stdin().behaviour(show_error_messages),
-      |path| Reader::behaviour(path, show_error_messages),
+      |path| ReadFile::behaviour(path, show_error_messages),
     )
   }
 }
 
-impl Reader for &Option<PathBuf> {
-  fn behaviour(
-    &self,
-    show_error_messages: bool,
-  ) -> Result<Box<dyn PatternBuffer>> {
+impl ReadFile for &Option<PathBuf> {
+  fn behaviour(&self, show_error_messages: bool) -> Result<String> {
     (*self).behaviour(show_error_messages)
   }
 }
 
-impl Reader for PathBuf {
-  fn behaviour(
-    &self,
-    show_error_messages: bool,
-  ) -> Result<Box<dyn PatternBuffer>> {
+impl ReadFile for PathBuf {
+  fn behaviour(&self, show_error_messages: bool) -> Result<String> {
     match std::fs::read_to_string(self) {
-      Ok(string) => Ok(Box::new(string)),
+      Ok(string) => Ok(string),
       Err(error) => error.to_stderr(show_error_messages),
     }
   }
 }
 
-impl Reader for std::io::Stdin {
-  fn behaviour(
-    &self,
-    show_error_messages: bool,
-  ) -> Result<Box<dyn PatternBuffer>> {
+impl ReadFile for std::io::Stdin {
+  fn behaviour(&self, show_error_messages: bool) -> Result<String> {
     let mut result = String::new();
 
     for line in stdin().lines() {
@@ -106,38 +91,28 @@ impl Reader for std::io::Stdin {
       }
     }
 
-    Ok(Box::new(result))
+    Ok(result)
   }
 }
 
-impl Reader for &str {
-  fn behaviour(
-    &self,
-    show_error_messages: bool,
-  ) -> Result<Box<dyn PatternBuffer>> {
+impl ReadFile for &str {
+  fn behaviour(&self, show_error_messages: bool) -> Result<String> {
     PathBuf::from(self).behaviour(show_error_messages)
   }
 }
 
-impl Reader for &Vec<PathBuf> {
-  fn behaviour(
-    &self,
-    show_error_messages: bool,
-  ) -> Result<Box<dyn PatternBuffer>> {
+impl ReadFile for &Vec<PathBuf> {
+  fn behaviour(&self, show_error_messages: bool) -> Result<String> {
     if self.is_empty() {
       stdin().behaviour(show_error_messages)
     } else {
-      let mut result = Vec::new();
+      let mut result = String::new();
 
       for file in *self {
-        result.append(
-          &mut Reader::behaviour(file, show_error_messages)?
-            .as_ref()
-            .try_into_bytes()?,
-        );
+        result.push_str(&ReadFile::behaviour(file, show_error_messages)?);
       }
 
-      Ok(Box::new(result))
+      Ok(result)
     }
   }
 }
