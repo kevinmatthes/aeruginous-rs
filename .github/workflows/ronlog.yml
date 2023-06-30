@@ -61,7 +61,7 @@ jobs:
         with:
           python-version: 3.11
 
-      - uses: taiki-e/install-action@v2.12.3
+      - uses: taiki-e/install-action@v2.12.4
         with:
           tool: cargo-tarpaulin
 
