@@ -102,6 +102,7 @@ jobs:
     strategy:
       matrix:
         cff:
+          - .github/CFF/aeruginous.cff
           - CITATION.cff
           - cffs/input_1.cff
           - cffs/input_2.cff
