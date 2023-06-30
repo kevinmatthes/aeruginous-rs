@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "cffreference:  refactor logic",
+    ],
+    "Fixed": [
+      "show previously hidden Clap aliases",
+    ],
+  },
+)
