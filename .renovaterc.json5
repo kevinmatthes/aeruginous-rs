@@ -33,19 +33,7 @@
         "regex",
       ],
       matchPackageNames: [
-        "clap-date",
-      ],
-      replacementVersion: "{{{replace 'T.*Z' '' releaseTimestamp}}}",
-    },
-    {
-      addLabels: [
-        "documentation",
-      ],
-      matchManagers: [
-        "regex",
-      ],
-      matchPackageNames: [
-        "clap-version",
+        "Clap",
       ],
     },
     {
@@ -71,23 +59,12 @@
   regexManagers: [
     {
       datasourceTemplate: "github-releases",
-      depNameTemplate: "clap-date",
+      depNameTemplate: "Clap",
       fileMatch: [
         "^CITATION\\.cff$",
       ],
       matchStrings: [
-        "(?<currentValue>\\d\\d\\d\\d-\\d\\d-\\d\\d).*# clap date",
-      ],
-      packageNameTemplate: "clap-rs/clap",
-    },
-    {
-      datasourceTemplate: "github-releases",
-      depNameTemplate: "clap-version",
-      fileMatch: [
-        "^CITATION\\.cff$",
-      ],
-      matchStrings: [
-        "(?<currentValue>\\d+\\.\\d+\\.\\d+).*# clap version",
+        "(?<currentValue>\\d+\\.\\d+\\.\\d+).*# Clap",
       ],
       packageNameTemplate: "clap-rs/clap",
     },
