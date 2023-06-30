@@ -64,11 +64,11 @@ pub struct CommentChanges {
 
   /// The heading's level in the resulting fragment.
   #[arg(
-      visible_aliases = ["level"],
       default_value = "3",
       long,
       short = 'H',
-      value_parser = clap::value_parser!(u8).range(1..=3)
+      value_parser = clap::value_parser!(u8).range(1..=3),
+      visible_aliases = ["level"]
     )]
   heading: u8,
 
@@ -77,15 +77,15 @@ pub struct CommentChanges {
   keep_a_changelog: bool,
 
   /// The hyperlinks to add as comments.
-  #[arg(visible_aliases = ["hyperlink"], long, short)]
+  #[arg(long, short, visible_aliases = ["hyperlink"])]
   link: Vec<String>,
 
   /// The directory to write the generated fragment to.
   #[arg(
-      visible_aliases = ["dir", "directory"],
       default_value = ".",
       long = "output",
-      short
+      short,
+      visible_aliases = ["dir", "directory"]
     )]
   output_directory: String,
 
