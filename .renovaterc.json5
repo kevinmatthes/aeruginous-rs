@@ -56,7 +56,7 @@
         "(?<currentValue>\\d\\d\\d\\d-\\d\\d-\\d\\d).*# clap date",
       ],
       packageNameTemplate: "clap-rs/clap",
-      replacementVersionTemplate: "{{{replace 'T.*Z' '' releaseTimestamp}}}",
+      replacementVersion: "{{{replace 'T.*Z' '' releaseTimestamp}}}",
     },
     {
       datasourceTemplate: "github-releases",
