@@ -37,7 +37,7 @@
             "src/traits/read_file.rs",
             "CFF:  entry for ``clap`` v4.3.9",
             "CFF:  entry for ``clap`` v4.3.8",
-            "increment_version.rs",
+            "tests/increment_version.rs",
             "IncrementVersion",
             "src/increment_version.rs",
             "documentation:  software licenses of ``toml`` crate",
