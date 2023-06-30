@@ -24,7 +24,7 @@ use sysexits::{ExitCode, Result};
 
 /// Create comments on the commits of a branch in this repository.
 #[derive(clap::Parser, Clone)]
-#[command(aliases = ["changelog"])]
+#[command(visible_aliases = ["changelog"])]
 pub struct CommentChanges {
   /// Work with the commit messages' bodies instead of their summaries.
   #[arg(long, short)]
@@ -39,12 +39,12 @@ pub struct CommentChanges {
   delimiter: String,
 
   /// The count of commits to analyse, defaulting to infinity, if omitted.
-  #[arg(aliases = ["count"], long, short = 'n')]
+  #[arg(visible_aliases = ["count"], long, short = 'n')]
   depth: Option<usize>,
 
   /// The target format of the resulting fragment.
   #[arg(
-      aliases = ["format"],
+      visible_aliases = ["format"],
       default_value = "rst",
       long,
       short = 'f',
@@ -64,7 +64,7 @@ pub struct CommentChanges {
 
   /// The heading's level in the resulting fragment.
   #[arg(
-      aliases = ["level"],
+      visible_aliases = ["level"],
       default_value = "3",
       long,
       short = 'H',
@@ -77,12 +77,12 @@ pub struct CommentChanges {
   keep_a_changelog: bool,
 
   /// The hyperlinks to add as comments.
-  #[arg(aliases = ["hyperlink"], long, short)]
+  #[arg(visible_aliases = ["hyperlink"], long, short)]
   link: Vec<String>,
 
   /// The directory to write the generated fragment to.
   #[arg(
-      aliases = ["dir", "directory"],
+      visible_aliases = ["dir", "directory"],
       default_value = ".",
       long = "output",
       short
