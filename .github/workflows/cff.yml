@@ -51,12 +51,14 @@ jobs:
       - uses: fregante/setup-git-user@v2.0.1
 
       - run: |
-          cat .github/CFF/aeruginous.cff           >  CITATION.cff
-          echo references:                         >> CITATION.cff
-          cat .github/CFF/chrono.yml               >> CITATION.cff
-          cat .github/CFF/citation-file-format.yml >> CITATION.cff
-          cat .github/CFF/clap.yml                 >> CITATION.cff
-          cat .github/CFF/sysexits.yml             >> CITATION.cff
+          cat .github/CFF/aeruginous.cff > CITATION.cff
+          {
+            echo references: ;
+            cat .github/CFF/chrono.yml \
+                .github/CFF/citation-file-format.yml \
+                .github/CFF/clap.yml \
+                .github/CFF/sysexits.yml ;
+          } >> CITATION.cff
           git add .
           git commit --allow-empty -m '[GitHub Actions] Assemble CITATION.cff'
           git push
