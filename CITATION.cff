@@ -170,8 +170,8 @@ references:
     title: sysexits-rs
     url: https://docs.rs/sysexits
   - type: software
-    date-released: 2023-06-30
-    version: 4.3.10
+    date-released: 2023-06-30 # clap date
+    version: 4.3.10 # clap version
     abstract: A full featured, fast Command Line Argument Parser for Rust
     authors:
       - alias: kbknapp

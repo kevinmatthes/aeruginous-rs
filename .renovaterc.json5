@@ -27,6 +27,29 @@
     },
     {
       addLabels: [
+        "documentation",
+      ],
+      matchManagers: [
+        "regex",
+      ],
+      matchPackageNames: [
+        "clap-date",
+      ],
+      replacementVersion: "{{{replace 'T.*Z' '' releaseTimestamp}}}",
+    },
+    {
+      addLabels: [
+        "documentation",
+      ],
+      matchManagers: [
+        "regex",
+      ],
+      matchPackageNames: [
+        "clap-version",
+      ],
+    },
+    {
+      addLabels: [
         "github_actions",
       ],
       matchManagers: [
@@ -46,6 +69,28 @@
     },
   ],
   regexManagers: [
+    {
+      datasourceTemplate: "github-releases",
+      depNameTemplate: "clap-date",
+      fileMatch: [
+        "^CITATION\\.cff$",
+      ],
+      matchStrings: [
+        "(?<currentValue>\\d\\d\\d\\d-\\d\\d-\\d\\d).*# clap date",
+      ],
+      packageNameTemplate: "clap-rs/clap",
+    },
+    {
+      datasourceTemplate: "github-releases",
+      depNameTemplate: "clap-version",
+      fileMatch: [
+        "^CITATION\\.cff$",
+      ],
+      matchStrings: [
+        "(?<currentValue>\\d+\\.\\d+\\.\\d+).*# clap version",
+      ],
+      packageNameTemplate: "clap-rs/clap",
+    },
     {
       datasourceTemplate: "github-releases",
       depNameTemplate: "Rust",
