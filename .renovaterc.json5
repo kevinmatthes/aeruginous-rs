@@ -47,7 +47,7 @@
       matchPackageNames: [
         "clap-version",
       ],
-    }
+    },
     {
       addLabels: [
         "github_actions",
