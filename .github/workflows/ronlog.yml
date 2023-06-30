@@ -78,8 +78,8 @@ jobs:
             -v "$(cat .version)" \
             -r ${{ inputs.release }} \
             -p aeruginous \
+            -e .github/CFF/aeruginous.cff \
             -e .version \
-            -e CITATION.cff \
             -e Cargo.lock \
             -R Cargo.toml \
             -e src/lib.rs
