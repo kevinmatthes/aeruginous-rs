@@ -25,7 +25,7 @@ use sysexits::{ExitCode, Result};
 
 /// Increment a hard-coded version string in some files.
 #[derive(clap::Parser, Clone)]
-#[command(aliases = ["incver", "inc-ver", "incrementversion"])]
+#[command(visible_aliases = ["incver", "inc-ver", "incrementversion"])]
 pub struct IncrementVersion {
   /// The files to work on.
   #[arg(long = "edit", short = 'e')]

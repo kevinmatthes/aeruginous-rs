@@ -35,7 +35,7 @@ pub enum Action {
   Cffreference(crate::Cffreference),
 
   /// Increment the release date in CFFs.
-  #[command(aliases = ["cffrel", "cff-rel", "cffreleasetoday"])]
+  #[command(visible_aliases = ["cffrel", "cff-rel", "cffreleasetoday"])]
   CffReleaseToday {
     /// The file to work on.
     file_to_edit: PathBuf,
@@ -46,7 +46,7 @@ pub enum Action {
 
   /*
   /// Rate an Aeruginous Graph Description (AGD).
-  #[command(aliases = ["agd"])]
+  #[command(visible_aliases = ["agd"])]
   GraphDescription {
     /// The AGD file to read.
     #[arg(short = 'i')]

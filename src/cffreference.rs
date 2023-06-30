@@ -23,7 +23,7 @@ use sysexits::Result;
 
 /// Extract the citation information from a given and valid CFF file.
 #[derive(clap::Parser, Clone)]
-#[command(aliases = ["cffref", "cff-ref", "cff-reference"])]
+#[command(visible_aliases = ["cffref", "cff-ref", "cff-reference"])]
 pub struct Cffreference {
   /// The CFF file to read from, defaulting to [`std::io::Stdin`], if omitted.
   #[arg(long = "input", short)]
@@ -64,7 +64,7 @@ impl Cffreference {
     Logic {
       cff_data: String::new(),
       cff_reference: String::new(),
-      io: self.clone(),
+      cli: self.clone(),
       preferred_citation_reached: false,
       properties: Properties::default(),
       references_reached: false,
@@ -75,42 +75,14 @@ impl Cffreference {
 struct Logic {
   cff_data: String,
   cff_reference: String,
-  io: Cffreference,
+  cli: Cffreference,
   preferred_citation_reached: bool,
   properties: Properties,
   references_reached: bool,
 }
 
 impl Logic {
-  fn logic(&mut self, s: &str) -> String {
-    for line in s.lines() {
-      if self.references_reached
-        && !matches!(line.chars().next(), Some(' ' | '-'))
-      {
-        self.references_reached = false;
-      }
-
-      if !line.is_empty()
-        && !line.starts_with('#')
-        && !line.starts_with("---")
-        && !line.starts_with("...")
-        && !line.starts_with("cff-version:")
-        && !line.starts_with("message:")
-        && !line.starts_with("references:")
-        && !self.references_reached
-      {
-        if line.starts_with("preferred-citation:") {
-          self.properties.find_preferred_citation();
-        } else if line.starts_with("type:") {
-          self.properties.find_type();
-        }
-
-        self.cff_data.append_as_line(line);
-      } else if line.starts_with("references:") {
-        self.references_reached = true;
-      }
-    }
-
+  fn extract(&mut self) -> String {
     if self.properties.has_preferred_citation() {
       for line in self.cff_data.lines() {
         if self.preferred_citation_reached && line.starts_with(' ') {
@@ -146,9 +118,44 @@ impl Logic {
   }
 
   fn main(&mut self) -> Result<()> {
-    self.io.output_file.clone().append(Box::new(
-      self.logic(&self.io.input_file.read()?.try_into_string()?),
-    ))
+    self.read()?;
+    self
+      .cli
+      .output_file
+      .clone()
+      .append(Box::new(self.extract()))
+  }
+
+  fn read(&mut self) -> Result<()> {
+    for line in self.cli.input_file.read()?.try_into_string()?.lines() {
+      if self.references_reached
+        && !matches!(line.chars().next(), Some(' ' | '-'))
+      {
+        self.references_reached = false;
+      }
+
+      if !line.is_empty()
+        && !line.starts_with('#')
+        && !line.starts_with("---")
+        && !line.starts_with("...")
+        && !line.starts_with("cff-version:")
+        && !line.starts_with("message:")
+        && !line.starts_with("references:")
+        && !self.references_reached
+      {
+        if line.starts_with("preferred-citation:") {
+          self.properties.find_preferred_citation();
+        } else if line.starts_with("type:") {
+          self.properties.find_type();
+        }
+
+        self.cff_data.append_as_line(line);
+      } else if line.starts_with("references:") {
+        self.references_reached = true;
+      }
+    }
+
+    Ok(())
   }
 }
 

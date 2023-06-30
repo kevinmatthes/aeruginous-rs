@@ -24,7 +24,7 @@ use sysexits::{ExitCode, Result};
 
 /// Create comments on the commits of a branch in this repository.
 #[derive(clap::Parser, Clone)]
-#[command(aliases = ["changelog"])]
+#[command(visible_aliases = ["changelog"])]
 pub struct CommentChanges {
   /// Work with the commit messages' bodies instead of their summaries.
   #[arg(long, short)]
@@ -39,12 +39,11 @@ pub struct CommentChanges {
   delimiter: String,
 
   /// The count of commits to analyse, defaulting to infinity, if omitted.
-  #[arg(aliases = ["count"], long, short = 'n')]
+  #[arg(long, short = 'n', visible_aliases = ["count"])]
   depth: Option<usize>,
 
   /// The target format of the resulting fragment.
   #[arg(
-      aliases = ["format"],
       default_value = "rst",
       long,
       short = 'f',
@@ -54,7 +53,8 @@ pub struct CommentChanges {
         } else {
           Err(format!("extension '{f}' is not supported, yet"))
         }
-      }
+      },
+      visible_aliases = ["format"]
     )]
   extension: String,
 
@@ -64,11 +64,11 @@ pub struct CommentChanges {
 
   /// The heading's level in the resulting fragment.
   #[arg(
-      aliases = ["level"],
       default_value = "3",
       long,
       short = 'H',
-      value_parser = clap::value_parser!(u8).range(1..=3)
+      value_parser = clap::value_parser!(u8).range(1..=3),
+      visible_aliases = ["level"]
     )]
   heading: u8,
 
@@ -77,15 +77,15 @@ pub struct CommentChanges {
   keep_a_changelog: bool,
 
   /// The hyperlinks to add as comments.
-  #[arg(aliases = ["hyperlink"], long, short)]
+  #[arg(long, short, visible_aliases = ["hyperlink"])]
   link: Vec<String>,
 
   /// The directory to write the generated fragment to.
   #[arg(
-      aliases = ["dir", "directory"],
       default_value = ".",
       long = "output",
-      short
+      short,
+      visible_aliases = ["dir", "directory"]
     )]
   output_directory: String,
 

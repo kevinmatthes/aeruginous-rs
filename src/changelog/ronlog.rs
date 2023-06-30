@@ -210,7 +210,7 @@ pub struct Ronlog {
   message: Option<String>,
 
   /// The hyperlinks to add.
-  #[arg(aliases = ["hyperlink"], long, short)]
+  #[arg(long, short, visible_aliases = ["hyperlink"])]
   link: Vec<String>,
 
   /// The RONLOG to modify.
