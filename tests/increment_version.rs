@@ -18,18 +18,31 @@
 \******************************************************************************/
 
 use aeruginous::{IncrementVersion, VersionRange::Patch, VERSION};
+use std::fs::{copy, remove_file};
 
 #[test]
 fn success() {
+  copy(".version", "tests/.version").unwrap();
+  copy("Cargo.lock", "tests/Cargo.lock").unwrap();
+  copy("Cargo.toml", "tests/Cargo.toml").unwrap();
+
   assert!(IncrementVersion::new(
-    vec![".version".into(), "Cargo.lock".into(), "Cargo.toml".into()],
-    vec!["Cargo.toml".into()],
+    vec![
+      "tests/.version".into(),
+      "tests/Cargo.lock".into(),
+      "tests/Cargo.toml".into()
+    ],
+    vec!["tests/Cargo.toml".into()],
     VERSION.to_string(),
     Some("aeruginous".to_string()),
     Patch
   )
   .main()
   .is_ok());
+
+  remove_file("tests/.version").unwrap();
+  remove_file("tests/Cargo.lock").unwrap();
+  remove_file("tests/Cargo.toml").unwrap();
 }
 
 /******************************************************************************/
