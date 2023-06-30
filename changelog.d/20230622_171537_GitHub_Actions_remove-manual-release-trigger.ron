@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Removed": [
-      "CI:  manual trigger for release workflow",
-    ],
-  },
-)
