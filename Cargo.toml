@@ -1,70 +1,37 @@
-######################## GNU General Public License 3.0 ########################
-##                                                                            ##
-## Copyright (C) 2023 Kevin Matthes                                           ##
-##                                                                            ##
-## This program is free software: you can redistribute it and/or modify       ##
-## it under the terms of the GNU General Public License as published by       ##
-## the Free Software Foundation, either version 3 of the License, or          ##
-## (at your option) any later version.                                        ##
-##                                                                            ##
-## This program is distributed in the hope that it will be useful,            ##
-## but WITHOUT ANY WARRANTY; without even the implied warranty of             ##
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the              ##
-## GNU General Public License for more details.                               ##
-##                                                                            ##
-## You should have received a copy of the GNU General Public License          ##
-## along with this program.  If not, see <https://www.gnu.org/licenses/>.     ##
-##                                                                            ##
-################################################################################
+[dependencies]
+anstyle = "1.0.1"
+cargo-lock = "9.0.0"
+ron = "0.8.0"
+sysexits = "0.6.1"
+toml = "0.7.5"
 
-################################################################################
-##
-##  AUTHOR      Kevin Matthes
-##  BRIEF       Settings for Cargo.
-##  COPYRIGHT   GPL-3.0
-##  DATE        2023
-##  FILE        Cargo.toml
-##  NOTE        See `LICENSE' for full license.
-##              See `README.md' for project details.
-##
-################################################################################
+[dependencies.chrono]
+features = ["serde"]
+version = "0.4.26"
+
+[dependencies.clap]
+features = ["derive"]
+version = "4.3.9"
+
+[dependencies.git2]
+default-features = false
+version = "0.17.2"
+
+[dependencies.serde]
+features = ["derive"]
+version = "1.0.164"
 
 [package]
 authors = ["Kevin Matthes <aeruginous.rs@gmail.com>"]
-categories = [
-  "command-line-utilities",
-  "config",
-  "development-tools",
-  "rust-patterns",
-  "template-engine"
-]
+categories = ["command-line-utilities", "config", "development-tools", "rust-patterns", "template-engine"]
 description = "The Aeruginous Open Source Development Toolbox."
 edition = "2021"
 homepage = "https://github.com/kevinmatthes/aeruginous-rs"
 include = ["/src"]
-keywords = [
-  "aeruginous",
-  "changelog",
-  "citation-file-format",
-  "rs2md",
-  "uncrlf"
-]
+keywords = ["aeruginous", "changelog", "citation-file-format", "rs2md", "uncrlf"]
 license = "GPL-3.0"
 name = "aeruginous"
 readme = "README.md"
 repository = "https://github.com/kevinmatthes/aeruginous-rs"
 rust-version = "1.70.0"
-version = "2.2.2"
-
-[dependencies]
-anstyle = "1.0.1"
-cargo-lock = "9.0.0"
-chrono = { version = "0.4.26", features = ["serde"] }
-clap = { version = "4.3.9", features = ["derive"] }
-git2 = { version = "0.17.2", default-features = false }
-ron = "0.8.0"
-serde = { version = "1.0.164", features = ["derive"] }
-sysexits = "0.6.1"
-toml = "0.7.5"
-
-################################################################################
+version = "2.2.3"
