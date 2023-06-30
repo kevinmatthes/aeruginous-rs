@@ -53,6 +53,14 @@ jobs:
           sed "s/date-released: ....-..-../date-released: $(date +%F)/g" \
             .github/CFF/clap.yml > clap.yml
           mv clap.yml .github/CFF/
+          cat .github/CFF/aeruginous.cff > CITATION.cff
+          {
+            echo references: ;
+            cat .github/CFF/chrono.yml \
+                .github/CFF/citation-file-format.yml \
+                .github/CFF/clap.yml \
+                .github/CFF/sysexits.yml ;
+          } >> CITATION.cff
           git add .
           git commit --allow-empty -m \
             '[GitHub Actions] Update CFF Entry for Clap'
