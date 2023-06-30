@@ -1,0 +1,20 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "rename cffs/expectation.cff to cffs/expectation.yml",
+    ],
+    "Added": [
+      "CI:  add release date update workflow for Clap CFF entry",
+      "CI:  assemble main CFF from fragments",
+      ".github/CFF/citation-file-format.yml",
+      ".github/CFF/sysexits.yml",
+      ".github/CFF/chrono.yml",
+      ".github/CFF/clap.yml",
+      ".github/CFF/aeruginous.cff",
+    ],
+    "Fixed": [
+      "do not allow RONLOG assemblies in forks",
+    ],
+  },
+)
