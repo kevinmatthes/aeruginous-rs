@@ -18,7 +18,7 @@
 \******************************************************************************/
 
 use crate::{
-  ceprintlns, AppendAsLine, PatternReader, PatternWriter, Version, VersionRange,
+  ceprintlns, AppendAsLine, PatternWriter, ReadFile, Version, VersionRange,
 };
 use std::{path::PathBuf, str::FromStr};
 use sysexits::{ExitCode, Result};
@@ -55,9 +55,8 @@ impl IncrementVersion {
   ///
   /// See
   ///
-  /// - [`crate::PatternBuffer::try_into_string`]
-  /// - [`PatternReader::read`]
   /// - [`PatternWriter::truncate`]
+  /// - [`ReadFile::read`]
   /// - [`Version::from_str`]
   /// - [`sysexits::ExitCode::DataErr`]
   /// - [`sysexits::ExitCode::Unavailable`]
@@ -162,7 +161,7 @@ impl Logic {
     let mut package_reached = false;
     let mut package_updated = false;
 
-    for line in file.read()?.try_into_string()?.lines() {
+    for line in file.read()?.lines() {
       if line.starts_with("[package]") {
         package_reached = true;
       }
@@ -185,10 +184,7 @@ impl Logic {
 
   fn edit_normal_file(&self, file: &PathBuf) -> Result<()> {
     file.truncate(Box::new(
-      file
-        .read()?
-        .try_into_string()?
-        .replace(&self.old_version, &self.new_version),
+      file.read()?.replace(&self.old_version, &self.new_version),
     ))
   }
 
@@ -225,9 +221,7 @@ impl Logic {
   }
 
   fn rewrite_cargo_toml(&self, file: &PathBuf) -> Result<()> {
-    if let Ok(mut manifest) =
-      file.read()?.try_into_string()?.parse::<toml::Table>()
-    {
+    if let Ok(mut manifest) = file.read()?.parse::<toml::Table>() {
       if manifest["package"]["version"].as_str().is_some() {
         manifest["package"]["version"] = self.new_version.clone().into();
         file.truncate(Box::new(manifest.to_string()))?;
