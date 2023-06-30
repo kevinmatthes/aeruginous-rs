@@ -39,12 +39,11 @@ pub struct CommentChanges {
   delimiter: String,
 
   /// The count of commits to analyse, defaulting to infinity, if omitted.
-  #[arg(visible_aliases = ["count"], long, short = 'n')]
+  #[arg(long, short = 'n', visible_aliases = ["count"])]
   depth: Option<usize>,
 
   /// The target format of the resulting fragment.
   #[arg(
-      visible_aliases = ["format"],
       default_value = "rst",
       long,
       short = 'f',
@@ -54,7 +53,8 @@ pub struct CommentChanges {
         } else {
           Err(format!("extension '{f}' is not supported, yet"))
         }
-      }
+      },
+      visible_aliases = ["format"]
     )]
   extension: String,
 
