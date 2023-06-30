@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{ceprintln, PatternReader};
+use crate::{ceprintln, ReadFile};
 use sysexits::{ExitCode, Result};
 
 /// An Aeruginous Graph Description.
@@ -195,13 +195,12 @@ impl GraphDescription {
   ///
   /// See
   ///
-  /// - [`crate::PatternBuffer::try_into_string`]
-  /// - [`PatternReader::read`]
+  /// - [`ReadFile::read`]
   /// - [`Self::check_for_typos`]
   /// - [`Self::read`]
   pub fn main(input: &Option<std::path::PathBuf>) -> Result<()> {
     let mut agd = Self::new();
-    let input = input.read()?.try_into_string()?;
+    let input = input.read()?;
     let lines = agd.check_line_width(&input)?;
     agd.read(&input)?;
     let typos = agd.check_for_typos()?;
