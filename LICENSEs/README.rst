@@ -33,6 +33,7 @@
 ..
 .. _anstyle:  https://github.com/rust-cli/anstyle
 ..
+.. _cargo-lock:  https://github.com/rustsec/rustsec
 .. _chrono:  https://github.com/chronotope/chrono
 .. _chronotope/chrono/LICENSE:  chronotope/chrono/LICENSE
 .. _clap:  https://github.com/clap-rs/clap
@@ -48,6 +49,8 @@
 .. _rust-cli/anstyle/LICENSE-MIT:  rust-cli/anstyle/LICENSE-MIT
 .. _rust-lang/git2-rs/LICENSE-Apache-2.0:  rust-lang/git2-rs/LICENSE-Apache-2.0
 .. _rust-lang/git2-rs/LICENSE-MIT:  rust-lang/git2-rs/LICENSE-MIT
+.. _rustsec/rustsec/LICENSE-Apache-2.0:  rustsec/rustsec/LICENSE-Apache-2.0
+.. _rustsec/rustsec/LICENSE-MIT:  rustsec/rustsec/LICENSE-MIT
 ..
 .. _serde:  https://github.com/serde-rs/serde
 .. _serde-rs/serde/LICENSE-Apache-2.0:  serde-rs/serde/LICENSE-Apache-2.0
@@ -56,6 +59,10 @@
     sorairolake/sysexits-rs/LICENSE-Apache-2.0
 .. _sorairolake/sysexits-rs/LICENSE-MIT:  sorairolake/sysexits-rs/LICENSE-MIT
 .. _sysexits:  https://github.com/sorairolake/sysexits-rs
+..
+.. _toml:  https://github.com/toml-rs/toml
+.. _toml-rs/toml/LICENSE-Apache-2.0:  toml-rs/toml/LICENSE-Apache-2.0
+.. _toml-rs/toml/LICENSE-MIT:  toml-rs/toml/LICENSE-MIT
 ..
 .. -------------------------------------------------------------------------- ..
 
@@ -88,6 +95,22 @@ Rust Crates
 
   - MIT:
     https://github.com/rust-cli/anstyle/blob/main/crates/anstyle/LICENSE-MIT
+
+`cargo-lock`_
+.............
+
+- local copies:
+
+  - Apache-2.0:  `rustsec/rustsec/LICENSE-Apache-2.0`_
+
+  - MIT:  `rustsec/rustsec/LICENSE-MIT`_
+
+- original licenses:
+
+  - Apache-2.0:
+    https://github.com/rustsec/rustsec/blob/main/cargo-lock/LICENSE-APACHE
+
+  - MIT:  https://github.com/rustsec/rustsec/blob/main/cargo-lock/LICENSE-MIT
 
 `chrono`_
 .........
@@ -171,5 +194,21 @@ Rust Crates
     https://github.com/sorairolake/sysexits-rs/blob/develop/LICENSE-APACHE
 
   - MIT:  https://github.com/sorairolake/sysexits-rs/blob/develop/LICENSE-MIT
+
+`toml`_
+.......
+
+- local copies:
+
+  - Apache-2.0:  `toml-rs/toml/LICENSE-Apache-2.0`_
+
+  - MIT:  `toml-rs/toml/LICENSE-MIT`_
+
+- original licenses:
+
+  - Apache-2.0:
+    https://github.com/toml-rs/toml/blob/main/crates/toml/LICENSE-APACHE
+
+  - MIT:  https://github.com/toml-rs/toml/blob/main/crates/toml/LICENSE-MIT
 
 .. -------------------------------------------------------------------------- ..

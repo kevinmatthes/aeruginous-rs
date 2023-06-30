@@ -87,6 +87,16 @@ macro_rules! ceprintln {
   };
 }
 
+/// Join coloured part and suffix by a space character.
+#[macro_export]
+macro_rules! ceprintlns {
+  ( $message:literal ! $colour:ident , $( $suffix:tt )+ ) => {
+    $crate::ceprint!($message ! $colour);
+    eprint!(" ");
+    eprintln!( $( $suffix )+ );
+  };
+}
+
 /// Implement certain common traits for enums.
 ///
 /// # `Display`

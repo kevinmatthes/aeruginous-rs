@@ -348,6 +348,7 @@ mod application;
 mod cffreference;
 mod changelog;
 mod graphing;
+mod increment_version;
 mod macros;
 mod pattern;
 mod running;
@@ -365,6 +366,7 @@ pub use crate::{
     AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
     Vertices,
   },
+  increment_version::IncrementVersion,
   pattern::{
     Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
     Reader as PatternReader, Writer as PatternWriter,
