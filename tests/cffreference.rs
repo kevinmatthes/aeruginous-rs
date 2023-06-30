@@ -32,7 +32,7 @@ macro_rules! make_test {
       .unwrap();
 
       assert_eq!(
-        "./cffs/expectation.cff".read().unwrap(),
+        "./cffs/expectation.yml".read().unwrap(),
         concat!("./cffs/output_", $n, ".cff").read().unwrap()
       );
 
