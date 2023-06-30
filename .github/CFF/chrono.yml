@@ -1,0 +1,24 @@
+  - type: software
+    date-released: 2023-05-31
+    version: 0.4.26
+    abstract: Date and time library for Rust
+    authors:
+      - alias: quodlibetor
+        family-names: Maister
+        given-names: Brandon W.
+      - alias: djc
+        family-names: Ochtman
+        given-names: Dirkjan
+      - alias: lifthrasiir
+        family-names: Seonghoon
+        given-names: Kang
+      - alias: esheppa
+        family-names: Sheppard
+        given-names: Eric
+    license:
+      - Apache-2.0
+      - MIT
+    repository-artifact: https://crates.io/crates/chrono
+    repository-code: https://github.com/chronotope/chrono
+    title: chrono
+    url: https://docs.rs/chrono

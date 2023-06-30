@@ -1,0 +1,36 @@
+abstract: The Aeruginous Open Source Development Toolbox.
+authors:
+  - alias: kevinmatthes
+    family-names: Matthes
+    given-names: Kevin
+cff-version: 1.2.0
+date-released: 2023-06-30
+keywords:
+  - Rust
+  - aeruginous
+  - cff
+  - cffref
+  - cffreference
+  - cffrel
+  - cffreleasetoday
+  - cff-ref
+  - cff-reference
+  - cff-rel
+  - cff-release-today
+  - changelog
+  - citation-file-format
+  - comment-changes
+  - incrementversion
+  - increment-version
+  - incver
+  - inc-ver
+  - ronlog
+  - rs2md
+  - uncrlf
+license: GPL-3.0
+message: Please cite this software using these information.
+repository-artifact: https://crates.io/crates/aeruginous
+repository-code: https://github.com/kevinmatthes/aeruginous-rs
+title: aeruginous-rs
+url: https://github.com/kevinmatthes/aeruginous-rs
+version: 3.0.0

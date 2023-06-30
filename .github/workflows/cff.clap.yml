@@ -20,106 +20,42 @@
 ################################################################################
 ##
 ##  AUTHOR      Kevin Matthes
-##  BRIEF       The CI of this project.
+##  BRIEF       Update the release date in the CFF entry for Clap.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
-##  FILE        ci.yml
+##  FILE        cff.clap.yml
 ##  NOTE        See `LICENSE' for full license.
 ##              See `README.md' for project details.
 ##
 ################################################################################
 
-name: ci
+name: cff
 
 on:
-  pull_request:
   push:
+    branches:
+      - renovate/**
+    paths:
+      - .github/CFF/clap.yml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  actionlint:
-    name: actionlint
+  clap:
+    if: github.repository == 'kevinmatthes/aeruginous-rs'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.5.3
-        with:
-          persist-credentials: false
+      - uses: fregante/setup-git-user@v2.0.1
 
-      - uses: devops-actions/actionlint@v0.1.1
-
-  bors:
-    name: bors
-    needs:
-      - actionlint
-      - cargo
-      - cffconvert
-      - renovate-linter
-    runs-on: ubuntu-latest
-    steps:
-      - run: bash -c 'exit 0'
-
-  cargo:
-    name: cargo
-    runs-on: ubuntu-latest
-    steps:
-      - run: rustup update
-
-      - uses: actions/checkout@v3.5.3
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - if: matrix.subcommand == 'nextest r'
-        uses: taiki-e/install-action@v2.12.4
-        with:
-          tool: nextest
-
-      - run: cargo ${{ matrix.subcommand }}
-    strategy:
-      matrix:
-        subcommand:
-          - b
-          - c
-          - clippy
-          - d
-          - fmt --check
-          - nextest r
-          - t --doc
-
-  cffconvert:
-    name: cffconvert
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3.5.3
-        with:
-          persist-credentials: false
-
-      - uses: citation-file-format/cffconvert-github-action@2.0.0
-        with:
-          args: --validate -i ${{ matrix.cff }}
-    strategy:
-      matrix:
-        cff:
-          - .github/CFF/aeruginous.cff
-          - CITATION.cff
-          - cffs/input_1.cff
-          - cffs/input_2.cff
-          - cffs/input_3.cff
-          - cffs/input_4.cff
-          - cffs/input_5.cff
-          - cffs/input_6.cff
-          - cffs/input_7.cff
-
-  renovate-linter:
-    name: renovate-linter
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3.5.3
-        with:
-          persist-credentials: false
-
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v0.1.3
+      - run: |
+          sed "s/date-released: ....-..-../date-released: $(date +%F)/g" \
+            .github/CFF/clap.yml > clap.yml
+          mv clap.yml .github/CFF/
+          git add .
+          git commit --allow-empty -m \
+            '[GitHub Actions] Update CFF Entry for Clap'
+          git push
 
 ################################################################################

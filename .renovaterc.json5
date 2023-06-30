@@ -61,7 +61,7 @@
       datasourceTemplate: "github-releases",
       depNameTemplate: "Clap",
       fileMatch: [
-        "^CITATION\\.cff$",
+        "^\\.github/CFF/clap\\.yml$",
       ],
       matchStrings: [
         "(?<currentValue>\\d+\\.\\d+\\.\\d+).*# Clap",

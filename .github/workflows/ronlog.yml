@@ -50,7 +50,9 @@ permissions:
 
 jobs:
   assembly:
-    if: contains(fromJson('["major", "minor", "patch"]'), inputs.release)
+    if: |
+      contains(fromJson('["major", "minor", "patch"]'), inputs.release) &&
+      github.repository == 'kevinmatthes/aeruginous-rs'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.5.3
@@ -76,8 +78,8 @@ jobs:
             -v "$(cat .version)" \
             -r ${{ inputs.release }} \
             -p aeruginous \
+            -e .github/CFF/aeruginous.cff \
             -e .version \
-            -e CITATION.cff \
             -e Cargo.lock \
             -R Cargo.toml \
             -e src/lib.rs
