@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "CI:  linting step for Renovate configuration",
-    ],
-  },
-)

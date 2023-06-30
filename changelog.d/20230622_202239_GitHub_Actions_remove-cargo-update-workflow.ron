@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Removed": [
-      ".github/workflows/cargo-update.yml",
-    ],
-  },
-)
