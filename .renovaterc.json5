@@ -9,6 +9,7 @@
   dependencyDashboardLabels: [
     "dependencies",
   ],
+  dependencyDashboardTitle: "[Renovate] Dependency Dashboard",
   labels: [
     "dependencies",
   ],
