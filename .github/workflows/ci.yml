@@ -49,9 +49,8 @@ jobs:
 
       - run: |
           docker run \
-            -v $GITHUB_WORKSPACE:/repo \
-            --workdir /repo rhysd/actionlint:1.6.25 \
-            -color
+            -v "$GITHUB_WORKSPACE:/repo" --workdir /repo \
+            rhysd/actionlint:1.6.25 -color
 
   bors:
     name: bors
