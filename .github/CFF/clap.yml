@@ -1,6 +1,6 @@
   - type: software
     date-released: 2023-06-30
-    version: 4.3.10 # Clap
+    version: 4.3.10 # clap
     abstract: A full featured, fast Command Line Argument Parser for Rust
     authors:
       - alias: kbknapp
