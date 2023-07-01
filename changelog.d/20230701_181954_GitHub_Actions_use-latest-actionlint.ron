@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "Renovate:  track actionlint Docker image",
+    ],
+    "Changed": [
+      "CI:  call actionlint directly using its Docker image",
+    ],
+  },
+)

@@ -20,6 +20,17 @@
   packageRules: [
     {
       addLabels: [
+        "github_actions",
+      ],
+      matchManagers: [
+        "regex",
+      ],
+      matchPackageNames: [
+        "actionlint",
+      ],
+    },
+    {
+      addLabels: [
         "rust",
       ],
       matchManagers: [
@@ -68,6 +79,17 @@
         "(?<currentValue>\\d+\\.\\d+\\.\\d+).*# Clap",
       ],
       packageNameTemplate: "clap-rs/clap",
+    },
+    {
+      datasourceTemplate: "github-releases",
+      depNameTemplate: "actionlint",
+      fileMatch: [
+        "^\\.github/workflows/ci\\.yml$",
+      ],
+      matchStrings: [
+        "rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+      ],
+      packageNameTemplate: "rhysd/actionlint",
     },
     {
       datasourceTemplate: "github-releases",

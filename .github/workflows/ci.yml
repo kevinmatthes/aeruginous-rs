@@ -47,7 +47,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: devops-actions/actionlint@v0.1.1
+      - run: |
+          docker run \
+            -v "$GITHUB_WORKSPACE:/repo" --workdir /repo \
+            rhysd/actionlint:1.6.25 -color
 
   bors:
     name: bors
