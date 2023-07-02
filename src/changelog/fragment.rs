@@ -20,7 +20,25 @@
 use crate::RonlogReferences;
 use std::collections::HashMap;
 
-/// The fragment type for exporting the harvested changes.
+/// The supported export formats.
+pub enum ExportFormat {
+  /// Markdown.
+  Md,
+
+  /// Rusty Object Notation.
+  Ron,
+
+  /// reStructured Text.
+  Rst,
+}
+
+crate::enum_trait!(ExportFormat {
+  Md <-> "md",
+  Ron <-> "ron",
+  Rst <-> "rst"
+});
+
+/// The fragment data structure for exporting the harvested changes.
 #[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 pub struct Fragment {
   /// The hyperlinks to references for further reading.
