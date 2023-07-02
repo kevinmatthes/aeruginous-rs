@@ -359,8 +359,8 @@ pub use crate::{
   application::{Action, Clap as Application},
   cffreference::Cffreference,
   changelog::{
-    CommentChanges, Fragment, Ronlog, RonlogAction, RonlogReferences,
-    RonlogSection,
+    CommentChanges, Fragment, FragmentExportFormat, Ronlog, RonlogAction,
+    RonlogReferences, RonlogSection,
   },
   graphing::{
     AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
@@ -373,8 +373,8 @@ pub use crate::{
   },
   running::Running,
   traits::{
-    AppendAsLine, ColourMessage, ConvertBuffer, FromRon, Prefer, ReadFile,
-    ToRon, ToStderr,
+    AppendAsLine, ColourMessage, ConvertBuffer, FromMd, FromRon, FromRst,
+    Prefer, ReadFile, ToMd, ToRon, ToRst, ToStderr,
   },
   version::{Range as VersionRange, Version},
 };

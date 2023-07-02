@@ -1,0 +1,21 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "ToRst",
+      "FromRst",
+      "src/traits/restructured_text.rs",
+      "ToMd",
+      "FromMd",
+      "src/traits/markdown.rs",
+      "Renovate:  track cffconvert Docker image",
+      "FragmentExportFormat",
+    ],
+    "Changed": [
+      "CommentChanges:  refactor logic",
+      "Fragment:  apply new ToMd and ToRst traits",
+      "call cffconvert Docker image directly",
+      "rename tests/ron_traits.rs to tests/rusty_object_notation.rs",
+    ],
+  },
+)

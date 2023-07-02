@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{AppendAsLine, PatternWriter, ToRon};
+use crate::{FragmentExportFormat, PatternWriter, ToMd, ToRon, ToRst};
 use git2::Repository;
 use std::collections::HashMap;
 use sysexits::{ExitCode, Result};
@@ -43,20 +43,8 @@ pub struct CommentChanges {
   depth: Option<usize>,
 
   /// The target format of the resulting fragment.
-  #[arg(
-      default_value = "rst",
-      long,
-      short = 'f',
-      value_parser = |f: &str| {
-        if ["md", "ron", "rst"].contains(&f) {
-          Ok(f.to_string())
-        } else {
-          Err(format!("extension '{f}' is not supported, yet"))
-        }
-      },
-      visible_aliases = ["format"]
-    )]
-  extension: String,
+  #[arg(default_value = "rst", long, short = 'f', visible_aliases = ["format"])]
+  extension: FragmentExportFormat,
 
   /// The default category to assign.
   #[arg(long, short = 'C')]
@@ -119,7 +107,7 @@ impl CommentChanges {
       category: Vec::new(),
       delimiter,
       depth: None,
-      extension: "rst".to_string(),
+      extension: FragmentExportFormat::Rst,
       fallback_category: None,
       heading: 3,
       keep_a_changelog: false,
@@ -154,33 +142,6 @@ struct Logic {
 }
 
 impl Logic {
-  fn generate(&self) -> String {
-    let mut result = self.resolve();
-
-    for (category, changes) in &self.changes {
-      result.append_as_line(match self.cli.extension.as_str() {
-        "md" => format!("{} {category}\n", "#".repeat(self.cli.heading.into())),
-        "rst" => format!(
-          "{category}\n{}\n",
-          match self.cli.heading {
-            1 => "=",
-            2 => "-",
-            3 => ".",
-            _ => unreachable!(),
-          }
-          .repeat(category.len())
-        ),
-        _ => unreachable!(),
-      });
-
-      for change in changes {
-        result.append_as_line(format!("- {change}\n"));
-      }
-    }
-
-    result
-  }
-
   fn get_branch(&mut self) -> Result<()> {
     if let Some(repository) = &self.repository {
       self.branch = repository.head().map_or_else(
@@ -234,7 +195,6 @@ impl Logic {
     change: String,
   ) {
     map.entry(category.clone()).or_default();
-
     let mut changes = map[&category].clone();
     changes.push(change);
     map.insert(category, changes);
@@ -372,11 +332,12 @@ impl Logic {
   }
 
   fn report(&mut self) -> Result<()> {
-    let content = if self.cli.extension == "ron" {
-      crate::Fragment::new(&self.hyperlinks, &self.changes).to_ron(2)?
-    } else {
-      self.generate()
-    };
+    let fragment = crate::Fragment::new(&self.hyperlinks, &self.changes);
+    let content = match self.cli.extension {
+      FragmentExportFormat::Md => fragment.to_md(self.cli.heading),
+      FragmentExportFormat::Ron => fragment.to_ron(2),
+      FragmentExportFormat::Rst => fragment.to_rst(self.cli.heading),
+    }?;
 
     if !std::path::Path::new(&self.cli.output_directory).try_exists()? {
       std::fs::create_dir_all(&self.cli.output_directory)?;
@@ -394,24 +355,6 @@ impl Logic {
       self.cli.extension
     )
     .append(Box::new(content))
-  }
-
-  fn resolve(&self) -> String {
-    let mut result = String::new();
-
-    if !self.hyperlinks.is_empty() {
-      for (link_name, target) in &self.hyperlinks {
-        result.append_as_line(match self.cli.extension.as_str() {
-          "md" => format!("[{link_name}]:  {target}"),
-          "rst" => format!(".. _{link_name}:  {target}"),
-          _ => unreachable!(),
-        });
-      }
-
-      result.push('\n');
-    }
-
-    result
   }
 }
 

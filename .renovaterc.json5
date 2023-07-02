@@ -27,6 +27,7 @@
       ],
       matchPackageNames: [
         "actionlint",
+        "cffconvert",
       ],
     },
     {
@@ -69,6 +70,17 @@
     },
   ],
   regexManagers: [
+    {
+      datasourceTemplate: "github-releases",
+      depNameTemplate: "cffconvert",
+      fileMatch: [
+        "^\\.github/workflows/ci\\.yml$",
+      ],
+      matchStrings: [
+        "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+      ],
+      packageNameTemplate: "citation-file-format/cff-converter-python",
+    },
     {
       datasourceTemplate: "github-releases",
       depNameTemplate: "clap",
