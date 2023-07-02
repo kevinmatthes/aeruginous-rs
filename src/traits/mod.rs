@@ -23,6 +23,7 @@ mod convert_buffer;
 mod markdown;
 mod prefer;
 mod read_file;
+mod restructured_text;
 mod rusty_object_notation;
 mod to_stderr;
 
@@ -32,6 +33,7 @@ pub use convert_buffer::ConvertBuffer;
 pub use markdown::{FromMd, ToMd};
 pub use prefer::Prefer;
 pub use read_file::ReadFile;
+pub use restructured_text::{FromRst, ToRst};
 pub use rusty_object_notation::{FromRon, ToRon};
 pub use to_stderr::ToStderr;
 
