@@ -374,7 +374,7 @@ pub use crate::{
   running::Running,
   traits::{
     AppendAsLine, ColourMessage, ConvertBuffer, FromRon, Prefer, ReadFile,
-    ToRon, ToStderr,
+    ToRon, ToStderr, FromMd, ToMd
   },
   version::{Range as VersionRange, Version},
 };
