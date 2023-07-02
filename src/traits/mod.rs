@@ -20,6 +20,7 @@
 mod append_as_line;
 mod colour_message;
 mod convert_buffer;
+mod markdown;
 mod prefer;
 mod read_file;
 mod rusty_object_notation;
@@ -28,6 +29,7 @@ mod to_stderr;
 pub use append_as_line::AppendAsLine;
 pub use colour_message::ColourMessage;
 pub use convert_buffer::ConvertBuffer;
+pub use markdown::{FromMd, ToMd};
 pub use prefer::Prefer;
 pub use read_file::ReadFile;
 pub use rusty_object_notation::{FromRon, ToRon};
