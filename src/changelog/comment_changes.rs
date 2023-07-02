@@ -195,7 +195,6 @@ impl Logic {
     change: String,
   ) {
     map.entry(category.clone()).or_default();
-
     let mut changes = map[&category].clone();
     changes.push(change);
     map.insert(category, changes);
