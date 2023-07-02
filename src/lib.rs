@@ -373,8 +373,8 @@ pub use crate::{
   },
   running::Running,
   traits::{
-    AppendAsLine, ColourMessage, ConvertBuffer, FromRon, Prefer, ReadFile,
-    ToRon, ToStderr, FromMd, ToMd
+    AppendAsLine, ColourMessage, ConvertBuffer, FromMd, FromRon, FromRst,
+    Prefer, ReadFile, ToMd, ToRon, ToRst, ToStderr,
   },
   version::{Range as VersionRange, Version},
 };
