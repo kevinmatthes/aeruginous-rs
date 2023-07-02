@@ -5,7 +5,7 @@
       "Renovate:  track actionlint Docker image",
     ],
     "Changed": [
-      "CI:  call actionlint directly using its Docker image",
+      "call actionlint Docker image directly",
     ],
   },
 )
