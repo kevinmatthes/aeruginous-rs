@@ -17,8 +17,9 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::RonlogReferences;
+use crate::{AppendAsLine, RonlogReferences};
 use std::collections::HashMap;
+use sysexits::{ExitCode, Result};
 
 /// The supported export formats.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -91,6 +92,74 @@ impl Fragment {
     Self {
       references: references.clone(),
       changes: changes.clone(),
+    }
+  }
+}
+
+impl crate::ToMd for Fragment {
+  fn to_md(&self, header_level: u8) -> Result<String> {
+    if (1..=3).contains(&header_level) {
+      let mut result = String::new();
+
+      for (link_name, target) in &self.references {
+        result.append_as_line(format!("[{link_name}]:  {target}"));
+      }
+
+      if !self.references.is_empty() {
+        result.push('\n');
+      }
+
+      for (category, changes) in &self.changes {
+        result.append_as_line(format!(
+          "{} {category}\n",
+          "#".repeat(header_level.into())
+        ));
+
+        for change in changes {
+          result.append_as_line(format!("- {change}\n"));
+        }
+      }
+
+      Ok(result)
+    } else {
+      Err(ExitCode::DataErr)
+    }
+  }
+}
+
+impl crate::ToRst for Fragment {
+  fn to_rst(&self, header_level: u8) -> Result<String> {
+    if (1..=3).contains(&header_level) {
+      let mut result = String::new();
+
+      for (link_name, target) in &self.references {
+        result.append_as_line(format!(".. _{link_name}:  {target}"));
+      }
+
+      if !self.references.is_empty() {
+        result.push('\n');
+      }
+
+      for (category, changes) in &self.changes {
+        result.append_as_line(format!(
+          "{category}\n{}\n",
+          match header_level {
+            1 => "=",
+            2 => "-",
+            3 => ".",
+            _ => unreachable!(),
+          }
+          .repeat(category.len())
+        ));
+
+        for change in changes {
+          result.append_as_line(format!("- {change}\n"));
+        }
+      }
+
+      Ok(result)
+    } else {
+      Err(ExitCode::DataErr)
     }
   }
 }
