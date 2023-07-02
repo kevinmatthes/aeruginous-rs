@@ -21,6 +21,7 @@ use crate::RonlogReferences;
 use std::collections::HashMap;
 
 /// The supported export formats.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ExportFormat {
   /// Markdown.
   Md,
