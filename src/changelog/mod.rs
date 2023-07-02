@@ -22,7 +22,7 @@ mod fragment;
 mod ronlog;
 
 pub use comment_changes::CommentChanges;
-pub use fragment::Fragment;
+pub use fragment::{ExportFormat as FragmentExportFormat, Fragment};
 pub use ronlog::{
   Action as RonlogAction, References as RonlogReferences, Ronlog,
   Section as RonlogSection,
