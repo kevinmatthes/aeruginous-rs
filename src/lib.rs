@@ -359,8 +359,8 @@ pub use crate::{
   application::{Action, Clap as Application},
   cffreference::Cffreference,
   changelog::{
-    CommentChanges, Fragment, Ronlog, RonlogAction, RonlogReferences,
-    RonlogSection,
+    CommentChanges, Fragment, FragmentExportFormat, Ronlog, RonlogAction,
+    RonlogReferences, RonlogSection,
   },
   graphing::{
     AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
