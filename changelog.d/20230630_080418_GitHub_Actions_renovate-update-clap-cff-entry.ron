@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "CFF:  automatically update Clap entry with Renovate",
-    ],
-  },
-)
