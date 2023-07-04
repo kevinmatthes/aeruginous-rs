@@ -9,6 +9,53 @@
       version: (
         major: 3,
         minor: 0,
+        patch: 1,
+      ),
+      released: "2023-07-04T12:33:56.404949745+00:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Fixed": [
+            "prevent release generation in forks",
+            "do not allow RONLOG assemblies in forks",
+          ],
+          "Changed": [
+            "call actionlint Docker image directly",
+            "rename cffs/expectation.cff to cffs/expectation.yml",
+            "CommentChanges:  refactor logic",
+            "Fragment:  apply new ToMd and ToRst traits",
+            "call cffconvert Docker image directly",
+            "rename tests/ron_traits.rs to tests/rusty_object_notation.rs",
+          ],
+          "Added": [
+            "CFF:  automatically update Clap entry with Renovate",
+            "Renovate:  track actionlint Docker image",
+            "CI:  add release date update workflow for Clap CFF entry",
+            "CI:  assemble main CFF from fragments",
+            ".github/CFF/citation-file-format.yml",
+            ".github/CFF/sysexits.yml",
+            ".github/CFF/chrono.yml",
+            ".github/CFF/clap.yml",
+            ".github/CFF/aeruginous.cff",
+            "Renovate:  prefix ``[Renovate]`` for Dependency Dashboard",
+            "ToRst",
+            "FromRst",
+            "src/traits/restructured_text.rs",
+            "ToMd",
+            "FromMd",
+            "src/traits/markdown.rs",
+            "Renovate:  track cffconvert Docker image",
+            "FragmentExportFormat",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 0,
         patch: 0,
       ),
       released: "2023-06-30T06:26:11.291071059+00:00",
@@ -16,11 +63,6 @@
       changes: (
         references: {},
         changes: {
-          "Changed": [
-            "CI:  rename release level selector",
-            "CI:  apply new increment-version features",
-            "cffreference:  refactor logic",
-          ],
           "Removed": [
             "Dependabot:  configuration",
             ".github/workflows/cargo-update.yml",
@@ -28,6 +70,15 @@
             "CI:  manual trigger for release workflow",
             "PatternReader",
             "src/pattern/reader.rs",
+          ],
+          "Changed": [
+            "CI:  rename release level selector",
+            "CI:  apply new increment-version features",
+            "cffreference:  refactor logic",
+          ],
+          "Fixed": [
+            "CI:  skip compilation on RONLOG assembly",
+            "show previously hidden Clap aliases",
           ],
           "Added": [
             "CFF:  entry for ``clap`` v4.3.10",
@@ -48,10 +99,6 @@
             "ceprintlns",
             "CFF:  entry for ``sysexits`` v0.6.1",
           ],
-          "Fixed": [
-            "CI:  skip compilation on RONLOG assembly",
-            "show previously hidden Clap aliases",
-          ],
         },
       ),
     ),
@@ -67,19 +114,6 @@
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "CI:  rename RONLOG assembly workflow job",
-            "comment-changes:  create missing target directories",
-          ],
-          "Removed": [
-            "Scriv:  configuration",
-            "src/changelog/section.rs",
-            "src/changelog/action.rs",
-            "tests/version_range.rs",
-            "tests/ronlog_action.rs",
-            "tests/getters.rs",
-            "tests/implement.rs",
-          ],
           "Changed": [
             "move RonlogSection definition to RONLOG source file",
             "move RonlogAction definition to RONLOG source file",
@@ -91,6 +125,19 @@
             "enum_trait",
             "tests/macros.rs",
             "CI:  settings for the automated release notes",
+          ],
+          "Removed": [
+            "Scriv:  configuration",
+            "src/changelog/section.rs",
+            "src/changelog/action.rs",
+            "tests/version_range.rs",
+            "tests/ronlog_action.rs",
+            "tests/getters.rs",
+            "tests/implement.rs",
+          ],
+          "Fixed": [
+            "CI:  rename RONLOG assembly workflow job",
+            "comment-changes:  create missing target directories",
           ],
         },
       ),
@@ -107,6 +154,9 @@
       changes: (
         references: {},
         changes: {
+          "Fixed": [
+            "CI:  redundant test runs",
+          ],
           "Added": [
             "CFF:  entry for ``clap`` v4.3.4",
             "CI:  real release workflow",
@@ -117,9 +167,6 @@
             "CI:  rename release preparation workflow to ``ronlog.yml``",
             "README:  enhance documentation of RONLOG mode",
             "CI:  mirror README from src/lib.rs during release workflow",
-          ],
-          "Fixed": [
-            "CI:  redundant test runs",
           ],
         },
       ),
@@ -136,24 +183,15 @@
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "CI:  Bash style issues",
-            "ToRon::to_ron:  missing trailing newline at the end",
-          ],
-          "Changed": [
-            "``cargo update`` (#316)",
-            "MSRV:  1.70.0",
-            "increment versions with Aeruginous",
-            "move documentation of v0.0.0 to RONLOG",
-            "move FromRon and ToRon to one source file",
-            "CI:  assemble RONLOG on release",
-            "CI:  create RON fragments",
-          ],
           "Removed": [
             "CFF:  entries of outdated versions",
             "bump2version:  configuration",
             "src/traits/to_ron.rs",
             "src/traits/from_ron.rs",
+          ],
+          "Fixed": [
+            "CI:  Bash style issues",
+            "ToRon::to_ron:  missing trailing newline at the end",
           ],
           "Added": [
             "CI:  lint GitHub Action workflows",
@@ -179,6 +217,15 @@
             "VersionRange",
             "src/traits/rusty_object_notation.rs",
             "CHANGELOG.ron",
+          ],
+          "Changed": [
+            "``cargo update`` (#316)",
+            "MSRV:  1.70.0",
+            "increment versions with Aeruginous",
+            "move documentation of v0.0.0 to RONLOG",
+            "move FromRon and ToRon to one source file",
+            "CI:  assemble RONLOG on release",
+            "CI:  create RON fragments",
           ],
         },
       ),

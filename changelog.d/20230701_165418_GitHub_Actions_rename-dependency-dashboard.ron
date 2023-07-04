@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "Renovate:  prefix ``[Renovate]`` for Dependency Dashboard",
-    ],
-  },
-)
