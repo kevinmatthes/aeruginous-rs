@@ -40,17 +40,6 @@
     },
     {
       addLabels: [
-        "documentation",
-      ],
-      matchManagers: [
-        "regex",
-      ],
-      matchPackageNames: [
-        "clap::CFF",
-      ],
-    },
-    {
-      addLabels: [
         "github_actions",
       ],
       matchManagers: [
@@ -80,17 +69,6 @@
         "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
       ],
       packageNameTemplate: "citation-file-format/cff-converter-python",
-    },
-    {
-      datasourceTemplate: "github-releases",
-      depNameTemplate: "clap::CFF",
-      fileMatch: [
-        "^\\.github/CFF/clap\\.yml$",
-      ],
-      matchStrings: [
-        "(?<currentValue>\\d+\\.\\d+\\.\\d+).*# clap::CFF",
-      ],
-      packageNameTemplate: "clap-rs/clap",
     },
     {
       datasourceTemplate: "github-releases",
