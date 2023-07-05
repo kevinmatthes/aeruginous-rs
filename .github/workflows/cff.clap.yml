@@ -33,8 +33,6 @@ name: cff
 
 on:
   push:
-    branches:
-      - renovate/**
     paths:
       - .github/CFF/clap.yml
 
@@ -50,9 +48,6 @@ jobs:
       - uses: fregante/setup-git-user@v2.0.1
 
       - run: |
-          sed "s/date-released: ....-..-../date-released: $(date +%F)/g" \
-            .github/CFF/clap.yml > clap.yml
-          mv clap.yml .github/CFF/
           cat .github/CFF/aeruginous.cff > CITATION.cff
           {
             echo references: ;
