@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "CI:  prevent failing on CFF update PR merge",
+    ],
+  },
+)
