@@ -65,7 +65,7 @@
         "regex",
       ],
       matchPackageNames: [
-        "Rust",
+        "rust",
       ],
     },
   ],
@@ -105,7 +105,7 @@
     },
     {
       datasourceTemplate: "github-releases",
-      depNameTemplate: "Rust",
+      depNameTemplate: "rust",
       fileMatch: [
         "^\\.clippy\\.toml$",
         "^Cargo\\.toml$",
