@@ -33,8 +33,6 @@ name: cff
 
 on:
   push:
-    branches:
-      - renovate/**
     paths:
       - .github/CFF/clap.yml
 
