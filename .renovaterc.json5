@@ -46,7 +46,7 @@
         "regex",
       ],
       matchPackageNames: [
-        "clap",
+        "clap::CFF",
       ],
     },
     {
@@ -83,12 +83,12 @@
     },
     {
       datasourceTemplate: "github-releases",
-      depNameTemplate: "clap",
+      depNameTemplate: "clap::CFF",
       fileMatch: [
         "^\\.github/CFF/clap\\.yml$",
       ],
       matchStrings: [
-        "(?<currentValue>\\d+\\.\\d+\\.\\d+).*# clap",
+        "(?<currentValue>\\d+\\.\\d+\\.\\d+).*# clap::CFF",
       ],
       packageNameTemplate: "clap-rs/clap",
     },
