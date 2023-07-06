@@ -2,6 +2,7 @@
   assignees: [
     "kevinmatthes",
   ],
+  automerge: false,
   commitMessageLowerCase: "never",
   commitMessagePrefix: "[Renovate]",
   dependencyDashboard: true,
