@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "comment-changes:  make message harvesting into dedicated function",
+    ],
+    "Removed": [
+      "CI:  ``cargo nextest r``",
+    ],
+  },
+)
