@@ -189,6 +189,34 @@ impl Logic {
     }
   }
 
+  fn harvest_message(&self, message: &str) -> Option<(String, String)> {
+    if let Some((category, change)) =
+      message.trim().split_once(&self.cli.delimiter)
+    {
+      let category = category.trim().to_string();
+      let change = change.trim().to_string();
+      let valid_category = self.categories.iter().any(|c| c == &category);
+
+      if self.categories.is_empty() || valid_category {
+        Some((category, change))
+      } else if !valid_category {
+        self
+          .cli
+          .fallback_category
+          .as_ref()
+          .map(|fallback| (fallback.to_string(), change))
+      } else {
+        None
+      }
+    } else {
+      self
+        .cli
+        .fallback_category
+        .as_ref()
+        .map(|fallback| (fallback.to_string(), message.trim().to_string()))
+    }
+  }
+
   fn insert(
     map: &mut HashMap<String, Vec<String>>,
     category: String,
@@ -274,30 +302,9 @@ impl Logic {
                     commit.summary()
                   } {
                     if let Some((category, change)) =
-                      message.trim().split_once(&self.cli.delimiter)
+                      self.harvest_message(message)
                     {
-                      let category = category.trim().to_string();
-                      let change = change.trim().to_string();
-                      let valid_category =
-                        self.categories.iter().any(|c| c == &category);
-
-                      if self.categories.is_empty() || valid_category {
-                        Self::insert(&mut result, category, change);
-                      } else if !valid_category {
-                        if let Some(fallback) = &self.cli.fallback_category {
-                          Self::insert(
-                            &mut result,
-                            fallback.to_string(),
-                            change,
-                          );
-                        }
-                      }
-                    } else if let Some(fallback) = &self.cli.fallback_category {
-                      Self::insert(
-                        &mut result,
-                        fallback.to_string(),
-                        message.trim().to_string(),
-                      );
+                      Self::insert(&mut result, category, change);
                     }
                   }
                 } else {
