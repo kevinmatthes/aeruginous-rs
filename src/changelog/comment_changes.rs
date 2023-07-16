@@ -296,11 +296,15 @@ impl Logic {
                 }
 
                 if let Ok(commit) = repository.find_commit(oid) {
-                  if let Some(message) = if self.cli.body {
-                    commit.body()
-                  } else {
-                    commit.summary()
-                  } {
+                  if let Some(message) = commit.message() {
+                    let (summary, body) =
+                      message.split_once('\n').unwrap_or((message, ""));
+                    let message = if self.cli.body {
+                      body.trim()
+                    } else {
+                      summary.trim()
+                    };
+
                     if let Some((category, change)) =
                       self.harvest_message(message)
                     {
