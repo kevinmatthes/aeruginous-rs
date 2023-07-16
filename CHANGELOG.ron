@@ -9,6 +9,38 @@
       version: (
         major: 3,
         minor: 0,
+        patch: 2,
+      ),
+      released: "2023-07-16T19:09:33.739326728+00:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Fixed": [
+            "CI:  prevent failing on CFF update PR merge",
+          ],
+          "Changed": [
+            "Renovate:  disable automerge explicitly",
+            "Renovate:  listen to renamed ``cffconvert`` repository",
+            "comment-changes:  work on entire commit message instead of certain part",
+          ],
+          "Added": [
+            "comment-changes:  make message harvesting into dedicated function",
+            "CFF:  entry for ``clap`` v4.3.12",
+            "comment-changes:  ``--force`` mode",
+          ],
+          "Removed": [
+            "CFF:  automatically update Clap entry with Renovate",
+            "CI:  ``cargo nextest r``",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 0,
         patch: 1,
       ),
       released: "2023-07-04T12:33:56.404949745+00:00",
@@ -16,18 +48,6 @@
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "prevent release generation in forks",
-            "do not allow RONLOG assemblies in forks",
-          ],
-          "Changed": [
-            "call actionlint Docker image directly",
-            "rename cffs/expectation.cff to cffs/expectation.yml",
-            "CommentChanges:  refactor logic",
-            "Fragment:  apply new ToMd and ToRst traits",
-            "call cffconvert Docker image directly",
-            "rename tests/ron_traits.rs to tests/rusty_object_notation.rs",
-          ],
           "Added": [
             "CFF:  automatically update Clap entry with Renovate",
             "Renovate:  track actionlint Docker image",
@@ -48,6 +68,18 @@
             "Renovate:  track cffconvert Docker image",
             "FragmentExportFormat",
           ],
+          "Changed": [
+            "call actionlint Docker image directly",
+            "rename cffs/expectation.cff to cffs/expectation.yml",
+            "CommentChanges:  refactor logic",
+            "Fragment:  apply new ToMd and ToRst traits",
+            "call cffconvert Docker image directly",
+            "rename tests/ron_traits.rs to tests/rusty_object_notation.rs",
+          ],
+          "Fixed": [
+            "prevent release generation in forks",
+            "do not allow RONLOG assemblies in forks",
+          ],
         },
       ),
     ),
@@ -63,23 +95,6 @@
       changes: (
         references: {},
         changes: {
-          "Removed": [
-            "Dependabot:  configuration",
-            ".github/workflows/cargo-update.yml",
-            ".github/workflows/msrv.yml",
-            "CI:  manual trigger for release workflow",
-            "PatternReader",
-            "src/pattern/reader.rs",
-          ],
-          "Changed": [
-            "CI:  rename release level selector",
-            "CI:  apply new increment-version features",
-            "cffreference:  refactor logic",
-          ],
-          "Fixed": [
-            "CI:  skip compilation on RONLOG assembly",
-            "show previously hidden Clap aliases",
-          ],
           "Added": [
             "CFF:  entry for ``clap`` v4.3.10",
             "Renovate:  configuration",
@@ -99,6 +114,23 @@
             "ceprintlns",
             "CFF:  entry for ``sysexits`` v0.6.1",
           ],
+          "Changed": [
+            "CI:  rename release level selector",
+            "CI:  apply new increment-version features",
+            "cffreference:  refactor logic",
+          ],
+          "Fixed": [
+            "CI:  skip compilation on RONLOG assembly",
+            "show previously hidden Clap aliases",
+          ],
+          "Removed": [
+            "Dependabot:  configuration",
+            ".github/workflows/cargo-update.yml",
+            ".github/workflows/msrv.yml",
+            "CI:  manual trigger for release workflow",
+            "PatternReader",
+            "src/pattern/reader.rs",
+          ],
         },
       ),
     ),
@@ -114,18 +146,6 @@
       changes: (
         references: {},
         changes: {
-          "Changed": [
-            "move RonlogSection definition to RONLOG source file",
-            "move RonlogAction definition to RONLOG source file",
-            "src/version.rs:  apply new enum_trait macro",
-            "comment-changes:  update README description",
-          ],
-          "Added": [
-            "CI:  create release on RONLOG assembly",
-            "enum_trait",
-            "tests/macros.rs",
-            "CI:  settings for the automated release notes",
-          ],
           "Removed": [
             "Scriv:  configuration",
             "src/changelog/section.rs",
@@ -134,6 +154,18 @@
             "tests/ronlog_action.rs",
             "tests/getters.rs",
             "tests/implement.rs",
+          ],
+          "Added": [
+            "CI:  create release on RONLOG assembly",
+            "enum_trait",
+            "tests/macros.rs",
+            "CI:  settings for the automated release notes",
+          ],
+          "Changed": [
+            "move RonlogSection definition to RONLOG source file",
+            "move RonlogAction definition to RONLOG source file",
+            "src/version.rs:  apply new enum_trait macro",
+            "comment-changes:  update README description",
           ],
           "Fixed": [
             "CI:  rename RONLOG assembly workflow job",
