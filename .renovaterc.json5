@@ -69,7 +69,7 @@
       matchStrings: [
         "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
       ],
-      packageNameTemplate: "citation-file-format/cff-converter-python",
+      packageNameTemplate: "citation-file-format/cffconvert",
     },
     {
       datasourceTemplate: "github-releases",
