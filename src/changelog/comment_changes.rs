@@ -50,6 +50,10 @@ pub struct CommentChanges {
   #[arg(long, short = 'C')]
   fallback_category: Option<String>,
 
+  /// Whether to enforce the fragment creation.
+  #[arg(long, short = 'F')]
+  force: bool,
+
   /// The heading's level in the resulting fragment.
   #[arg(
       default_value = "3",
@@ -109,6 +113,7 @@ impl CommentChanges {
       depth: None,
       extension: FragmentExportFormat::Rst,
       fallback_category: None,
+      force: false,
       heading: 3,
       keep_a_changelog: false,
       link: Vec::new(),
@@ -299,16 +304,25 @@ impl Logic {
                   if let Some(message) = commit.message() {
                     let (summary, body) =
                       message.split_once('\n').unwrap_or((message, ""));
-                    let message = if self.cli.body {
-                      body.trim()
-                    } else {
-                      summary.trim()
-                    };
 
                     if let Some((category, change)) =
-                      self.harvest_message(message)
+                      self.harvest_message(if self.cli.body {
+                        body.trim()
+                      } else {
+                        summary.trim()
+                      })
                     {
                       Self::insert(&mut result, category, change);
+                    } else if self.cli.force {
+                      if let Some((category, change)) =
+                        self.harvest_message(if self.cli.body {
+                          summary.trim()
+                        } else {
+                          body.trim()
+                        })
+                      {
+                        Self::insert(&mut result, category, change);
+                      }
                     }
                   }
                 } else {
