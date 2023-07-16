@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "comment-changes:  ``--force`` mode",
+    ],
+    "Changed": [
+      "comment-changes:  work on entire commit message instead of certain part",
+    ],
+  },
+)
