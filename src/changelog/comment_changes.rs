@@ -195,7 +195,9 @@ impl Logic {
   }
 
   fn harvest_message(&self, message: &str) -> Option<(String, String)> {
-    if let Some((category, change)) =
+    if message.is_empty() {
+      None
+    } else if let Some((category, change)) =
       message.trim().split_once(&self.cli.delimiter)
     {
       let category = category.trim().to_string();
