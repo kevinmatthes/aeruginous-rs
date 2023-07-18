@@ -20,10 +20,10 @@
 ################################################################################
 ##
 ##  AUTHOR      Kevin Matthes
-##  BRIEF       Update the release date in the CFF entry for Clap.
+##  BRIEF       Assemble the main CITATION.cff from its updated fragments.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
-##  FILE        cff.clap.yml
+##  FILE        cff.yml
 ##  NOTE        See `LICENSE' for full license.
 ##              See `README.md' for project details.
 ##
@@ -36,13 +36,14 @@ on:
     branches-ignore:
       - main
     paths:
-      - .github/CFF/clap.yml
+      - .github/CFF/*.cff
+      - .github/CFF/*.yml
 
 permissions:
   contents: write
 
 jobs:
-  clap:
+  main:
     if: github.repository == 'kevinmatthes/aeruginous-rs'
     runs-on: ubuntu-latest
     steps:
@@ -59,8 +60,7 @@ jobs:
                 .github/CFF/sysexits.yml ;
           } >> CITATION.cff
           git add .
-          git commit --allow-empty -m \
-            '[GitHub Actions] Update CFF Entry for Clap'
+          git commit --allow-empty -m '[GitHub Actions] Assemble CITATION.cff'
           git push
 
 ################################################################################
