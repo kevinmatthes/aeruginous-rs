@@ -20,7 +20,7 @@
 ################################################################################
 ##
 ##  AUTHOR      Kevin Matthes
-##  BRIEF       Settings for GitHub release note generation.
+##  BRIEF       Settings for the GitHub release note generation.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
 ##  FILE        release.yml
