@@ -57,9 +57,7 @@ jobs:
       - run: |
           curl \
             https://raw.githubusercontent.com/clap-rs/clap/master/CITATION.cff \
-            > clap.cff
-          cargo r -- cffreference -i clap.cff > .github/CFF/clap.yml
-          rm clap.cff
+            | cargo r -- cffreference > .github/CFF/clap.yml
           git add .github/CFF/clap.yml
           git commit --allow-empty -m \
             '[GitHub Actions] Update CFF Entry for Clap'

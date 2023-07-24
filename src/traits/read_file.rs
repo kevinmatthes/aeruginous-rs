@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::ToStderr;
+use crate::{AppendAsLine, ToStderr};
 use std::{io::stdin, path::PathBuf};
 use sysexits::Result;
 
@@ -86,7 +86,7 @@ impl ReadFile for std::io::Stdin {
 
     for line in stdin().lines() {
       match line {
-        Ok(string) => result.push_str(&string),
+        Ok(string) => result.append_as_line(string),
         Err(error) => return error.to_stderr(show_error_messages),
       }
     }
