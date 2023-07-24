@@ -12,8 +12,11 @@
 [lcns]:  https://img.shields.io/github/license/kevinmatthes/aeruginous-rs
 [lcnss]:  https://github.com/kevinmatthes/aeruginous-rs/tree/main/LICENSEs
 [lst]:  https://img.shields.io/github/last-commit/kevinmatthes/aeruginous-rs
-[msrv]:  https://img.shields.io/badge/MSRV-1.71.0-green
+[msrv]:  https://img.shields.io/badge/MSRV-1.71.0-brightgreen
+[release]:  https://github.com/kevinmatthes/aeruginous-rs/releases/latest
+[renovate]:  https://img.shields.io/badge/renovate-enabled-brightgreen.svg
 [repository]:  https://github.com/kevinmatthes/aeruginous-rs
+[tag]:  https://img.shields.io/github/v/tag/kevinmatthes/aeruginous-rs
 
 <!------------------------------------------------------------------------->
 
@@ -22,12 +25,15 @@
 ## Summary
 
 [![][ci]][repository]
+[![][lst]][repository]
+[![][lcns]][repository]
+[![][renovate]][repository]
+[![][tag]][release]
+<br>
 [![][crates-io]][crate]
 [![][deps]][deps-rs]
 [![][docs]][docs-rs]
 [![][downloads]][crate]
-[![][lst]][repository]
-[![][lcns]][repository]
 [![][msrv]][repository]
 
 The Aeruginous Open Source Development Toolbox.
