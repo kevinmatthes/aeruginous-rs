@@ -33,14 +33,17 @@ name: cff
 
 on:
   push:
-    branches-ignore:
+    branches:
       - main
     paths:
       - .github/CFF/*.cff
       - .github/CFF/*.yml
+      - Cargo.toml
+  workflow_dispatch:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   main:
@@ -49,6 +52,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3.5.3
       - uses: fregante/setup-git-user@v2.0.1
+      - run: rustup update
+
+      - run: |
+          curl \
+            https://raw.githubusercontent.com/clap-rs/clap/master/CITATION.cff \
+            > clap.cff
+          cargo r -- cffreference -i clap.cff > .github/CFF/clap.yml
+          rm clap.cff
+          git add .github/CFF/clap.yml
+          git commit --allow-empty -m \
+            '[GitHub Actions] Update CFF Entry for Clap'
 
       - run: |
           cat .github/CFF/aeruginous.cff > CITATION.cff
@@ -61,6 +75,15 @@ jobs:
           } >> CITATION.cff
           git add .
           git commit --allow-empty -m '[GitHub Actions] Assemble CITATION.cff'
-          git push
+
+      - uses: peter-evans/create-pull-request@v5.0.2
+        with:
+          assignees: |
+            kevinmatthes
+          branch: documentation/cff-update
+          branch-suffix: timestamp
+          labels: documentation
+          milestone: 6
+          title: '[GitHub Actions] Update CITATION.cff'
 
 ################################################################################
