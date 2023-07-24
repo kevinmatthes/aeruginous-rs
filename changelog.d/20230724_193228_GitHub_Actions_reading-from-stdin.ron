@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Fixed": [
-      "reading from stdin now adds newlines where required",
-    ],
-  },
-)

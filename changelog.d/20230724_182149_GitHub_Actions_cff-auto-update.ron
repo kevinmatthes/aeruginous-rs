@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "CI:  automatically update CFF on pushes to main",
-    ],
-  },
-)
