@@ -18,11 +18,11 @@
 \******************************************************************************/
 
 use aeruginous::{
-  AeruginousGraphDescription,
-  AgdTokens::{
-    Abbreviate, And, By, Comment, Connect, Declare, FullStop, Identifier,
-    LineFeed, Space, StringLiteral, Unexpected,
-  },
+    AeruginousGraphDescription,
+    AgdTokens::{
+        Abbreviate, And, By, Comment, Connect, Declare, FullStop, Identifier,
+        LineFeed, Space, StringLiteral, Unexpected,
+    },
 };
 use std::{fs::read_to_string, path::PathBuf};
 use sysexits::ExitCode;
@@ -357,83 +357,83 @@ make_test!(@typos
 
 #[test]
 fn main_comment() {
-  assert_eq!(
-    AeruginousGraphDescription::main(&Some(PathBuf::from(
-      "./graphs/examples/comment.agd"
-    ))),
-    Ok(())
-  );
+    assert_eq!(
+        AeruginousGraphDescription::main(&Some(PathBuf::from(
+            "./graphs/examples/comment.agd"
+        ))),
+        Ok(())
+    );
 }
 
 #[test]
 fn main_etc() {
-  let mut agd = AeruginousGraphDescription::new();
-  let input = read_to_string("./graphs/examples/etc.agd").unwrap();
-  agd.read(&input).unwrap();
+    let mut agd = AeruginousGraphDescription::new();
+    let input = read_to_string("./graphs/examples/etc.agd").unwrap();
+    agd.read(&input).unwrap();
 
-  assert_eq!(
-    agd.tokens(),
-    &[
-      Comment,
-      LineFeed(2),
-      Abbreviate,
-      Space(1),
-      StringLiteral(0),
-      Space(1),
-      By,
-      Space(1),
-      Identifier(0),
-      FullStop,
-      LineFeed(1),
-      Declare,
-      Space(1),
-      StringLiteral(1),
-      FullStop,
-      LineFeed(1),
-      Connect,
-      Space(1),
-      StringLiteral(2),
-      Space(1),
-      And,
-      Space(1),
-      Identifier(1),
-      FullStop,
-      LineFeed(1),
-    ]
-  );
+    assert_eq!(
+        agd.tokens(),
+        &[
+            Comment,
+            LineFeed(2),
+            Abbreviate,
+            Space(1),
+            StringLiteral(0),
+            Space(1),
+            By,
+            Space(1),
+            Identifier(0),
+            FullStop,
+            LineFeed(1),
+            Declare,
+            Space(1),
+            StringLiteral(1),
+            FullStop,
+            LineFeed(1),
+            Connect,
+            Space(1),
+            StringLiteral(2),
+            Space(1),
+            And,
+            Space(1),
+            Identifier(1),
+            FullStop,
+            LineFeed(1),
+        ]
+    );
 }
 
 #[test]
 fn method_equality() {
-  assert_eq!(
-    AeruginousGraphDescription::default(),
-    AeruginousGraphDescription::new()
-  );
+    assert_eq!(
+        AeruginousGraphDescription::default(),
+        AeruginousGraphDescription::new()
+    );
 }
 
 #[test]
 fn read_string_literals() {
-  let mut agd = AeruginousGraphDescription::new();
-  agd.read("(...) \"abc ...\" (...) \"def\" (...)").unwrap();
+    let mut agd = AeruginousGraphDescription::new();
+    agd.read("(...) \"abc ...\" (...) \"def\" (...)").unwrap();
 
-  assert_eq!(
-    agd.tokens(),
-    &[
-      Comment,
-      Space(1),
-      StringLiteral(0),
-      Space(1),
-      Comment,
-      Space(1),
-      StringLiteral(1),
-      Space(1),
-      Comment
-    ]
-  );
-  assert_eq!(
-    agd.string_literals(),
-    &["abc ...".to_string(), "def".to_string()]
-  );
+    assert_eq!(
+        agd.tokens(),
+        &[
+            Comment,
+            Space(1),
+            StringLiteral(0),
+            Space(1),
+            Comment,
+            Space(1),
+            StringLiteral(1),
+            Space(1),
+            Comment
+        ]
+    );
+    assert_eq!(
+        agd.string_literals(),
+        &["abc ...".to_string(), "def".to_string()]
+    );
 }
 
 /******************************************************************************/
