@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "Renovate:  submit one bundled lock file maintenance per week",
+    ],
+  },
+)
