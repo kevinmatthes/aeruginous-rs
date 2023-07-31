@@ -24,14 +24,14 @@ use sysexits::{ExitCode, Result};
 /// The supported export formats.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ExportFormat {
-  /// Markdown.
-  Md,
+    /// Markdown.
+    Md,
 
-  /// Rusty Object Notation.
-  Ron,
+    /// Rusty Object Notation.
+    Ron,
 
-  /// reStructured Text.
-  Rst,
+    /// reStructured Text.
+    Rst,
 }
 
 crate::enum_trait!(ExportFormat {
@@ -43,131 +43,130 @@ crate::enum_trait!(ExportFormat {
 /// The fragment data structure for exporting the harvested changes.
 #[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 pub struct Fragment {
-  /// The hyperlinks to references for further reading.
-  references: RonlogReferences,
+    /// The hyperlinks to references for further reading.
+    references: RonlogReferences,
 
-  /// The harvested changes.
-  changes: HashMap<String, Vec<String>>,
+    /// The harvested changes.
+    changes: HashMap<String, Vec<String>>,
 }
 
 impl Fragment {
-  crate::getters!(@fn @ref
-    references: RonlogReferences,
-    changes: HashMap<String, Vec<String>>
-  );
+    crate::getters!(@fn @ref
+      references: RonlogReferences,
+      changes: HashMap<String, Vec<String>>
+    );
 
-  /// Add another instance's contents to this one's.
-  pub fn merge(&mut self, other: Self) {
-    for (link, target) in other.references {
-      self
-        .references
-        .entry(link)
-        .and_modify(|t| *t = target.clone())
-        .or_insert(target);
+    /// Add another instance's contents to this one's.
+    pub fn merge(&mut self, other: Self) {
+        for (link, target) in other.references {
+            self.references
+                .entry(link)
+                .and_modify(|t| *t = target.clone())
+                .or_insert(target);
+        }
+
+        for (category, changes) in other.changes {
+            self.changes.entry(category.clone()).or_default();
+
+            let mut change_list = self.changes[&category].clone();
+            change_list.append(&mut changes.clone());
+            self.changes.insert(category, change_list);
+        }
     }
 
-    for (category, changes) in other.changes {
-      self.changes.entry(category.clone()).or_default();
-
-      let mut change_list = self.changes[&category].clone();
-      change_list.append(&mut changes.clone());
-      self.changes.insert(category, change_list);
+    /// Move all known references out of this instance.
+    #[must_use]
+    pub fn move_references(&mut self) -> RonlogReferences {
+        let result = self.references.clone();
+        self.references.clear();
+        result
     }
-  }
 
-  /// Move all known references out of this instance.
-  #[must_use]
-  pub fn move_references(&mut self) -> RonlogReferences {
-    let result = self.references.clone();
-    self.references.clear();
-    result
-  }
-
-  /// Create a new instance.
-  #[must_use]
-  pub fn new(
-    references: &RonlogReferences,
-    changes: &HashMap<String, Vec<String>>,
-  ) -> Self {
-    Self {
-      references: references.clone(),
-      changes: changes.clone(),
+    /// Create a new instance.
+    #[must_use]
+    pub fn new(
+        references: &RonlogReferences,
+        changes: &HashMap<String, Vec<String>>,
+    ) -> Self {
+        Self {
+            references: references.clone(),
+            changes: changes.clone(),
+        }
     }
-  }
 }
 
 impl crate::ToMd for Fragment {
-  fn to_md(&self, header_level: u8) -> Result<String> {
-    if (1..=3).contains(&header_level) {
-      let mut result = String::new();
+    fn to_md(&self, header_level: u8) -> Result<String> {
+        if (1..=3).contains(&header_level) {
+            let mut result = String::new();
 
-      for (link_name, target) in &self.references {
-        result.append_as_line(format!("[{link_name}]:  {target}"));
-      }
+            for (link_name, target) in &self.references {
+                result.append_as_line(format!("[{link_name}]:  {target}"));
+            }
 
-      if !self.references.is_empty() {
-        result.push('\n');
-      }
+            if !self.references.is_empty() {
+                result.push('\n');
+            }
 
-      for (category, changes) in &self.changes {
-        result.append_as_line(format!(
-          "{} {category}\n",
-          "#".repeat(header_level.into())
-        ));
+            for (category, changes) in &self.changes {
+                result.append_as_line(format!(
+                    "{} {category}\n",
+                    "#".repeat(header_level.into())
+                ));
 
-        for change in changes {
-          result.append_as_line(format!("- {change}\n"));
+                for change in changes {
+                    result.append_as_line(format!("- {change}\n"));
+                }
+            }
+
+            Ok(result)
+        } else {
+            Err(ExitCode::DataErr)
         }
-      }
-
-      Ok(result)
-    } else {
-      Err(ExitCode::DataErr)
     }
-  }
 }
 
 impl crate::ToRst for Fragment {
-  fn to_rst(&self, header_level: u8) -> Result<String> {
-    if (1..=3).contains(&header_level) {
-      let mut result = String::new();
+    fn to_rst(&self, header_level: u8) -> Result<String> {
+        if (1..=3).contains(&header_level) {
+            let mut result = String::new();
 
-      for (link_name, target) in &self.references {
-        result.append_as_line(format!(".. _{link_name}:  {target}"));
-      }
+            for (link_name, target) in &self.references {
+                result.append_as_line(format!(".. _{link_name}:  {target}"));
+            }
 
-      if !self.references.is_empty() {
-        result.push('\n');
-      }
+            if !self.references.is_empty() {
+                result.push('\n');
+            }
 
-      for (category, changes) in &self.changes {
-        result.append_as_line(format!(
-          "{category}\n{}\n",
-          match header_level {
-            1 => "=",
-            2 => "-",
-            3 => ".",
-            _ => unreachable!(),
-          }
-          .repeat(category.len())
-        ));
+            for (category, changes) in &self.changes {
+                result.append_as_line(format!(
+                    "{category}\n{}\n",
+                    match header_level {
+                        1 => "=",
+                        2 => "-",
+                        3 => ".",
+                        _ => unreachable!(),
+                    }
+                    .repeat(category.len())
+                ));
 
-        for change in changes {
-          result.append_as_line(format!("- {change}\n"));
+                for change in changes {
+                    result.append_as_line(format!("- {change}\n"));
+                }
+            }
+
+            Ok(result)
+        } else {
+            Err(ExitCode::DataErr)
         }
-      }
-
-      Ok(result)
-    } else {
-      Err(ExitCode::DataErr)
     }
-  }
 }
 
 impl Default for Fragment {
-  fn default() -> Self {
-    Self::new(&RonlogReferences::new(), &HashMap::new())
-  }
+    fn default() -> Self {
+        Self::new(&RonlogReferences::new(), &HashMap::new())
+    }
 }
 
 /******************************************************************************/
