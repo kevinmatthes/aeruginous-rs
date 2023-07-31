@@ -44,14 +44,15 @@ pub trait Writer {
     /// The shared logic of all methods.
     ///
     /// This method defines the common behaviour of all methods this trait
-    /// provides.  Implementations should also consider the possibilities to write
-    /// to both (a) file(s) and [`std::io::Stdout`].
+    /// provides.  Implementations should also consider the possibilities to
+    /// write to both (a) file(s) and [`std::io::Stdout`].
     ///
     /// In case of a file,
     ///
-    /// - `append` shall control whether to edit it solely by pasting the buffer's
-    ///   contents at the file's end.
-    /// - `truncate` shall control whether to clear the file before writing to it.
+    /// - `append` shall control whether to edit it solely by pasting the
+    ///   buffer's contents at the file's end.
+    /// - `truncate` shall control whether to clear the file before writing to
+    ///   it.
     /// - the output file shall be created, in case that it should not already
     ///   exist.
     ///
@@ -185,7 +186,9 @@ impl Writer for PathBuf {
                             Ok(())
                         } else {
                             if show_error_messages {
-                                eprintln!("Writing the buffer did not create an exact copy!");
+                                eprintln!(
+                                    "Creating an exact copy was not possible."
+                                );
                             }
 
                             Err(ExitCode::IoErr)
