@@ -28,25 +28,25 @@ use chrono::{DateTime, Local};
 /// project, the configuration file for the finished time tracking session will
 /// be removed.
 pub struct Running {
-  beginning: DateTime<Local>,
+    beginning: DateTime<Local>,
 }
 
 impl Running {
-  crate::getters!(@fn @ref beginning: DateTime<Local>);
+    crate::getters!(@fn @ref beginning: DateTime<Local>);
 
-  /// Construct a new running instance.
-  #[must_use]
-  pub fn new() -> Self {
-    Self {
-      beginning: Local::now(),
+    /// Construct a new running instance.
+    #[must_use]
+    pub fn new() -> Self {
+        Self {
+            beginning: Local::now(),
+        }
     }
-  }
 }
 
 impl Default for Running {
-  fn default() -> Self {
-    Self::new()
-  }
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 /******************************************************************************/
