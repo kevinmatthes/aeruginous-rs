@@ -22,61 +22,61 @@ use std::collections::HashMap;
 
 #[test]
 fn merge() {
-  let mut f1 = Fragment::new(
-    &HashMap::from([("a".to_string(), "b".to_string())]),
-    &HashMap::from([(
-      "Added".to_string(),
-      vec!["something".to_string(), "something else".to_string()],
-    )]),
-  );
-  let f2 = Fragment::new(
-    &HashMap::from([("c".to_string(), "d".to_string())]),
-    &HashMap::from([
-      ("Added".to_string(), vec!["nothing".to_string()]),
-      (
-        "Changed".to_string(),
-        vec!["everything".to_string(), "nothing else".to_string()],
-      ),
-    ]),
-  );
-  f1.merge(f2);
+    let mut f1 = Fragment::new(
+        &HashMap::from([("a".to_string(), "b".to_string())]),
+        &HashMap::from([(
+            "Added".to_string(),
+            vec!["something".to_string(), "something else".to_string()],
+        )]),
+    );
+    let f2 = Fragment::new(
+        &HashMap::from([("c".to_string(), "d".to_string())]),
+        &HashMap::from([
+            ("Added".to_string(), vec!["nothing".to_string()]),
+            (
+                "Changed".to_string(),
+                vec!["everything".to_string(), "nothing else".to_string()],
+            ),
+        ]),
+    );
+    f1.merge(f2);
 
-  assert_eq!(
-    f1,
-    Fragment::new(
-      &HashMap::from([
-        ("a".to_string(), "b".to_string()),
-        ("c".to_string(), "d".to_string())
-      ]),
-      &HashMap::from([
-        (
-          "Added".to_string(),
-          vec![
-            "something".to_string(),
-            "something else".to_string(),
-            "nothing".to_string()
-          ]
-        ),
-        (
-          "Changed".to_string(),
-          vec!["everything".to_string(), "nothing else".to_string()]
+    assert_eq!(
+        f1,
+        Fragment::new(
+            &HashMap::from([
+                ("a".to_string(), "b".to_string()),
+                ("c".to_string(), "d".to_string())
+            ]),
+            &HashMap::from([
+                (
+                    "Added".to_string(),
+                    vec![
+                        "something".to_string(),
+                        "something else".to_string(),
+                        "nothing".to_string()
+                    ]
+                ),
+                (
+                    "Changed".to_string(),
+                    vec!["everything".to_string(), "nothing else".to_string()]
+                )
+            ])
         )
-      ])
-    )
-  );
+    );
 }
 
 #[test]
 fn move_fragments() {
-  let references = [
-    ("a".to_string(), "b".to_string()),
-    ("c".to_string(), "d".to_string()),
-  ];
-  let mut fragment =
-    Fragment::new(&HashMap::from(references.clone()), &HashMap::new());
+    let references = [
+        ("a".to_string(), "b".to_string()),
+        ("c".to_string(), "d".to_string()),
+    ];
+    let mut fragment =
+        Fragment::new(&HashMap::from(references.clone()), &HashMap::new());
 
-  assert_eq!(fragment.move_references(), HashMap::from(references));
-  assert!(fragment.references().is_empty());
+    assert_eq!(fragment.move_references(), HashMap::from(references));
+    assert!(fragment.references().is_empty());
 }
 
 /******************************************************************************/
