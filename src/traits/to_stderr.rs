@@ -25,7 +25,8 @@ pub trait ToStderr<T> {
     ///
     /// If the boolean parameter is set to `true`, an appropriate error message
     /// for this instance will be written to [`std::io::Stderr`].  Furthermore,
-    /// this instance will be converted into a variant of [`sysexits::ExitCode`].
+    /// this instance will be converted into a variant of
+    /// [`sysexits::ExitCode`].
     ///
     /// # Errors
     ///
