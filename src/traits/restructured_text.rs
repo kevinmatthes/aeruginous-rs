@@ -21,22 +21,22 @@ use sysexits::Result;
 
 /// Create an instance from a reStructured Text string.
 pub trait FromRst: Sized {
-  /// Create an instance from valid reStructured Text.
-  ///
-  /// # Errors
-  ///
-  /// - [`sysexits::ExitCode::DataErr`]
-  fn from_rst(rst: &str) -> Result<Self>;
+    /// Create an instance from valid reStructured Text.
+    ///
+    /// # Errors
+    ///
+    /// - [`sysexits::ExitCode::DataErr`]
+    fn from_rst(rst: &str) -> Result<Self>;
 }
 
 /// Convert this instance into a reStructured Text string.
 pub trait ToRst: Sized {
-  /// Convert an instance to valid reStructured Text.
-  ///
-  /// # Errors
-  ///
-  /// - [`sysexits::ExitCode::DataErr`]
-  fn to_rst(&self, header_level: u8) -> Result<String>;
+    /// Convert an instance to valid reStructured Text.
+    ///
+    /// # Errors
+    ///
+    /// - [`sysexits::ExitCode::DataErr`]
+    fn to_rst(&self, header_level: u8) -> Result<String>;
 }
 
 /******************************************************************************/
