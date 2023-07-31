@@ -25,10 +25,10 @@ use sysexits::Result;
 pub trait ColourMessage {
     /// Write this instance to the given stream using an [`AnsiColor`].
     ///
-    /// The instance this method is called on will be written to the given stream.
-    /// Before the instance is written, it is attempted to set the output colour
-    /// to the given [`AnsiColor`].  After the instance was written, the colour
-    /// will be reset.
+    /// The instance this method is called on will be written to the given
+    /// stream.  Before the instance is written, it is attempted to set the
+    /// output colour to the given [`AnsiColor`].  After the instance was
+    /// written, the colour will be reset.
     ///
     /// # Examples
     ///
