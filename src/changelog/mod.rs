@@ -24,8 +24,8 @@ mod ronlog;
 pub use comment_changes::CommentChanges;
 pub use fragment::{ExportFormat as FragmentExportFormat, Fragment};
 pub use ronlog::{
-  Action as RonlogAction, References as RonlogReferences, Ronlog,
-  Section as RonlogSection,
+    Action as RonlogAction, References as RonlogReferences, Ronlog,
+    Section as RonlogSection,
 };
 
 /******************************************************************************/
