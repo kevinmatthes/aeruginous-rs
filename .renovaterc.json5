@@ -16,7 +16,6 @@
   ],
   lockFileMaintenance: {
     enabled: true,
-    schedule: null,
   },
   packageRules: [
     {
