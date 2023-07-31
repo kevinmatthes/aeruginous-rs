@@ -134,11 +134,11 @@ impl GraphDescription {
 
     /// Determine whether all lines fit the line width of 80 characters.
     ///
-    /// A line is allowed to consist of at most 80 characters and a line feed.  If
-    /// a line should have more characters, this is a sign that the overall design
-    /// of the source file urgently deserves a refactoring.  Hence, this is a more
-    /// critical issue than just a simple typo which is why the indication colour
-    /// of the error message is written in yellow.
+    /// A line is allowed to consist of at most 80 characters and a line feed.
+    /// If a line should have more characters, this is a sign that the overall
+    /// design of the source file urgently deserves a refactoring.  Hence, this
+    /// is a more critical issue than just a simple typo which is why the
+    /// indication colour of the error message is written in yellow.
     ///
     /// # Errors
     ///
@@ -423,7 +423,8 @@ pub enum Tokens {
     /// The `.` keyword.
     FullStop,
 
-    /// An identifier's index within a [`GraphDescription`]'s set of identifiers.
+    /// An identifier's index within a [`GraphDescription`]'s set of
+    /// identifiers.
     Identifier(usize),
 
     /// A simple line feed.
