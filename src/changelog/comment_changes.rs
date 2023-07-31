@@ -43,7 +43,12 @@ pub struct CommentChanges {
     depth: Option<usize>,
 
     /// The target format of the resulting fragment.
-    #[arg(default_value = "rst", long, short = 'f', visible_aliases = ["format"])]
+    #[arg(
+        default_value = "rst",
+        long,
+        short = 'f',
+        visible_aliases = ["format"]
+    )]
     extension: FragmentExportFormat,
 
     /// The default category to assign.
@@ -56,11 +61,11 @@ pub struct CommentChanges {
 
     /// The heading's level in the resulting fragment.
     #[arg(
-      default_value = "3",
-      long,
-      short = 'H',
-      value_parser = clap::value_parser!(u8).range(1..=3),
-      visible_aliases = ["level"]
+        default_value = "3",
+        long,
+        short = 'H',
+        value_parser = clap::value_parser!(u8).range(1..=3),
+        visible_aliases = ["level"]
     )]
     heading: u8,
 
@@ -346,7 +351,9 @@ impl Logic {
                                     return Err(ExitCode::DataErr);
                                 }
                             } else {
-                                eprintln!("There were not enough commits fetched on checkout.");
+                                eprintln!(
+                                    "Too few commits were fetched on checkout."
+                                );
                                 return Err(ExitCode::Usage);
                             }
 
