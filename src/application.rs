@@ -61,11 +61,11 @@ pub enum Action {
 
     /// Extract Markdown code from Rust documentation comments.
     Rs2md {
-        /// Whether to extract Rust documentation line comments starting with `///`.
+        /// Whether to extract Rust documentation comments starting with `///`.
         #[arg(long = "inner")]
         extract_inner: bool,
 
-        /// Whether to extract Rust documentation line comments starting with `//!`.
+        /// Whether to extract Rust documentation comments starting with `//!`.
         #[arg(long = "outer")]
         extract_outer: bool,
 
