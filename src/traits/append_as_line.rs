@@ -21,8 +21,8 @@
 pub trait AppendAsLine<T> {
     /// Append a buffer as a line to another buffer.
     ///
-    /// This method will take ownership of a given buffer in order to append it to
-    /// the instance this method is called on as a new line.
+    /// This method will take ownership of a given buffer in order to append it
+    /// to the instance this method is called on as a new line.
     fn append_as_line(&mut self, data: T);
 }
 
