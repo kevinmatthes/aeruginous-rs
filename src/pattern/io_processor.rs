@@ -41,9 +41,10 @@ pub trait IOProcessor {
     ///
     /// In case of a file,
     ///
-    /// - `append` shall control whether to edit it solely by pasting the buffer's
-    ///   contents at the file's end.
-    /// - `truncate` shall control whether to clear the file before writing to it.
+    /// - `append` shall control whether to edit it solely by pasting the
+    ///   buffer's contents at the file's end.
+    /// - `truncate` shall control whether to clear the file before writing to
+    ///   it.
     /// - the output file shall be created, in case that it should not already
     ///   exist.
     ///
