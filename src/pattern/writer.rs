@@ -23,87 +23,87 @@ use sysexits::{ExitCode, Result};
 
 /// Write to common destinations for output.
 pub trait Writer {
-  /// Append the buffer's contents to a stream and print error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn append(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
-    self.behaviour(buffer, true, true, false)
-  }
+    /// Append the buffer's contents to a stream and print error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn append(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
+        self.behaviour(buffer, true, true, false)
+    }
 
-  /// Append the buffer's contents without printing error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn append_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
-    self.behaviour(buffer, true, false, false)
-  }
+    /// Append the buffer's contents without printing error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn append_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
+        self.behaviour(buffer, true, false, false)
+    }
 
-  /// The shared logic of all methods.
-  ///
-  /// This method defines the common behaviour of all methods this trait
-  /// provides.  Implementations should also consider the possibilities to write
-  /// to both (a) file(s) and [`std::io::Stdout`].
-  ///
-  /// In case of a file,
-  ///
-  /// - `append` shall control whether to edit it solely by pasting the buffer's
-  ///   contents at the file's end.
-  /// - `truncate` shall control whether to clear the file before writing to it.
-  /// - the output file shall be created, in case that it should not already
-  ///   exist.
-  ///
-  /// `show_error_messages` shall control whether to write error messages to
-  /// [`std::io::Stderr`], if appropriate.
-  ///
-  /// # Errors
-  ///
-  /// See [`sysexits::ExitCode`].
-  fn behaviour(
-    &self,
-    buffer: Box<dyn PatternBuffer>,
-    append: bool,
-    show_error_messages: bool,
-    truncate: bool,
-  ) -> Result<()>;
+    /// The shared logic of all methods.
+    ///
+    /// This method defines the common behaviour of all methods this trait
+    /// provides.  Implementations should also consider the possibilities to write
+    /// to both (a) file(s) and [`std::io::Stdout`].
+    ///
+    /// In case of a file,
+    ///
+    /// - `append` shall control whether to edit it solely by pasting the buffer's
+    ///   contents at the file's end.
+    /// - `truncate` shall control whether to clear the file before writing to it.
+    /// - the output file shall be created, in case that it should not already
+    ///   exist.
+    ///
+    /// `show_error_messages` shall control whether to write error messages to
+    /// [`std::io::Stderr`], if appropriate.
+    ///
+    /// # Errors
+    ///
+    /// See [`sysexits::ExitCode`].
+    fn behaviour(
+        &self,
+        buffer: Box<dyn PatternBuffer>,
+        append: bool,
+        show_error_messages: bool,
+        truncate: bool,
+    ) -> Result<()>;
 
-  /// Truncate the stream, write the buffer's data, and print error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn truncate(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
-    self.behaviour(buffer, false, true, true)
-  }
+    /// Truncate the stream, write the buffer's data, and print error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn truncate(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
+        self.behaviour(buffer, false, true, true)
+    }
 
-  /// Truncate the stream and write the buffer's data without error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn truncate_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
-    self.behaviour(buffer, false, false, true)
-  }
+    /// Truncate the stream and write the buffer's data without error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn truncate_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
+        self.behaviour(buffer, false, false, true)
+    }
 
-  /// Edit the stream, write the buffer's data, and print error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn write(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
-    self.behaviour(buffer, false, true, false)
-  }
+    /// Edit the stream, write the buffer's data, and print error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn write(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
+        self.behaviour(buffer, false, true, false)
+    }
 
-  /// Edit the stream and write the buffer's data without error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn write_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
-    self.behaviour(buffer, false, false, false)
-  }
+    /// Edit the stream and write the buffer's data without error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn write_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
+        self.behaviour(buffer, false, false, false)
+    }
 }
 
 /// Add an implementation of the trait for a certain type.
@@ -162,101 +162,101 @@ impl_pattern_writer_for!(@option Option<&str>);
 impl_pattern_writer_for!(@ref PathBuf);
 
 impl Writer for PathBuf {
-  fn behaviour(
-    &self,
-    buffer: Box<dyn PatternBuffer>,
-    append: bool,
-    show_error_messages: bool,
-    truncate: bool,
-  ) -> Result<()> {
-    match File::options()
-      .append(append)
-      .create(true)
-      .write(true)
-      .truncate(truncate)
-      .open(self)
-    {
-      Ok(mut file) => {
-        let bytes = buffer.as_ref().try_into_bytes()?;
+    fn behaviour(
+        &self,
+        buffer: Box<dyn PatternBuffer>,
+        append: bool,
+        show_error_messages: bool,
+        truncate: bool,
+    ) -> Result<()> {
+        match File::options()
+            .append(append)
+            .create(true)
+            .write(true)
+            .truncate(truncate)
+            .open(self)
+        {
+            Ok(mut file) => {
+                let bytes = buffer.as_ref().try_into_bytes()?;
 
-        match file.write(&bytes) {
-          Ok(count) => {
-            if count == bytes.len() {
-              Ok(())
-            } else {
-              if show_error_messages {
-                eprintln!("Writing the buffer did not create an exact copy!");
-              }
+                match file.write(&bytes) {
+                    Ok(count) => {
+                        if count == bytes.len() {
+                            Ok(())
+                        } else {
+                            if show_error_messages {
+                                eprintln!("Writing the buffer did not create an exact copy!");
+                            }
 
-              Err(ExitCode::IoErr)
+                            Err(ExitCode::IoErr)
+                        }
+                    }
+                    Err(error) => error.to_stderr(show_error_messages),
+                }
             }
-          }
-          Err(error) => error.to_stderr(show_error_messages),
+            Err(error) => error.to_stderr(show_error_messages),
         }
-      }
-      Err(error) => error.to_stderr(show_error_messages),
     }
-  }
 }
 
 impl Writer for std::io::Stderr {
-  fn behaviour(
-    &self,
-    buffer: Box<dyn PatternBuffer>,
-    _: bool,
-    _: bool,
-    _: bool,
-  ) -> Result<()> {
-    eprint!("{}", buffer.as_ref().try_into_string()?);
-    Ok(())
-  }
+    fn behaviour(
+        &self,
+        buffer: Box<dyn PatternBuffer>,
+        _: bool,
+        _: bool,
+        _: bool,
+    ) -> Result<()> {
+        eprint!("{}", buffer.as_ref().try_into_string()?);
+        Ok(())
+    }
 }
 
 impl Writer for std::io::Stdout {
-  fn behaviour(
-    &self,
-    buffer: Box<dyn PatternBuffer>,
-    _: bool,
-    _: bool,
-    _: bool,
-  ) -> Result<()> {
-    print!("{}", buffer.as_ref().try_into_string()?);
-    Ok(())
-  }
+    fn behaviour(
+        &self,
+        buffer: Box<dyn PatternBuffer>,
+        _: bool,
+        _: bool,
+        _: bool,
+    ) -> Result<()> {
+        print!("{}", buffer.as_ref().try_into_string()?);
+        Ok(())
+    }
 }
 
 impl Writer for String {
-  fn behaviour(
-    &self,
-    buffer: Box<dyn PatternBuffer>,
-    append: bool,
-    show_error_messages: bool,
-    truncate: bool,
-  ) -> Result<()> {
-    PathBuf::from(&self).behaviour(
-      buffer,
-      append,
-      show_error_messages,
-      truncate,
-    )
-  }
+    fn behaviour(
+        &self,
+        buffer: Box<dyn PatternBuffer>,
+        append: bool,
+        show_error_messages: bool,
+        truncate: bool,
+    ) -> Result<()> {
+        PathBuf::from(&self).behaviour(
+            buffer,
+            append,
+            show_error_messages,
+            truncate,
+        )
+    }
 }
 
 impl Writer for &str {
-  fn behaviour(
-    &self,
-    buffer: Box<dyn PatternBuffer>,
-    append: bool,
-    show_error_messages: bool,
-    truncate: bool,
-  ) -> Result<()> {
-    PathBuf::from(&self).behaviour(
-      buffer,
-      append,
-      show_error_messages,
-      truncate,
-    )
-  }
+    fn behaviour(
+        &self,
+        buffer: Box<dyn PatternBuffer>,
+        append: bool,
+        show_error_messages: bool,
+        truncate: bool,
+    ) -> Result<()> {
+        PathBuf::from(&self).behaviour(
+            buffer,
+            append,
+            show_error_messages,
+            truncate,
+        )
+    }
 }
 
 /******************************************************************************/
