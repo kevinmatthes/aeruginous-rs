@@ -23,15 +23,15 @@ use std::io::stderr;
 
 #[test]
 fn string() {
-  assert_eq!(
-    "Error!".to_string().colour_message(Red, &mut stderr()),
-    Ok(())
-  );
+    assert_eq!(
+        "Error!".to_string().colour_message(Red, &mut stderr()),
+        Ok(())
+    );
 }
 
 #[test]
 fn string_slice() {
-  assert_eq!("Error!".colour_message(Red, &mut stderr()), Ok(()));
+    assert_eq!("Error!".colour_message(Red, &mut stderr()), Ok(()));
 }
 
 /******************************************************************************/
