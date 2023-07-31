@@ -79,7 +79,7 @@
 //!    1. [`uncrlf`](#uncrlf)
 //! -->
 //!
-//! The current code coverage is **<!-- cov -->64.61%<!-- cov -->**.
+//! The current code coverage is **<!-- cov -->64.20%<!-- cov -->**.
 //!
 //! ## License
 //!
