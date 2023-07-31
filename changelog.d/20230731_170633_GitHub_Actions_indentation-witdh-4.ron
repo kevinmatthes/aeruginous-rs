@@ -3,7 +3,7 @@
   changes: {
     "Changed": [
       "indent Rust source files by 4 spaces",
-      "ident JSON5 files by 4 spaces",
+      "indent JSON5 files by 4 spaces",
     ],
   },
 )
