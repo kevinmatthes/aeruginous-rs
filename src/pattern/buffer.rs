@@ -35,7 +35,7 @@ pub trait Buffer {
 
     /// Fill this buffer with a string.
     ///
-    /// This method behaves just like [`Self::try_from_bytes`] but for [`String`]
+    /// This method behaves just like [`Self::try_from_bytes`] for [`String`]
     /// as the respective source type.
     ///
     /// # Errors
@@ -56,7 +56,7 @@ pub trait Buffer {
 
     /// Convert this buffer into a [`String`].
     ///
-    /// This method behaves just like [`Self::try_into_bytes`] but for [`String`]
+    /// This method behaves just like [`Self::try_into_bytes`] for [`String`]
     /// as the respective target type.
     ///
     /// # Errors
