@@ -326,27 +326,27 @@
 //! <!------------------------------------------------------------------------->
 
 #![deny(
-  clippy::all,
-  clippy::cargo,
-  clippy::complexity,
-  clippy::correctness,
-  clippy::nursery,
-  clippy::pedantic,
-  clippy::perf,
-  clippy::suspicious,
-  clippy::style,
-  dead_code,
-  deprecated,
-  missing_docs,
-  rustdoc::broken_intra_doc_links,
-  unreachable_code,
-  unused_assignments,
-  unused_imports,
-  unused_macros,
-  unused_must_use,
-  unused_mut,
-  unused_parens,
-  unused_variables
+    clippy::all,
+    clippy::cargo,
+    clippy::complexity,
+    clippy::correctness,
+    clippy::nursery,
+    clippy::pedantic,
+    clippy::perf,
+    clippy::suspicious,
+    clippy::style,
+    dead_code,
+    deprecated,
+    missing_docs,
+    rustdoc::broken_intra_doc_links,
+    unreachable_code,
+    unused_assignments,
+    unused_imports,
+    unused_macros,
+    unused_must_use,
+    unused_mut,
+    unused_parens,
+    unused_variables
 )]
 #![allow(clippy::multiple_crate_versions)]
 
@@ -362,27 +362,27 @@ mod traits;
 mod version;
 
 pub use crate::{
-  application::{Action, Clap as Application},
-  cffreference::Cffreference,
-  changelog::{
-    CommentChanges, Fragment, FragmentExportFormat, Ronlog, RonlogAction,
-    RonlogReferences, RonlogSection,
-  },
-  graphing::{
-    AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph, VertexData,
-    Vertices,
-  },
-  increment_version::IncrementVersion,
-  pattern::{
-    Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
-    Writer as PatternWriter,
-  },
-  running::Running,
-  traits::{
-    AppendAsLine, ColourMessage, ConvertBuffer, FromMd, FromRon, FromRst,
-    Prefer, ReadFile, ToMd, ToRon, ToRst, ToStderr,
-  },
-  version::{Range as VersionRange, Version},
+    application::{Action, Clap as Application},
+    cffreference::Cffreference,
+    changelog::{
+        CommentChanges, Fragment, FragmentExportFormat, Ronlog, RonlogAction,
+        RonlogReferences, RonlogSection,
+    },
+    graphing::{
+        AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph,
+        VertexData, Vertices,
+    },
+    increment_version::IncrementVersion,
+    pattern::{
+        Buffer as PatternBuffer, IOProcessor as PatternIOProcessor,
+        Writer as PatternWriter,
+    },
+    running::Running,
+    traits::{
+        AppendAsLine, ColourMessage, ConvertBuffer, FromMd, FromRon, FromRst,
+        Prefer, ReadFile, ToMd, ToRon, ToRst, ToStderr,
+    },
+    version::{Range as VersionRange, Version},
 };
 
 /// This crate's name.
@@ -390,7 +390,7 @@ pub const NAME: &str = "aeruginous";
 
 /// This crate's self-description.
 pub const SELF_DESCRIPTION: &str =
-  "The Aeruginous Open Source Development Toolbox";
+    "The Aeruginous Open Source Development Toolbox";
 
 /// This crate's version.
 pub const VERSION: &str = "v3.0.3";

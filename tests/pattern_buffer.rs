@@ -21,64 +21,64 @@ use aeruginous::PatternBuffer;
 
 #[test]
 fn string_try_from_bytes() {
-  let data = b"bytes";
-  let mut string = String::new();
+    let data = b"bytes";
+    let mut string = String::new();
 
-  assert_eq!(string.try_from_bytes(data), Ok(()));
-  assert_eq!(string, "bytes".to_string());
+    assert_eq!(string.try_from_bytes(data), Ok(()));
+    assert_eq!(string, "bytes".to_string());
 }
 
 #[test]
 fn string_try_from_string() {
-  let data = "string";
-  let mut string = String::new();
+    let data = "string";
+    let mut string = String::new();
 
-  assert_eq!(string.try_from_string(data), Ok(()));
-  assert_eq!(string, "string".to_string());
+    assert_eq!(string.try_from_string(data), Ok(()));
+    assert_eq!(string, "string".to_string());
 }
 
 #[test]
 fn string_try_into_bytes() {
-  assert_eq!(
-    "string".to_string().try_into_bytes(),
-    Ok(b"string".to_vec())
-  );
+    assert_eq!(
+        "string".to_string().try_into_bytes(),
+        Ok(b"string".to_vec())
+    );
 }
 
 #[test]
 fn string_try_into_string() {
-  assert_eq!(
-    "string".to_string().try_into_string(),
-    Ok("string".to_string())
-  );
+    assert_eq!(
+        "string".to_string().try_into_string(),
+        Ok("string".to_string())
+    );
 }
 
 #[test]
 fn vecu8_try_from_bytes() {
-  let data = b"bytes";
-  let mut bytes = Vec::<u8>::new();
+    let data = b"bytes";
+    let mut bytes = Vec::<u8>::new();
 
-  assert_eq!(bytes.try_from_bytes(data), Ok(()));
-  assert_eq!(bytes, b"bytes".to_vec());
+    assert_eq!(bytes.try_from_bytes(data), Ok(()));
+    assert_eq!(bytes, b"bytes".to_vec());
 }
 
 #[test]
 fn vecu8_try_from_string() {
-  let data = "string";
-  let mut bytes = Vec::<u8>::new();
+    let data = "string";
+    let mut bytes = Vec::<u8>::new();
 
-  assert_eq!(bytes.try_from_string(data), Ok(()));
-  assert_eq!(bytes, b"string".to_vec());
+    assert_eq!(bytes.try_from_string(data), Ok(()));
+    assert_eq!(bytes, b"string".to_vec());
 }
 
 #[test]
 fn vecu8_try_into_bytes() {
-  assert_eq!(b"bytes".to_vec().try_into_bytes(), Ok(b"bytes".to_vec()));
+    assert_eq!(b"bytes".to_vec().try_into_bytes(), Ok(b"bytes".to_vec()));
 }
 
 #[test]
 fn vecu8_try_into_string() {
-  assert_eq!(b"bytes".to_vec().try_into_string(), Ok("bytes".to_string()));
+    assert_eq!(b"bytes".to_vec().try_into_string(), Ok("bytes".to_string()));
 }
 
 /******************************************************************************/

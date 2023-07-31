@@ -21,21 +21,21 @@ use aeruginous::Prefer;
 
 #[test]
 fn option_i32() {
-  assert_eq!(Some(23).prefer(Some(42)), Some(42));
-  assert_eq!(None.prefer(Some(42)), Some(42));
-  assert_eq!(Some(23).prefer(None), Some(23));
-  assert_eq!(None::<i32>.prefer(None), None);
+    assert_eq!(Some(23).prefer(Some(42)), Some(42));
+    assert_eq!(None.prefer(Some(42)), Some(42));
+    assert_eq!(Some(23).prefer(None), Some(23));
+    assert_eq!(None::<i32>.prefer(None), None);
 }
 
 #[test]
 fn option_string() {
-  assert_eq!(
-    Some(23.to_string()).prefer(Some(42.to_string())),
-    Some(42.to_string())
-  );
-  assert_eq!(None.prefer(Some(42.to_string())), Some(42.to_string()));
-  assert_eq!(Some(23.to_string()).prefer(None), Some(23.to_string()));
-  assert_eq!(None::<String>.prefer(None), None);
+    assert_eq!(
+        Some(23.to_string()).prefer(Some(42.to_string())),
+        Some(42.to_string())
+    );
+    assert_eq!(None.prefer(Some(42.to_string())), Some(42.to_string()));
+    assert_eq!(Some(23.to_string()).prefer(None), Some(23.to_string()));
+    assert_eq!(None::<String>.prefer(None), None);
 }
 
 /******************************************************************************/

@@ -23,18 +23,18 @@ use sysexits::ExitCode;
 
 #[test]
 fn no() {
-  assert_eq!(
-    Error::from(ErrorKind::InvalidData).to_stderr(false),
-    Err::<(), ExitCode>(ExitCode::DataErr)
-  );
+    assert_eq!(
+        Error::from(ErrorKind::InvalidData).to_stderr(false),
+        Err::<(), ExitCode>(ExitCode::DataErr)
+    );
 }
 
 #[test]
 fn yes() {
-  assert_eq!(
-    Error::from(ErrorKind::InvalidData).to_stderr(true),
-    Err::<(), ExitCode>(ExitCode::DataErr)
-  );
+    assert_eq!(
+        Error::from(ErrorKind::InvalidData).to_stderr(true),
+        Err::<(), ExitCode>(ExitCode::DataErr)
+    );
 }
 
 /******************************************************************************/

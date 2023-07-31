@@ -22,123 +22,124 @@ use std::collections::HashMap;
 
 #[test]
 fn add_changes() {
-  let references = [
-    ("a".to_string(), "b".to_string()),
-    ("c".to_string(), "d".to_string()),
-  ];
-  let mut section =
-    RonlogSection::new(Fragment::default(), "v1.2.3", None, None).unwrap();
-  section.add_changes(Fragment::new(
-    &HashMap::from(references.clone()),
-    &HashMap::new(),
-  ));
+    let references = [
+        ("a".to_string(), "b".to_string()),
+        ("c".to_string(), "d".to_string()),
+    ];
+    let mut section =
+        RonlogSection::new(Fragment::default(), "v1.2.3", None, None).unwrap();
+    section.add_changes(Fragment::new(
+        &HashMap::from(references.clone()),
+        &HashMap::new(),
+    ));
 
-  assert_eq!(section.references(), &HashMap::from(references));
+    assert_eq!(section.references(), &HashMap::from(references));
 }
 
 #[test]
 fn cmp() {
-  assert!(
-    RonlogSection::new(Fragment::default(), "v1.2.3", None, None).unwrap()
-      > RonlogSection::new(Fragment::default(), "v0.0.0", None, None).unwrap()
-  );
+    assert!(
+        RonlogSection::new(Fragment::default(), "v1.2.3", None, None).unwrap()
+            > RonlogSection::new(Fragment::default(), "v0.0.0", None, None)
+                .unwrap()
+    );
 }
 
 #[test]
 fn merge_1() {
-  let source = RonlogSection::new(
-    Fragment::new(
-      &HashMap::from([
-        ("a".to_string(), "b".to_string()),
-        ("c".to_string(), "d".to_string()),
-      ]),
-      &HashMap::new(),
-    ),
-    "v1.2.3",
-    None,
-    None,
-  )
-  .unwrap();
-  let mut target =
-    RonlogSection::new(Fragment::default(), "v1.2.3", None, None).unwrap();
-  target.merge(source);
-
-  assert_eq!(
-    target,
-    RonlogSection::new(
-      Fragment::new(
-        &HashMap::from([
-          ("a".to_string(), "b".to_string()),
-          ("c".to_string(), "d".to_string())
-        ]),
-        &HashMap::new()
-      ),
-      "v1.2.3",
-      None,
-      None
+    let source = RonlogSection::new(
+        Fragment::new(
+            &HashMap::from([
+                ("a".to_string(), "b".to_string()),
+                ("c".to_string(), "d".to_string()),
+            ]),
+            &HashMap::new(),
+        ),
+        "v1.2.3",
+        None,
+        None,
     )
-    .unwrap()
-  );
+    .unwrap();
+    let mut target =
+        RonlogSection::new(Fragment::default(), "v1.2.3", None, None).unwrap();
+    target.merge(source);
+
+    assert_eq!(
+        target,
+        RonlogSection::new(
+            Fragment::new(
+                &HashMap::from([
+                    ("a".to_string(), "b".to_string()),
+                    ("c".to_string(), "d".to_string())
+                ]),
+                &HashMap::new()
+            ),
+            "v1.2.3",
+            None,
+            None
+        )
+        .unwrap()
+    );
 }
 
 #[test]
 fn merge_2() {
-  let source = RonlogSection::new(
-    Fragment::new(
-      &HashMap::from([
-        ("a".to_string(), "b".to_string()),
-        ("c".to_string(), "d".to_string()),
-      ]),
-      &HashMap::new(),
-    ),
-    "v1.2.3",
-    Some("source section".to_string()),
-    None,
-  )
-  .unwrap();
-  let mut target = RonlogSection::new(
-    Fragment::default(),
-    "v1.2.3",
-    Some("target section".to_string()),
-    None,
-  )
-  .unwrap();
-  target.merge(source);
-
-  assert_eq!(
-    target,
-    RonlogSection::new(
-      Fragment::new(
-        &HashMap::from([
-          ("a".to_string(), "b".to_string()),
-          ("c".to_string(), "d".to_string())
-        ]),
-        &HashMap::new()
-      ),
-      "v1.2.3",
-      Some("target section\nsource section".to_string()),
-      None
+    let source = RonlogSection::new(
+        Fragment::new(
+            &HashMap::from([
+                ("a".to_string(), "b".to_string()),
+                ("c".to_string(), "d".to_string()),
+            ]),
+            &HashMap::new(),
+        ),
+        "v1.2.3",
+        Some("source section".to_string()),
+        None,
     )
-    .unwrap()
-  );
+    .unwrap();
+    let mut target = RonlogSection::new(
+        Fragment::default(),
+        "v1.2.3",
+        Some("target section".to_string()),
+        None,
+    )
+    .unwrap();
+    target.merge(source);
+
+    assert_eq!(
+        target,
+        RonlogSection::new(
+            Fragment::new(
+                &HashMap::from([
+                    ("a".to_string(), "b".to_string()),
+                    ("c".to_string(), "d".to_string())
+                ]),
+                &HashMap::new()
+            ),
+            "v1.2.3",
+            Some("target section\nsource section".to_string()),
+            None
+        )
+        .unwrap()
+    );
 }
 
 #[test]
 fn move_references() {
-  let references = [
-    ("a".to_string(), "b".to_string()),
-    ("c".to_string(), "d".to_string()),
-  ];
-  let mut section = RonlogSection::new(
-    Fragment::new(&HashMap::from(references.clone()), &HashMap::new()),
-    "v1.2.3",
-    None,
-    None,
-  )
-  .unwrap();
+    let references = [
+        ("a".to_string(), "b".to_string()),
+        ("c".to_string(), "d".to_string()),
+    ];
+    let mut section = RonlogSection::new(
+        Fragment::new(&HashMap::from(references.clone()), &HashMap::new()),
+        "v1.2.3",
+        None,
+        None,
+    )
+    .unwrap();
 
-  assert_eq!(section.move_references(), HashMap::from(references));
-  assert!(section.references().is_empty());
+    assert_eq!(section.move_references(), HashMap::from(references));
+    assert!(section.references().is_empty());
 }
 
 /******************************************************************************/

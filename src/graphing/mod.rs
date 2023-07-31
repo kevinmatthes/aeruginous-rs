@@ -21,7 +21,7 @@ mod agd;
 mod graph;
 
 pub use agd::{
-  GraphDescription as AeruginousGraphDescription, Tokens as AgdTokens,
+    GraphDescription as AeruginousGraphDescription, Tokens as AgdTokens,
 };
 pub use graph::{EdgeType, Edges, Graph, VertexData, Vertices};
 

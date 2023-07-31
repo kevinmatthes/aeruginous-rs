@@ -31,157 +31,160 @@ use sysexits::Result;
 /// being the accepted command line arguments and options, respectively.
 #[derive(Subcommand)]
 pub enum Action {
-  /// Extract the citation information from a given and valid CFF file.
-  Cffreference(crate::Cffreference),
+    /// Extract the citation information from a given and valid CFF file.
+    Cffreference(crate::Cffreference),
 
-  /// Increment the release date in CFFs.
-  #[command(visible_aliases = ["cffrel", "cff-rel", "cffreleasetoday"])]
-  CffReleaseToday {
-    /// The file to work on.
-    file_to_edit: PathBuf,
-  },
+    /// Increment the release date in CFFs.
+    #[command(visible_aliases = ["cffrel", "cff-rel", "cffreleasetoday"])]
+    CffReleaseToday {
+        /// The file to work on.
+        file_to_edit: PathBuf,
+    },
 
-  /// Create comments on the commits of a branch in this repository.
-  CommentChanges(crate::CommentChanges),
+    /// Create comments on the commits of a branch in this repository.
+    CommentChanges(crate::CommentChanges),
 
-  /*
-  /// Rate an Aeruginous Graph Description (AGD).
-  #[command(visible_aliases = ["agd"])]
-  GraphDescription {
-    /// The AGD file to read.
-    #[arg(short = 'i')]
-    input_file: Option<PathBuf>,
-  },
-  */
-  /// Increment a hard-coded version string in some files.
-  IncrementVersion(crate::IncrementVersion),
+    /*
+    /// Rate an Aeruginous Graph Description (AGD).
+    #[command(visible_aliases = ["agd"])]
+    GraphDescription {
+      /// The AGD file to read.
+      #[arg(short = 'i')]
+      input_file: Option<PathBuf>,
+    },
+    */
+    /// Increment a hard-coded version string in some files.
+    IncrementVersion(crate::IncrementVersion),
 
-  /// Interact with RON CHANGELOGs.
-  Ronlog(crate::Ronlog),
+    /// Interact with RON CHANGELOGs.
+    Ronlog(crate::Ronlog),
 
-  /// Extract Markdown code from Rust documentation comments.
-  Rs2md {
-    /// Whether to extract Rust documentation line comments starting with `///`.
-    #[arg(long = "inner")]
-    extract_inner: bool,
+    /// Extract Markdown code from Rust documentation comments.
+    Rs2md {
+        /// Whether to extract Rust documentation comments starting with `///`.
+        #[arg(long = "inner")]
+        extract_inner: bool,
 
-    /// Whether to extract Rust documentation line comments starting with `//!`.
-    #[arg(long = "outer")]
-    extract_outer: bool,
+        /// Whether to extract Rust documentation comments starting with `//!`.
+        #[arg(long = "outer")]
+        extract_outer: bool,
 
-    /// The Rust files to read from, defaulting to [`std::io::Stdin`], if
-    /// omitted.
-    #[arg(long = "input", short)]
-    input_file: Vec<PathBuf>,
+        /// The Rust files to read from, defaulting to [`std::io::Stdin`], if
+        /// omitted.
+        #[arg(long = "input", short)]
+        input_file: Vec<PathBuf>,
 
-    /// The Markdown file to write to, defaulting to [`std::io::Stdout`], if
-    /// omitted.
-    #[arg(long = "output", short)]
-    output_file: Option<PathBuf>,
-  },
+        /// The Markdown file to write to, defaulting to [`std::io::Stdout`], if
+        /// omitted.
+        #[arg(long = "output", short)]
+        output_file: Option<PathBuf>,
+    },
 
-  /// Remove CRLFs from the given file.
-  Uncrlf {
-    /// The file to edit; overrides `input_file` and `output_file`.
-    #[arg(long = "edit", short = 'e')]
-    file_to_edit: Option<PathBuf>,
+    /// Remove CRLFs from the given file.
+    Uncrlf {
+        /// The file to edit; overrides `input_file` and `output_file`.
+        #[arg(long = "edit", short = 'e')]
+        file_to_edit: Option<PathBuf>,
 
-    /// The file to read from, defaulting to [`std::io::Stdin`], if omitted.
-    #[arg(long = "input", short)]
-    input_file: Option<PathBuf>,
+        /// The file to read from, defaulting to [`std::io::Stdin`], if omitted.
+        #[arg(long = "input", short)]
+        input_file: Option<PathBuf>,
 
-    /// The file to write to, defaulting to [`std::io::Stdout`], if omitted.
-    #[arg(long = "output", short)]
-    output_file: Option<PathBuf>,
-  },
+        /// The file to write to, defaulting to [`std::io::Stdout`], if omitted.
+        #[arg(long = "output", short)]
+        output_file: Option<PathBuf>,
+    },
 }
 
 impl Action {
-  fn rs2md(s: &str, extract_inner: bool, extract_outer: bool) -> String {
-    s.lines()
-      .map(str::trim_start)
-      .filter(|l| {
-        (extract_inner && l.starts_with("///"))
-          || (extract_outer && l.starts_with("//!"))
-      })
-      .map(|l| {
-        if l.len() > 3 {
-          l.split_at(4).1.trim_end().to_string() + "\n"
-        } else {
-          "\n".to_string()
-        }
-      })
-      .collect::<String>()
-  }
-
-  /// Execute the selected action.
-  ///
-  /// # Errors
-  ///
-  /// See [`PatternIOProcessor::io`].
-  pub fn run(&self) -> Result<()> {
-    match self {
-      Self::Cffreference(c) => c.main(),
-      Self::CffReleaseToday { file_to_edit } => {
-        let mut buffer = String::new();
-
-        for line in
-          std::io::BufReader::new(std::fs::File::open(file_to_edit)?).lines()
-        {
-          let line = line?;
-
-          if line.starts_with("date-released:") {
-            buffer.append_as_line(format!(
-              "date-released: {}",
-              chrono::Local::now().date_naive().format("%Y-%m-%d")
-            ));
-          } else {
-            buffer.append_as_line(line);
-          }
-        }
-
-        file_to_edit.truncate(Box::new(buffer))
-      }
-      Self::CommentChanges(c) => c.main(),
-      /*
-      Self::GraphDescription { input_file } => {
-        crate::AeruginousGraphDescription::main(input_file)
-      }
-      */
-      Self::IncrementVersion(i) => i.main(),
-      Self::Ronlog(r) => r.main(),
-      Self::Rs2md {
-        extract_inner,
-        extract_outer,
-        input_file,
-        output_file,
-      } => (|s: String| -> String {
-        Self::rs2md(&s, *extract_inner, *extract_outer)
-      })
-      .io(input_file, output_file),
-      Self::Uncrlf {
-        file_to_edit,
-        input_file,
-        output_file,
-      } => |mut s: String| -> String {
-        s.retain(|c| c != '\r');
-        s
-      }
-      .io(
-        input_file.prefer(file_to_edit.clone()),
-        output_file.prefer(file_to_edit.clone()),
-      ),
+    fn rs2md(s: &str, extract_inner: bool, extract_outer: bool) -> String {
+        s.lines()
+            .map(str::trim_start)
+            .filter(|l| {
+                (extract_inner && l.starts_with("///"))
+                    || (extract_outer && l.starts_with("//!"))
+            })
+            .map(|l| {
+                if l.len() > 3 {
+                    l.split_at(4).1.trim_end().to_string() + "\n"
+                } else {
+                    "\n".to_string()
+                }
+            })
+            .collect::<String>()
     }
-  }
+
+    /// Execute the selected action.
+    ///
+    /// # Errors
+    ///
+    /// See [`PatternIOProcessor::io`].
+    pub fn run(&self) -> Result<()> {
+        match self {
+            Self::Cffreference(c) => c.main(),
+            Self::CffReleaseToday { file_to_edit } => {
+                let mut buffer = String::new();
+
+                for line in
+                    std::io::BufReader::new(std::fs::File::open(file_to_edit)?)
+                        .lines()
+                {
+                    let line = line?;
+
+                    if line.starts_with("date-released:") {
+                        buffer.append_as_line(format!(
+                            "date-released: {}",
+                            chrono::Local::now()
+                                .date_naive()
+                                .format("%Y-%m-%d")
+                        ));
+                    } else {
+                        buffer.append_as_line(line);
+                    }
+                }
+
+                file_to_edit.truncate(Box::new(buffer))
+            }
+            Self::CommentChanges(c) => c.main(),
+            /*
+            Self::GraphDescription { input_file } => {
+              crate::AeruginousGraphDescription::main(input_file)
+            }
+            */
+            Self::IncrementVersion(i) => i.main(),
+            Self::Ronlog(r) => r.main(),
+            Self::Rs2md {
+                extract_inner,
+                extract_outer,
+                input_file,
+                output_file,
+            } => (|s: String| -> String {
+                Self::rs2md(&s, *extract_inner, *extract_outer)
+            })
+            .io(input_file, output_file),
+            Self::Uncrlf {
+                file_to_edit,
+                input_file,
+                output_file,
+            } => |mut s: String| -> String {
+                s.retain(|c| c != '\r');
+                s
+            }
+            .io(
+                input_file.prefer(file_to_edit.clone()),
+                output_file.prefer(file_to_edit.clone()),
+            ),
+        }
+    }
 }
 
 /// The command line argument configuration.
 #[derive(Parser)]
 #[clap(about, version)]
 pub struct Clap {
-  /// The action to perform.
-  #[clap(subcommand)]
-  action: Action,
+    /// The action to perform.
+    #[clap(subcommand)]
+    action: Action,
 }
 
 crate::getters!(@ref Clap { action: Action });

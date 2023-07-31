@@ -21,26 +21,27 @@ use sysexits::Result;
 
 /// Convert an instance into both a [`sysexits::ExitCode`] and an error message.
 pub trait ToStderr<T> {
-  /// Convert this instance.
-  ///
-  /// If the boolean parameter is set to `true`, an appropriate error message
-  /// for this instance will be written to [`std::io::Stderr`].  Furthermore,
-  /// this instance will be converted into a variant of [`sysexits::ExitCode`].
-  ///
-  /// # Errors
-  ///
-  /// See [`sysexits::ExitCode`].
-  fn to_stderr(self, message: bool) -> Result<T>;
+    /// Convert this instance.
+    ///
+    /// If the boolean parameter is set to `true`, an appropriate error message
+    /// for this instance will be written to [`std::io::Stderr`].  Furthermore,
+    /// this instance will be converted into a variant of
+    /// [`sysexits::ExitCode`].
+    ///
+    /// # Errors
+    ///
+    /// See [`sysexits::ExitCode`].
+    fn to_stderr(self, message: bool) -> Result<T>;
 }
 
 impl<T> ToStderr<T> for std::io::Error {
-  fn to_stderr(self, message: bool) -> Result<T> {
-    if message {
-      eprintln!("{self}");
-    }
+    fn to_stderr(self, message: bool) -> Result<T> {
+        if message {
+            eprintln!("{self}");
+        }
 
-    Err(self.into())
-  }
+        Err(self.into())
+    }
 }
 
 /******************************************************************************/

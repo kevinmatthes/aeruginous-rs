@@ -21,7 +21,7 @@ use clap::Parser;
 
 #[cfg(not(tarpaulin_include))]
 fn main() -> sysexits::ExitCode {
-  aeruginous::Application::parse().action().run().into()
+    aeruginous::Application::parse().action().run().into()
 }
 
 /******************************************************************************/

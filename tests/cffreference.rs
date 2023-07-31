@@ -21,24 +21,24 @@ use aeruginous::{Cffreference, ReadFile};
 use std::{fs::remove_file, path::PathBuf};
 
 macro_rules! make_test {
-  ( $n:tt -> $name:ident ) => {
-    #[test]
-    fn $name() {
-      Cffreference::new(
-        Some(PathBuf::from(concat!("./cffs/input_", $n, ".cff"))),
-        Some(PathBuf::from(concat!("./cffs/output_", $n, ".cff"))),
-      )
-      .main()
-      .unwrap();
+    ( $n:tt -> $name:ident ) => {
+        #[test]
+        fn $name() {
+            Cffreference::new(
+                Some(PathBuf::from(concat!("./cffs/input_", $n, ".cff"))),
+                Some(PathBuf::from(concat!("./cffs/output_", $n, ".cff"))),
+            )
+            .main()
+            .unwrap();
 
-      assert_eq!(
-        "./cffs/expectation.yml".read().unwrap(),
-        concat!("./cffs/output_", $n, ".cff").read().unwrap()
-      );
+            assert_eq!(
+                "./cffs/expectation.yml".read().unwrap(),
+                concat!("./cffs/output_", $n, ".cff").read().unwrap()
+            );
 
-      remove_file(concat!("./cffs/output_", $n, ".cff")).unwrap();
-    }
-  };
+            remove_file(concat!("./cffs/output_", $n, ".cff")).unwrap();
+        }
+    };
 }
 
 make_test!(1 -> classic);

@@ -22,12 +22,12 @@ use chrono::Local;
 
 #[test]
 fn beginning_field_compared_to_now() {
-  assert!(Running::default().beginning() <= &Local::now());
+    assert!(Running::default().beginning() <= &Local::now());
 }
 
 #[test]
 fn method_equality_constructor_and_default() {
-  assert!(Running::default().beginning() <= Running::new().beginning());
+    assert!(Running::default().beginning() <= Running::new().beginning());
 }
 
 /******************************************************************************/

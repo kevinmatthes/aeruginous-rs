@@ -21,15 +21,15 @@ use aeruginous::{FromRon, ToRon};
 
 #[test]
 fn i32_number_struct() {
-  #[derive(Debug, Eq, serde::Deserialize, serde::Serialize, PartialEq)]
-  struct Number {
-    n: i32,
-  }
+    #[derive(Debug, Eq, serde::Deserialize, serde::Serialize, PartialEq)]
+    struct Number {
+        n: i32,
+    }
 
-  assert_eq!(
-    Number::from_ron(&Number { n: 42 }.to_ron(2).unwrap()).unwrap(),
-    Number { n: 42 }
-  );
+    assert_eq!(
+        Number::from_ron(&Number { n: 42 }.to_ron(2).unwrap()).unwrap(),
+        Number { n: 42 }
+    );
 }
 
 /******************************************************************************/

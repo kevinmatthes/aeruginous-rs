@@ -26,363 +26,384 @@ use sysexits::{ExitCode, Result};
 #[derive(clap::Parser, Clone)]
 #[command(visible_aliases = ["changelog"])]
 pub struct CommentChanges {
-  /// Work with the commit messages' bodies instead of their summaries.
-  #[arg(long, short)]
-  body: bool,
+    /// Work with the commit messages' bodies instead of their summaries.
+    #[arg(long, short)]
+    body: bool,
 
-  /// Only these categories shall be used to generate comments.
-  #[arg(long, short)]
-  category: Vec<String>,
+    /// Only these categories shall be used to generate comments.
+    #[arg(long, short)]
+    category: Vec<String>,
 
-  /// The delimiter to separate a category from the change description.
-  #[arg(long, short)]
-  delimiter: String,
+    /// The delimiter to separate a category from the change description.
+    #[arg(long, short)]
+    delimiter: String,
 
-  /// The count of commits to analyse, defaulting to infinity, if omitted.
-  #[arg(long, short = 'n', visible_aliases = ["count"])]
-  depth: Option<usize>,
+    /// The count of commits to analyse, defaulting to infinity, if omitted.
+    #[arg(long, short = 'n', visible_aliases = ["count"])]
+    depth: Option<usize>,
 
-  /// The target format of the resulting fragment.
-  #[arg(default_value = "rst", long, short = 'f', visible_aliases = ["format"])]
-  extension: FragmentExportFormat,
-
-  /// The default category to assign.
-  #[arg(long, short = 'C')]
-  fallback_category: Option<String>,
-
-  /// Whether to enforce the fragment creation.
-  #[arg(long, short = 'F')]
-  force: bool,
-
-  /// The heading's level in the resulting fragment.
-  #[arg(
-      default_value = "3",
-      long,
-      short = 'H',
-      value_parser = clap::value_parser!(u8).range(1..=3),
-      visible_aliases = ["level"]
+    /// The target format of the resulting fragment.
+    #[arg(
+        default_value = "rst",
+        long,
+        short = 'f',
+        visible_aliases = ["format"]
     )]
-  heading: u8,
+    extension: FragmentExportFormat,
 
-  /// Set categories Added, Changed, Deprecated, Fixed, Removed, and Security.
-  #[arg(long, short)]
-  keep_a_changelog: bool,
+    /// The default category to assign.
+    #[arg(long, short = 'C')]
+    fallback_category: Option<String>,
 
-  /// The hyperlinks to add as comments.
-  #[arg(long, short, visible_aliases = ["hyperlink"])]
-  link: Vec<String>,
+    /// Whether to enforce the fragment creation.
+    #[arg(long, short = 'F')]
+    force: bool,
 
-  /// The directory to write the generated fragment to.
-  #[arg(
+    /// The heading's level in the resulting fragment.
+    #[arg(
+        default_value = "3",
+        long,
+        short = 'H',
+        value_parser = clap::value_parser!(u8).range(1..=3),
+        visible_aliases = ["level"]
+    )]
+    heading: u8,
+
+    /// Set categories Added, Changed, Deprecated, Fixed, Removed, and Security.
+    #[arg(long, short)]
+    keep_a_changelog: bool,
+
+    /// The hyperlinks to add as comments.
+    #[arg(long, short, visible_aliases = ["hyperlink"])]
+    link: Vec<String>,
+
+    /// The directory to write the generated fragment to.
+    #[arg(
       default_value = ".",
       long = "output",
       short,
       visible_aliases = ["dir", "directory"]
     )]
-  output_directory: String,
+    output_directory: String,
 
-  /// The commit to stop at.
-  #[arg(long, short = 'S')]
-  stop_at: Option<git2::Oid>,
+    /// The commit to stop at.
+    #[arg(long, short = 'S')]
+    stop_at: Option<git2::Oid>,
 
-  /// The hyperlinks' targets.
-  #[arg(long, short)]
-  target: Vec<String>,
+    /// The hyperlinks' targets.
+    #[arg(long, short)]
+    target: Vec<String>,
 }
 
 impl CommentChanges {
-  /// Process the input data.
-  ///
-  /// # Errors
-  ///
-  /// - [`sysexits::ExitCode::DataErr`]
-  /// - [`sysexits::ExitCode::Software`]
-  /// - [`sysexits::ExitCode::Unavailable`]
-  /// - [`sysexits::ExitCode::Usage`]
-  pub fn main(&self) -> Result<()> {
-    self.wrap().main()
-  }
-
-  /// Create a new instance.
-  #[must_use]
-  pub fn new(delimiter: String) -> Self {
-    Self {
-      body: false,
-      category: Vec::new(),
-      delimiter,
-      depth: None,
-      extension: FragmentExportFormat::Rst,
-      fallback_category: None,
-      force: false,
-      heading: 3,
-      keep_a_changelog: false,
-      link: Vec::new(),
-      output_directory: ".".to_string(),
-      stop_at: None,
-      target: Vec::new(),
+    /// Process the input data.
+    ///
+    /// # Errors
+    ///
+    /// - [`sysexits::ExitCode::DataErr`]
+    /// - [`sysexits::ExitCode::Software`]
+    /// - [`sysexits::ExitCode::Unavailable`]
+    /// - [`sysexits::ExitCode::Usage`]
+    pub fn main(&self) -> Result<()> {
+        self.wrap().main()
     }
-  }
 
-  fn wrap(&self) -> Logic {
-    Logic {
-      branch: String::new(),
-      categories: Vec::new(),
-      changes: HashMap::new(),
-      cli: self.clone(),
-      hyperlinks: HashMap::new(),
-      repository: None,
-      user: String::new(),
+    /// Create a new instance.
+    #[must_use]
+    pub fn new(delimiter: String) -> Self {
+        Self {
+            body: false,
+            category: Vec::new(),
+            delimiter,
+            depth: None,
+            extension: FragmentExportFormat::Rst,
+            fallback_category: None,
+            force: false,
+            heading: 3,
+            keep_a_changelog: false,
+            link: Vec::new(),
+            output_directory: ".".to_string(),
+            stop_at: None,
+            target: Vec::new(),
+        }
     }
-  }
+
+    fn wrap(&self) -> Logic {
+        Logic {
+            branch: String::new(),
+            categories: Vec::new(),
+            changes: HashMap::new(),
+            cli: self.clone(),
+            hyperlinks: HashMap::new(),
+            repository: None,
+            user: String::new(),
+        }
+    }
 }
 
 struct Logic {
-  branch: String,
-  categories: Vec<String>,
-  changes: HashMap<String, Vec<String>>,
-  cli: CommentChanges,
-  hyperlinks: crate::RonlogReferences,
-  repository: Option<Repository>,
-  user: String,
+    branch: String,
+    categories: Vec<String>,
+    changes: HashMap<String, Vec<String>>,
+    cli: CommentChanges,
+    hyperlinks: crate::RonlogReferences,
+    repository: Option<Repository>,
+    user: String,
 }
 
 impl Logic {
-  fn get_branch(&mut self) -> Result<()> {
-    if let Some(repository) = &self.repository {
-      self.branch = repository.head().map_or_else(
-        |error| {
-          eprintln!("{error}");
-          Err(ExitCode::Unavailable)
-        },
-        |reference| {
-          reference
-            .name()
-            .map_or(Err(ExitCode::Unavailable), |name| Ok(name.to_string()))
-        },
-      )?;
+    fn get_branch(&mut self) -> Result<()> {
+        if let Some(repository) = &self.repository {
+            self.branch = repository.head().map_or_else(
+                |error| {
+                    eprintln!("{error}");
+                    Err(ExitCode::Unavailable)
+                },
+                |reference| {
+                    reference
+                        .name()
+                        .map_or(Err(ExitCode::Unavailable), |name| {
+                            Ok(name.to_string())
+                        })
+                },
+            )?;
 
-      Ok(())
-    } else {
-      Err(ExitCode::Software)
+            Ok(())
+        } else {
+            Err(ExitCode::Software)
+        }
     }
-  }
 
-  fn get_user(&mut self) -> Result<()> {
-    if let Some(repository) = &self.repository {
-      self.user = repository
-        .config()
-        .map_or_else(
-          |error| {
-            eprintln!("{error}");
-            Err(ExitCode::Unavailable)
-          },
-          |config| {
-            config.get_string("user.name").map_or_else(
+    fn get_user(&mut self) -> Result<()> {
+        if let Some(repository) = &self.repository {
+            self.user =
+                repository
+                    .config()
+                    .map_or_else(
+                        |error| {
+                            eprintln!("{error}");
+                            Err(ExitCode::Unavailable)
+                        },
+                        |config| {
+                            config.get_string("user.name").map_or_else(
               |_| {
                 eprintln!("There is no Git username configured, yet.");
                 Err(ExitCode::DataErr)
               },
               Ok,
             )
-          },
-        )?
-        .replace(' ', "_");
-
-      Ok(())
-    } else {
-      Err(ExitCode::Software)
-    }
-  }
-
-  fn harvest_message(&self, message: &str) -> Option<(String, String)> {
-    if message.is_empty() {
-      None
-    } else if let Some((category, change)) =
-      message.trim().split_once(&self.cli.delimiter)
-    {
-      let category = category.trim().to_string();
-      let change = change.trim().to_string();
-      let valid_category = self.categories.iter().any(|c| c == &category);
-
-      if self.categories.is_empty() || valid_category {
-        Some((category, change))
-      } else if !valid_category {
-        self
-          .cli
-          .fallback_category
-          .as_ref()
-          .map(|fallback| (fallback.to_string(), change))
-      } else {
-        None
-      }
-    } else {
-      self
-        .cli
-        .fallback_category
-        .as_ref()
-        .map(|fallback| (fallback.to_string(), message.trim().to_string()))
-    }
-  }
-
-  fn insert(
-    map: &mut HashMap<String, Vec<String>>,
-    category: String,
-    change: String,
-  ) {
-    map.entry(category.clone()).or_default();
-    let mut changes = map[&category].clone();
-    changes.push(change);
-    map.insert(category, changes);
-  }
-
-  fn main(&mut self) -> Result<()> {
-    self.preprocess()?;
-    self.query()?;
-    self.report()
-  }
-
-  fn preprocess(&mut self) -> Result<()> {
-    if self.cli.keep_a_changelog {
-      self.categories.append(
-        &mut vec![
-          "Added",
-          "Changed",
-          "Deprecated",
-          "Fixed",
-          "Removed",
-          "Security",
-        ]
-        .iter()
-        .map(ToString::to_string)
-        .collect::<Vec<String>>(),
-      );
-    }
-
-    self.categories.append(&mut self.cli.category.clone());
-
-    self.hyperlinks = self
-      .cli
-      .link
-      .iter()
-      .zip(self.cli.target.iter())
-      .map(|(a, b)| (a.to_string(), b.to_string()))
-      .collect();
-
-    Repository::open(".").map_or_else(
-      |_| {
-        eprintln!("This is not a Git repository.");
-        Err(ExitCode::Usage)
-      },
-      |r| {
-        self.repository = Some(r);
-        Ok(())
-      },
-    )
-  }
-
-  fn query(&mut self) -> Result<()> {
-    if let Some(repository) = &self.repository {
-      match repository.revwalk() {
-        Ok(mut revwalk) => match revwalk.push_head() {
-          Ok(()) => {
-            let mut count = 1;
-            let mut result = HashMap::new();
-
-            for oid in revwalk {
-              if let Some(depth) = self.cli.depth {
-                if count > depth {
-                  break;
-                }
-              }
-
-              if let Ok(oid) = oid {
-                if let Some(stop_at) = self.cli.stop_at {
-                  if stop_at == oid {
-                    break;
-                  }
-                }
-
-                if let Ok(commit) = repository.find_commit(oid) {
-                  if let Some(message) = commit.message() {
-                    let (summary, body) =
-                      message.split_once('\n').unwrap_or((message, ""));
-
-                    if let Some((category, change)) =
-                      self.harvest_message(if self.cli.body {
-                        body.trim()
-                      } else {
-                        summary.trim()
-                      })
-                    {
-                      Self::insert(&mut result, category, change);
-                    } else if self.cli.force {
-                      if let Some((category, change)) =
-                        self.harvest_message(if self.cli.body {
-                          summary.trim()
-                        } else {
-                          body.trim()
-                        })
-                      {
-                        Self::insert(&mut result, category, change);
-                      }
-                    }
-                  }
-                } else {
-                  eprintln!("Commit {oid} does not seem to exist.");
-                  return Err(ExitCode::DataErr);
-                }
-              } else {
-                eprintln!("There were not enough commits fetched on checkout.");
-                return Err(ExitCode::Usage);
-              }
-
-              count += 1;
-            }
-
-            self.changes = result;
+                        },
+                    )?
+                    .replace(' ', "_");
 
             Ok(())
-          }
-          Err(error) => {
-            eprintln!("{error}");
-            Err(ExitCode::Unavailable)
-          }
-        },
-        Err(error) => {
-          eprintln!("{error}");
-          Err(ExitCode::Unavailable)
+        } else {
+            Err(ExitCode::Software)
         }
-      }
-    } else {
-      Err(ExitCode::Software)
-    }
-  }
-
-  fn report(&mut self) -> Result<()> {
-    let fragment = crate::Fragment::new(&self.hyperlinks, &self.changes);
-    let content = match self.cli.extension {
-      FragmentExportFormat::Md => fragment.to_md(self.cli.heading),
-      FragmentExportFormat::Ron => fragment.to_ron(2),
-      FragmentExportFormat::Rst => fragment.to_rst(self.cli.heading),
-    }?;
-
-    if !std::path::Path::new(&self.cli.output_directory).try_exists()? {
-      std::fs::create_dir_all(&self.cli.output_directory)?;
     }
 
-    self.get_branch()?;
-    self.get_user()?;
+    fn harvest_message(&self, message: &str) -> Option<(String, String)> {
+        if message.is_empty() {
+            None
+        } else if let Some((category, change)) =
+            message.trim().split_once(&self.cli.delimiter)
+        {
+            let category = category.trim().to_string();
+            let change = change.trim().to_string();
+            let valid_category = self.categories.iter().any(|c| c == &category);
 
-    format!(
-      "{}/{}_{}_{}.{}",
-      self.cli.output_directory,
-      chrono::Local::now().format("%Y%m%d_%H%M%S"),
-      self.user,
-      self.branch.split('/').last().unwrap_or("HEAD"),
-      self.cli.extension
-    )
-    .append(Box::new(content))
-  }
+            if self.categories.is_empty() || valid_category {
+                Some((category, change))
+            } else if !valid_category {
+                self.cli
+                    .fallback_category
+                    .as_ref()
+                    .map(|fallback| (fallback.to_string(), change))
+            } else {
+                None
+            }
+        } else {
+            self.cli.fallback_category.as_ref().map(|fallback| {
+                (fallback.to_string(), message.trim().to_string())
+            })
+        }
+    }
+
+    fn insert(
+        map: &mut HashMap<String, Vec<String>>,
+        category: String,
+        change: String,
+    ) {
+        map.entry(category.clone()).or_default();
+        let mut changes = map[&category].clone();
+        changes.push(change);
+        map.insert(category, changes);
+    }
+
+    fn main(&mut self) -> Result<()> {
+        self.preprocess()?;
+        self.query()?;
+        self.report()
+    }
+
+    fn preprocess(&mut self) -> Result<()> {
+        if self.cli.keep_a_changelog {
+            self.categories.append(
+                &mut vec![
+                    "Added",
+                    "Changed",
+                    "Deprecated",
+                    "Fixed",
+                    "Removed",
+                    "Security",
+                ]
+                .iter()
+                .map(ToString::to_string)
+                .collect::<Vec<String>>(),
+            );
+        }
+
+        self.categories.append(&mut self.cli.category.clone());
+
+        self.hyperlinks = self
+            .cli
+            .link
+            .iter()
+            .zip(self.cli.target.iter())
+            .map(|(a, b)| (a.to_string(), b.to_string()))
+            .collect();
+
+        Repository::open(".").map_or_else(
+            |_| {
+                eprintln!("This is not a Git repository.");
+                Err(ExitCode::Usage)
+            },
+            |r| {
+                self.repository = Some(r);
+                Ok(())
+            },
+        )
+    }
+
+    fn query(&mut self) -> Result<()> {
+        if let Some(repository) = &self.repository {
+            match repository.revwalk() {
+                Ok(mut revwalk) => match revwalk.push_head() {
+                    Ok(()) => {
+                        let mut count = 1;
+                        let mut result = HashMap::new();
+
+                        for oid in revwalk {
+                            if let Some(depth) = self.cli.depth {
+                                if count > depth {
+                                    break;
+                                }
+                            }
+
+                            if let Ok(oid) = oid {
+                                if let Some(stop_at) = self.cli.stop_at {
+                                    if stop_at == oid {
+                                        break;
+                                    }
+                                }
+
+                                if let Ok(commit) = repository.find_commit(oid)
+                                {
+                                    if let Some(message) = commit.message() {
+                                        let (summary, body) = message
+                                            .split_once('\n')
+                                            .unwrap_or((message, ""));
+
+                                        if let Some((category, change)) = self
+                                            .harvest_message(if self.cli.body {
+                                                body.trim()
+                                            } else {
+                                                summary.trim()
+                                            })
+                                        {
+                                            Self::insert(
+                                                &mut result,
+                                                category,
+                                                change,
+                                            );
+                                        } else if self.cli.force {
+                                            if let Some((category, change)) =
+                                                self.harvest_message(
+                                                    if self.cli.body {
+                                                        summary.trim()
+                                                    } else {
+                                                        body.trim()
+                                                    },
+                                                )
+                                            {
+                                                Self::insert(
+                                                    &mut result,
+                                                    category,
+                                                    change,
+                                                );
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    eprintln!(
+                                        "Commit {oid} does not seem to exist."
+                                    );
+                                    return Err(ExitCode::DataErr);
+                                }
+                            } else {
+                                eprintln!(
+                                    "Too few commits were fetched on checkout."
+                                );
+                                return Err(ExitCode::Usage);
+                            }
+
+                            count += 1;
+                        }
+
+                        self.changes = result;
+
+                        Ok(())
+                    }
+                    Err(error) => {
+                        eprintln!("{error}");
+                        Err(ExitCode::Unavailable)
+                    }
+                },
+                Err(error) => {
+                    eprintln!("{error}");
+                    Err(ExitCode::Unavailable)
+                }
+            }
+        } else {
+            Err(ExitCode::Software)
+        }
+    }
+
+    fn report(&mut self) -> Result<()> {
+        let fragment = crate::Fragment::new(&self.hyperlinks, &self.changes);
+        let content = match self.cli.extension {
+            FragmentExportFormat::Md => fragment.to_md(self.cli.heading),
+            FragmentExportFormat::Ron => fragment.to_ron(2),
+            FragmentExportFormat::Rst => fragment.to_rst(self.cli.heading),
+        }?;
+
+        if !std::path::Path::new(&self.cli.output_directory).try_exists()? {
+            std::fs::create_dir_all(&self.cli.output_directory)?;
+        }
+
+        self.get_branch()?;
+        self.get_user()?;
+
+        format!(
+            "{}/{}_{}_{}.{}",
+            self.cli.output_directory,
+            chrono::Local::now().format("%Y%m%d_%H%M%S"),
+            self.user,
+            self.branch.split('/').last().unwrap_or("HEAD"),
+            self.cli.extension
+        )
+        .append(Box::new(content))
+    }
 }
 
 /******************************************************************************/

@@ -19,32 +19,32 @@
 
 /// Prefer a certain value to a fallback.
 pub trait Prefer {
-  /// Prefer a certain value to a fallback.
-  ///
-  /// The instance this method is called on will be used as a fallback in case
-  /// that the given value does not fulfill certain criteria to be considered
-  /// preferable.
-  ///
-  /// # Examples
-  ///
-  /// ```rust
-  /// use aeruginous::Prefer;
-  ///
-  /// assert_eq!(Some(23).prefer(Some(42)), Some(42));
-  /// assert_eq!(None.prefer(Some(42)), Some(42));
-  /// assert_eq!(Some(23).prefer(None), Some(23));
-  /// assert_eq!(None::<i32>.prefer(None), None);
-  /// ```
-  #[must_use]
-  fn prefer(&self, other: Self) -> Self;
+    /// Prefer a certain value to a fallback.
+    ///
+    /// The instance this method is called on will be used as a fallback in case
+    /// that the given value does not fulfill certain criteria to be considered
+    /// preferable.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use aeruginous::Prefer;
+    ///
+    /// assert_eq!(Some(23).prefer(Some(42)), Some(42));
+    /// assert_eq!(None.prefer(Some(42)), Some(42));
+    /// assert_eq!(Some(23).prefer(None), Some(23));
+    /// assert_eq!(None::<i32>.prefer(None), None);
+    /// ```
+    #[must_use]
+    fn prefer(&self, other: Self) -> Self;
 }
 
 impl<T: Clone> Prefer for Option<T> {
-  fn prefer(&self, other: Self) -> Self {
-    other
-      .as_ref()
-      .map_or_else(|| (*self).clone(), |value| Some(value.clone()))
-  }
+    fn prefer(&self, other: Self) -> Self {
+        other
+            .as_ref()
+            .map_or_else(|| (*self).clone(), |value| Some(value.clone()))
+    }
 }
 
 /******************************************************************************/

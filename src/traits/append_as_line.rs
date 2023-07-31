@@ -19,32 +19,32 @@
 
 /// Append a buffer as a line to another buffer.
 pub trait AppendAsLine<T> {
-  /// Append a buffer as a line to another buffer.
-  ///
-  /// This method will take ownership of a given buffer in order to append it to
-  /// the instance this method is called on as a new line.
-  fn append_as_line(&mut self, data: T);
+    /// Append a buffer as a line to another buffer.
+    ///
+    /// This method will take ownership of a given buffer in order to append it
+    /// to the instance this method is called on as a new line.
+    fn append_as_line(&mut self, data: T);
 }
 
 impl AppendAsLine<char> for String {
-  fn append_as_line(&mut self, data: char) {
-    self.push(data);
-    self.push('\n');
-  }
+    fn append_as_line(&mut self, data: char) {
+        self.push(data);
+        self.push('\n');
+    }
 }
 
 impl AppendAsLine<Self> for String {
-  fn append_as_line(&mut self, data: Self) {
-    self.push_str(data.as_str());
-    self.push('\n');
-  }
+    fn append_as_line(&mut self, data: Self) {
+        self.push_str(data.as_str());
+        self.push('\n');
+    }
 }
 
 impl AppendAsLine<&str> for String {
-  fn append_as_line(&mut self, data: &str) {
-    self.push_str(data);
-    self.push('\n');
-  }
+    fn append_as_line(&mut self, data: &str) {
+        self.push_str(data);
+        self.push('\n');
+    }
 }
 
 /******************************************************************************/
