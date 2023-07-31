@@ -34,127 +34,131 @@ use sysexits::Result;
 /// data shall be processed.  The IO is handled by [`ReadFile`]s and
 /// [`PatternWriter`]s such that one can rely on their semantics.
 pub trait IOProcessor {
-  /// The shared logic of all methods.
-  ///
-  /// This method defines the common behaviour of all methods this trait
-  /// provides.
-  ///
-  /// In case of a file,
-  ///
-  /// - `append` shall control whether to edit it solely by pasting the buffer's
-  ///   contents at the file's end.
-  /// - `truncate` shall control whether to clear the file before writing to it.
-  /// - the output file shall be created, in case that it should not already
-  ///   exist.
-  ///
-  /// `show_error_messages` shall control whether to write error messages to
-  /// [`std::io::Stderr`], if appropriate.
-  ///
-  /// # Errors
-  ///
-  /// The return value shall indicate whether the operation succeeded.
-  /// Implementations should rely on the semantics of [`ReadFile`] and
-  /// [`PatternWriter`] instead of introducing further exit codes.
-  fn behaviour(
-    &self,
-    input: impl ReadFile,
-    output: impl PatternWriter,
-    append: bool,
-    show_error_messages: bool,
-    truncate: bool,
-  ) -> Result<()>;
+    /// The shared logic of all methods.
+    ///
+    /// This method defines the common behaviour of all methods this trait
+    /// provides.
+    ///
+    /// In case of a file,
+    ///
+    /// - `append` shall control whether to edit it solely by pasting the buffer's
+    ///   contents at the file's end.
+    /// - `truncate` shall control whether to clear the file before writing to it.
+    /// - the output file shall be created, in case that it should not already
+    ///   exist.
+    ///
+    /// `show_error_messages` shall control whether to write error messages to
+    /// [`std::io::Stderr`], if appropriate.
+    ///
+    /// # Errors
+    ///
+    /// The return value shall indicate whether the operation succeeded.
+    /// Implementations should rely on the semantics of [`ReadFile`] and
+    /// [`PatternWriter`] instead of introducing further exit codes.
+    fn behaviour(
+        &self,
+        input: impl ReadFile,
+        output: impl PatternWriter,
+        append: bool,
+        show_error_messages: bool,
+        truncate: bool,
+    ) -> Result<()>;
 
-  /// Truncate the output stream and write error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn io(&self, input: impl ReadFile, output: impl PatternWriter) -> Result<()> {
-    self.behaviour(input, output, false, true, true)
-  }
+    /// Truncate the output stream and write error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn io(
+        &self,
+        input: impl ReadFile,
+        output: impl PatternWriter,
+    ) -> Result<()> {
+        self.behaviour(input, output, false, true, true)
+    }
 
-  /// Do not truncate the output stream but write error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn io_append(
-    &self,
-    input: impl ReadFile,
-    output: impl PatternWriter,
-  ) -> Result<()> {
-    self.behaviour(input, output, true, true, false)
-  }
+    /// Do not truncate the output stream but write error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn io_append(
+        &self,
+        input: impl ReadFile,
+        output: impl PatternWriter,
+    ) -> Result<()> {
+        self.behaviour(input, output, true, true, false)
+    }
 
-  /// Neither truncate the output stream nor write error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn io_append_silently(
-    &self,
-    input: impl ReadFile,
-    output: impl PatternWriter,
-  ) -> Result<()> {
-    self.behaviour(input, output, true, false, false)
-  }
+    /// Neither truncate the output stream nor write error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn io_append_silently(
+        &self,
+        input: impl ReadFile,
+        output: impl PatternWriter,
+    ) -> Result<()> {
+        self.behaviour(input, output, true, false, false)
+    }
 
-  /// Truncate the output stream but do not write error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn io_silent(
-    &self,
-    input: impl ReadFile,
-    output: impl PatternWriter,
-  ) -> Result<()> {
-    self.behaviour(input, output, false, false, true)
-  }
+    /// Truncate the output stream but do not write error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn io_silent(
+        &self,
+        input: impl ReadFile,
+        output: impl PatternWriter,
+    ) -> Result<()> {
+        self.behaviour(input, output, false, false, true)
+    }
 
-  /// Edit the output stream and write error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn io_write(
-    &self,
-    input: impl ReadFile,
-    output: impl PatternWriter,
-  ) -> Result<()> {
-    self.behaviour(input, output, false, true, false)
-  }
+    /// Edit the output stream and write error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn io_write(
+        &self,
+        input: impl ReadFile,
+        output: impl PatternWriter,
+    ) -> Result<()> {
+        self.behaviour(input, output, false, true, false)
+    }
 
-  /// Edit the output stream but do not write error messages.
-  ///
-  /// # Errors
-  ///
-  /// See [`Self::behaviour`].
-  fn io_write_silently(
-    &self,
-    input: impl ReadFile,
-    output: impl PatternWriter,
-  ) -> Result<()> {
-    self.behaviour(input, output, false, false, false)
-  }
+    /// Edit the output stream but do not write error messages.
+    ///
+    /// # Errors
+    ///
+    /// See [`Self::behaviour`].
+    fn io_write_silently(
+        &self,
+        input: impl ReadFile,
+        output: impl PatternWriter,
+    ) -> Result<()> {
+        self.behaviour(input, output, false, false, false)
+    }
 }
 
 impl<T: Fn(String) -> String> IOProcessor for T {
-  fn behaviour(
-    &self,
-    input: impl ReadFile,
-    output: impl PatternWriter,
-    append: bool,
-    show_error_messages: bool,
-    truncate: bool,
-  ) -> Result<()> {
-    output.behaviour(
-      Box::new(self(input.read()?)),
-      append,
-      show_error_messages,
-      truncate,
-    )
-  }
+    fn behaviour(
+        &self,
+        input: impl ReadFile,
+        output: impl PatternWriter,
+        append: bool,
+        show_error_messages: bool,
+        truncate: bool,
+    ) -> Result<()> {
+        output.behaviour(
+            Box::new(self(input.read()?)),
+            append,
+            show_error_messages,
+            truncate,
+        )
+    }
 }
 
 /******************************************************************************/
