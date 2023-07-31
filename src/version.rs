@@ -147,9 +147,9 @@ impl std::str::FromStr for Version {
     /// Create a new version instance from a string slice.
     ///
     /// There can be up to three parts for a version instance, separated by dots
-    /// each.  In case of any further parts, anything after the third dot will be
-    /// ignored.  If one part should not be given, it will be mapped to `0`.  The
-    /// version instance will be filled in the following order:
+    /// each.  In case of any further parts, anything after the third dot will
+    /// be ignored.  If one part should not be given, it will be mapped to `0`.
+    /// The version instance will be filled in the following order:
     ///
     /// 1. `major`
     /// 1. `minor`
@@ -163,8 +163,9 @@ impl std::str::FromStr for Version {
     /// least one part should contain non-numeric characters, the parsing will
     /// fail.
     ///
-    /// If the parsing fails, [`sysexits::ExitCode::DataErr`] will be returned as
-    /// [`Result::Err`].
+    /// # Errors
+    ///
+    /// - [`sysexits::ExitCode::DataErr`]
     fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
         let parts: Vec<&str> = if string.starts_with('v') {
             string.strip_prefix('v').unwrap()
