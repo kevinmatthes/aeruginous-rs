@@ -1,102 +1,102 @@
 {
-  assignees: [
-    "kevinmatthes",
-  ],
-  automerge: false,
-  commitMessageLowerCase: "never",
-  commitMessagePrefix: "[Renovate]",
-  dependencyDashboard: true,
-  dependencyDashboardAutoclose: true,
-  dependencyDashboardLabels: [
-    "dependencies",
-  ],
-  dependencyDashboardTitle: "[Renovate] Dependency Dashboard",
-  labels: [
-    "dependencies",
-  ],
-  lockFileMaintenance: {
-    enabled: true,
-  },
-  packageRules: [
-    {
-      addLabels: [
-        "github_actions",
-      ],
-      matchManagers: [
-        "regex",
-      ],
-      matchPackageNames: [
-        "actionlint",
-        "cffconvert",
-      ],
+    assignees: [
+        "kevinmatthes",
+    ],
+    automerge: false,
+    commitMessageLowerCase: "never",
+    commitMessagePrefix: "[Renovate]",
+    dependencyDashboard: true,
+    dependencyDashboardAutoclose: true,
+    dependencyDashboardLabels: [
+        "dependencies",
+    ],
+    dependencyDashboardTitle: "[Renovate] Dependency Dashboard",
+    labels: [
+        "dependencies",
+    ],
+    lockFileMaintenance: {
+        enabled: true,
     },
-    {
-      addLabels: [
-        "rust",
-      ],
-      matchManagers: [
-        "cargo",
-      ],
-    },
-    {
-      addLabels: [
-        "github_actions",
-      ],
-      matchManagers: [
-        "github-actions",
-      ],
-    },
-    {
-      addLabels: [
-        "documentation",
-      ],
-      matchManagers: [
-        "regex",
-      ],
-      matchPackageNames: [
-        "rust",
-      ],
-    },
-  ],
-  regexManagers: [
-    {
-      datasourceTemplate: "github-releases",
-      depNameTemplate: "cffconvert",
-      fileMatch: [
-        "^\\.github/workflows/ci\\.yml$",
-      ],
-      matchStrings: [
-        "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-      ],
-      packageNameTemplate: "citation-file-format/cffconvert",
-    },
-    {
-      datasourceTemplate: "github-releases",
-      depNameTemplate: "actionlint",
-      fileMatch: [
-        "^\\.github/workflows/ci\\.yml$",
-      ],
-      matchStrings: [
-        "rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-      ],
-      packageNameTemplate: "rhysd/actionlint",
-    },
-    {
-      datasourceTemplate: "github-releases",
-      depNameTemplate: "rust",
-      fileMatch: [
-        "^\\.clippy\\.toml$",
-        "^Cargo\\.toml$",
-        "^README\\.md$",
-        "^src/lib\\.rs$",
-      ],
-      matchStrings: [
-        "msrv =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-        "rust-version =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-        "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-green",
-      ],
-      packageNameTemplate: "rust-lang/rust",
-    },
-  ],
-  schedule: null,
+    packageRules: [
+        {
+            addLabels: [
+                "github_actions",
+            ],
+            matchManagers: [
+                "regex",
+            ],
+            matchPackageNames: [
+                "actionlint",
+                "cffconvert",
+            ],
+        },
+        {
+            addLabels: [
+                "rust",
+            ],
+            matchManagers: [
+                "cargo",
+            ],
+        },
+        {
+            addLabels: [
+                "github_actions",
+            ],
+            matchManagers: [
+                "github-actions",
+            ],
+        },
+        {
+            addLabels: [
+                "documentation",
+            ],
+            matchManagers: [
+                "regex",
+            ],
+            matchPackageNames: [
+                "rust",
+            ],
+        },
+    ],
+    regexManagers: [
+        {
+            datasourceTemplate: "github-releases",
+            depNameTemplate: "cffconvert",
+            fileMatch: [
+                "^\\.github/workflows/ci\\.yml$",
+            ],
+            matchStrings: [
+                "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+            ],
+            packageNameTemplate: "citation-file-format/cffconvert",
+        },
+        {
+            datasourceTemplate: "github-releases",
+            depNameTemplate: "actionlint",
+            fileMatch: [
+                "^\\.github/workflows/ci\\.yml$",
+            ],
+            matchStrings: [
+                "rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+            ],
+            packageNameTemplate: "rhysd/actionlint",
+        },
+        {
+            datasourceTemplate: "github-releases",
+            depNameTemplate: "rust",
+            fileMatch: [
+                "^\\.clippy\\.toml$",
+                "^Cargo\\.toml$",
+                "^README\\.md$",
+                "^src/lib\\.rs$",
+            ],
+            matchStrings: [
+                "msrv =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+                "rust-version =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+                "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-green",
+            ],
+            packageNameTemplate: "rust-lang/rust",
+        },
+    ],
+    schedule: null,
 }
