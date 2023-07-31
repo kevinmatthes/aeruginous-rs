@@ -21,22 +21,22 @@ use sysexits::Result;
 
 /// Create an instance from a Markdown string.
 pub trait FromMd: Sized {
-  /// Create an instance from valid Markdown.
-  ///
-  /// # Errors
-  ///
-  /// - [`sysexits::ExitCode::DataErr`]
-  fn from_md(md: &str) -> Result<Self>;
+    /// Create an instance from valid Markdown.
+    ///
+    /// # Errors
+    ///
+    /// - [`sysexits::ExitCode::DataErr`]
+    fn from_md(md: &str) -> Result<Self>;
 }
 
 /// Convert this instance into a Markdown string.
 pub trait ToMd: Sized {
-  /// Convert an instance to valid Markdown.
-  ///
-  /// # Errors
-  ///
-  /// - [`sysexits::ExitCode::DataErr`]
-  fn to_md(&self, header_level: u8) -> Result<String>;
+    /// Convert an instance to valid Markdown.
+    ///
+    /// # Errors
+    ///
+    /// - [`sysexits::ExitCode::DataErr`]
+    fn to_md(&self, header_level: u8) -> Result<String>;
 }
 
 /******************************************************************************/
