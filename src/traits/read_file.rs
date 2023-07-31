@@ -26,8 +26,8 @@ pub trait ReadFile {
     /// The shared logic of all methods.
     ///
     /// This method defines the common behaviour of all methods this trait
-    /// provides.  Implementations should also consider the possibilities to read
-    /// from both (a) file(s) and [`std::io::Stdin`].
+    /// provides.  Implementations should also consider the possibilities to
+    /// read from both (a) file(s) and [`std::io::Stdin`].
     ///
     /// `show_error_messages` shall control whether to write error messages to
     /// [`std::io::Stderr`], if appropriate.
@@ -37,7 +37,7 @@ pub trait ReadFile {
     /// See [`sysexits::ExitCode`].
     fn behaviour(&self, show_error_messages: bool) -> Result<String>;
 
-    /// Read the input stream(s) and write error messages to [`std::io::Stderr`].
+    /// Read the input stream(s) and write error messages.
     ///
     /// # Errors
     ///
