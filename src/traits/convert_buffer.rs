@@ -43,9 +43,9 @@ pub trait ConvertBuffer<T> {
 
     /// Convert this buffer into another buffer type for a moment, if possible.
     ///
-    /// This method will attempt to convert this instance into the requested type.
-    /// In case of success, the resulting data will be returned.  This instance
-    /// will remain unchanged in either case.
+    /// This method will attempt to convert this instance into the requested
+    /// type.  In case of success, the resulting data will be returned.  This
+    /// instance will remain unchanged in either case.
     ///
     /// # Examples
     ///
