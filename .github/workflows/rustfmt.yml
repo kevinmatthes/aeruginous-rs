@@ -20,76 +20,42 @@
 ################################################################################
 ##
 ##  AUTHOR      Kevin Matthes
-##  BRIEF       Assemble the main CITATION.cff from its updated fragments.
+##  BRIEF       Reformat the Rust source code.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
-##  FILE        cff.yml
+##  FILE        rustfmt.yml
 ##  NOTE        See `LICENSE' for full license.
 ##              See `README.md' for project details.
 ##
 ################################################################################
 
-name: cff
+name: rustfmt
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
     paths:
-      - .github/CFF/*.cff
-      - .github/CFF/*.yml
-      - Cargo.toml
-  workflow_dispatch:
+      - .rustfmt.toml
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
-  main:
-    if: github.repository == 'kevinmatthes/aeruginous-rs'
+  reformat:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.5.3
-      - uses: fregante/setup-git-user@v2.0.1
-      - run: rustup update
-
-      - run: |
-          curl \
-            https://raw.githubusercontent.com/clap-rs/clap/master/CITATION.cff \
-            | cargo r -- cffreference > .github/CFF/clap.yml
-          git add .github/CFF/clap.yml
-          git commit --allow-empty -m \
-            '[GitHub Actions] Update CFF Entry for Clap'
-
-      - run: |
-          curl \
-            https://raw.githubusercontent.com/sorairolake/sysexits-rs/develop/CITATION.cff \
-            | cargo r -- cffreference > .github/CFF/sysexits.yml
-          git add .github/CFF/sysexits.yml
-          git commit --allow-empty -m \
-            '[GitHub Actions] Update CFF Entry for sysexits-rs'
-
-      - run: |
-          cat .github/CFF/aeruginous.cff > CITATION.cff
-          {
-            echo references: ;
-            cat .github/CFF/chrono.yml \
-                .github/CFF/citation-file-format.yml \
-                .github/CFF/clap.yml \
-                .github/CFF/sysexits.yml ;
-          } >> CITATION.cff
-          git add .
-          git commit --allow-empty -m '[GitHub Actions] Assemble CITATION.cff'
-
-      - uses: peter-evans/create-pull-request@v5.0.2
         with:
-          assignees: |
-            kevinmatthes
-          branch: documentation/cff-update
-          branch-suffix: timestamp
-          labels: documentation
-          milestone: 6
-          title: '[GitHub Actions] Update CITATION.cff'
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - uses: fregante/setup-git-user@v2.0.1
+
+      - run: |
+          cargo fmt
+          git add .
+          git commit --allow-empty -m '[GitHub Actions] cargo fmt'
+          git push
 
 ################################################################################
