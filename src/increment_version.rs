@@ -183,6 +183,22 @@ impl Logic {
         file.truncate(Box::new(buffer))
     }
 
+    fn edit_citation_cff(&self, file: &PathBuf) -> Result<()> {
+        let mut buffer = String::new();
+
+        for line in file.read()?.lines() {
+            if line.starts_with("version:") {
+                buffer.append_as_line(
+                    line.replace(&self.old_version, &self.new_version),
+                );
+            } else {
+                buffer.append_as_line(line);
+            }
+        }
+
+        file.truncate(Box::new(buffer))
+    }
+
     fn edit_normal_file(&self, file: &PathBuf) -> Result<()> {
         file.truncate(Box::new(
             file.read()?.replace(&self.old_version, &self.new_version),
@@ -201,6 +217,7 @@ impl Logic {
             {
                 "Cargo.lock" => self.edit_cargo_lock(file)?,
                 "Cargo.toml" => self.edit_cargo_toml(file)?,
+                "CITATION.cff" => self.edit_citation_cff(file)?,
                 _ => self.edit_normal_file(file)?,
             }
         }
@@ -214,6 +231,7 @@ impl Logic {
             {
                 "Cargo.lock" => self.edit_cargo_lock(file)?,
                 "Cargo.toml" => self.rewrite_cargo_toml(file)?,
+                "CITATION.cff" => self.edit_citation_cff(file)?,
                 _ => self.edit_normal_file(file)?,
             }
         }
