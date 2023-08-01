@@ -55,7 +55,7 @@ jobs:
       - run: |
           cargo fmt
           git add .
-          git commit --allow-empty -m '[GitHub Actions] `rustfmt`'
+          git commit --allow-empty -m '[GitHub Actions] cargo fmt'
           git push
 
 ################################################################################
