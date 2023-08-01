@@ -63,6 +63,14 @@ jobs:
             '[GitHub Actions] Update CFF Entry for Clap'
 
       - run: |
+          curl \
+            https://raw.githubusercontent.com/sorairolake/sysexits-rs/develop/CITATION.cff \
+            | cargo r -- cffreference > .github/CFF/sysexits.yml
+          git add .github/CFF/sysexits.yml
+          git commit --allow-empty -m \
+            '[GitHub Actions] Update CFF Entry for sysexits-rs'
+
+      - run: |
           cat .github/CFF/aeruginous.cff > CITATION.cff
           {
             echo references: ;
