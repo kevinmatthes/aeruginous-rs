@@ -30,7 +30,7 @@
 ################################################################################
 
 # Line width settings.
-max_width = 80 
+max_width = 80
 
 # Indentation settings.
 tab_spaces = 4
