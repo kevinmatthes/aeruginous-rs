@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "increment-version:  add dedicated mode for CITATION.cff files",
+    ],
+  },
+)
