@@ -1,0 +1,9 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      ".github/workflows/rustfmt.yml",
+      "CI:  automatically update CFF entry of sysexits-rs on certain pushes to main",
+    ],
+  },
+)
