@@ -77,7 +77,7 @@ jobs:
           && echo '```' >> message.md
 
       - name: comment
-        uses: thollander/actions-comment-pull-request@v2.4.0
+        uses: thollander/actions-comment-pull-request@v2.4.2
         with:
           filePath: message.md
 
