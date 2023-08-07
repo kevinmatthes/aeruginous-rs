@@ -17,32 +17,57 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::{IncrementVersion, VersionRange::Patch, VERSION};
-use std::fs::{copy, remove_file};
+macro_rules! make_test {
+    ( @copy $name:ident : $( $file:literal ),+ ) => {
+        $(
+            std::fs::copy($file, make_test! { @dir $name, $file }).unwrap();
+        )+
+    };
 
-#[test]
-fn success() {
-    copy(".version", "tests/.version").unwrap();
-    copy("Cargo.lock", "tests/Cargo.lock").unwrap();
-    copy("Cargo.toml", "tests/Cargo.toml").unwrap();
+    ( @dir $name:ident ) => {
+        concat!("tests/", stringify!($name), "/")
+    };
+    ( @dir $name:ident , $file:literal ) => {
+        concat!(make_test! { @dir $name }, $file)
+    };
 
-    assert!(IncrementVersion::new(
-        vec![
-            "tests/.version".into(),
-            "tests/Cargo.lock".into(),
-            "tests/Cargo.toml".into()
-        ],
-        vec!["tests/Cargo.toml".into()],
-        VERSION.to_string(),
-        Some("aeruginous".to_string()),
-        Patch
-    )
-    .main()
-    .is_ok());
+    ( @success $( $name:ident : $level:tt ),+ ) => {
+        $(
+            #[test]
+            fn $name() {
+                std::fs::create_dir(make_test! { @dir $name }).unwrap();
 
-    remove_file("tests/.version").unwrap();
-    remove_file("tests/Cargo.lock").unwrap();
-    remove_file("tests/Cargo.toml").unwrap();
+                make_test!(
+                    @copy $name:
+                        ".version",
+                        "Cargo.lock",
+                        "Cargo.toml",
+                        "CITATION.cff"
+                );
+
+                assert!(aeruginous::IncrementVersion::new(
+                    vec![
+                        make_test! { @dir $name, ".version" }.into(),
+                        make_test! { @dir $name, "Cargo.lock" }.into(),
+                        make_test! { @dir $name, "Cargo.toml" }.into(),
+                        make_test! { @dir $name, "CITATION.cff" }.into()
+                    ],
+                    vec![make_test! { @dir $name, "Cargo.toml" }.into()],
+                    aeruginous::VERSION.to_string(),
+                    Some("aeruginous".to_string()),
+                    aeruginous::VersionRange::$level
+                )
+                .main()
+                .is_ok());
+
+                std::fs::remove_dir_all(make_test! { @dir $name }).unwrap();
+            }
+        )+
+    };
 }
+
+make_test!(@success success_major: Major);
+make_test!(@success success_minor: Minor);
+make_test!(@success success_patch: Patch);
 
 /******************************************************************************/
