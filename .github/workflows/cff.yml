@@ -56,6 +56,14 @@ jobs:
 
       - run: |
           curl \
+            https://raw.githubusercontent.com/chronotope/chrono/main/CITATION.cff \
+            | cargo r -- cffreference > .github/CFF/chrono.yml
+          git add .github/CFF/chrono.yml
+          git commit --allow-empty -m \
+            '[GitHub Actions] Update CFF Entry for chrono'
+
+      - run: |
+          curl \
             https://raw.githubusercontent.com/clap-rs/clap/master/CITATION.cff \
             | cargo r -- cffreference > .github/CFF/clap.yml
           git add .github/CFF/clap.yml
