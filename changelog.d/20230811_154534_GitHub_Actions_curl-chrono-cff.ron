@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CI:  automatically update CFF entry of chrono on certain pushes to main",
+    ],
+  },
+)
