@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CI:  automatically publish generated releases to crates.io",
+    ],
+  },
+)
