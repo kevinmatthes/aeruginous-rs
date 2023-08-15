@@ -1,0 +1,17 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "tests/traits.rs",
+      ".gitignore:  ignore artifacts by ``cargo mutants``",
+    ],
+    "Removed": [
+      "tests/to_stderr.rs",
+      "tests/rusty_object_notation.rs",
+      "tests/prefer.rs",
+      "tests/convert_buffer.rs",
+      "tests/colour_message.rs",
+      "tests/append_as_line.rs",
+    ],
+  },
+)
