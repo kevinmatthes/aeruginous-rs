@@ -56,4 +56,8 @@ jobs:
           generate_release_notes: true
           tag_name: v${{ steps.tag_name.outputs.version }}
 
+      - run: |
+          cargo login ${{ secrets.CRATES_IO_GITHUB_AERUGINOUS_UPDATE_TOKEN }}
+          cargo publish
+
 ################################################################################
