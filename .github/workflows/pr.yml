@@ -67,11 +67,26 @@ jobs:
             echo '```' ;
             pycobertura show cobertura.xml ;
             echo '```' ;
-          } >> message.md
+          } >> coverage.md
 
       - uses: thollander/actions-comment-pull-request@v2.4.2
         with:
           comment_tag: coverage
-          filePath: message.md
+          filePath: coverage.md
+
+  mutations:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          {
+            echo '```' ;
+            jq --version ;
+            echo '```' ;
+          } >> mutations.md
+
+      - uses: thollander/actions-comment-pull-request@v2.4.2
+        with:
+          comment_tag: mutations
+          filePath: mutations.md
 
 ################################################################################
