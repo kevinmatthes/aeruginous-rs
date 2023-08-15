@@ -40,45 +40,36 @@ permissions:
 
 jobs:
   coverage:
-    name: coverage
     runs-on: ubuntu-latest
     steps:
-      - name: cargo
-        uses: taiki-e/install-action@v2.15.4
+      - uses: taiki-e/install-action@v2.15.4
         with:
           tool: cargo-tarpaulin
 
-      - name: python
-        uses: actions/setup-python@v4.7.0
+      - uses: actions/setup-python@v4.7.0
         with:
           python-version: 3.11
 
-      - name: rustup
-        run: rustup update
+      - run: rustup update
 
-      - name: checkout
-        uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v3.5.3
         with:
           fetch-depth: 0
           persist-credentials: false
           ref: ${{ github.head_ref }}
 
-      - name: requirements
-        run: echo pycobertura >> requirements.txt
+      - run: echo pycobertura >> requirements.txt
+      - uses: py-actions/py-dependency-install@v4.0.0
 
-      - name: dependencies
-        uses: py-actions/py-dependency-install@v4.0.0
+      - run: |
+          cargo tarpaulin
+          echo '```' >> message.md
+          pycobertura show cobertura.xml >> message.md
+          echo '```' >> message.md
 
-      - name: tarpaulin
-        run: |
-          cargo tarpaulin \
-          && echo '```' >> message.md \
-          && pycobertura show cobertura.xml >> message.md \
-          && echo '```' >> message.md
-
-      - name: comment
-        uses: thollander/actions-comment-pull-request@v2.4.2
+      - uses: thollander/actions-comment-pull-request@v2.4.2
         with:
+          comment_tag: coverage
           filePath: message.md
 
 ################################################################################
