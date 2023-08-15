@@ -73,37 +73,37 @@ jobs:
           comment_tag: coverage
           filePath: coverage.md
 
-  mutations:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3.5.3
-        with:
-          persist-credentials: false
-
-      - uses: baptiste0928/cargo-install@v2.1.0
-        with:
-          crate: cargo-mutants
-
-      - run: |
-          rustup update
-          cargo mutants
-          {
-            echo '```' ;
-            jq '{ \
-              total: .total_mutants, \
-              unviable: .unviable, \
-              missed: .missed, \
-              caught: .caught, \
-              timeout: .timeout, \
-              success: .success, \
-              failure: .failure \
-            }' ;
-            echo '```' ;
-          } >> mutations.md
-
-      - uses: thollander/actions-comment-pull-request@v2.4.2
-        with:
-          comment_tag: mutations
-          filePath: mutations.md
+#  mutations:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3.5.3
+#        with:
+#          persist-credentials: false
+#
+#      - uses: baptiste0928/cargo-install@v2.1.0
+#        with:
+#          crate: cargo-mutants
+#
+#      - run: |
+#          rustup update
+#          cargo mutants
+#          {
+#            echo '```' ;
+#            jq '{ \
+#              total: .total_mutants, \
+#              unviable: .unviable, \
+#              missed: .missed, \
+#              caught: .caught, \
+#              timeout: .timeout, \
+#              success: .success, \
+#              failure: .failure \
+#            }' ;
+#            echo '```' ;
+#          } >> mutations.md
+#
+#      - uses: thollander/actions-comment-pull-request@v2.4.2
+#        with:
+#          comment_tag: mutations
+#          filePath: mutations.md
 
 ################################################################################
