@@ -82,7 +82,7 @@ jobs:
 
       - uses: baptiste0928/cargo-install@v2.1.0
         with:
-          crate: cargo-mutations
+          crate: cargo-mutants
 
       - run: |
           rustup update
