@@ -9,6 +9,26 @@
       version: (
         major: 3,
         minor: 0,
+        patch: 5,
+      ),
+      released: "2023-08-15T15:22:07.642600459+00:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "CI:  automatically publish generated releases to crates.io",
+            "CI:  automatically update CFF entry of chrono on certain pushes to main",
+            "increment-version:  further test cases",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 0,
         patch: 4,
       ),
       released: "2023-08-01T18:12:43.054648338+00:00",
@@ -16,13 +36,13 @@
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "Renovate:  submit one bundled lock file maintenance per week",
-          ],
           "Added": [
             "increment-version:  add dedicated mode for CITATION.cff files",
             ".github/workflows/rustfmt.yml",
             "CI:  automatically update CFF entry of sysexits-rs on certain pushes to main",
+          ],
+          "Fixed": [
+            "Renovate:  submit one bundled lock file maintenance per week",
           ],
           "Changed": [
             "indent Rust source files by 4 spaces",
@@ -73,13 +93,13 @@
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "CI:  prevent failing on CFF update PR merge",
-          ],
           "Changed": [
             "Renovate:  disable automerge explicitly",
             "Renovate:  listen to renamed ``cffconvert`` repository",
             "comment-changes:  work on entire commit message instead of certain part",
+          ],
+          "Fixed": [
+            "CI:  prevent failing on CFF update PR merge",
           ],
           "Removed": [
             "CFF:  automatically update Clap entry with Renovate",
@@ -105,6 +125,14 @@
       changes: (
         references: {},
         changes: {
+          "Changed": [
+            "call actionlint Docker image directly",
+            "rename cffs/expectation.cff to cffs/expectation.yml",
+            "CommentChanges:  refactor logic",
+            "Fragment:  apply new ToMd and ToRst traits",
+            "call cffconvert Docker image directly",
+            "rename tests/ron_traits.rs to tests/rusty_object_notation.rs",
+          ],
           "Fixed": [
             "prevent release generation in forks",
             "do not allow RONLOG assemblies in forks",
@@ -129,14 +157,6 @@
             "Renovate:  track cffconvert Docker image",
             "FragmentExportFormat",
           ],
-          "Changed": [
-            "call actionlint Docker image directly",
-            "rename cffs/expectation.cff to cffs/expectation.yml",
-            "CommentChanges:  refactor logic",
-            "Fragment:  apply new ToMd and ToRst traits",
-            "call cffconvert Docker image directly",
-            "rename tests/ron_traits.rs to tests/rusty_object_notation.rs",
-          ],
         },
       ),
     ),
@@ -152,6 +172,18 @@
       changes: (
         references: {},
         changes: {
+          "Removed": [
+            "Dependabot:  configuration",
+            ".github/workflows/cargo-update.yml",
+            ".github/workflows/msrv.yml",
+            "CI:  manual trigger for release workflow",
+            "PatternReader",
+            "src/pattern/reader.rs",
+          ],
+          "Fixed": [
+            "CI:  skip compilation on RONLOG assembly",
+            "show previously hidden Clap aliases",
+          ],
           "Added": [
             "CFF:  entry for ``clap`` v4.3.10",
             "Renovate:  configuration",
@@ -176,18 +208,6 @@
             "CI:  apply new increment-version features",
             "cffreference:  refactor logic",
           ],
-          "Fixed": [
-            "CI:  skip compilation on RONLOG assembly",
-            "show previously hidden Clap aliases",
-          ],
-          "Removed": [
-            "Dependabot:  configuration",
-            ".github/workflows/cargo-update.yml",
-            ".github/workflows/msrv.yml",
-            "CI:  manual trigger for release workflow",
-            "PatternReader",
-            "src/pattern/reader.rs",
-          ],
         },
       ),
     ),
@@ -203,6 +223,16 @@
       changes: (
         references: {},
         changes: {
+          "Fixed": [
+            "CI:  rename RONLOG assembly workflow job",
+            "comment-changes:  create missing target directories",
+          ],
+          "Added": [
+            "CI:  create release on RONLOG assembly",
+            "enum_trait",
+            "tests/macros.rs",
+            "CI:  settings for the automated release notes",
+          ],
           "Changed": [
             "move RonlogSection definition to RONLOG source file",
             "move RonlogAction definition to RONLOG source file",
@@ -217,16 +247,6 @@
             "tests/ronlog_action.rs",
             "tests/getters.rs",
             "tests/implement.rs",
-          ],
-          "Added": [
-            "CI:  create release on RONLOG assembly",
-            "enum_trait",
-            "tests/macros.rs",
-            "CI:  settings for the automated release notes",
-          ],
-          "Fixed": [
-            "CI:  rename RONLOG assembly workflow job",
-            "comment-changes:  create missing target directories",
           ],
         },
       ),
@@ -246,16 +266,16 @@
           "Fixed": [
             "CI:  redundant test runs",
           ],
+          "Changed": [
+            "CI:  rename release preparation workflow to ``ronlog.yml``",
+            "README:  enhance documentation of RONLOG mode",
+            "CI:  mirror README from src/lib.rs during release workflow",
+          ],
           "Added": [
             "CFF:  entry for ``clap`` v4.3.4",
             "CI:  real release workflow",
             "comment-changes:  stop at certain commit SHA; fixes #336",
             "CFF:  entry for ``clap`` v4.3.5",
-          ],
-          "Changed": [
-            "CI:  rename release preparation workflow to ``ronlog.yml``",
-            "README:  enhance documentation of RONLOG mode",
-            "CI:  mirror README from src/lib.rs during release workflow",
           ],
         },
       ),
@@ -272,16 +292,6 @@
       changes: (
         references: {},
         changes: {
-          "Removed": [
-            "CFF:  entries of outdated versions",
-            "bump2version:  configuration",
-            "src/traits/to_ron.rs",
-            "src/traits/from_ron.rs",
-          ],
-          "Fixed": [
-            "CI:  Bash style issues",
-            "ToRon::to_ron:  missing trailing newline at the end",
-          ],
           "Added": [
             "CI:  lint GitHub Action workflows",
             "CFF:  project keyword ``ronlog``",
@@ -315,6 +325,16 @@
             "move FromRon and ToRon to one source file",
             "CI:  assemble RONLOG on release",
             "CI:  create RON fragments",
+          ],
+          "Removed": [
+            "CFF:  entries of outdated versions",
+            "bump2version:  configuration",
+            "src/traits/to_ron.rs",
+            "src/traits/from_ron.rs",
+          ],
+          "Fixed": [
+            "CI:  Bash style issues",
+            "ToRon::to_ron:  missing trailing newline at the end",
           ],
         },
       ),
