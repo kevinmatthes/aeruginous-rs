@@ -86,7 +86,7 @@ jobs:
 
       - run: |
           rustup update
-          cargo mutations
+          cargo mutants
           {
             echo '```' ;
             jq '{ \
