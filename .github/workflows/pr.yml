@@ -63,9 +63,11 @@ jobs:
 
       - run: |
           cargo tarpaulin
-          echo '```' >> message.md
-          pycobertura show cobertura.xml >> message.md
-          echo '```' >> message.md
+          {
+            echo '```' ;
+            pycobertura show cobertura.xml ;
+            echo '```' ;
+          } >> message.md
 
       - uses: thollander/actions-comment-pull-request@v2.4.2
         with:
