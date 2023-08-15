@@ -50,8 +50,6 @@ jobs:
         with:
           python-version: 3.11
 
-      - run: rustup update
-
       - uses: actions/checkout@v3.5.3
         with:
           fetch-depth: 0
@@ -62,6 +60,7 @@ jobs:
       - uses: py-actions/py-dependency-install@v4.0.0
 
       - run: |
+          rustup update
           cargo tarpaulin
           {
             echo '```' ;
@@ -77,10 +76,28 @@ jobs:
   mutations:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3.5.3
+        with:
+          persist-credentials: false
+
+      - uses: baptiste0928/cargo-install@v2.1.0
+        with:
+          crate: cargo-mutations
+
       - run: |
+          rustup update
+          cargo mutations
           {
             echo '```' ;
-            jq --version ;
+            jq '{ \
+              total: .total_mutants, \
+              unviable: .unviable, \
+              missed: .missed, \
+              caught: .caught, \
+              timeout: .timeout, \
+              success: .success, \
+              failure: .failure \
+            }' ;
             echo '```' ;
           } >> mutations.md
 
