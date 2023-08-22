@@ -118,6 +118,7 @@ impl Complain {
             cli: self.clone(),
             data: String::new(),
             errors: 0,
+            total_errors: 0,
         }
     }
 }
@@ -138,6 +139,7 @@ struct Logic {
     cli: Complain,
     data: String,
     errors: usize,
+    total_errors: usize,
 }
 
 impl Logic {
@@ -316,6 +318,7 @@ impl Logic {
         }
 
         ceprintlns!("  ˇ;{\"};ˇ  "!Blue, "{} {}", self.errors, f.display());
+        self.total_errors += self.errors;
         self.errors = 0;
 
         Ok(())
@@ -334,7 +337,7 @@ impl Logic {
             self.complain(&f)?;
         }
 
-        Ok(self.errors)
+        Ok(self.total_errors)
     }
 }
 
