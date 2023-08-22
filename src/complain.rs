@@ -239,13 +239,7 @@ impl Logic {
                 ceprintlns!(
                     "AERCOM-0005"!Green,
                     "Line {line} indented by {}.",
-                    match trigger {
-                        '\t' => "tabs",
-                        ' ' => "spaces",
-
-                        #[cfg(not(tarpaulin_include))]
-                        _ => unreachable!(),
-                    }
+                    if trigger == '\t' { "tabs" } else { "spaces" }
                 );
             }
 
