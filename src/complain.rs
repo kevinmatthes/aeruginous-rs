@@ -72,6 +72,11 @@ pub struct Complain {
 }
 
 impl Complain {
+    /// Set another indentation unit.
+    pub fn indent_by(&mut self, i: IndentationUnit) {
+        self.indent_by = i;
+    }
+
     /// Process the input data.
     ///
     /// # Errors
@@ -123,10 +128,14 @@ impl Complain {
     }
 }
 
+/// The possible indentation units.
 #[derive(Clone, Copy, Default, Eq, PartialEq)]
-enum IndentationUnit {
+pub enum IndentationUnit {
+    /// Indent by spaces.
     #[default]
     Spaces,
+
+    /// Indent by tabs.
     Tabs,
 }
 
@@ -233,6 +242,8 @@ impl Logic {
                     match trigger {
                         '\t' => "tabs",
                         ' ' => "spaces",
+
+                        #[cfg(not(tarpaulin_include))]
                         _ => unreachable!(),
                     }
                 );
