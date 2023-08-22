@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::Complain;
+use aeruginous::{Complain, IndentationUnit};
 use std::{
     fs::{remove_file, write},
     path::PathBuf,
@@ -31,6 +31,24 @@ macro_rules! make_test {
                 let file = concat!(stringify!($name), ".txt");
                 let aercom = Complain::new(vec![PathBuf::from(file)]);
 
+                write(file, $text).unwrap();
+
+                assert!(aercom.main().is_err());
+                assert_eq!($n, aercom.process().unwrap());
+
+                remove_file(file).unwrap();
+            }
+        )+
+    };
+
+    ( @content @tabs $( $name:ident : $text:literal -> $n:tt ),+ ) => {
+        $(
+            #[test]
+            fn $name() {
+                let file = concat!(stringify!($name), ".txt");
+                let mut aercom = Complain::new(vec![PathBuf::from(file)]);
+
+                aercom.indent_by(IndentationUnit::Tabs);
                 write(file, $text).unwrap();
 
                 assert!(aercom.main().is_err());
@@ -63,10 +81,25 @@ make_test!(@content
     aercom_0004_2: "abc\t\n" -> 1,
     aercom_0004_3: "abc \t\n" -> 1,
     aercom_0004_4: "abc\t \n" -> 1,
-    aercom_0005: "\tabc\n" -> 1,
+    aercom_0005_1: "\tabc\n" -> 1,
     aercom_0006_1: " \t\n" -> 1,
     aercom_0006_2: " \tabc\n" -> 1,
-    aercom_0007: "abc\tabc\n" -> 1
+    aercom_0007_1: "abc\tabc\n" -> 1
+);
+
+make_test!(@content @tabs
+    aercom_0001_3: "" -> 1,
+    aercom_0001_4: "abc" -> 1,
+    aercom_0002_3: "\r\n" -> 1,
+    aercom_0002_4: "abc\r\n" -> 1,
+    aercom_0004_5: "abc \n" -> 1,
+    aercom_0004_6: "abc\t\n" -> 1,
+    aercom_0004_7: "abc \t\n" -> 1,
+    aercom_0004_8: "abc\t \n" -> 1,
+    aercom_0005_2: " abc\n" -> 1,
+    aercom_0006_3: "\t \n" -> 1,
+    aercom_0006_4: "\t abc\n" -> 1,
+    aercom_0007_2: "abc\tabc\n" -> 1
 );
 
 make_test!(@path
