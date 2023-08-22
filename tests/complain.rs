@@ -40,7 +40,18 @@ macro_rules! make_test {
 }
 
 make_test!(
-    aercom_0001: "" -> 1
+    aercom_0001_1: "" -> 1,
+    aercom_0001_2: "abc" -> 1,
+    aercom_0002_1: "\r\n" -> 1,
+    aercom_0002_2: "abc\r\n" -> 1,
+    aercom_0004_1: "abc \n" -> 1,
+    aercom_0004_2: "abc\t\n" -> 1,
+    aercom_0004_3: "abc \t\n" -> 1,
+    aercom_0004_4: "abc\t \n" -> 1,
+    aercom_0005: "\tabc\n" -> 1,
+    aercom_0006_1: " \t\n" -> 1,
+    aercom_0006_2: " \tabc\n" -> 1,
+    aercom_0007: "abc\tabc\n" -> 1
 );
 
 /******************************************************************************/
