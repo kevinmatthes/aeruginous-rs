@@ -369,7 +369,7 @@ pub use crate::{
         CommentChanges, Fragment, FragmentExportFormat, Ronlog, RonlogAction,
         RonlogReferences, RonlogSection,
     },
-    complain::Complain,
+    complain::{Complain, IndentationUnit},
     graphing::{
         AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph,
         VertexData, Vertices,
