@@ -85,6 +85,34 @@ impl Complain {
         self.wrap().main()
     }
 
+    /// Create a new instance.
+    #[must_use]
+    pub fn new(files: Vec<PathBuf>) -> Self {
+        Self {
+            files,
+            ignore_carriage_return_line_feeds: false,
+            ignore_line_width_issues: false,
+            ignore_missing_final_line_feed: false,
+            ignore_mixed_indentation: false,
+            ignore_tabs_within_lines: false,
+            ignore_trailing_white_space_characters: false,
+            ignore_wrong_indentation: false,
+            indent_by: IndentationUnit::Spaces,
+            line_width: 80,
+        }
+    }
+
+    /// Process this instance.
+    ///
+    /// # Errors
+    ///
+    /// See
+    ///
+    /// - [`Self::main`]
+    pub fn process(&self) -> Result<usize> {
+        self.wrap().process()
+    }
+
     fn wrap(&self) -> Logic {
         Logic {
             cli: self.clone(),
@@ -294,15 +322,19 @@ impl Logic {
     }
 
     fn main(&mut self) -> Result<()> {
-        for f in self.cli.files.clone() {
-            self.complain(&f)?;
-        }
-
-        if self.errors == 0 {
+        if self.process()? == 0 {
             Ok(())
         } else {
             Err(sysexits::ExitCode::DataErr)
         }
+    }
+
+    fn process(&mut self) -> Result<usize> {
+        for f in self.cli.files.clone() {
+            self.complain(&f)?;
+        }
+
+        Ok(self.errors)
     }
 }
 
