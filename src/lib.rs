@@ -353,6 +353,7 @@
 mod application;
 mod cffreference;
 mod changelog;
+mod complain;
 mod graphing;
 mod increment_version;
 mod macros;
@@ -368,6 +369,7 @@ pub use crate::{
         CommentChanges, Fragment, FragmentExportFormat, Ronlog, RonlogAction,
         RonlogReferences, RonlogSection,
     },
+    complain::Complain,
     graphing::{
         AeruginousGraphDescription, AgdTokens, EdgeType, Edges, Graph,
         VertexData, Vertices,
