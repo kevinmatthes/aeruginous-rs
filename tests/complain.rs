@@ -18,28 +18,43 @@
 \******************************************************************************/
 
 use aeruginous::Complain;
+use std::{
+    fs::{remove_file, write},
+    path::PathBuf,
+};
 
 macro_rules! make_test {
-    ( $( $name:ident : $text:literal -> $n:tt ),+ ) => {
+    ( @content $( $name:ident : $text:literal -> $n:tt ),+ ) => {
         $(
             #[test]
             fn $name() {
                 let file = concat!(stringify!($name), ".txt");
-                let aercom =
-                    Complain::new(vec![std::path::PathBuf::from(file)]);
+                let aercom = Complain::new(vec![PathBuf::from(file)]);
 
-                std::fs::write(file, $text).unwrap();
+                write(file, $text).unwrap();
 
                 assert!(aercom.main().is_err());
                 assert_eq!($n, aercom.process().unwrap());
 
-                std::fs::remove_file(file).unwrap();
+                remove_file(file).unwrap();
+            }
+        )+
+    };
+
+    ( @path $( $name:ident : $file:literal -> $n:tt ),+ ) => {
+        $(
+            #[test]
+            fn $name() {
+                let aercom = Complain::new(vec![PathBuf::from($file)]);
+
+                assert!(aercom.main().is_err());
+                assert_eq!($n, aercom.process().unwrap());
             }
         )+
     };
 }
 
-make_test!(
+make_test!(@content
     aercom_0001_1: "" -> 1,
     aercom_0001_2: "abc" -> 1,
     aercom_0002_1: "\r\n" -> 1,
@@ -52,6 +67,10 @@ make_test!(
     aercom_0006_1: " \t\n" -> 1,
     aercom_0006_2: " \tabc\n" -> 1,
     aercom_0007: "abc\tabc\n" -> 1
+);
+
+make_test!(@path
+    aercom_0003: "graphs/invalid/too_long_comments.agd" -> 2
 );
 
 /******************************************************************************/
