@@ -59,7 +59,7 @@ macro_rules! make_test {
         )+
     };
 
-    ( @path $( $name:ident : $file:literal -> $n:tt ),+ ) => {
+    ( @path @failure $( $name:ident : $file:literal -> $n:tt ),+ ) => {
         $(
             #[test]
             fn $name() {
@@ -67,6 +67,18 @@ macro_rules! make_test {
 
                 assert!(aercom.main().is_err());
                 assert_eq!($n, aercom.process().unwrap());
+            }
+        )+
+    };
+
+    ( @path @success $( $name:ident : $file:literal ),+ ) => {
+        $(
+            #[test]
+            fn $name() {
+                let aercom = Complain::new(vec![PathBuf::from($file)]);
+
+                assert!(aercom.main().is_ok());
+                assert_eq!(0, aercom.process().unwrap());
             }
         )+
     };
@@ -102,8 +114,12 @@ make_test!(@content @tabs
     aercom_0007_2: "abc\tabc\n" -> 1
 );
 
-make_test!(@path
+make_test!(@path @failure
     aercom_0003: "graphs/invalid/too_long_comments.agd" -> 2
+);
+
+make_test!(@path @success
+    aercom_success_license_file: "LICENSE"
 );
 
 /******************************************************************************/
