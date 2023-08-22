@@ -80,6 +80,7 @@ impl Complain {
     ///
     /// - [`crate::ColourMessage`]
     /// - [`crate::ReadFile`]
+    /// - [`sysexits::ExitCode::DataErr`]
     pub fn main(&self) -> Result<()> {
         self.wrap().main()
     }
