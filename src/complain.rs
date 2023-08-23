@@ -24,7 +24,6 @@ use sysexits::Result;
 /// Complain about certain stylistic issues.
 #[allow(clippy::struct_excessive_bools)]
 #[derive(clap::Parser, Clone)]
-#[clap(visible_aliases = ["aercom"])]
 pub struct Complain {
     /// The files to analyse.
     files: Vec<PathBuf>,
@@ -152,12 +151,12 @@ struct Logic {
 }
 
 impl Logic {
-    fn aercom_0001(&mut self) -> Result<()> {
+    fn ac_0001(&mut self) -> Result<()> {
         if !self.data.ends_with('\n') {
             self.errors += 1;
 
             ceprintlns!(
-                "AERCOM-0001"!Green,
+                "AC-0001"!Green,
                 "File not terminated by line feed."
             );
         }
@@ -165,7 +164,7 @@ impl Logic {
         Ok(())
     }
 
-    fn aercom_0002(&mut self) -> Result<()> {
+    fn ac_0002(&mut self) -> Result<()> {
         let mut line = 1;
 
         for l in self.data.split_inclusive('\n') {
@@ -173,7 +172,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AERCOM-0002"!Yellow,
+                    "AC-0002"!Yellow,
                     "CRLF in line {line}."
                 );
             }
@@ -184,7 +183,7 @@ impl Logic {
         Ok(())
     }
 
-    fn aercom_0003(&mut self) -> Result<()> {
+    fn ac_0003(&mut self) -> Result<()> {
         let mut line = 1;
 
         for l in self.data.lines() {
@@ -194,7 +193,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AERCOM-0003"!Red,
+                    "AC-0003"!Red,
                     "Line {line} is {} character(s) too long.",
                     c - self.cli.line_width
                 );
@@ -206,7 +205,7 @@ impl Logic {
         Ok(())
     }
 
-    fn aercom_0004(&mut self) -> Result<()> {
+    fn ac_0004(&mut self) -> Result<()> {
         let mut line = 1;
 
         for l in self.data.lines() {
@@ -214,7 +213,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AERCOM-0004"!Green,
+                    "AC-0004"!Green,
                     "TWS in line {line}."
                 );
             }
@@ -225,7 +224,7 @@ impl Logic {
         Ok(())
     }
 
-    fn aercom_0005(&mut self) -> Result<()> {
+    fn ac_0005(&mut self) -> Result<()> {
         let mut line = 1;
         let trigger = match self.cli.indent_by {
             IndentationUnit::Spaces => '\t',
@@ -237,7 +236,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AERCOM-0005"!Green,
+                    "AC-0005"!Green,
                     "Line {line} indented by {}.",
                     if trigger == '\t' { "tabs" } else { "spaces" }
                 );
@@ -249,7 +248,7 @@ impl Logic {
         Ok(())
     }
 
-    fn aercom_0006(&mut self) -> Result<()> {
+    fn ac_0006(&mut self) -> Result<()> {
         let mut line = 1;
 
         for l in self.data.lines() {
@@ -260,7 +259,7 @@ impl Logic {
                     self.errors += 1;
 
                     ceprintlns!(
-                        "AERCOM-0006"!Yellow,
+                        "AC-0006"!Yellow,
                         "Line {line} is indented by both spaces and tabs."
                     );
                 }
@@ -272,7 +271,7 @@ impl Logic {
         Ok(())
     }
 
-    fn aercom_0007(&mut self) -> Result<()> {
+    fn ac_0007(&mut self) -> Result<()> {
         let mut line = 1;
 
         for l in self.data.lines() {
@@ -280,7 +279,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AERCOM-0007"!Yellow,
+                    "AC-0007"!Yellow,
                     "Tabs within line {line}."
                 );
             }
@@ -295,34 +294,34 @@ impl Logic {
         self.data = f.read()?;
 
         if !self.cli.ignore_missing_final_line_feed {
-            self.aercom_0001()?;
+            self.ac_0001()?;
         }
 
         if !self.cli.ignore_carriage_return_line_feeds {
-            self.aercom_0002()?;
+            self.ac_0002()?;
         }
 
         if !self.cli.ignore_line_width_issues {
-            self.aercom_0003()?;
+            self.ac_0003()?;
         }
 
         if !self.cli.ignore_trailing_white_space_characters {
-            self.aercom_0004()?;
+            self.ac_0004()?;
         }
 
         if !self.cli.ignore_wrong_indentation {
-            self.aercom_0005()?;
+            self.ac_0005()?;
         }
 
         if !self.cli.ignore_mixed_indentation {
-            self.aercom_0006()?;
+            self.ac_0006()?;
         }
 
         if !self.cli.ignore_tabs_within_lines {
-            self.aercom_0007()?;
+            self.ac_0007()?;
         }
 
-        ceprintlns!("  ˇ;{\"};ˇ  "!Blue, "{} {}", self.errors, f.display());
+        ceprintlns!("ˇ;{\"};ˇ"!Blue, "{} {}", self.errors, f.display());
         self.total_errors += self.errors;
         self.errors = 0;
 
