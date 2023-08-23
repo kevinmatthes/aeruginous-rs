@@ -292,7 +292,8 @@
 //!
 //! The Aeruginous Graph Description is a very easy to learn coding language to
 //! describe the structure of graphs.  The language itself is based on plain
-//! English ensuring that no programming skills at all are required to learn it.
+//! English to ensure that learning does not require any programming skills at
+//! all.
 //!
 //! This mode is not finished, yet, but it can already detect some issues
 //! regarding given input files.
