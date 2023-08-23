@@ -29,12 +29,12 @@ macro_rules! make_test {
             #[test]
             fn $name() {
                 let file = concat!(stringify!($name), ".txt");
-                let aercom = Complain::new(vec![PathBuf::from(file)]);
+                let ac = Complain::new(vec![PathBuf::from(file)]);
 
                 write(file, $text).unwrap();
 
-                assert!(aercom.main().is_err());
-                assert_eq!($n, aercom.process().unwrap());
+                assert!(ac.main().is_err());
+                assert_eq!($n, ac.process().unwrap());
 
                 remove_file(file).unwrap();
             }
@@ -46,13 +46,13 @@ macro_rules! make_test {
             #[test]
             fn $name() {
                 let file = concat!(stringify!($name), ".txt");
-                let mut aercom = Complain::new(vec![PathBuf::from(file)]);
+                let mut ac = Complain::new(vec![PathBuf::from(file)]);
 
-                aercom.indent_by(IndentationUnit::Tabs);
+                ac.indent_by(IndentationUnit::Tabs);
                 write(file, $text).unwrap();
 
-                assert!(aercom.main().is_err());
-                assert_eq!($n, aercom.process().unwrap());
+                assert!(ac.main().is_err());
+                assert_eq!($n, ac.process().unwrap());
 
                 remove_file(file).unwrap();
             }
@@ -63,10 +63,10 @@ macro_rules! make_test {
         $(
             #[test]
             fn $name() {
-                let aercom = Complain::new(vec![PathBuf::from($file)]);
+                let ac = Complain::new(vec![PathBuf::from($file)]);
 
-                assert!(aercom.main().is_err());
-                assert_eq!($n, aercom.process().unwrap());
+                assert!(ac.main().is_err());
+                assert_eq!($n, ac.process().unwrap());
             }
         )+
     };
@@ -75,51 +75,51 @@ macro_rules! make_test {
         $(
             #[test]
             fn $name() {
-                let aercom = Complain::new(vec![PathBuf::from($file)]);
+                let ac = Complain::new(vec![PathBuf::from($file)]);
 
-                assert!(aercom.main().is_ok());
-                assert_eq!(0, aercom.process().unwrap());
+                assert!(ac.main().is_ok());
+                assert_eq!(0, ac.process().unwrap());
             }
         )+
     };
 }
 
 make_test!(@content
-    aercom_0001_1: "" -> 1,
-    aercom_0001_2: "abc" -> 1,
-    aercom_0002_1: "\r\n" -> 1,
-    aercom_0002_2: "abc\r\n" -> 1,
-    aercom_0004_1: "abc \n" -> 1,
-    aercom_0004_2: "abc\t\n" -> 1,
-    aercom_0004_3: "abc \t\n" -> 1,
-    aercom_0004_4: "abc\t \n" -> 1,
-    aercom_0005_1: "\tabc\n" -> 1,
-    aercom_0006_1: " \t\n" -> 1,
-    aercom_0006_2: " \tabc\n" -> 1,
-    aercom_0007_1: "abc\tabc\n" -> 1
+    ac_0001_1: "" -> 1,
+    ac_0001_2: "abc" -> 1,
+    ac_0002_1: "\r\n" -> 1,
+    ac_0002_2: "abc\r\n" -> 1,
+    ac_0004_1: "abc \n" -> 1,
+    ac_0004_2: "abc\t\n" -> 1,
+    ac_0004_3: "abc \t\n" -> 1,
+    ac_0004_4: "abc\t \n" -> 1,
+    ac_0005_1: "\tabc\n" -> 1,
+    ac_0006_1: " \t\n" -> 1,
+    ac_0006_2: " \tabc\n" -> 1,
+    ac_0007_1: "abc\tabc\n" -> 1
 );
 
 make_test!(@content @tabs
-    aercom_0001_3: "" -> 1,
-    aercom_0001_4: "abc" -> 1,
-    aercom_0002_3: "\r\n" -> 1,
-    aercom_0002_4: "abc\r\n" -> 1,
-    aercom_0004_5: "abc \n" -> 1,
-    aercom_0004_6: "abc\t\n" -> 1,
-    aercom_0004_7: "abc \t\n" -> 1,
-    aercom_0004_8: "abc\t \n" -> 1,
-    aercom_0005_2: " abc\n" -> 1,
-    aercom_0006_3: "\t \n" -> 1,
-    aercom_0006_4: "\t abc\n" -> 1,
-    aercom_0007_2: "abc\tabc\n" -> 1
+    ac_0001_3: "" -> 1,
+    ac_0001_4: "abc" -> 1,
+    ac_0002_3: "\r\n" -> 1,
+    ac_0002_4: "abc\r\n" -> 1,
+    ac_0004_5: "abc \n" -> 1,
+    ac_0004_6: "abc\t\n" -> 1,
+    ac_0004_7: "abc \t\n" -> 1,
+    ac_0004_8: "abc\t \n" -> 1,
+    ac_0005_2: " abc\n" -> 1,
+    ac_0006_3: "\t \n" -> 1,
+    ac_0006_4: "\t abc\n" -> 1,
+    ac_0007_2: "abc\tabc\n" -> 1
 );
 
 make_test!(@path @failure
-    aercom_0003: "graphs/invalid/too_long_comments.agd" -> 2
+    ac_0003: "graphs/invalid/too_long_comments.agd" -> 2
 );
 
 make_test!(@path @success
-    aercom_success_license_file: "LICENSE"
+    ac_success_license_file: "LICENSE"
 );
 
 /******************************************************************************/
