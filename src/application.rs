@@ -44,6 +44,9 @@ pub enum Action {
     /// Create comments on the commits of a branch in this repository.
     CommentChanges(crate::CommentChanges),
 
+    /// Complain about certain stylistic issues.
+    Complain(crate::Complain),
+
     /*
     /// Rate an Aeruginous Graph Description (AGD).
     #[command(visible_aliases = ["agd"])]
@@ -146,6 +149,7 @@ impl Action {
                 file_to_edit.truncate(Box::new(buffer))
             }
             Self::CommentChanges(c) => c.main(),
+            Self::Complain(c) => c.main(),
             /*
             Self::GraphDescription { input_file } => {
               crate::AeruginousGraphDescription::main(input_file)
