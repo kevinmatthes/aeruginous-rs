@@ -82,6 +82,7 @@ jobs:
           - clippy
           - d
           - fmt --check
+          - r -- complain src/ tests/
           - t
 
   cffconvert:

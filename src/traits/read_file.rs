@@ -73,9 +73,37 @@ impl ReadFile for &Option<PathBuf> {
 
 impl ReadFile for PathBuf {
     fn behaviour(&self, show_error_messages: bool) -> Result<String> {
-        match std::fs::read_to_string(self) {
-            Ok(string) => Ok(string),
-            Err(error) => error.to_stderr(show_error_messages),
+        if self.is_dir() {
+            match self.read_dir() {
+                Ok(directory) => {
+                    let mut result = String::new();
+
+                    for entry in directory {
+                        match entry {
+                            Ok(entry) => {
+                                match entry
+                                    .path()
+                                    .behaviour(show_error_messages)
+                                {
+                                    Ok(string) => result.append_as_line(string),
+                                    Err(error) => return Err(error),
+                                }
+                            }
+                            Err(error) => {
+                                return error.to_stderr(show_error_messages);
+                            }
+                        }
+                    }
+
+                    Ok(result)
+                }
+                Err(error) => error.to_stderr(show_error_messages),
+            }
+        } else {
+            match std::fs::read_to_string(self) {
+                Ok(string) => Ok(string),
+                Err(error) => error.to_stderr(show_error_messages),
+            }
         }
     }
 }

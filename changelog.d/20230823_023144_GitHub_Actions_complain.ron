@@ -1,0 +1,14 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "README:  document complain linter",
+      "ReadFile:  recurse encountered directories",
+      "CI:  ``cargo r -- complain ...``",
+      "tests/complain.rs",
+      "src/complain.rs",
+      "Complain",
+      "complain",
+    ],
+  },
+)
