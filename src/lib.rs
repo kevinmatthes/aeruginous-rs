@@ -255,10 +255,9 @@
 //!
 //! > To be called with:
 //! >
-//! > - `aercom`
 //! > - `complain`
 //!
-//! This application is a little linter to check whether the following
+//! This application mode is a little linter to check whether the following
 //! requirements are met:
 //!
 //! 1. Every file needs to be terminated by a line feed.
@@ -273,9 +272,11 @@
 //! be configured.  Every violation is reported to [`std::io::Stderr`] with the
 //! number of the rule being highlighted using the following colours.
 //!
-//! - green:  easy to fix
-//! - yellow:  moderate difficulty of fixing
-//! - red:  major changes required to fix
+//! | Colour | Meaning                       |
+//! |:------:|:------------------------------|
+//! | green  | easy to fix                   |
+//! | yellow | moderate difficulty of fixing |
+//! | red    | major changes required to fix |
 //!
 //! After all rules have been checked for one file, a summary will be written to
 //! [`std::io::Stderr`] consisting of an ASCII art crab as this application is
