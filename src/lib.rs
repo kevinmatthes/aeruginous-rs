@@ -64,6 +64,7 @@
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`cff-release-today`](#cff-release-today)
 //!    1. [`comment-changes`](#comment-changes)
+//!    1. [`complain`](#complain)
 //!    1. [`increment-version`](#increment-version)
 //!    1. [`ronlog`](#ronlog)
 //!    1. [`rs2md`](#rs2md)
@@ -72,6 +73,7 @@
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`cff-release-today`](#cff-release-today)
 //!    1. [`comment-changes`](#comment-changes)
+//!    1. [`complain`](#complain)
 //!    1. [`graph-description`](#graph-description)
 //!    1. [`increment-version`](#increment-version)
 //!    1. [`ronlog`](#ronlog)
@@ -248,6 +250,36 @@
 //! - known bug in `d.rs`_
 //!
 //! ```
+//!
+//! ### `complain`
+//!
+//! > To be called with:
+//! >
+//! > - `aercom`
+//! > - `complain`
+//!
+//! This application is a little linter to check whether the following
+//! requirements are met:
+//!
+//! 1. Every file needs to be terminated by a line feed.
+//! 1. Files must not contain CRLFs.
+//! 1. Lines shall have a width of at most n characters.
+//! 1. Trailing white space characters must be removed.
+//! 1. Lines have to be indented by spaces / tabs.
+//! 1. Spaces and tabs must not be mixed for indentation.
+//! 1. Within any line, there shall not be any tab character.
+//!
+//! All rules can be ignored, the line width as well as the indentation unit can
+//! be configured.  Every violation is reported to [`std::io::Stderr`] with the
+//! number of the rule being highlighted using the following colours.
+//!
+//! - green:  easy to fix
+//! - yellow:  moderate difficulty of fixing
+//! - red:  major changes required to fix
+//!
+//! After all rules have been checked for one file, a summary will be written to
+//! [`std::io::Stderr`] consisting of an ASCII art crab as this application is
+//! written in Rust, the number of violations, as well as the file name.
 //!
 //! <!--
 //! ### `graph-description`
