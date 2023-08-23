@@ -82,6 +82,13 @@ jobs:
           - clippy
           - d
           - fmt --check
+          - r -- complain \
+              src/*.rs \
+              src/changelog/*.rs \
+              src/graphing/*.rs \
+              src/pattern/*.rs \
+              src/traits/*.rs \
+              tests/*.rs
           - t
 
   cffconvert:
