@@ -45,6 +45,7 @@ The Aeruginous Open Source Development Toolbox.
    1. [`cffreference`](#cffreference)
    1. [`cff-release-today`](#cff-release-today)
    1. [`comment-changes`](#comment-changes)
+   1. [`complain`](#complain)
    1. [`increment-version`](#increment-version)
    1. [`ronlog`](#ronlog)
    1. [`rs2md`](#rs2md)
@@ -53,6 +54,7 @@ The Aeruginous Open Source Development Toolbox.
    1. [`cffreference`](#cffreference)
    1. [`cff-release-today`](#cff-release-today)
    1. [`comment-changes`](#comment-changes)
+   1. [`complain`](#complain)
    1. [`graph-description`](#graph-description)
    1. [`increment-version`](#increment-version)
    1. [`ronlog`](#ronlog)
@@ -60,7 +62,7 @@ The Aeruginous Open Source Development Toolbox.
    1. [`uncrlf`](#uncrlf)
 -->
 
-The current code coverage is **<!-- cov -->65.05%<!-- cov -->**.
+The current code coverage is **<!-- cov -->67.23%<!-- cov -->**.
 
 ## License
 
@@ -230,6 +232,37 @@ Fixed
 
 ```
 
+### `complain`
+
+> To be called with:
+>
+> - `complain`
+
+This application mode is a little linter to check whether the following
+requirements are met:
+
+1. Every file needs to be terminated by a line feed.
+1. Files must not contain CRLFs.
+1. Lines shall have a width of at most n characters.
+1. Trailing white space characters must be removed.
+1. Lines have to be indented by spaces / tabs.
+1. Spaces and tabs must not be mixed for indentation.
+1. Within any line, there shall not be any tab character.
+
+All rules can be ignored, the line width as well as the indentation unit can
+be configured.  Every violation is reported to [`std::io::Stderr`] with the
+number of the rule being highlighted using the following colours.
+
+| Colour | Meaning                       |
+|:------:|:------------------------------|
+| green  | easy to fix                   |
+| yellow | moderate difficulty of fixing |
+| red    | major changes required to fix |
+
+After all rules have been checked for one file, a summary will be written to
+[`std::io::Stderr`] consisting of an ASCII art crab as this application is
+written in Rust, the number of violations, as well as the file name.
+
 <!--
 ### `graph-description`
 
@@ -240,7 +273,8 @@ Fixed
 
 The Aeruginous Graph Description is a very easy to learn coding language to
 describe the structure of graphs.  The language itself is based on plain
-English ensuring that no programming skills at all are required to learn it.
+English to ensure that learning does not require any programming skills at
+all.
 
 This mode is not finished, yet, but it can already detect some issues
 regarding given input files.
