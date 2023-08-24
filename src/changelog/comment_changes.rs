@@ -249,7 +249,7 @@ impl Logic {
     fn preprocess(&mut self) -> Result<()> {
         if self.cli.keep_a_changelog {
             self.categories.append(
-                &mut vec![
+                &mut [
                     "Added",
                     "Changed",
                     "Deprecated",

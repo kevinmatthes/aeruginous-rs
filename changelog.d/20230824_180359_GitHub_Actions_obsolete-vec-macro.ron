@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "remove obsolete call to ``vec!`` macro",
+    ],
+  },
+)
