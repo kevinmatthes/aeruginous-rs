@@ -19,7 +19,7 @@ version = "0.17.2"
 
 [dependencies.serde]
 features = ["derive"]
-version = "1.0.185"
+version = "1.0.186"
 
 [package]
 authors = ["Kevin Matthes <aeruginous.rs@gmail.com>"]
