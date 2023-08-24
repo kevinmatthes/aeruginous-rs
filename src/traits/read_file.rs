@@ -85,7 +85,7 @@ impl ReadFile for PathBuf {
                                     .path()
                                     .behaviour(show_error_messages)
                                 {
-                                    Ok(string) => result.append_as_line(string),
+                                    Ok(string) => result.push_str(&string),
                                     Err(error) => return Err(error),
                                 }
                             }
