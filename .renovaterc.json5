@@ -93,7 +93,7 @@
             matchStrings: [
                 "msrv =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
                 "rust-version =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-                "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-green",
+                "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-brightgreen",
             ],
             packageNameTemplate: "rust-lang/rust",
         },
