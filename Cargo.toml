@@ -7,7 +7,7 @@ toml = "0.7.6"
 
 [dependencies.chrono]
 features = ["serde"]
-version = "0.4.26"
+version = "0.4.27"
 
 [dependencies.clap]
 features = ["derive"]
