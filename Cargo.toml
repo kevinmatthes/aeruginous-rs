@@ -15,7 +15,7 @@ version = "4.4.1"
 
 [dependencies.git2]
 default-features = false
-version = "0.17.2"
+version = "0.18.0"
 
 [dependencies.serde]
 features = ["derive"]
