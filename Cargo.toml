@@ -2,7 +2,7 @@
 anstyle = "1.0.2"
 cargo-lock = "9.0.0"
 ron = "0.8.1"
-sysexits = "0.6.3"
+sysexits = "0.7.1"
 toml = "0.7.6"
 
 [dependencies.chrono]
