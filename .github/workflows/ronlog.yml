@@ -55,7 +55,7 @@ jobs:
       github.repository == 'kevinmatthes/aeruginous-rs'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.6.0
+      - uses: actions/checkout@v4.0.0
         with:
           fetch-depth: 0
 
@@ -63,7 +63,7 @@ jobs:
         with:
           python-version: 3.11
 
-      - uses: taiki-e/install-action@v2.17.8
+      - uses: taiki-e/install-action@v2.18.0
         with:
           tool: cargo-tarpaulin
 
