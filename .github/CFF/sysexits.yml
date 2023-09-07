@@ -1,6 +1,6 @@
   - type: software
-    date-released: 2023-09-03
-    version: 0.7.1
+    date-released: 2023-09-07
+    version: 0.7.2
     abstract: The system exit codes as defined by <sysexits.h> for Rust
     authors:
       - alias: sorairolake
