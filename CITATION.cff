@@ -116,3 +116,19 @@ references:
       - credit
     license: "CC-BY-4.0"
     doi: 10.5281/zenodo.5171937
+  - type: software
+    date-released: 2023-08-31
+    version: 4.4.2
+    abstract: A full featured, fast Command Line Argument Parser for Rust
+    authors:
+      - alias: kbknapp
+        family-names: Knapp
+        given-names: Kevin B.
+      - name: The Clap Community
+    license:
+      - Apache-2.0
+      - MIT
+    repository-artifact: https://crates.io/crates/clap
+    repository-code: https://github.com/clap-rs/clap
+    title: clap
+    url: https://docs.rs/clap
