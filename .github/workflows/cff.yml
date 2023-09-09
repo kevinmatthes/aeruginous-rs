@@ -50,7 +50,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.0.0
-      - uses: fregante/setup-git-user@v2.0.1
 
       - run: |
           rustup update
