@@ -36,8 +36,7 @@ on:
     branches:
       - main
     paths:
-      - .github/CFF/*.cff
-      - .github/CFF/*.yml
+      - Cargo.lock
       - Cargo.toml
   workflow_dispatch:
 
@@ -52,43 +51,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4.0.0
       - uses: fregante/setup-git-user@v2.0.1
-      - run: rustup update
 
       - run: |
-          curl \
-            https://raw.githubusercontent.com/chronotope/chrono/main/CITATION.cff \
-            | cargo r -- cffreference > .github/CFF/chrono.yml
-          git add .github/CFF/chrono.yml
-          git commit --allow-empty -m \
-            '[GitHub Actions] Update CFF Entry for chrono'
-
-      - run: |
-          curl \
-            https://raw.githubusercontent.com/clap-rs/clap/master/CITATION.cff \
-            | cargo r -- cffreference > .github/CFF/clap.yml
-          git add .github/CFF/clap.yml
-          git commit --allow-empty -m \
-            '[GitHub Actions] Update CFF Entry for Clap'
-
-      - run: |
-          curl \
-            https://raw.githubusercontent.com/sorairolake/sysexits-rs/develop/CITATION.cff \
-            | cargo r -- cffreference > .github/CFF/sysexits.yml
-          git add .github/CFF/sysexits.yml
-          git commit --allow-empty -m \
-            '[GitHub Actions] Update CFF Entry for sysexits-rs'
-
-      - run: |
+          rustup update
           cat .github/CFF/aeruginous.cff > CITATION.cff
-          {
-            echo references: ;
-            cat .github/CFF/chrono.yml \
-                .github/CFF/citation-file-format.yml \
-                .github/CFF/clap.yml \
-                .github/CFF/sysexits.yml ;
-          } >> CITATION.cff
-          git add .
-          git commit --allow-empty -m '[GitHub Actions] Assemble CITATION.cff'
+          echo references: >> CITATION.cff
+
+      - uses: ./curl-cffref
+        with:
+          branch: main
+          repository: chronotope/chrono
+
+      - uses: ./curl-cffref
+        with:
+          branch: main
+          repository: citation-file-format/citation-file-format
+
+      - uses: ./curl-cffref
+        with:
+          branch: master
+          repository: clap-rs/clap
+
+      - uses: ./curl-cffref
+        with:
+          branch: develop
+          repository: sorairolake/sysexits-rs
 
       - uses: peter-evans/create-pull-request@v5.0.2
         with:
