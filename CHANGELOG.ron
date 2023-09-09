@@ -9,9 +9,27 @@
       version: (
         major: 3,
         minor: 1,
+        patch: 1,
+      ),
+      released: "2023-09-09T17:25:59.771468916Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Fixed": [
+            "CI:  update Rust version before publishing to crates.io",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 1,
         patch: 0,
       ),
-      released: "2023-08-24T18:43:53.393584145+00:00",
+      released: "2023-08-24T18:43:53.393584145Z",
       introduction: None,
       changes: (
         references: {},
@@ -51,7 +69,7 @@
         minor: 0,
         patch: 5,
       ),
-      released: "2023-08-15T15:22:07.642600459+00:00",
+      released: "2023-08-15T15:22:07.642600459Z",
       introduction: None,
       changes: (
         references: {},
@@ -71,22 +89,22 @@
         minor: 0,
         patch: 4,
       ),
-      released: "2023-08-01T18:12:43.054648338+00:00",
+      released: "2023-08-01T18:12:43.054648338Z",
       introduction: None,
       changes: (
         references: {},
         changes: {
+          "Added": [
+            "increment-version:  add dedicated mode for CITATION.cff files",
+            ".github/workflows/rustfmt.yml",
+            "CI:  automatically update CFF entry of sysexits-rs on certain pushes to main",
+          ],
           "Changed": [
             "indent Rust source files by 4 spaces",
             "indent JSON5 files by 4 spaces",
           ],
           "Fixed": [
             "Renovate:  submit one bundled lock file maintenance per week",
-          ],
-          "Added": [
-            "increment-version:  add dedicated mode for CITATION.cff files",
-            ".github/workflows/rustfmt.yml",
-            "CI:  automatically update CFF entry of sysexits-rs on certain pushes to main",
           ],
         },
       ),
@@ -98,22 +116,22 @@
         minor: 0,
         patch: 3,
       ),
-      released: "2023-07-24T20:22:08.776717613+00:00",
+      released: "2023-07-24T20:22:08.776717613Z",
       introduction: None,
       changes: (
         references: {},
         changes: {
-          "Changed": [
-            "README:  sort badges by category (GitHub, Rust)",
-            "README:  make MSRV badge brightgreen",
-            "rename CFF assembly workflow to .github/workflows/cff.yml",
-          ],
           "Added": [
             "CFF:  entry for ``clap`` v4.3.17",
             "README:  Renovate badge",
             "README:  badge for latest GitHub release",
             "CFF:  entry for ``clap`` v4.3.15",
             "CI:  automatically update CFF on pushes to main",
+          ],
+          "Changed": [
+            "README:  sort badges by category (GitHub, Rust)",
+            "README:  make MSRV badge brightgreen",
+            "rename CFF assembly workflow to .github/workflows/cff.yml",
           ],
           "Fixed": [
             "reading from stdin now adds newlines where required",
@@ -128,7 +146,7 @@
         minor: 0,
         patch: 2,
       ),
-      released: "2023-07-16T19:09:33.739326728+00:00",
+      released: "2023-07-16T19:09:33.739326728Z",
       introduction: None,
       changes: (
         references: {},
@@ -137,6 +155,11 @@
             "CFF:  automatically update Clap entry with Renovate",
             "CI:  ``cargo nextest r``",
           ],
+          "Changed": [
+            "Renovate:  disable automerge explicitly",
+            "Renovate:  listen to renamed ``cffconvert`` repository",
+            "comment-changes:  work on entire commit message instead of certain part",
+          ],
           "Added": [
             "comment-changes:  make message harvesting into dedicated function",
             "CFF:  entry for ``clap`` v4.3.12",
@@ -144,11 +167,6 @@
           ],
           "Fixed": [
             "CI:  prevent failing on CFF update PR merge",
-          ],
-          "Changed": [
-            "Renovate:  disable automerge explicitly",
-            "Renovate:  listen to renamed ``cffconvert`` repository",
-            "comment-changes:  work on entire commit message instead of certain part",
           ],
         },
       ),
@@ -160,23 +178,11 @@
         minor: 0,
         patch: 1,
       ),
-      released: "2023-07-04T12:33:56.404949745+00:00",
+      released: "2023-07-04T12:33:56.404949745Z",
       introduction: None,
       changes: (
         references: {},
         changes: {
-          "Changed": [
-            "call actionlint Docker image directly",
-            "rename cffs/expectation.cff to cffs/expectation.yml",
-            "CommentChanges:  refactor logic",
-            "Fragment:  apply new ToMd and ToRst traits",
-            "call cffconvert Docker image directly",
-            "rename tests/ron_traits.rs to tests/rusty_object_notation.rs",
-          ],
-          "Fixed": [
-            "prevent release generation in forks",
-            "do not allow RONLOG assemblies in forks",
-          ],
           "Added": [
             "CFF:  automatically update Clap entry with Renovate",
             "Renovate:  track actionlint Docker image",
@@ -197,6 +203,18 @@
             "Renovate:  track cffconvert Docker image",
             "FragmentExportFormat",
           ],
+          "Changed": [
+            "call actionlint Docker image directly",
+            "rename cffs/expectation.cff to cffs/expectation.yml",
+            "CommentChanges:  refactor logic",
+            "Fragment:  apply new ToMd and ToRst traits",
+            "call cffconvert Docker image directly",
+            "rename tests/ron_traits.rs to tests/rusty_object_notation.rs",
+          ],
+          "Fixed": [
+            "prevent release generation in forks",
+            "do not allow RONLOG assemblies in forks",
+          ],
         },
       ),
     ),
@@ -207,18 +225,19 @@
         minor: 0,
         patch: 0,
       ),
-      released: "2023-06-30T06:26:11.291071059+00:00",
+      released: "2023-06-30T06:26:11.291071059Z",
       introduction: None,
       changes: (
         references: {},
         changes: {
-          "Removed": [
-            "Dependabot:  configuration",
-            ".github/workflows/cargo-update.yml",
-            ".github/workflows/msrv.yml",
-            "CI:  manual trigger for release workflow",
-            "PatternReader",
-            "src/pattern/reader.rs",
+          "Changed": [
+            "CI:  rename release level selector",
+            "CI:  apply new increment-version features",
+            "cffreference:  refactor logic",
+          ],
+          "Fixed": [
+            "CI:  skip compilation on RONLOG assembly",
+            "show previously hidden Clap aliases",
           ],
           "Added": [
             "CFF:  entry for ``clap`` v4.3.10",
@@ -239,14 +258,13 @@
             "ceprintlns",
             "CFF:  entry for ``sysexits`` v0.6.1",
           ],
-          "Changed": [
-            "CI:  rename release level selector",
-            "CI:  apply new increment-version features",
-            "cffreference:  refactor logic",
-          ],
-          "Fixed": [
-            "CI:  skip compilation on RONLOG assembly",
-            "show previously hidden Clap aliases",
+          "Removed": [
+            "Dependabot:  configuration",
+            ".github/workflows/cargo-update.yml",
+            ".github/workflows/msrv.yml",
+            "CI:  manual trigger for release workflow",
+            "PatternReader",
+            "src/pattern/reader.rs",
           ],
         },
       ),
@@ -258,15 +276,11 @@
         minor: 2,
         patch: 2,
       ),
-      released: "2023-06-21T23:44:36.263854103+00:00",
+      released: "2023-06-21T23:44:36.263854103Z",
       introduction: None,
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "CI:  rename RONLOG assembly workflow job",
-            "comment-changes:  create missing target directories",
-          ],
           "Removed": [
             "Scriv:  configuration",
             "src/changelog/section.rs",
@@ -281,6 +295,10 @@
             "move RonlogAction definition to RONLOG source file",
             "src/version.rs:  apply new enum_trait macro",
             "comment-changes:  update README description",
+          ],
+          "Fixed": [
+            "CI:  rename RONLOG assembly workflow job",
+            "comment-changes:  create missing target directories",
           ],
           "Added": [
             "CI:  create release on RONLOG assembly",
@@ -298,7 +316,7 @@
         minor: 2,
         patch: 1,
       ),
-      released: "2023-06-20T19:13:09.041861006+00:00",
+      released: "2023-06-20T19:13:09.041861006Z",
       introduction: None,
       changes: (
         references: {},
@@ -327,7 +345,7 @@
         minor: 2,
         patch: 0,
       ),
-      released: "2023-06-12T17:20:37.365121131+00:00",
+      released: "2023-06-12T17:20:37.365121131Z",
       introduction: None,
       changes: (
         references: {},
@@ -340,12 +358,6 @@
             "move FromRon and ToRon to one source file",
             "CI:  assemble RONLOG on release",
             "CI:  create RON fragments",
-          ],
-          "Removed": [
-            "CFF:  entries of outdated versions",
-            "bump2version:  configuration",
-            "src/traits/to_ron.rs",
-            "src/traits/from_ron.rs",
           ],
           "Added": [
             "CI:  lint GitHub Action workflows",
@@ -376,6 +388,12 @@
             "CI:  Bash style issues",
             "ToRon::to_ron:  missing trailing newline at the end",
           ],
+          "Removed": [
+            "CFF:  entries of outdated versions",
+            "bump2version:  configuration",
+            "src/traits/to_ron.rs",
+            "src/traits/from_ron.rs",
+          ],
         },
       ),
     ),
@@ -386,7 +404,7 @@
         minor: 0,
         patch: 0,
       ),
-      released: "2023-03-04T14:58:15+00:00",
+      released: "2023-03-04T14:58:15Z",
       introduction: None,
       changes: (
         references: {},
