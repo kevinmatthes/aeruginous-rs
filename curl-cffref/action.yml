@@ -1,0 +1,68 @@
+######################## GNU General Public License 3.0 ########################
+##                                                                            ##
+## Copyright (C) 2023 Kevin Matthes                                           ##
+##                                                                            ##
+## This program is free software: you can redistribute it and/or modify       ##
+## it under the terms of the GNU General Public License as published by       ##
+## the Free Software Foundation, either version 3 of the License, or          ##
+## (at your option) any later version.                                        ##
+##                                                                            ##
+## This program is distributed in the hope that it will be useful,            ##
+## but WITHOUT ANY WARRANTY; without even the implied warranty of             ##
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the              ##
+## GNU General Public License for more details.                               ##
+##                                                                            ##
+## You should have received a copy of the GNU General Public License          ##
+## along with this program.  If not, see <https://www.gnu.org/licenses/>.     ##
+##                                                                            ##
+################################################################################
+
+################################################################################
+##
+##  AUTHOR      Kevin Matthes
+##  BRIEF       A GitHub Action to process the data of a certain CITATION.cff.
+##  COPYRIGHT   GPL-3.0
+##  DATE        2023
+##  FILE        action.yml
+##  NOTE        See `LICENSE' for full license.
+##              See `README.md' for project details.
+##
+################################################################################
+
+# About this Action.
+author: 'https://github.com/kevinmatthes'
+branding:
+  color: green
+  icon: download
+description: A GitHub Action to process the data of a certain CITATION.cff.
+name: curl-cffref
+
+# The information to be input.
+inputs:
+  branch:
+    description: The branch to query.
+    required: true
+  repository:
+    description: The project to cite.
+    required: true
+
+# The behaviour of this Action.
+runs:
+  using: composite
+  steps:
+    - uses: fregante/setup-git-user@v2.0.1
+
+    - run: rustup update
+      shell: bash
+
+    - uses: baptiste0928/cargo-install@v2.2.0
+      with:
+        crate: aeruginous
+
+    - run: |
+        curl https://raw.githubusercontent.com/${{ inputs.repository }}/${{ inputs.branch }}/CITATION.cff | aeruginous cffreference >> CITATION.cff
+        git add CITATION.cff
+        git commit -m '[Aeruginous] Update CFF data of ${{ inputs.repository }}'
+      shell: bash
+
+################################################################################
