@@ -77,7 +77,7 @@
                 "^\\.github/workflows/ci\\.yml$",
             ],
             matchStrings: [
-                "rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+                "rhysd/actionlint\\:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
             ],
             packageNameTemplate: "rhysd/actionlint",
         },
