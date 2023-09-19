@@ -46,7 +46,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: docker://rhysd/actionlint:1.6.25
+      - uses: docker://rhysd/actionlint:1.6.26
         with:
           args: -color
 
