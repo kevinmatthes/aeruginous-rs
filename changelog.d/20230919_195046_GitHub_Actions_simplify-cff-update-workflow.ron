@@ -1,0 +1,14 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "CI:  simplify CFF update workflow",
+    ],
+    "Removed": [
+      ".github/CFF/sysexits.yml",
+      ".github/CFF/clap.yml",
+      ".github/CFF/citation-file-format.yml",
+      ".github/CFF/chrono.yml",
+    ],
+  },
+)
