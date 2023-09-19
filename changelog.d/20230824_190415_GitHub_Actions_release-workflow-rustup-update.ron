@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Fixed": [
-      "CI:  update Rust version before publishing to crates.io",
-    ],
-  },
-)
