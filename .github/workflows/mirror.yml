@@ -45,39 +45,28 @@ permissions:
 
 jobs:
   readme:
-    name: readme
     runs-on: ubuntu-latest
     steps:
-      - name: cargo
-        uses: taiki-e/install-action@v2.18.13
+      - uses: taiki-e/install-action@v2.18.13
         with:
           tool: cargo-tarpaulin
 
-      - name: python
-        uses: actions/setup-python@v4.7.0
+      - uses: actions/setup-python@v4.7.0
         with:
           python-version: 3.11
 
-      - name: rustup
-        run: rustup update
+      - run: rustup update
 
-      - name: checkout
-        uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.0.0
         with:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: requirements
-        run: echo pycobertura >> requirements.txt
+      - run: echo pycobertura >> requirements.txt
+      - uses: fregante/setup-git-user@v2.0.1
+      - uses: py-actions/py-dependency-install@v4.0.0
 
-      - name: user
-        uses: fregante/setup-git-user@v2.0.1
-
-      - name: dependencies
-        uses: py-actions/py-dependency-install@v4.0.0
-
-      - name: ratio
-        run: |
+      - run: |
           cargo tarpaulin
           sed "s/<!-- cov -->.*<!-- cov -->/<!-- cov -->$( \
             pycobertura show -f csv --delimiter , cobertura.xml | \
@@ -88,15 +77,13 @@ jobs:
           git commit --allow-empty -m \
             "[GitHub Actions] Update Coverage in src/lib.rs"
 
-      - name: update
-        run: |
+      - run: |
           cargo r -- rs2md -i src/lib.rs --outer -o README.md
           git add README.md
           git commit --allow-empty -m \
             "[GitHub Actions] Mirror README.md from src/lib.rs"
 
-      - name: pr
-        uses: peter-evans/create-pull-request@v5.0.2
+      - uses: peter-evans/create-pull-request@v5.0.2
         with:
           assignees: |
             kevinmatthes
