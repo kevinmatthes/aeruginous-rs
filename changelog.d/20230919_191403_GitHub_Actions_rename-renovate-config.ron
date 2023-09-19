@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "rename .renovaterc.json5 to .renovaterc",
+    ],
+  },
+)
