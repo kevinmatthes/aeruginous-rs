@@ -63,10 +63,10 @@
             datasourceTemplate: "github-releases",
             depNameTemplate: "actionlint",
             fileMatch: [
-                "^\\.github/workflows/ci\\.yml$",
+                "^\\.actionlint$"
             ],
             matchStrings: [
-                "actionlint.(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+                "(?<currentValue>\\d+\\.\\d+\\.\\d+)",
             ],
             packageNameTemplate: "rhysd/actionlint",
         },
