@@ -11,6 +11,11 @@
         "dependencies",
     ],
     dependencyDashboardTitle: "[Renovate] Dependency Dashboard",
+    dockerfile: [
+        fileMatch: [
+            "^\\.github/workflows/.+\\.yml$",
+        ],
+    ],
     labels: [
         "dependencies",
     ],
@@ -18,17 +23,6 @@
         enabled: true,
     },
     packageRules: [
-        {
-            addLabels: [
-                "github_actions",
-            ],
-            matchManagers: [
-                "regex",
-            ],
-            matchPackageNames: [
-                "cffconvert",
-            ],
-        },
         {
             addLabels: [
                 "rust",
@@ -42,6 +36,7 @@
                 "github_actions",
             ],
             matchManagers: [
+                "dockerfile",
                 "github-actions",
             ],
         },
@@ -59,17 +54,6 @@
     ],
     prHourlyLimit: null,
     regexManagers: [
-        {
-            datasourceTemplate: "github-releases",
-            depNameTemplate: "cffconvert",
-            fileMatch: [
-                "^\\.github/workflows/ci\\.yml$",
-            ],
-            matchStrings: [
-                "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-            ],
-            packageNameTemplate: "citation-file-format/cffconvert",
-        },
         {
             datasourceTemplate: "github-releases",
             depNameTemplate: "rust",
