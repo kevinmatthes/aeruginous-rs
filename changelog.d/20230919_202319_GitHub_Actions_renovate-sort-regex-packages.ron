@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Changed": [
-      "Renovate:  consider GHA workflows Dockerfiles",
-    ],
-  },
-)
