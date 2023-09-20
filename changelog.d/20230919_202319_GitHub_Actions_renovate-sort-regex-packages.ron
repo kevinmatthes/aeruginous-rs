@@ -1,8 +1,8 @@
 (
   references: {},
   changes: {
-    "Removed": [
-      "Renovate:  regex manager for actionlint",
+    "Changed": [
+      "Renovate:  consider GHA workflows Dockerfiles",
     ],
   },
 )
