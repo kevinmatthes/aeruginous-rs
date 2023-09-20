@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "Renovate:  extract version of actionlint GH release",
+    ],
+  },
+)
