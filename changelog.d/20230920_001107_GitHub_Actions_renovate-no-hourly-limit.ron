@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Removed": [
+      "Renovate:  limit of created PRs per hour",
+    ],
+  },
+)
