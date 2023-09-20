@@ -40,19 +40,17 @@ permissions:
 
 jobs:
   actionlint:
-    name: actionlint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.0.0
         with:
           persist-credentials: false
 
-      - uses: docker://rhysd/actionlint:1.6.25
+      - uses: docker://rhysd/actionlint:1.6.26
         with:
           args: -color
 
   bors:
-    name: bors
     needs:
       - actionlint
       - cargo
@@ -63,7 +61,6 @@ jobs:
       - run: bash -c 'exit 0'
 
   cargo:
-    name: cargo
     runs-on: ubuntu-latest
     steps:
       - run: rustup update
@@ -86,7 +83,6 @@ jobs:
           - t
 
   cffconvert:
-    name: cffconvert
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.0.0
@@ -110,7 +106,6 @@ jobs:
           - cffs/input_7.cff
 
   renovate-linter:
-    name: renovate-linter
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.0.0

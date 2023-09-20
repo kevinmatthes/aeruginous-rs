@@ -58,7 +58,19 @@
             ],
         },
     ],
+    prHourlyLimit: null,
     regexManagers: [
+        {
+            datasourceTemplate: "github-releases",
+            depNameTemplate: "actionlint",
+            fileMatch: [
+                "^\\.actionlint$"
+            ],
+            matchStrings: [
+                "(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+            ],
+            packageNameTemplate: "rhysd/actionlint",
+        },
         {
             datasourceTemplate: "github-releases",
             depNameTemplate: "cffconvert",
@@ -69,17 +81,6 @@
                 "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
             ],
             packageNameTemplate: "citation-file-format/cffconvert",
-        },
-        {
-            datasourceTemplate: "github-releases",
-            depNameTemplate: "actionlint",
-            fileMatch: [
-                "^\\.github/workflows/ci\\.yml$",
-            ],
-            matchStrings: [
-                "rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-            ],
-            packageNameTemplate: "rhysd/actionlint",
         },
         {
             datasourceTemplate: "github-releases",

@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "Renovate:  incorrect regex for actionlint Docker image",
+    ],
+  },
+)

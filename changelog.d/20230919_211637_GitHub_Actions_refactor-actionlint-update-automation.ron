@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "Renovate:  write updates to actionlint to another file",
+    ],
+    "Added": [
+      ".actionlint",
+    ],
+  },
+)

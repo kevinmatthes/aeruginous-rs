@@ -39,7 +39,6 @@ permissions:
 
 jobs:
   changelog:
-    name: changelog
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.0.0
