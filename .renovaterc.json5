@@ -58,6 +58,7 @@
             ],
         },
     ],
+    prHourlyLimit: null,
     regexManagers: [
         {
             datasourceTemplate: "github-releases",
