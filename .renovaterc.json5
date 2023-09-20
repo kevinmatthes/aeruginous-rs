@@ -26,7 +26,6 @@
                 "regex",
             ],
             matchPackageNames: [
-                "actionlint",
                 "cffconvert",
             ],
         },
@@ -60,17 +59,6 @@
     ],
     prHourlyLimit: null,
     regexManagers: [
-        {
-            datasourceTemplate: "github-releases",
-            depNameTemplate: "actionlint",
-            fileMatch: [
-                "^\\.actionlint$"
-            ],
-            matchStrings: [
-                "(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-            ],
-            packageNameTemplate: "rhysd/actionlint",
-        },
         {
             datasourceTemplate: "github-releases",
             depNameTemplate: "cffconvert",
