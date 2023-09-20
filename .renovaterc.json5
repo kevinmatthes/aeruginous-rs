@@ -11,11 +11,6 @@
         "dependencies",
     ],
     dependencyDashboardTitle: "[Renovate] Dependency Dashboard",
-    dockerfile: {
-        fileMatch: [
-            "^\\.github/workflows/.+\\.yml$",
-        ],
-    },
     labels: [
         "dependencies",
     ],
