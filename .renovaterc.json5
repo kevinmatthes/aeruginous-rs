@@ -20,6 +20,18 @@
     packageRules: [
         {
             addLabels: [
+                "github_actions",
+            ],
+            matchManagers: [
+                "regex",
+            ],
+            matchPackageNames: [
+                "actionlint",
+                "cffconvert",
+            ],
+        },
+        {
+            addLabels: [
                 "rust",
             ],
             matchManagers: [
@@ -31,7 +43,6 @@
                 "github_actions",
             ],
             matchManagers: [
-                "dockerfile",
                 "github-actions",
             ],
         },
@@ -46,9 +57,37 @@
                 "rust",
             ],
         },
+        {
+            extractVersion: "^v(?<version>.*)$",
+            matchPackageNames: [
+                "actionlint",
+            ],
+        },
     ],
     prHourlyLimit: null,
     regexManagers: [
+        {
+            datasourceTemplate: "github-releases",
+            depNameTemplate: "actionlint",
+            fileMatch: [
+                "^\\.github/workflows/ci\\.yml$",
+            ],
+            matchStrings: [
+                "rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+            ],
+            packageNameTemplate: "rhysd/actionlint",
+        },
+        {
+            datasourceTemplate: "github-releases",
+            depNameTemplate: "cffconvert",
+            fileMatch: [
+                "^\\.github/workflows/ci\\.yml$",
+            ],
+            matchStrings: [
+                "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+            ],
+            packageNameTemplate: "citation-file-format/cffconvert",
+        },
         {
             datasourceTemplate: "github-releases",
             depNameTemplate: "rust",
