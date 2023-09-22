@@ -42,7 +42,7 @@ jobs:
   actionlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
         with:
           persist-credentials: false
 
@@ -65,7 +65,7 @@ jobs:
     steps:
       - run: rustup update
 
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -85,7 +85,7 @@ jobs:
   cffconvert:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
         with:
           persist-credentials: false
 
@@ -108,7 +108,7 @@ jobs:
   renovate-linter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
         with:
           persist-credentials: false
 
