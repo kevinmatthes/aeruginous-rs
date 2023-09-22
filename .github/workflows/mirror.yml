@@ -57,7 +57,7 @@ jobs:
 
       - run: rustup update
 
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.0
         with:
           fetch-depth: 0
           persist-credentials: false
