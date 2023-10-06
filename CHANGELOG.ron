@@ -9,6 +9,42 @@
       version: (
         major: 3,
         minor: 1,
+        patch: 2,
+      ),
+      released: "2023-10-06T17:42:58.937148503Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Changed": [
+            "Renovate:  sort regex packages by package name",
+            "CI:  apply actionlint 1.6.26",
+            "CI:  simplify CFF update workflow",
+          ],
+          "Removed": [
+            ".github/workflows/mirror.yml:  obsolete ``name`` fields",
+            ".github/workflows/comment-changes.yml:  obsolete ``name`` fields",
+            ".github/workflows/ci.yml:  obsolete ``name`` fields",
+            "Renovate:  limit of created PRs per hour",
+            ".github/CFF/sysexits.yml",
+            ".github/CFF/clap.yml",
+            ".github/CFF/citation-file-format.yml",
+            ".github/CFF/chrono.yml",
+          ],
+          "Fixed": [
+            "Renovate:  extract version of actionlint GH release",
+            "Renovate:  incorrect regex for actionlint Docker image",
+            "CI:  simplify RONLOG assembly",
+            "Renovate:  automated maintenance of actionlint Docker image",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 1,
         patch: 1,
       ),
       released: "2023-09-19T17:47:00.124538678Z",
@@ -39,14 +75,6 @@
             "remove obsolete call to ``vec!`` macro",
             "CI:  submit just one PR comment (coverage)",
           ],
-          "Removed": [
-            "tests/to_stderr.rs",
-            "tests/rusty_object_notation.rs",
-            "tests/prefer.rs",
-            "tests/convert_buffer.rs",
-            "tests/colour_message.rs",
-            "tests/append_as_line.rs",
-          ],
           "Added": [
             "tests/traits.rs",
             ".gitignore:  ignore artifacts by ``cargo mutants``",
@@ -58,6 +86,14 @@
             "Complain",
             "complain",
             "CI:  show current mutation count on PR",
+          ],
+          "Removed": [
+            "tests/to_stderr.rs",
+            "tests/rusty_object_notation.rs",
+            "tests/prefer.rs",
+            "tests/convert_buffer.rs",
+            "tests/colour_message.rs",
+            "tests/append_as_line.rs",
           ],
         },
       ),
@@ -121,20 +157,20 @@
       changes: (
         references: {},
         changes: {
-          "Added": [
-            "CFF:  entry for ``clap`` v4.3.17",
-            "README:  Renovate badge",
-            "README:  badge for latest GitHub release",
-            "CFF:  entry for ``clap`` v4.3.15",
-            "CI:  automatically update CFF on pushes to main",
+          "Fixed": [
+            "reading from stdin now adds newlines where required",
           ],
           "Changed": [
             "README:  sort badges by category (GitHub, Rust)",
             "README:  make MSRV badge brightgreen",
             "rename CFF assembly workflow to .github/workflows/cff.yml",
           ],
-          "Fixed": [
-            "reading from stdin now adds newlines where required",
+          "Added": [
+            "CFF:  entry for ``clap`` v4.3.17",
+            "README:  Renovate badge",
+            "README:  badge for latest GitHub release",
+            "CFF:  entry for ``clap`` v4.3.15",
+            "CI:  automatically update CFF on pushes to main",
           ],
         },
       ),
@@ -151,14 +187,14 @@
       changes: (
         references: {},
         changes: {
-          "Removed": [
-            "CFF:  automatically update Clap entry with Renovate",
-            "CI:  ``cargo nextest r``",
-          ],
           "Added": [
             "comment-changes:  make message harvesting into dedicated function",
             "CFF:  entry for ``clap`` v4.3.12",
             "comment-changes:  ``--force`` mode",
+          ],
+          "Removed": [
+            "CFF:  automatically update Clap entry with Renovate",
+            "CI:  ``cargo nextest r``",
           ],
           "Changed": [
             "Renovate:  disable automerge explicitly",
@@ -183,10 +219,6 @@
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "prevent release generation in forks",
-            "do not allow RONLOG assemblies in forks",
-          ],
           "Changed": [
             "call actionlint Docker image directly",
             "rename cffs/expectation.cff to cffs/expectation.yml",
@@ -215,6 +247,10 @@
             "Renovate:  track cffconvert Docker image",
             "FragmentExportFormat",
           ],
+          "Fixed": [
+            "prevent release generation in forks",
+            "do not allow RONLOG assemblies in forks",
+          ],
         },
       ),
     ),
@@ -230,11 +266,6 @@
       changes: (
         references: {},
         changes: {
-          "Changed": [
-            "CI:  rename release level selector",
-            "CI:  apply new increment-version features",
-            "cffreference:  refactor logic",
-          ],
           "Removed": [
             "Dependabot:  configuration",
             ".github/workflows/cargo-update.yml",
@@ -242,10 +273,6 @@
             "CI:  manual trigger for release workflow",
             "PatternReader",
             "src/pattern/reader.rs",
-          ],
-          "Fixed": [
-            "CI:  skip compilation on RONLOG assembly",
-            "show previously hidden Clap aliases",
           ],
           "Added": [
             "CFF:  entry for ``clap`` v4.3.10",
@@ -266,6 +293,15 @@
             "ceprintlns",
             "CFF:  entry for ``sysexits`` v0.6.1",
           ],
+          "Changed": [
+            "CI:  rename release level selector",
+            "CI:  apply new increment-version features",
+            "cffreference:  refactor logic",
+          ],
+          "Fixed": [
+            "CI:  skip compilation on RONLOG assembly",
+            "show previously hidden Clap aliases",
+          ],
         },
       ),
     ),
@@ -281,6 +317,16 @@
       changes: (
         references: {},
         changes: {
+          "Fixed": [
+            "CI:  rename RONLOG assembly workflow job",
+            "comment-changes:  create missing target directories",
+          ],
+          "Added": [
+            "CI:  create release on RONLOG assembly",
+            "enum_trait",
+            "tests/macros.rs",
+            "CI:  settings for the automated release notes",
+          ],
           "Removed": [
             "Scriv:  configuration",
             "src/changelog/section.rs",
@@ -295,16 +341,6 @@
             "move RonlogAction definition to RONLOG source file",
             "src/version.rs:  apply new enum_trait macro",
             "comment-changes:  update README description",
-          ],
-          "Fixed": [
-            "CI:  rename RONLOG assembly workflow job",
-            "comment-changes:  create missing target directories",
-          ],
-          "Added": [
-            "CI:  create release on RONLOG assembly",
-            "enum_trait",
-            "tests/macros.rs",
-            "CI:  settings for the automated release notes",
           ],
         },
       ),
@@ -321,9 +357,6 @@
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "CI:  redundant test runs",
-          ],
           "Changed": [
             "CI:  rename release preparation workflow to ``ronlog.yml``",
             "README:  enhance documentation of RONLOG mode",
@@ -334,6 +367,9 @@
             "CI:  real release workflow",
             "comment-changes:  stop at certain commit SHA; fixes #336",
             "CFF:  entry for ``clap`` v4.3.5",
+          ],
+          "Fixed": [
+            "CI:  redundant test runs",
           ],
         },
       ),
@@ -350,6 +386,10 @@
       changes: (
         references: {},
         changes: {
+          "Fixed": [
+            "CI:  Bash style issues",
+            "ToRon::to_ron:  missing trailing newline at the end",
+          ],
           "Removed": [
             "CFF:  entries of outdated versions",
             "bump2version:  configuration",
@@ -389,10 +429,6 @@
             "VersionRange",
             "src/traits/rusty_object_notation.rs",
             "CHANGELOG.ron",
-          ],
-          "Fixed": [
-            "CI:  Bash style issues",
-            "ToRon::to_ron:  missing trailing newline at the end",
           ],
         },
       ),
