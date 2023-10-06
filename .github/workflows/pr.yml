@@ -42,7 +42,7 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/install-action@v2.19.4
+      - uses: taiki-e/install-action@v2.20.0
         with:
           tool: cargo-tarpaulin
 
