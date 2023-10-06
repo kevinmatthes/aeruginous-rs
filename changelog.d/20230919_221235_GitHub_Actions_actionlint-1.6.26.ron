@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Changed": [
-      "CI:  apply actionlint 1.6.26",
-    ],
-  },
-)
