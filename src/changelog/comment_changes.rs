@@ -380,7 +380,8 @@ impl Logic {
     }
 
     fn report(&mut self) -> Result<()> {
-        let mut fragment = crate::Fragment::new(&self.hyperlinks, &self.changes);
+        let mut fragment =
+            crate::Fragment::new(&self.hyperlinks, &self.changes);
         fragment.sort();
 
         let content = match self.cli.extension {
