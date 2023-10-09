@@ -1,6 +1,7 @@
 [dependencies]
 anstyle = "1.0.4"
 cargo-lock = "9.0.0"
+indexmap = { version = "2.0.2", features = ["serde"] }
 ron = "0.8.1"
 sysexits = "0.7.4"
 toml = "0.8.2"
