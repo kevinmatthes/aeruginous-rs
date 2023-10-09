@@ -18,7 +18,7 @@
 \******************************************************************************/
 
 use crate::{AppendAsLine, RonlogReferences};
-use std::collections::HashMap;
+use indexmap::IndexMap;
 use sysexits::{ExitCode, Result};
 
 /// The supported export formats.
@@ -47,13 +47,13 @@ pub struct Fragment {
     references: RonlogReferences,
 
     /// The harvested changes.
-    changes: HashMap<String, Vec<String>>,
+    changes: IndexMap<String, Vec<String>>,
 }
 
 impl Fragment {
     crate::getters!(@fn @ref
       references: RonlogReferences,
-      changes: HashMap<String, Vec<String>>
+      changes: IndexMap<String, Vec<String>>
     );
 
     /// Add another instance's contents to this one's.
@@ -86,12 +86,27 @@ impl Fragment {
     #[must_use]
     pub fn new(
         references: &RonlogReferences,
-        changes: &HashMap<String, Vec<String>>,
+        changes: &IndexMap<String, Vec<String>>,
     ) -> Self {
         Self {
             references: references.clone(),
             changes: changes.clone(),
         }
+    }
+
+    /// Sort all entries and categories.
+    pub fn sort(&mut self) {
+        for (_, entries) in &mut self.changes {
+            entries.sort();
+        }
+
+        self.changes.sort_by(|key_1, value_1, key_2, value_2| {
+            if key_1 == key_2 {
+                value_1.cmp(value_2)
+            } else {
+                key_1.cmp(key_2)
+            }
+        });
     }
 }
 
@@ -165,7 +180,7 @@ impl crate::ToRst for Fragment {
 
 impl Default for Fragment {
     fn default() -> Self {
-        Self::new(&RonlogReferences::new(), &HashMap::new())
+        Self::new(&RonlogReferences::new(), &IndexMap::new())
     }
 }
 
