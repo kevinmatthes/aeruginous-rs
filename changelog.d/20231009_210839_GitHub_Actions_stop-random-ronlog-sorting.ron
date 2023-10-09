@@ -9,5 +9,8 @@
       "comment-changes:  migrate to ``IndexMap``",
       "ronlog:  migrate to ``IndexMap``",
     ],
+    "Fixed": [
+      "ronlog:  random re-ordering of existing sections",
+    ],
   },
 )
