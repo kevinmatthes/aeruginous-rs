@@ -167,6 +167,10 @@ impl Logic {
             let mut ronlog =
                 Changelog::from_ron(&self.cli.output_file.read()?)?;
 
+            for section in &mut ronlog.sections {
+                section.changes.sort();
+            }
+
             for (link, target) in section.move_references() {
                 ronlog
                     .references
@@ -186,7 +190,7 @@ impl Logic {
 }
 
 /// The references known to RONLOG-related instances.
-pub type References = std::collections::HashMap<String, String>;
+pub type References = indexmap::IndexMap<String, String>;
 
 /// Interact with RON CHANGELOGs.
 #[derive(clap::Parser, Clone)]
