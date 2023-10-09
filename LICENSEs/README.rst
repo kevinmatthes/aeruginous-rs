@@ -33,6 +33,9 @@
 ..
 .. _anstyle:  https://github.com/rust-cli/anstyle
 ..
+.. _bluss/indexmap/LICENSE-Apache-2.0:  bluss/indexmap/LICENSE-Apache-2.0
+.. _bluss/indexmap/LICENSE-MIT:  bluss/indexmap/LICENSE-MIT
+..
 .. _cargo-lock:  https://github.com/rustsec/rustsec
 .. _chrono:  https://github.com/chronotope/chrono
 .. _chronotope/chrono/LICENSE:  chronotope/chrono/LICENSE
@@ -41,6 +44,8 @@
 .. _clap-rs/clap/LICENSE-MIT:  clap-rs/clap/LICENSE-MIT
 ..
 .. _git2:  https://github.com/rust-lang/git2-rs
+..
+.. _indexmap:  https://github.com/bluss/indexmap
 ..
 .. _ron:  https://github.com/ron-rs/ron
 .. _ron-rs/ron/LICENSE-Apache-2.0:  ron-rs/ron/LICENSE-Apache-2.0
@@ -148,6 +153,21 @@ Rust Crates
   - Apache-2.0:  https://github.com/rust-lang/git2-rs/blob/master/LICENSE-APACHE
 
   - MIT:  https://github.com/rust-lang/git2-rs/blob/master/LICENSE-MIT
+
+`indexmap`_
+...........
+
+- local copies:
+
+  - Apache-2.0:  `bluss/indexmap/LICENSE-Apache-2.0`_
+
+  - MIT:  `bluss/indexmap/LICENSE-MIT`_
+
+- original licenses:
+
+  - Apache-2.0:  https://github.com/bluss/indexmap/blob/master/LICENSE-APACHE
+
+  - MIT:  https://github.com/bluss/indexmap/blob/master/LICENSE-MIT
 
 `ron`_
 ......

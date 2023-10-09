@@ -18,7 +18,7 @@
 \******************************************************************************/
 
 use aeruginous::{Fragment, RonlogSection};
-use std::collections::HashMap;
+use indexmap::IndexMap;
 
 #[test]
 fn add_changes() {
@@ -29,11 +29,11 @@ fn add_changes() {
     let mut section =
         RonlogSection::new(Fragment::default(), "v1.2.3", None, None).unwrap();
     section.add_changes(Fragment::new(
-        &HashMap::from(references.clone()),
-        &HashMap::new(),
+        &IndexMap::from(references.clone()),
+        &IndexMap::new(),
     ));
 
-    assert_eq!(section.references(), &HashMap::from(references));
+    assert_eq!(section.references(), &IndexMap::from(references));
 }
 
 #[test]
@@ -49,11 +49,11 @@ fn cmp() {
 fn merge_1() {
     let source = RonlogSection::new(
         Fragment::new(
-            &HashMap::from([
+            &IndexMap::from([
                 ("a".to_string(), "b".to_string()),
                 ("c".to_string(), "d".to_string()),
             ]),
-            &HashMap::new(),
+            &IndexMap::new(),
         ),
         "v1.2.3",
         None,
@@ -68,11 +68,11 @@ fn merge_1() {
         target,
         RonlogSection::new(
             Fragment::new(
-                &HashMap::from([
+                &IndexMap::from([
                     ("a".to_string(), "b".to_string()),
                     ("c".to_string(), "d".to_string())
                 ]),
-                &HashMap::new()
+                &IndexMap::new()
             ),
             "v1.2.3",
             None,
@@ -86,11 +86,11 @@ fn merge_1() {
 fn merge_2() {
     let source = RonlogSection::new(
         Fragment::new(
-            &HashMap::from([
+            &IndexMap::from([
                 ("a".to_string(), "b".to_string()),
                 ("c".to_string(), "d".to_string()),
             ]),
-            &HashMap::new(),
+            &IndexMap::new(),
         ),
         "v1.2.3",
         Some("source section".to_string()),
@@ -110,11 +110,11 @@ fn merge_2() {
         target,
         RonlogSection::new(
             Fragment::new(
-                &HashMap::from([
+                &IndexMap::from([
                     ("a".to_string(), "b".to_string()),
                     ("c".to_string(), "d".to_string())
                 ]),
-                &HashMap::new()
+                &IndexMap::new()
             ),
             "v1.2.3",
             Some("target section\nsource section".to_string()),
@@ -131,14 +131,14 @@ fn move_references() {
         ("c".to_string(), "d".to_string()),
     ];
     let mut section = RonlogSection::new(
-        Fragment::new(&HashMap::from(references.clone()), &HashMap::new()),
+        Fragment::new(&IndexMap::from(references.clone()), &IndexMap::new()),
         "v1.2.3",
         None,
         None,
     )
     .unwrap();
 
-    assert_eq!(section.move_references(), HashMap::from(references));
+    assert_eq!(section.move_references(), IndexMap::from(references));
     assert!(section.references().is_empty());
 }
 
