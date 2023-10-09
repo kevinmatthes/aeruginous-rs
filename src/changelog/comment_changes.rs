@@ -19,7 +19,7 @@
 
 use crate::{FragmentExportFormat, PatternWriter, ToMd, ToRon, ToRst};
 use git2::Repository;
-use std::collections::HashMap;
+use indexmap::IndexMap;
 use sysexits::{ExitCode, Result};
 
 /// Create comments on the commits of a branch in this repository.
@@ -132,9 +132,9 @@ impl CommentChanges {
         Logic {
             branch: String::new(),
             categories: Vec::new(),
-            changes: HashMap::new(),
+            changes: IndexMap::new(),
             cli: self.clone(),
-            hyperlinks: HashMap::new(),
+            hyperlinks: IndexMap::new(),
             repository: None,
             user: String::new(),
         }
@@ -144,7 +144,7 @@ impl CommentChanges {
 struct Logic {
     branch: String,
     categories: Vec<String>,
-    changes: HashMap<String, Vec<String>>,
+    changes: IndexMap<String, Vec<String>>,
     cli: CommentChanges,
     hyperlinks: crate::RonlogReferences,
     repository: Option<Repository>,
@@ -230,7 +230,7 @@ impl Logic {
     }
 
     fn insert(
-        map: &mut HashMap<String, Vec<String>>,
+        map: &mut IndexMap<String, Vec<String>>,
         category: String,
         change: String,
     ) {
@@ -291,7 +291,7 @@ impl Logic {
                 Ok(mut revwalk) => match revwalk.push_head() {
                     Ok(()) => {
                         let mut count = 1;
-                        let mut result = HashMap::new();
+                        let mut result = IndexMap::new();
 
                         for oid in revwalk {
                             if let Some(depth) = self.cli.depth {
@@ -380,7 +380,9 @@ impl Logic {
     }
 
     fn report(&mut self) -> Result<()> {
-        let fragment = crate::Fragment::new(&self.hyperlinks, &self.changes);
+        let mut fragment = crate::Fragment::new(&self.hyperlinks, &self.changes);
+        fragment.sort();
+
         let content = match self.cli.extension {
             FragmentExportFormat::Md => fragment.to_md(self.cli.heading),
             FragmentExportFormat::Ron => fragment.to_ron(2),
