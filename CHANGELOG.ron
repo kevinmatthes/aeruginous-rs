@@ -9,6 +9,24 @@
       version: (
         major: 3,
         minor: 1,
+        patch: 3,
+      ),
+      released: "2023-10-09T16:35:45.586327454Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Fixed": [
+            "CI:  pointless mirroring workflow in forks",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 1,
         patch: 2,
       ),
       released: "2023-10-06T17:42:58.937148503Z",
@@ -16,11 +34,6 @@
       changes: (
         references: {},
         changes: {
-          "Changed": [
-            "Renovate:  sort regex packages by package name",
-            "CI:  apply actionlint 1.6.26",
-            "CI:  simplify CFF update workflow",
-          ],
           "Removed": [
             ".github/workflows/mirror.yml:  obsolete ``name`` fields",
             ".github/workflows/comment-changes.yml:  obsolete ``name`` fields",
@@ -36,6 +49,11 @@
             "Renovate:  incorrect regex for actionlint Docker image",
             "CI:  simplify RONLOG assembly",
             "Renovate:  automated maintenance of actionlint Docker image",
+          ],
+          "Changed": [
+            "Renovate:  sort regex packages by package name",
+            "CI:  apply actionlint 1.6.26",
+            "CI:  simplify CFF update workflow",
           ],
         },
       ),
@@ -70,11 +88,6 @@
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "Renovate:  MSRV patterns",
-            "remove obsolete call to ``vec!`` macro",
-            "CI:  submit just one PR comment (coverage)",
-          ],
           "Added": [
             "tests/traits.rs",
             ".gitignore:  ignore artifacts by ``cargo mutants``",
@@ -94,6 +107,11 @@
             "tests/convert_buffer.rs",
             "tests/colour_message.rs",
             "tests/append_as_line.rs",
+          ],
+          "Fixed": [
+            "Renovate:  MSRV patterns",
+            "remove obsolete call to ``vec!`` macro",
+            "CI:  submit just one PR comment (coverage)",
           ],
         },
       ),
@@ -135,12 +153,12 @@
             ".github/workflows/rustfmt.yml",
             "CI:  automatically update CFF entry of sysexits-rs on certain pushes to main",
           ],
+          "Fixed": [
+            "Renovate:  submit one bundled lock file maintenance per week",
+          ],
           "Changed": [
             "indent Rust source files by 4 spaces",
             "indent JSON5 files by 4 spaces",
-          ],
-          "Fixed": [
-            "Renovate:  submit one bundled lock file maintenance per week",
           ],
         },
       ),
@@ -157,13 +175,13 @@
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "reading from stdin now adds newlines where required",
-          ],
           "Changed": [
             "README:  sort badges by category (GitHub, Rust)",
             "README:  make MSRV badge brightgreen",
             "rename CFF assembly workflow to .github/workflows/cff.yml",
+          ],
+          "Fixed": [
+            "reading from stdin now adds newlines where required",
           ],
           "Added": [
             "CFF:  entry for ``clap`` v4.3.17",
@@ -187,6 +205,11 @@
       changes: (
         references: {},
         changes: {
+          "Changed": [
+            "Renovate:  disable automerge explicitly",
+            "Renovate:  listen to renamed ``cffconvert`` repository",
+            "comment-changes:  work on entire commit message instead of certain part",
+          ],
           "Added": [
             "comment-changes:  make message harvesting into dedicated function",
             "CFF:  entry for ``clap`` v4.3.12",
@@ -195,11 +218,6 @@
           "Removed": [
             "CFF:  automatically update Clap entry with Renovate",
             "CI:  ``cargo nextest r``",
-          ],
-          "Changed": [
-            "Renovate:  disable automerge explicitly",
-            "Renovate:  listen to renamed ``cffconvert`` repository",
-            "comment-changes:  work on entire commit message instead of certain part",
           ],
           "Fixed": [
             "CI:  prevent failing on CFF update PR merge",
@@ -219,14 +237,6 @@
       changes: (
         references: {},
         changes: {
-          "Changed": [
-            "call actionlint Docker image directly",
-            "rename cffs/expectation.cff to cffs/expectation.yml",
-            "CommentChanges:  refactor logic",
-            "Fragment:  apply new ToMd and ToRst traits",
-            "call cffconvert Docker image directly",
-            "rename tests/ron_traits.rs to tests/rusty_object_notation.rs",
-          ],
           "Added": [
             "CFF:  automatically update Clap entry with Renovate",
             "Renovate:  track actionlint Docker image",
@@ -251,6 +261,14 @@
             "prevent release generation in forks",
             "do not allow RONLOG assemblies in forks",
           ],
+          "Changed": [
+            "call actionlint Docker image directly",
+            "rename cffs/expectation.cff to cffs/expectation.yml",
+            "CommentChanges:  refactor logic",
+            "Fragment:  apply new ToMd and ToRst traits",
+            "call cffconvert Docker image directly",
+            "rename tests/ron_traits.rs to tests/rusty_object_notation.rs",
+          ],
         },
       ),
     ),
@@ -266,14 +284,6 @@
       changes: (
         references: {},
         changes: {
-          "Removed": [
-            "Dependabot:  configuration",
-            ".github/workflows/cargo-update.yml",
-            ".github/workflows/msrv.yml",
-            "CI:  manual trigger for release workflow",
-            "PatternReader",
-            "src/pattern/reader.rs",
-          ],
           "Added": [
             "CFF:  entry for ``clap`` v4.3.10",
             "Renovate:  configuration",
@@ -292,6 +302,14 @@
             "dependency:  Rust crate ``toml``",
             "ceprintlns",
             "CFF:  entry for ``sysexits`` v0.6.1",
+          ],
+          "Removed": [
+            "Dependabot:  configuration",
+            ".github/workflows/cargo-update.yml",
+            ".github/workflows/msrv.yml",
+            "CI:  manual trigger for release workflow",
+            "PatternReader",
+            "src/pattern/reader.rs",
           ],
           "Changed": [
             "CI:  rename release level selector",
@@ -317,15 +335,21 @@
       changes: (
         references: {},
         changes: {
-          "Fixed": [
-            "CI:  rename RONLOG assembly workflow job",
-            "comment-changes:  create missing target directories",
-          ],
           "Added": [
             "CI:  create release on RONLOG assembly",
             "enum_trait",
             "tests/macros.rs",
             "CI:  settings for the automated release notes",
+          ],
+          "Changed": [
+            "move RonlogSection definition to RONLOG source file",
+            "move RonlogAction definition to RONLOG source file",
+            "src/version.rs:  apply new enum_trait macro",
+            "comment-changes:  update README description",
+          ],
+          "Fixed": [
+            "CI:  rename RONLOG assembly workflow job",
+            "comment-changes:  create missing target directories",
           ],
           "Removed": [
             "Scriv:  configuration",
@@ -335,12 +359,6 @@
             "tests/ronlog_action.rs",
             "tests/getters.rs",
             "tests/implement.rs",
-          ],
-          "Changed": [
-            "move RonlogSection definition to RONLOG source file",
-            "move RonlogAction definition to RONLOG source file",
-            "src/version.rs:  apply new enum_trait macro",
-            "comment-changes:  update README description",
           ],
         },
       ),
@@ -357,6 +375,9 @@
       changes: (
         references: {},
         changes: {
+          "Fixed": [
+            "CI:  redundant test runs",
+          ],
           "Changed": [
             "CI:  rename release preparation workflow to ``ronlog.yml``",
             "README:  enhance documentation of RONLOG mode",
@@ -367,9 +388,6 @@
             "CI:  real release workflow",
             "comment-changes:  stop at certain commit SHA; fixes #336",
             "CFF:  entry for ``clap`` v4.3.5",
-          ],
-          "Fixed": [
-            "CI:  redundant test runs",
           ],
         },
       ),
