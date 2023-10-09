@@ -18,20 +18,20 @@
 \******************************************************************************/
 
 use aeruginous::Fragment;
-use std::collections::HashMap;
+use indexmap::IndexMap;
 
 #[test]
 fn merge() {
     let mut f1 = Fragment::new(
-        &HashMap::from([("a".to_string(), "b".to_string())]),
-        &HashMap::from([(
+        &IndexMap::from([("a".to_string(), "b".to_string())]),
+        &IndexMap::from([(
             "Added".to_string(),
             vec!["something".to_string(), "something else".to_string()],
         )]),
     );
     let f2 = Fragment::new(
-        &HashMap::from([("c".to_string(), "d".to_string())]),
-        &HashMap::from([
+        &IndexMap::from([("c".to_string(), "d".to_string())]),
+        &IndexMap::from([
             ("Added".to_string(), vec!["nothing".to_string()]),
             (
                 "Changed".to_string(),
@@ -44,11 +44,11 @@ fn merge() {
     assert_eq!(
         f1,
         Fragment::new(
-            &HashMap::from([
+            &IndexMap::from([
                 ("a".to_string(), "b".to_string()),
                 ("c".to_string(), "d".to_string())
             ]),
-            &HashMap::from([
+            &IndexMap::from([
                 (
                     "Added".to_string(),
                     vec![
@@ -73,9 +73,9 @@ fn move_fragments() {
         ("c".to_string(), "d".to_string()),
     ];
     let mut fragment =
-        Fragment::new(&HashMap::from(references.clone()), &HashMap::new());
+        Fragment::new(&IndexMap::from(references.clone()), &IndexMap::new());
 
-    assert_eq!(fragment.move_references(), HashMap::from(references));
+    assert_eq!(fragment.move_references(), IndexMap::from(references));
     assert!(fragment.references().is_empty());
 }
 
