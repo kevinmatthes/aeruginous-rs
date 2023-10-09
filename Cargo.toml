@@ -1,7 +1,6 @@
 [dependencies]
 anstyle = "1.0.4"
 cargo-lock = "9.0.0"
-indexmap = { version = "2.0.2", features = ["serde"] }
 ron = "0.8.1"
 sysexits = "0.7.4"
 toml = "0.8.2"
@@ -17,6 +16,10 @@ version = "4.4.6"
 [dependencies.git2]
 default-features = false
 version = "0.18.1"
+
+[dependencies.indexmap]
+features = ["serde"]
+version = "2.0.2"
 
 [dependencies.serde]
 features = ["derive"]
@@ -35,4 +38,4 @@ name = "aeruginous"
 readme = "README.md"
 repository = "https://github.com/kevinmatthes/aeruginous-rs"
 rust-version = "1.73.0"
-version = "3.1.3"
+version = "3.1.4"
