@@ -1,0 +1,13 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "dependency:  Rust crate ``indexmap``",
+      "documentation:  software licenses of ``indexmap`` crate",
+    ],
+    "Changed": [
+      "comment-changes:  migrate to ``IndexMap``",
+      "ronlog:  migrate to ``IndexMap``",
+    ],
+  },
+)
