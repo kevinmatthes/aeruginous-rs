@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Fixed": [
-      "CI:  pointless mirroring workflow in forks",
-    ],
-  },
-)
