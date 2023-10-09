@@ -45,6 +45,7 @@ permissions:
 
 jobs:
   readme:
+    if: github.repository == 'kevinmatthes/aeruginous-rs'
     runs-on: ubuntu-latest
     steps:
       - uses: taiki-e/install-action@v2.20.1
