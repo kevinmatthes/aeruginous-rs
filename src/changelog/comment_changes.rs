@@ -291,7 +291,7 @@ impl Logic {
                 if let Some(tag) = &self.cli.tag {
                     if let Some(repository) = &self.repository {
                         if let Ok(target) =
-                            repository.resolve_reference_from_short_name(&tag)
+                            repository.resolve_reference_from_short_name(tag)
                         {
                             if target.is_tag() {
                                 self.stop_at_tag_oid = target.target();
