@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: taiki-e/install-action@v2.20.1
         with:
-          tool: cargo-tarpaulin
+          tool: cargo-llvm-cov
 
       - uses: actions/setup-python@v4.7.1
         with:
@@ -68,7 +68,7 @@ jobs:
       - uses: py-actions/py-dependency-install@v4.0.0
 
       - run: |
-          cargo tarpaulin
+          cargo llvm-cov --cobertura --output-path cobertura.xml
           sed "s/<!-- cov -->.*<!-- cov -->/<!-- cov -->$( \
             pycobertura show -f csv --delimiter , cobertura.xml | \
             grep TOTAL | \

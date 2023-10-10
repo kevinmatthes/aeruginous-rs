@@ -65,7 +65,7 @@ jobs:
 
       - uses: taiki-e/install-action@v2.20.1
         with:
-          tool: cargo-tarpaulin
+          tool: cargo-llvm-cov
 
       - uses: fregante/setup-git-user@v2.0.1
       - run: echo pycobertura >> requirements.txt
@@ -87,7 +87,7 @@ jobs:
           cargo r -- cff-release-today .github/CFF/aeruginous.cff
           cargo r -- cff-release-today CITATION.cff
           cargo r -- ronlog release -i changelog.d/ -v "$(cat .version)"
-          cargo tarpaulin
+          cargo llvm-cov --cobertura --output-path cobertura.xml
           sed "s/<!-- cov -->.*<!-- cov -->/<!-- cov -->$( \
             pycobertura show -f csv --delimiter , cobertura.xml | \
             grep TOTAL | \

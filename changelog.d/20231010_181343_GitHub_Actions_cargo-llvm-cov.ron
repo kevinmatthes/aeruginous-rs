@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "CI:  determine coverage with ``cargo-llvm-cov`` instead of ``cargo-tarpaulin``",
+    ],
+    "Removed": [
+      ".tarpaulin.toml",
+    ],
+  },
+)
