@@ -295,7 +295,15 @@ impl Logic {
                         {
                             if target.is_tag() {
                                 self.stop_at_tag_oid = target.target();
-                                Ok(())
+
+                                if self.stop_at_tag_oid.is_some() {
+                                    Ok(())
+                                } else {
+                                    eprintln!(
+                                        "There is a problem with tag {tag}."
+                                    );
+                                    Err(ExitCode::DataErr)
+                                }
                             } else {
                                 eprintln!("{tag} does not seem to be a tag.");
                                 Err(ExitCode::Usage)
