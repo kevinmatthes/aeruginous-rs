@@ -18,7 +18,7 @@
 \******************************************************************************/
 
 use crate::{FragmentExportFormat, PatternWriter, ToMd, ToRon, ToRst};
-use git2::Repository;
+use git2::{Oid, Repository};
 use indexmap::IndexMap;
 use sysexits::{ExitCode, Result};
 
@@ -88,7 +88,11 @@ pub struct CommentChanges {
 
     /// The commit to stop at.
     #[arg(long, short = 'S')]
-    stop_at: Option<git2::Oid>,
+    stop_at: Option<Oid>,
+
+    /// The tag to stop at.
+    #[arg(long, short = 'T')]
+    tag: Option<String>,
 
     /// The hyperlinks' targets.
     #[arg(long, short)]
@@ -124,6 +128,7 @@ impl CommentChanges {
             link: Vec::new(),
             output_directory: ".".to_string(),
             stop_at: None,
+            tag: None,
             target: Vec::new(),
         }
     }
@@ -136,6 +141,7 @@ impl CommentChanges {
             cli: self.clone(),
             hyperlinks: IndexMap::new(),
             repository: None,
+            stop_at_tag_oid: None,
             user: String::new(),
         }
     }
@@ -148,6 +154,7 @@ struct Logic {
     cli: CommentChanges,
     hyperlinks: crate::RonlogReferences,
     repository: Option<Repository>,
+    stop_at_tag_oid: Option<Oid>,
     user: String,
 }
 
@@ -280,7 +287,29 @@ impl Logic {
             },
             |r| {
                 self.repository = Some(r);
-                Ok(())
+
+                if let Some(tag) = &self.cli.tag {
+                    if let Some(repository) = &self.repository {
+                        if let Ok(target) =
+                            repository.resolve_reference_from_short_name(&tag)
+                        {
+                            if target.is_tag() {
+                                self.stop_at_tag_oid = target.target();
+                                Ok(())
+                            } else {
+                                eprintln!("{tag} does not seem to be a tag.");
+                                Err(ExitCode::Usage)
+                            }
+                        } else {
+                            eprintln!("Tag {tag} does not seem to exist.");
+                            Err(ExitCode::Usage)
+                        }
+                    } else {
+                        Err(ExitCode::Software)
+                    }
+                } else {
+                    Ok(())
+                }
             },
         )
     }
@@ -302,6 +331,12 @@ impl Logic {
 
                             if let Ok(oid) = oid {
                                 if let Some(stop_at) = self.cli.stop_at {
+                                    if stop_at == oid {
+                                        break;
+                                    }
+                                } else if let Some(stop_at) =
+                                    self.stop_at_tag_oid
+                                {
                                     if stop_at == oid {
                                         break;
                                     }
