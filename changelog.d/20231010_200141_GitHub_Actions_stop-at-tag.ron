@@ -2,7 +2,7 @@
   references: {},
   changes: {
     "Added": [
-      "comment-changes:  stop a given Git tag",
+      "comment-changes:  stop at a given Git tag",
     ],
   },
 )
