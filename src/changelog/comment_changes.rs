@@ -338,16 +338,12 @@ impl Logic {
                             }
 
                             if let Ok(oid) = oid {
-                                if let Some(stop_at) = self.cli.stop_at {
-                                    if stop_at == oid {
-                                        break;
-                                    }
-                                } else if let Some(stop_at) =
-                                    self.stop_at_tag_oid
+                                if self.cli.stop_at.is_some_and(|o| o == oid)
+                                    || self
+                                        .stop_at_tag_oid
+                                        .is_some_and(|o| o == oid)
                                 {
-                                    if stop_at == oid {
-                                        break;
-                                    }
+                                    break;
                                 }
 
                                 if let Ok(commit) = repository.find_commit(oid)
