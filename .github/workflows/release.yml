@@ -46,7 +46,7 @@ jobs:
     if: github.repository == 'kevinmatthes/aeruginous-rs'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.1
 
       - id: tag_name
         run: echo "version=$(cat .version)" >> "$GITHUB_OUTPUT"

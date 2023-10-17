@@ -45,7 +45,7 @@ jobs:
   reformat:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
