@@ -4,7 +4,7 @@ authors:
     family-names: Matthes
     given-names: Kevin
 cff-version: 1.2.0
-date-released: 2023-10-09
+date-released: 2023-10-17
 keywords:
   - Rust
   - aeruginous
@@ -33,7 +33,7 @@ repository-artifact: https://crates.io/crates/aeruginous
 repository-code: https://github.com/kevinmatthes/aeruginous-rs
 title: aeruginous-rs
 url: https://github.com/kevinmatthes/aeruginous-rs
-version: 3.1.4
+version: 3.2.0
 references:
   - type: software
     date-released: 2023-09-15

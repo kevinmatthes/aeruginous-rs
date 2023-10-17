@@ -8,6 +8,30 @@
       references: {},
       version: (
         major: 3,
+        minor: 2,
+        patch: 0,
+      ),
+      released: "2023-10-17T14:46:04.914806868Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "comment-changes:  stop at a given Git tag",
+          ],
+          "Changed": [
+            "CI:  determine coverage with ``cargo-llvm-cov`` instead of ``cargo-tarpaulin``",
+          ],
+          "Removed": [
+            ".tarpaulin.toml",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
         minor: 1,
         patch: 4,
       ),
