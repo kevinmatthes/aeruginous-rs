@@ -68,7 +68,7 @@ jobs:
             echo '```' ;
           } >> coverage.md
 
-      - uses: thollander/actions-comment-pull-request@v2.4.2
+      - uses: thollander/actions-comment-pull-request@v2.4.3
         with:
           comment_tag: coverage
           filePath: coverage.md
