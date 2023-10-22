@@ -63,7 +63,7 @@ jobs:
         with:
           python-version: 3.11
 
-      - uses: taiki-e/install-action@v2.20.13
+      - uses: taiki-e/install-action@v2.20.14
         with:
           tool: cargo-llvm-cov
 
