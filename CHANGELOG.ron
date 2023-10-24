@@ -9,6 +9,24 @@
       version: (
         major: 3,
         minor: 2,
+        patch: 1,
+      ),
+      released: "2023-10-24T15:10:09.787311213Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Changed": [
+            "src/complain.rs:  beautify code by application of ``is_some_and`` method",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 2,
         patch: 0,
       ),
       released: "2023-10-17T14:46:04.914806868Z",
