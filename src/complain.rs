@@ -252,17 +252,17 @@ impl Logic {
         let mut line = 1;
 
         for l in self.data.lines() {
-            if let Some((indentation, _)) =
-                l.split_once(|c| !char::is_whitespace(c))
-            {
-                if indentation.contains('\t') && indentation.contains(' ') {
-                    self.errors += 1;
+            if l.split_once(|c| !char::is_whitespace(c)).is_some_and(
+                |(indentation, _)| {
+                    indentation.contains('\t') && indentation.contains(' ')
+                },
+            ) {
+                self.errors += 1;
 
-                    ceprintlns!(
-                        "AC-0006"!Yellow,
-                        "Line {line} is indented by both spaces and tabs."
-                    );
-                }
+                ceprintlns!(
+                    "AC-0006"!Yellow,
+                    "Line {line} is indented by both spaces and tabs."
+                );
             }
 
             line += 1;
