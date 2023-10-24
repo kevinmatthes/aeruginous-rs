@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Changed": [
-      "src/complain.rs:  beautify code by application of ``is_some_and`` method",
-    ],
-  },
-)
