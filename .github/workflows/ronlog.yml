@@ -69,7 +69,7 @@ jobs:
 
       - uses: fregante/setup-git-user@v2.0.1
       - run: echo pycobertura >> requirements.txt
-      - uses: py-actions/py-dependency-install@v4.0.0
+      - uses: py-actions/py-dependency-install@v4.1.0
 
       - run: |
           rm requirements.txt
