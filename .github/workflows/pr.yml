@@ -57,7 +57,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - run: echo pycobertura >> requirements.txt
-      - uses: py-actions/py-dependency-install@v4.0.0
+      - uses: py-actions/py-dependency-install@v4.1.0
 
       - run: |
           rustup update
