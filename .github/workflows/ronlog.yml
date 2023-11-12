@@ -55,21 +55,21 @@ jobs:
       github.repository == 'kevinmatthes/aeruginous-rs'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v4.7.0
+      - uses: actions/setup-python@v4.7.1
         with:
           python-version: 3.11
 
-      - uses: taiki-e/install-action@v2.18.13
+      - uses: taiki-e/install-action@v2.21.11
         with:
-          tool: cargo-tarpaulin
+          tool: cargo-llvm-cov
 
       - uses: fregante/setup-git-user@v2.0.1
       - run: echo pycobertura >> requirements.txt
-      - uses: py-actions/py-dependency-install@v4.0.0
+      - uses: py-actions/py-dependency-install@v4.1.0
 
       - run: |
           rm requirements.txt
@@ -87,7 +87,7 @@ jobs:
           cargo r -- cff-release-today .github/CFF/aeruginous.cff
           cargo r -- cff-release-today CITATION.cff
           cargo r -- ronlog release -i changelog.d/ -v "$(cat .version)"
-          cargo tarpaulin
+          cargo llvm-cov --cobertura --output-path cobertura.xml
           sed "s/<!-- cov -->.*<!-- cov -->/<!-- cov -->$( \
             pycobertura show -f csv --delimiter , cobertura.xml | \
             grep TOTAL | \

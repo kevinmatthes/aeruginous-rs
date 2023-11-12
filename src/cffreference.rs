@@ -101,7 +101,7 @@ impl Logic {
             lines
                 .next()
                 .map_or_else(String::new, |l| format!("  - {}\n", l.trim()))
-                + &lines.map(|l| format!("{l}\n")).collect::<String>()
+                + &lines.fold(String::new(), |s, l| s + l + "\n")
         } else {
             let mut lines = self.cff_data.lines();
 
@@ -111,7 +111,7 @@ impl Logic {
                     .map_or_else(String::new, |l| format!("  - {}\n", l.trim()))
             } else {
                 "  - type: software\n".to_string()
-            }) + &lines.map(|l| format!("    {l}\n")).collect::<String>()
+            }) + &lines.fold(String::new(), |s, l| s + "    " + l + "\n")
         }
     }
 

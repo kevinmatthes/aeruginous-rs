@@ -57,6 +57,12 @@
                 "rust",
             ],
         },
+        {
+            extractVersion: "^v(?<version>.*)$",
+            matchPackageNames: [
+                "actionlint",
+            ],
+        },
     ],
     prHourlyLimit: null,
     regexManagers: [
@@ -64,10 +70,10 @@
             datasourceTemplate: "github-releases",
             depNameTemplate: "actionlint",
             fileMatch: [
-                "^\\.actionlint$"
+                "^\\.github/workflows/ci\\.yml$",
             ],
             matchStrings: [
-                "(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+                "rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
             ],
             packageNameTemplate: "rhysd/actionlint",
         },

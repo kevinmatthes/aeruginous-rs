@@ -18,8 +18,8 @@
 \******************************************************************************/
 
 use crate::{FragmentExportFormat, PatternWriter, ToMd, ToRon, ToRst};
-use git2::Repository;
-use std::collections::HashMap;
+use git2::{Oid, Repository};
+use indexmap::IndexMap;
 use sysexits::{ExitCode, Result};
 
 /// Create comments on the commits of a branch in this repository.
@@ -88,7 +88,11 @@ pub struct CommentChanges {
 
     /// The commit to stop at.
     #[arg(long, short = 'S')]
-    stop_at: Option<git2::Oid>,
+    stop_at: Option<Oid>,
+
+    /// The tag to stop at.
+    #[arg(long, short = 'T')]
+    tag: Option<String>,
 
     /// The hyperlinks' targets.
     #[arg(long, short)]
@@ -124,6 +128,7 @@ impl CommentChanges {
             link: Vec::new(),
             output_directory: ".".to_string(),
             stop_at: None,
+            tag: None,
             target: Vec::new(),
         }
     }
@@ -132,10 +137,11 @@ impl CommentChanges {
         Logic {
             branch: String::new(),
             categories: Vec::new(),
-            changes: HashMap::new(),
+            changes: IndexMap::new(),
             cli: self.clone(),
-            hyperlinks: HashMap::new(),
+            hyperlinks: IndexMap::new(),
             repository: None,
+            stop_at_tag_oid: None,
             user: String::new(),
         }
     }
@@ -144,10 +150,11 @@ impl CommentChanges {
 struct Logic {
     branch: String,
     categories: Vec<String>,
-    changes: HashMap<String, Vec<String>>,
+    changes: IndexMap<String, Vec<String>>,
     cli: CommentChanges,
     hyperlinks: crate::RonlogReferences,
     repository: Option<Repository>,
+    stop_at_tag_oid: Option<Oid>,
     user: String,
 }
 
@@ -230,7 +237,7 @@ impl Logic {
     }
 
     fn insert(
-        map: &mut HashMap<String, Vec<String>>,
+        map: &mut IndexMap<String, Vec<String>>,
         category: String,
         change: String,
     ) {
@@ -280,7 +287,37 @@ impl Logic {
             },
             |r| {
                 self.repository = Some(r);
-                Ok(())
+
+                if let Some(tag) = &self.cli.tag {
+                    if let Some(repository) = &self.repository {
+                        if let Ok(target) =
+                            repository.resolve_reference_from_short_name(tag)
+                        {
+                            if target.is_tag() {
+                                self.stop_at_tag_oid = target.target();
+
+                                if self.stop_at_tag_oid.is_some() {
+                                    Ok(())
+                                } else {
+                                    eprintln!(
+                                        "There is a problem with tag {tag}."
+                                    );
+                                    Err(ExitCode::DataErr)
+                                }
+                            } else {
+                                eprintln!("{tag} does not seem to be a tag.");
+                                Err(ExitCode::Usage)
+                            }
+                        } else {
+                            eprintln!("Tag {tag} does not seem to exist.");
+                            Err(ExitCode::Usage)
+                        }
+                    } else {
+                        Err(ExitCode::Software)
+                    }
+                } else {
+                    Ok(())
+                }
             },
         )
     }
@@ -291,7 +328,7 @@ impl Logic {
                 Ok(mut revwalk) => match revwalk.push_head() {
                     Ok(()) => {
                         let mut count = 1;
-                        let mut result = HashMap::new();
+                        let mut result = IndexMap::new();
 
                         for oid in revwalk {
                             if let Some(depth) = self.cli.depth {
@@ -301,10 +338,12 @@ impl Logic {
                             }
 
                             if let Ok(oid) = oid {
-                                if let Some(stop_at) = self.cli.stop_at {
-                                    if stop_at == oid {
-                                        break;
-                                    }
+                                if self.cli.stop_at.is_some_and(|o| o == oid)
+                                    || self
+                                        .stop_at_tag_oid
+                                        .is_some_and(|o| o == oid)
+                                {
+                                    break;
                                 }
 
                                 if let Ok(commit) = repository.find_commit(oid)
@@ -380,7 +419,10 @@ impl Logic {
     }
 
     fn report(&mut self) -> Result<()> {
-        let fragment = crate::Fragment::new(&self.hyperlinks, &self.changes);
+        let mut fragment =
+            crate::Fragment::new(&self.hyperlinks, &self.changes);
+        fragment.sort();
+
         let content = match self.cli.extension {
             FragmentExportFormat::Md => fragment.to_md(self.cli.heading),
             FragmentExportFormat::Ron => fragment.to_ron(2),

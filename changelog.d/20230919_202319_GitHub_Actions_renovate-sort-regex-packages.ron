@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Changed": [
-      "Renovate:  sort regex packages by package names",
-    ],
-  },
-)

@@ -12,7 +12,7 @@
 [lcns]:  https://img.shields.io/github/license/kevinmatthes/aeruginous-rs
 [lcnss]:  https://github.com/kevinmatthes/aeruginous-rs/tree/main/LICENSEs
 [lst]:  https://img.shields.io/github/last-commit/kevinmatthes/aeruginous-rs
-[msrv]:  https://img.shields.io/badge/MSRV-1.72.0-brightgreen
+[msrv]:  https://img.shields.io/badge/MSRV-1.73.0-brightgreen
 [release]:  https://github.com/kevinmatthes/aeruginous-rs/releases/latest
 [renovate]:  https://img.shields.io/badge/renovate-enabled-brightgreen.svg
 [repository]:  https://github.com/kevinmatthes/aeruginous-rs
@@ -62,7 +62,7 @@ The Aeruginous Open Source Development Toolbox.
    1. [`uncrlf`](#uncrlf)
 -->
 
-The current code coverage is **<!-- cov -->67.23%<!-- cov -->**.
+The current code coverage is **<!-- cov -->63.58%<!-- cov -->**.
 
 ## License
 

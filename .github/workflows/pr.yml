@@ -42,33 +42,33 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/install-action@v2.18.13
+      - uses: taiki-e/install-action@v2.21.11
         with:
-          tool: cargo-tarpaulin
+          tool: cargo-llvm-cov
 
-      - uses: actions/setup-python@v4.7.0
+      - uses: actions/setup-python@v4.7.1
         with:
           python-version: 3.11
 
-      - uses: actions/checkout@v4.0.0
+      - uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
           persist-credentials: false
           ref: ${{ github.head_ref }}
 
       - run: echo pycobertura >> requirements.txt
-      - uses: py-actions/py-dependency-install@v4.0.0
+      - uses: py-actions/py-dependency-install@v4.1.0
 
       - run: |
           rustup update
-          cargo tarpaulin
+          cargo llvm-cov --cobertura --output-path cobertura.xml
           {
             echo '```' ;
             pycobertura show cobertura.xml ;
             echo '```' ;
           } >> coverage.md
 
-      - uses: thollander/actions-comment-pull-request@v2.4.2
+      - uses: thollander/actions-comment-pull-request@v2.4.3
         with:
           comment_tag: coverage
           filePath: coverage.md
