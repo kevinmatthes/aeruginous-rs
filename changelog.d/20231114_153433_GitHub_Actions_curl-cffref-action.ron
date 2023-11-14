@@ -11,9 +11,9 @@
       "CI:  simplify RONLOG assembly workflow",
     ],
     "Removed": [
-      ".github/CFF/.github/CFF/chrono.yml",
-      ".github/CFF/.github/CFF/citation-file-format.yml",
-      ".github/CFF/.github/CFF/clap.yml",
+      ".github/CFF/chrono.yml",
+      ".github/CFF/citation-file-format.yml",
+      ".github/CFF/clap.yml",
       ".github/CFF/sysexits.yml",
     ],
   },
