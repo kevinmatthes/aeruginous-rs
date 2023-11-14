@@ -128,13 +128,12 @@ pub trait ToXml: Serialize {
 
 impl<T: Serialize> ToXml for T {
     fn to_xml(&self) -> Result<String> {
-        quick_xml::se::to_string(&self).map_or(
-            Err(ExitCode::DataErr),
-            |mut s| {
-                s.push('\n');
-                Ok(s)
-            },
-        )
+        quick_xml::se::to_string(&self).map_or(Err(ExitCode::DataErr), |s| {
+            let mut result = String::from("<?xml version=\"1.0\"?>\n");
+            result.push_str(&s);
+            result.push('\n');
+            Ok(result)
+        })
     }
 }
 
