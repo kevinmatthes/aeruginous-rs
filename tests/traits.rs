@@ -18,8 +18,8 @@
 \******************************************************************************/
 
 use aeruginous::{
-    AppendAsLine, ColourMessage, ConvertBuffer, FromRon, Prefer, ToRon,
-    ToStderr,
+    AppendAsLine, ColourMessage, ConvertBuffer, FromRon, FromXml, Prefer,
+    ToRon, ToStderr, ToXml,
 };
 use anstyle::AnsiColor::Red;
 use std::io::{stderr, Error, ErrorKind};
@@ -148,6 +148,19 @@ fn convert_buffer_vecu8_vecu8() {
     assert_eq!(vecu8.convert_into(), Ok(b"vecu8".to_vec()));
     assert_eq!(vecu8.convert_from(buffer), Ok(()));
     assert_eq!(vecu8.convert_into(), Ok(b"buffer".to_vec()));
+}
+
+#[test]
+fn extensible_markup_language() {
+    #[derive(Debug, Eq, serde::Deserialize, serde::Serialize, PartialEq)]
+    struct Number {
+        n: i32,
+    }
+
+    assert_eq!(
+        Number::from_xml(&Number { n: 42 }.to_xml().unwrap()).unwrap(),
+        Number { n: 42 }
+    );
 }
 
 #[test]

@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{FragmentExportFormat, PatternWriter, ToMd, ToRon, ToRst};
+use crate::{FragmentExportFormat, PatternWriter, ToMd, ToRon, ToRst, ToXml};
 use git2::{Oid, Repository};
 use indexmap::IndexMap;
 use sysexits::{ExitCode, Result};
@@ -427,6 +427,7 @@ impl Logic {
             FragmentExportFormat::Md => fragment.to_md(self.cli.heading),
             FragmentExportFormat::Ron => fragment.to_ron(2),
             FragmentExportFormat::Rst => fragment.to_rst(self.cli.heading),
+            FragmentExportFormat::Xml => fragment.to_xml(),
         }?;
 
         if !std::path::Path::new(&self.cli.output_directory).try_exists()? {

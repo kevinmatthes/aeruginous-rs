@@ -1,6 +1,7 @@
 [dependencies]
 anstyle = "1.0.4"
 cargo-lock = "9.0.0"
+quick-xml = { version = "0.31.0", features = ["serialize"] }
 ron = "0.8.1"
 sysexits = "0.7.5"
 toml = "0.8.8"
