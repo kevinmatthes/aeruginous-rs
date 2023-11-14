@@ -53,6 +53,8 @@
 ..
 .. _indexmap:  https://github.com/bluss/indexmap
 ..
+.. _quick-xml:  https://github.com/tafia/quick-xml
+..
 .. _ron:  https://github.com/ron-rs/ron
 .. _ron-rs/ron/LICENSE-Apache-2.0:  ron-rs/ron/LICENSE-Apache-2.0
 .. _ron-rs/ron/LICENSE-MIT:  ron-rs/ron/LICENSE-MIT
@@ -71,6 +73,7 @@
 .. _sorairolake/sysexits-rs/LICENSE-MIT:  sorairolake/sysexits-rs/LICENSE-MIT
 .. _sysexits:  https://github.com/sorairolake/sysexits-rs
 ..
+.. _tafia/quick-xml/LICENSE:  tafia/quick-xml/LICENSE
 .. _toml:  https://github.com/toml-rs/toml
 .. _toml-rs/toml/LICENSE-Apache-2.0:  toml-rs/toml/LICENSE-Apache-2.0
 .. _toml-rs/toml/LICENSE-MIT:  toml-rs/toml/LICENSE-MIT
@@ -190,6 +193,14 @@ Rust Crates
   - Apache-2.0:  https://github.com/bluss/indexmap/blob/master/LICENSE-APACHE
 
   - MIT:  https://github.com/bluss/indexmap/blob/master/LICENSE-MIT
+
+`quick-xml`_
+............
+
+- local copy:  `tafia/quick-xml/LICENSE`_
+
+- original license:
+  https://github.com/tafia/quick-xml/blob/master/LICENSE-MIT.md
 
 `ron`_
 ......
