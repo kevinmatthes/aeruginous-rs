@@ -20,70 +20,49 @@
 ################################################################################
 ##
 ##  AUTHOR      Kevin Matthes
-##  BRIEF       Assemble the main CITATION.cff from its updated fragments.
+##  BRIEF       A GitHub Action to process the data of a certain CITATION.cff.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
-##  FILE        cff.yml
+##  FILE        action.yml
 ##  NOTE        See `LICENSE' for full license.
 ##              See `README.md' for project details.
 ##
 ################################################################################
 
-name: cff
+# About this Action.
+author: 'https://github.com/kevinmatthes'
+branding:
+  color: green
+  icon: download
+description: A GitHub Action to process the data of a certain CITATION.cff.
+name: curl-cffref
 
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - Cargo.lock
-      - Cargo.toml
-  workflow_dispatch:
+# The information to be input.
+inputs:
+  branch:
+    description: The branch to query.
+    required: true
+  repository:
+    description: The project to cite.
+    required: true
 
-permissions:
-  contents: write
-  pull-requests: write
+# The behaviour of this Action.
+runs:
+  using: composite
+  steps:
+    - uses: fregante/setup-git-user@v2.0.1
 
-jobs:
-  main:
-    if: github.repository == 'kevinmatthes/aeruginous-rs'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.1.1
+    - run: rustup update
+      shell: bash
 
-      - run: |
-          rustup update
-          cat .github/CFF/aeruginous.cff > CITATION.cff
-          echo references: >> CITATION.cff
+    - uses: baptiste0928/cargo-install@v2.2.0
+      with:
+        crate: aeruginous
 
-      - uses: ./curl-cffref
-        with:
-          branch: main
-          repository: chronotope/chrono
-
-      - uses: ./curl-cffref
-        with:
-          branch: main
-          repository: citation-file-format/citation-file-format
-
-      - uses: ./curl-cffref
-        with:
-          branch: master
-          repository: clap-rs/clap
-
-      - uses: ./curl-cffref
-        with:
-          branch: develop
-          repository: sorairolake/sysexits-rs
-
-      - uses: peter-evans/create-pull-request@v5.0.2
-        with:
-          assignees: |
-            kevinmatthes
-          branch: documentation/cff-update
-          branch-suffix: timestamp
-          labels: documentation
-          milestone: 6
-          title: '[GitHub Actions] Update CITATION.cff'
+    - run: |
+        curl https://raw.githubusercontent.com/${{ inputs.repository }}/${{ inputs.branch }}/CITATION.cff | aeruginous cffreference -o CITATION.cff
+        git add CITATION.cff
+        git commit -m '[Aeruginous] Update CFF data of ${{ inputs.repository }}'
+      shell: bash
 
 ################################################################################

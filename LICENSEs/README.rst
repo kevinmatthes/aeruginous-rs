@@ -33,6 +33,8 @@
 ..
 .. _anstyle:  https://github.com/rust-cli/anstyle
 ..
+.. _baptiste0928/cargo-install:  https://github.com/baptiste0928/cargo-install
+.. _baptiste0928/cargo-install/LICENSE:  baptiste0928/cargo-install/LICENSE
 .. _bluss/indexmap/LICENSE-Apache-2.0:  bluss/indexmap/LICENSE-Apache-2.0
 .. _bluss/indexmap/LICENSE-MIT:  bluss/indexmap/LICENSE-MIT
 ..
@@ -42,6 +44,10 @@
 .. _clap:  https://github.com/clap-rs/clap
 .. _clap-rs/clap/LICENSE-Apache-2.0:  clap-rs/clap/LICENSE-Apache-2.0
 .. _clap-rs/clap/LICENSE-MIT:  clap-rs/clap/LICENSE-MIT
+..
+..
+.. _fregante/setup-git-user:  https://github.com/fregante/setup-git-user
+.. _fregante/setup-git-user/LICENSE:  fregante/setup-git-user/LICENSE
 ..
 .. _git2:  https://github.com/rust-lang/git2-rs
 ..
@@ -74,8 +80,8 @@
 LICENSEs
 ========
 
-This directory contains copies of the licenses of the Rust crates required by
-the software this repository defines.
+This directory contains copies of the licenses of the Rust crates and GitHub
+Actions required by the software this repository defines.
 
 Each dependency's name is linked with the original repository.  For each
 dependency, the link to the original license files is given as well as the
@@ -100,6 +106,14 @@ Rust Crates
 
   - MIT:
     https://github.com/rust-cli/anstyle/blob/main/crates/anstyle/LICENSE-MIT
+
+`baptiste0928/cargo-install`_
+.............................
+
+- local copy:  `baptiste0928/cargo-install/LICENSE`_
+
+- original license:
+  https://github.com/baptiste0928/cargo-install/blob/main/LICENSE
 
 `cargo-lock`_
 .............
@@ -138,6 +152,14 @@ Rust Crates
   - Apache-2.0:  https://github.com/clap-rs/clap/blob/master/LICENSE-APACHE
 
   - MIT:  https://github.com/clap-rs/clap/blob/master/LICENSE-MIT
+
+`fregante/setup-git-user`_
+..........................
+
+- local copy:  `fregante/setup-git-user/LICENSE`_
+
+- original license:
+  https://github.com/fregante/setup-git-user/blob/main/license
 
 `git2`_
 .......
