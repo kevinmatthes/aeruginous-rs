@@ -32,12 +32,16 @@ pub enum ExportFormat {
 
     /// reStructured Text.
     Rst,
+
+    /// eXtensible Markup Language.
+    Xml,
 }
 
 crate::enum_trait!(ExportFormat {
-  Md <-> "md",
-  Ron <-> "ron",
-  Rst <-> "rst"
+    Md <-> "md",
+    Ron <-> "ron",
+    Rst <-> "rst",
+    Xml <-> "xml"
 });
 
 /// The fragment data structure for exporting the harvested changes.
