@@ -8,6 +8,37 @@
       references: {},
       version: (
         major: 3,
+        minor: 3,
+        patch: 0,
+      ),
+      released: "2023-11-14T15:52:11.068390331Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "curl-cffref/action.yml",
+            "documentation:  software license of ``cargo-install`` GHA",
+            "documentation:  software license of ``setup-git-user`` GHA",
+            ".gitattributes",
+          ],
+          "Changed": [
+            "CI:  CFF update workflow now applies curl-cffref Action",
+            "CI:  simplify RONLOG assembly workflow",
+          ],
+          "Removed": [
+            ".github/CFF/chrono.yml",
+            ".github/CFF/citation-file-format.yml",
+            ".github/CFF/clap.yml",
+            ".github/CFF/sysexits.yml",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
         minor: 2,
         patch: 1,
       ),
