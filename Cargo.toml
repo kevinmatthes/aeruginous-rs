@@ -1,7 +1,6 @@
 [dependencies]
 anstyle = "1.0.4"
 cargo-lock = "9.0.0"
-quick-xml = { version = "0.31.0", features = ["serialize"] }
 ron = "0.8.1"
 sysexits = "0.7.5"
 toml = "0.8.8"
@@ -22,6 +21,10 @@ version = "0.18.1"
 features = ["serde"]
 version = "2.1.0"
 
+[dependencies.quick-xml]
+features = ["serialize"]
+version = "0.31.0"
+
 [dependencies.serde]
 features = ["derive"]
 version = "1.0.192"
@@ -39,4 +42,4 @@ name = "aeruginous"
 readme = "README.md"
 repository = "https://github.com/kevinmatthes/aeruginous-rs"
 rust-version = "1.73.0"
-version = "3.3.0"
+version = "3.4.0"
