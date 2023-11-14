@@ -17,7 +17,9 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{Fragment, FromRon, PatternWriter, ReadFile, ToRon, Version};
+use crate::{
+    Fragment, FromRon, FromXml, PatternWriter, ReadFile, ToRon, Version,
+};
 use chrono::{DateTime, Local};
 use std::{path::PathBuf, str::FromStr};
 use sysexits::{ExitCode, Result};
@@ -153,13 +155,21 @@ impl Logic {
             for entry in std::fs::read_dir(&self.cli.input_directory)? {
                 let entry = entry?.path();
 
-                if entry
-                    .extension()
-                    .map_or(false, |e| e.to_str().map_or(false, |e| e == "ron"))
-                {
-                    if let Ok(fragment) = Fragment::from_ron(&entry.read()?) {
-                        section.add_changes(fragment);
-                        std::fs::remove_file(entry)?;
+                if let Some(extension) = entry.extension() {
+                    match extension.to_str() {
+                        Some("ron") => {
+                            section.add_changes(Fragment::from_ron(
+                                &entry.read()?,
+                            )?);
+                            std::fs::remove_file(entry)?;
+                        }
+                        Some("xml") => {
+                            section.add_changes(Fragment::from_xml(
+                                &entry.read()?,
+                            )?);
+                            std::fs::remove_file(entry)?;
+                        }
+                        Some(_) | None => {}
                     }
                 }
             }
