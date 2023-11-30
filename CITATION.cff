@@ -117,8 +117,8 @@ references:
     license: "CC-BY-4.0"
     doi: 10.5281/zenodo.5171937
   - type: software
-    date-released: 2023-11-27
-    version: 4.4.9
+    date-released: 2023-11-28
+    version: 4.4.10
     abstract: A full featured, fast Command Line Argument Parser for Rust
     authors:
       - alias: kbknapp
@@ -133,8 +133,8 @@ references:
     title: clap
     url: https://docs.rs/clap
   - type: software
-    date-released: 2023-11-04
-    version: 0.7.5
+    date-released: 2023-11-30
+    version: 0.7.6
     abstract: The system exit codes as defined by <sysexits.h> for Rust
     authors:
       - alias: sorairolake
