@@ -133,8 +133,8 @@ references:
     title: clap
     url: https://docs.rs/clap
   - type: software
-    date-released: 2023-11-30
-    version: 0.7.6
+    date-released: 2023-12-07
+    version: 0.7.7
     abstract: The system exit codes as defined by <sysexits.h> for Rust
     authors:
       - alias: sorairolake
