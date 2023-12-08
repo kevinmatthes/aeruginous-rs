@@ -23,7 +23,7 @@
                 "github_actions",
             ],
             matchManagers: [
-                "regex",
+                "custom.regex",
             ],
             matchPackageNames: [
                 "actionlint",
@@ -51,7 +51,7 @@
                 "documentation",
             ],
             matchManagers: [
-                "regex",
+                "custom.regex",
             ],
             matchPackageNames: [
                 "rust",
@@ -65,8 +65,9 @@
         },
     ],
     prHourlyLimit: null,
-    regexManagers: [
+    customManagers: [
         {
+            customType: "regex",
             datasourceTemplate: "github-releases",
             depNameTemplate: "actionlint",
             fileMatch: [
@@ -78,6 +79,7 @@
             packageNameTemplate: "rhysd/actionlint",
         },
         {
+            customType: "regex",
             datasourceTemplate: "github-releases",
             depNameTemplate: "cffconvert",
             fileMatch: [
@@ -89,6 +91,7 @@
             packageNameTemplate: "citation-file-format/cffconvert",
         },
         {
+            customType: "regex",
             datasourceTemplate: "github-releases",
             depNameTemplate: "rust",
             fileMatch: [
