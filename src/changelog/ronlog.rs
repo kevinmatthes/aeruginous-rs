@@ -152,24 +152,28 @@ impl Logic {
                 self.init(None)?;
             }
 
-            for entry in std::fs::read_dir(&self.cli.input_directory)? {
-                let entry = entry?.path();
+            if std::path::Path::new(&self.cli.input_directory).exists()
+                || self.cli.crash_if_empty
+            {
+                for entry in std::fs::read_dir(&self.cli.input_directory)? {
+                    let entry = entry?.path();
 
-                if let Some(extension) = entry.extension() {
-                    match extension.to_str() {
-                        Some("ron") => {
-                            section.add_changes(Fragment::from_ron(
-                                &entry.read()?,
-                            )?);
-                            std::fs::remove_file(entry)?;
+                    if let Some(extension) = entry.extension() {
+                        match extension.to_str() {
+                            Some("ron") => {
+                                section.add_changes(Fragment::from_ron(
+                                    &entry.read()?,
+                                )?);
+                                std::fs::remove_file(entry)?;
+                            }
+                            Some("xml") => {
+                                section.add_changes(Fragment::from_xml(
+                                    &entry.read()?,
+                                )?);
+                                std::fs::remove_file(entry)?;
+                            }
+                            Some(_) | None => {}
                         }
-                        Some("xml") => {
-                            section.add_changes(Fragment::from_xml(
-                                &entry.read()?,
-                            )?);
-                            std::fs::remove_file(entry)?;
-                        }
-                        Some(_) | None => {}
                     }
                 }
             }
@@ -207,6 +211,10 @@ pub type References = indexmap::IndexMap<String, String>;
 pub struct Ronlog {
     /// The action on a certain RONLOG.
     action: Action,
+
+    /// Crash the entire application in case the CHANGELOG would be empty.
+    #[arg(long)]
+    crash_if_empty: bool,
 
     /// Whether to enforce this action.
     #[arg(long, short)]
