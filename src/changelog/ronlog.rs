@@ -153,7 +153,7 @@ impl Logic {
             }
 
             if std::path::Path::new(&self.cli.input_directory).exists()
-                || self.cli.crash_if_empty
+                || &self.cli.crash_if_empty
             {
                 for entry in std::fs::read_dir(&self.cli.input_directory)? {
                     let entry = entry?.path();
