@@ -9,6 +9,27 @@
       version: (
         major: 3,
         minor: 4,
+        patch: 1,
+      ),
+      released: "2023-12-18T23:09:48.882264411Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Changed": [
+            "MSRV:  1.74.1",
+          ],
+          "Fixed": [
+            "do not crash if CHANGELOG would be empty except when explicitly requested",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 4,
         patch: 0,
       ),
       released: "2023-11-14T22:53:18.771108704Z",
