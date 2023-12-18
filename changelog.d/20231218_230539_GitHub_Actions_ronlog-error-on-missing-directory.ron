@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "MSRV:  1.74.1",
+    ],
+    "Fixed": [
+      "do not crash if CHANGELOG would be empty except when explicitly requested",
+    ],
+  },
+)
