@@ -5,6 +5,49 @@
     automerge: false,
     commitMessageLowerCase: "never",
     commitMessagePrefix: "[Renovate]",
+    customManagers: [
+        {
+            customType: "regex",
+            datasourceTemplate: "github-releases",
+            depNameTemplate: "actionlint",
+            fileMatch: [
+                "^\\.github/workflows/ci\\.yml$",
+            ],
+            matchStrings: [
+                "rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+            ],
+            packageNameTemplate: "rhysd/actionlint",
+        },
+        {
+            customType: "regex",
+            datasourceTemplate: "github-releases",
+            depNameTemplate: "cffconvert",
+            fileMatch: [
+                "^\\.github/workflows/ci\\.yml$",
+            ],
+            matchStrings: [
+                "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+            ],
+            packageNameTemplate: "citation-file-format/cffconvert",
+        },
+        {
+            customType: "regex",
+            datasourceTemplate: "github-releases",
+            depNameTemplate: "rust",
+            fileMatch: [
+                "^\\.clippy\\.toml$",
+                "^Cargo\\.toml$",
+                "^README\\.md$",
+                "^src/lib\\.rs$",
+            ],
+            matchStrings: [
+                "msrv =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+                "rust-version =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+                "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-brightgreen",
+            ],
+            packageNameTemplate: "rust-lang/rust",
+        },
+    ],
     dependencyDashboard: true,
     dependencyDashboardAutoclose: true,
     dependencyDashboardLabels: [
@@ -65,48 +108,5 @@
         },
     ],
     prHourlyLimit: null,
-    customManagers: [
-        {
-            customType: "regex",
-            datasourceTemplate: "github-releases",
-            depNameTemplate: "actionlint",
-            fileMatch: [
-                "^\\.github/workflows/ci\\.yml$",
-            ],
-            matchStrings: [
-                "rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-            ],
-            packageNameTemplate: "rhysd/actionlint",
-        },
-        {
-            customType: "regex",
-            datasourceTemplate: "github-releases",
-            depNameTemplate: "cffconvert",
-            fileMatch: [
-                "^\\.github/workflows/ci\\.yml$",
-            ],
-            matchStrings: [
-                "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-            ],
-            packageNameTemplate: "citation-file-format/cffconvert",
-        },
-        {
-            customType: "regex",
-            datasourceTemplate: "github-releases",
-            depNameTemplate: "rust",
-            fileMatch: [
-                "^\\.clippy\\.toml$",
-                "^Cargo\\.toml$",
-                "^README\\.md$",
-                "^src/lib\\.rs$",
-            ],
-            matchStrings: [
-                "msrv =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-                "rust-version =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-                "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-brightgreen",
-            ],
-            packageNameTemplate: "rust-lang/rust",
-        },
-    ],
     schedule: null,
 }
