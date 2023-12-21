@@ -301,6 +301,7 @@ impl Logic {
 /// The type of manifest to analyse.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ManifestType {
+    /// Analyse a given `Cargo.toml`.
     Rust,
 }
 
