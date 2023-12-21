@@ -19,6 +19,7 @@
 
 use aeruginous::{Fragment, FragmentExportFormat, ToMd, ToRst};
 use indexmap::IndexMap;
+use sysexits::ExitCode;
 
 #[test]
 fn debug_trait() {
@@ -87,7 +88,10 @@ fn move_fragments() {
 #[test]
 fn sort() {
     let mut fragment = Fragment::new(
-        &IndexMap::new(),
+        &IndexMap::from([
+            ("a".to_string(), "b".to_string()),
+            ("c".to_string(), "d".to_string()),
+        ]),
         &IndexMap::from([
             (
                 "Changed".to_string(),
@@ -113,6 +117,9 @@ fn sort() {
     assert_eq!(
         fragment.to_md(1).unwrap(),
         "\
+[a]:  b
+[c]:  d
+
 # Added
 
 - nothing
@@ -134,6 +141,9 @@ fn sort() {
     assert_eq!(
         fragment.to_md(2).unwrap(),
         "\
+[a]:  b
+[c]:  d
+
 ## Added
 
 - nothing
@@ -155,6 +165,9 @@ fn sort() {
     assert_eq!(
         fragment.to_md(3).unwrap(),
         "\
+[a]:  b
+[c]:  d
+
 ### Added
 
 - nothing
@@ -176,6 +189,9 @@ fn sort() {
     assert_eq!(
         fragment.to_rst(1).unwrap(),
         "\
+.. _a:  b
+.. _c:  d
+
 Added
 =====
 
@@ -199,6 +215,9 @@ Changed
     assert_eq!(
         fragment.to_rst(2).unwrap(),
         "\
+.. _a:  b
+.. _c:  d
+
 Added
 -----
 
@@ -222,6 +241,9 @@ Changed
     assert_eq!(
         fragment.to_rst(3).unwrap(),
         "\
+.. _a:  b
+.. _c:  d
+
 Added
 .....
 
@@ -242,6 +264,18 @@ Changed
 
 "
     );
+}
+
+#[test]
+fn to_md_data_error() {
+    assert_eq!(Fragment::default().to_md(0), Err(ExitCode::DataErr));
+    assert_eq!(Fragment::default().to_md(4), Err(ExitCode::DataErr));
+}
+
+#[test]
+fn to_rst_data_error() {
+    assert_eq!(Fragment::default().to_rst(0), Err(ExitCode::DataErr));
+    assert_eq!(Fragment::default().to_rst(4), Err(ExitCode::DataErr));
 }
 
 /******************************************************************************/
