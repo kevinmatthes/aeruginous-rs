@@ -54,6 +54,7 @@ jobs:
     needs:
       - actionlint
       - cargo
+      - cargo-features
       - cffconvert
       - renovate-linter
     runs-on: ubuntu-latest
