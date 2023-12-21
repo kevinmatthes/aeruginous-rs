@@ -9,10 +9,12 @@ keywords:
   - Rust
   - aeruginous
   - cff
+  - cffcreate
   - cffref
   - cffreference
   - cffrel
   - cffreleasetoday
+  - cff-create
   - cff-ref
   - cff-reference
   - cff-rel
@@ -24,6 +26,7 @@ keywords:
   - increment-version
   - incver
   - inc-ver
+  - mkcff
   - ronlog
   - rs2md
   - uncrlf
