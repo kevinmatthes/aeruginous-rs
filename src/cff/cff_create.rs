@@ -19,7 +19,7 @@
 
 #![cfg(feature = "cff-create")]
 
-use crate::{AppendAsLine, ReadFile, PatternWriter};
+use crate::{AppendAsLine, PatternWriter, ReadFile};
 use std::{fmt::Display, path::PathBuf};
 use sysexits::{ExitCode, Result};
 
@@ -223,7 +223,9 @@ struct Logic {
 impl Logic {
     fn main(&mut self) -> Result<()> {
         self.read()?;
-        self.cli.output_file.truncate(Box::new(self.cff.to_string()))
+        self.cli
+            .output_file
+            .truncate(Box::new(self.cff.to_string()))
     }
 
     fn read(&mut self) -> Result<()> {
