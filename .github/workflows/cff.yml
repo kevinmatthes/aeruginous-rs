@@ -53,7 +53,7 @@ jobs:
 
       - run: |
           rustup update
-          cat .github/CFF/aeruginous.cff > CITATION.cff
+          cat .github/aeruginous.cff > CITATION.cff
           echo references: >> CITATION.cff
 
       - uses: ./curl-cffref
