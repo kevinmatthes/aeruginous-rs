@@ -22,7 +22,7 @@ mod cff_create;
 mod cffreference;
 
 #[cfg(feature = "cff-create")]
-pub use cff_create::Create;
+pub use cff_create::{Create, ManifestType};
 pub use cffreference::Cffreference;
 
 /******************************************************************************/
