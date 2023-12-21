@@ -76,7 +76,6 @@ jobs:
         subcommand:
           - fmt --check
           - r -- complain src/ tests/
-          - t
 
   cargo-features:
     runs-on: ubuntu-latest
