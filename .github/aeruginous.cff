@@ -9,10 +9,12 @@ keywords:
   - Rust
   - aeruginous
   - cff
+  - cffcreate
   - cffref
   - cffreference
   - cffrel
   - cffreleasetoday
+  - cff-create
   - cff-ref
   - cff-reference
   - cff-rel
@@ -24,6 +26,7 @@ keywords:
   - increment-version
   - incver
   - inc-ver
+  - mkcff
   - ronlog
   - rs2md
   - uncrlf
@@ -31,6 +34,6 @@ license: GPL-3.0
 message: Please cite this software using these information.
 repository-artifact: https://crates.io/crates/aeruginous
 repository-code: https://github.com/kevinmatthes/aeruginous-rs
-title: aeruginous-rs
+title: Aeruginous
 url: https://github.com/kevinmatthes/aeruginous-rs
 version: 3.4.1

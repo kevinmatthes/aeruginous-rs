@@ -78,13 +78,13 @@ jobs:
             -v "$(cat .version)" \
             -r ${{ inputs.release }} \
             -p aeruginous \
-            -e .github/CFF/aeruginous.cff \
+            -e .github/aeruginous.cff \
             -e .version \
             -e Cargo.lock \
             -R Cargo.toml \
             -e CITATION.cff \
             -e src/lib.rs
-          cargo r -- cff-release-today .github/CFF/aeruginous.cff
+          cargo r -- cff-release-today .github/aeruginous.cff
           cargo r -- cff-release-today CITATION.cff
           cargo r -- ronlog release -i changelog.d/ -v "$(cat .version)"
           cargo llvm-cov --cobertura --output-path cobertura.xml

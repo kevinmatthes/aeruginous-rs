@@ -61,6 +61,7 @@
 //! 1. [Introduction](#introduction)
 //! 1. [Installation](#installation)
 //! 1. [Supported Subcommands](#supported-subcommands)
+//!    1. [`cff-create`](#cff-create)
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`cff-release-today`](#cff-release-today)
 //!    1. [`comment-changes`](#comment-changes)
@@ -70,6 +71,7 @@
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //! <!--
+//!    1. [`cff-create`](#cff-create)
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`cff-release-today`](#cff-release-today)
 //!    1. [`comment-changes`](#comment-changes)
@@ -147,6 +149,26 @@
 //! ```
 //!
 //! ## Supported Subcommands
+//!
+//! ### `cff-create`
+//!
+//! > To be called with:
+//! >
+//! > - `cffcreate`
+//! > - `cff-create`
+//! > - `mkcff`
+//!
+//! > To be installed with:
+//! >
+//! > - `-F cff-create`
+//!
+//! This mode will analyse a given project manifest and create an initial
+//! CITATION.cff from it.  Please note that the result does not necessarily
+//! validate such that further adjustments are recommended.
+//!
+//! Supported manifest formats are:
+//!
+//! - Cargo.toml (`rs`)
 //!
 //! ### `cffreference`
 //!
@@ -385,7 +407,7 @@
 #![allow(clippy::multiple_crate_versions)]
 
 mod application;
-mod cffreference;
+mod cff;
 mod changelog;
 mod complain;
 mod graphing;
@@ -398,7 +420,7 @@ mod version;
 
 pub use crate::{
     application::{Action, Clap as Application},
-    cffreference::Cffreference,
+    cff::Cffreference,
     changelog::{
         CommentChanges, Fragment, FragmentExportFormat, Ronlog, RonlogAction,
         RonlogReferences, RonlogSection,
@@ -419,6 +441,11 @@ pub use crate::{
         FromXml, Prefer, ReadFile, ToMd, ToRon, ToRst, ToStderr, ToXml,
     },
     version::{Range as VersionRange, Version},
+};
+
+#[cfg(feature = "cff-create")]
+pub use crate::cff::{
+    Create as CffCreate, ManifestType as CffCreateManifestType,
 };
 
 /// This crate's name.

@@ -74,12 +74,31 @@ jobs:
     strategy:
       matrix:
         subcommand:
+          - fmt --check
+          - r -- complain src/ tests/
+
+  cargo-features:
+    runs-on: ubuntu-latest
+    steps:
+      - run: rustup update
+
+      - uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - run: cargo ${{ matrix.subcommand }} ${{ matrix.features }}
+    strategy:
+      matrix:
+        features:
+          - --all-features
+          - --no-default-features
+          - --no-default-features -F cff-create
+        subcommand:
           - b
           - c
           - clippy
           - d
-          - fmt --check
-          - r -- complain src/ tests/
           - t
 
   cffconvert:
@@ -95,7 +114,7 @@ jobs:
     strategy:
       matrix:
         cff:
-          - .github/CFF/aeruginous.cff
+          - .github/aeruginous.cff
           - CITATION.cff
           - cffs/input_1.cff
           - cffs/input_2.cff

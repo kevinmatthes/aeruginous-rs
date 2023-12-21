@@ -20,6 +20,14 @@
 use aeruginous::{EdgeType, Edges, Graph, VertexData, Vertices};
 
 #[test]
+fn edge_type_debug_trait() {
+    assert_eq!(
+        format!("{:?}", EdgeType::directed("a", "b")),
+        "DirectedEdge { departure: \"a\", arrival: \"b\" }"
+    );
+}
+
+#[test]
 fn edge_type_equality_directed() {
     assert_eq!(EdgeType::directed("", ""), EdgeType::directed("", ""));
     assert_eq!(EdgeType::directed("a", "a"), EdgeType::directed("a", "a"));
@@ -101,6 +109,11 @@ fn edges_add_undirected_edges() {
     assert!(e.contains(&EdgeType::undirected("b", "a")));
     assert!(e.contains(&EdgeType::undirected("c", "b")));
     assert!(e.contains(&EdgeType::undirected("a", "c")));
+}
+
+#[test]
+fn edges_debug_trait() {
+    assert_eq!(format!("{:?}", Edges::default()), "Edges { edges: {} }");
 }
 
 #[test]
@@ -284,6 +297,14 @@ fn vertices_add_vertex() {
 
     assert!(v.add_vertex("a"));
     assert!(!v.add_vertex("a"));
+}
+
+#[test]
+fn vertices_debug_trait() {
+    assert_eq!(
+        format!("{:?}", Vertices::<i32>::default()),
+        "Vertices { vertices: {} }"
+    );
 }
 
 #[test]

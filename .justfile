@@ -20,70 +20,28 @@
 ################################################################################
 ##
 ##  AUTHOR      Kevin Matthes
-##  BRIEF       Assemble the main CITATION.cff from its updated fragments.
+##  BRIEF       The recipes in order to test this project.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
-##  FILE        cff.yml
+##  FILE        .justfile
 ##  NOTE        See `LICENSE' for full license.
 ##              See `README.md' for project details.
 ##
 ################################################################################
 
-name: cff
+# The default recipe to execute.
+default: coverage
 
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - Cargo.lock
-      - Cargo.toml
-  workflow_dispatch:
+# Clean the repository.
+clean:
+    git clean -dfx
 
-permissions:
-  contents: write
-  pull-requests: write
+# Determine the coverage.
+coverage: llvm-cov
+    pycobertura show cobertura.xml
 
-jobs:
-  main:
-    if: github.repository == 'kevinmatthes/aeruginous-rs'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.1.1
-
-      - run: |
-          rustup update
-          cat .github/aeruginous.cff > CITATION.cff
-          echo references: >> CITATION.cff
-
-      - uses: ./curl-cffref
-        with:
-          branch: main
-          repository: chronotope/chrono
-
-      - uses: ./curl-cffref
-        with:
-          branch: main
-          repository: citation-file-format/citation-file-format
-
-      - uses: ./curl-cffref
-        with:
-          branch: master
-          repository: clap-rs/clap
-
-      - uses: ./curl-cffref
-        with:
-          branch: develop
-          repository: sorairolake/sysexits-rs
-
-      - uses: peter-evans/create-pull-request@v5.0.2
-        with:
-          assignees: |
-            kevinmatthes
-          branch: documentation/cff-update
-          branch-suffix: timestamp
-          labels: documentation
-          milestone: 6
-          title: '[GitHub Actions] Update CITATION.cff'
+# Run the coverage tool.
+llvm-cov: clean
+    cargo llvm-cov --cobertura --output-path cobertura.xml
 
 ################################################################################
