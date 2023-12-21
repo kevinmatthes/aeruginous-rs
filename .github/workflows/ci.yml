@@ -70,9 +70,13 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - run: cargo ${{ matrix.subcommand }}
+      - run: cargo ${{ matrix.subcommand }} ${{ matrix.features }}
     strategy:
       matrix:
+        features:
+          - --all-features
+          - --no-default-features
+          - --no-default-features -F cff-create
         subcommand:
           - b
           - c
