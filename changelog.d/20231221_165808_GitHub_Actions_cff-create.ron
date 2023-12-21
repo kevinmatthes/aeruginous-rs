@@ -1,0 +1,28 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      ".justfile",
+      "CFF:  project keywords ``cffcreate``, ``cff-create``, and ``mkcff``",
+      "Cargo.toml:  declare new feature ``cff-create``",
+      "CffCreate",
+      "CffCreateManifestType",
+      "README:  document cff-create",
+      "cff-create",
+      "cff-create:  support Cargo.toml",
+      "src/cff/cff_create.rs",
+      "src/cff/mod.rs",
+    ],
+    "Changed": [
+      "CFF:  set ``title`` to ``Aeruginous``; fixes #937",
+      "CI:  run Cargo checks with respect to all feature configurations",
+      "CI:  split Cargo tests into separate categories",
+      "move cffreference.rs to src/cff",
+      "rename .github/CFF/aeruginous.cff to .github/aeruginous.cff",
+    ],
+    "Fixed": [
+      "coverage of src/graphing/graph.rs",
+      "increment-version:  possible edge case crash when rewriting Cargo.toml",
+    ],
+  },
+)
