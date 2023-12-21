@@ -17,8 +17,13 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::Fragment;
+use aeruginous::{Fragment, FragmentExportFormat, ToMd, ToRst};
 use indexmap::IndexMap;
+
+#[test]
+fn debug_trait() {
+    assert_eq!(format!("{:?}", FragmentExportFormat::Md), "Md");
+}
 
 #[test]
 fn merge() {
@@ -77,6 +82,166 @@ fn move_fragments() {
 
     assert_eq!(fragment.move_references(), IndexMap::from(references));
     assert!(fragment.references().is_empty());
+}
+
+#[test]
+fn sort() {
+    let mut fragment = Fragment::new(
+        &IndexMap::new(),
+        &IndexMap::from([
+            (
+                "Changed".to_string(),
+                vec![
+                    "something else".to_string(),
+                    "anything".to_string(),
+                    "nothing".to_string(),
+                ],
+            ),
+            (
+                "Added".to_string(),
+                vec![
+                    "something".to_string(),
+                    "nothing".to_string(),
+                    "something else".to_string(),
+                ],
+            ),
+        ]),
+    );
+
+    fragment.sort();
+
+    assert_eq!(
+        fragment.to_md(1).unwrap(),
+        "\
+# Added
+
+- nothing
+
+- something
+
+- something else
+
+# Changed
+
+- anything
+
+- nothing
+
+- something else
+
+"
+    );
+    assert_eq!(
+        fragment.to_md(2).unwrap(),
+        "\
+## Added
+
+- nothing
+
+- something
+
+- something else
+
+## Changed
+
+- anything
+
+- nothing
+
+- something else
+
+"
+    );
+    assert_eq!(
+        fragment.to_md(3).unwrap(),
+        "\
+### Added
+
+- nothing
+
+- something
+
+- something else
+
+### Changed
+
+- anything
+
+- nothing
+
+- something else
+
+"
+    );
+    assert_eq!(
+        fragment.to_rst(1).unwrap(),
+        "\
+Added
+=====
+
+- nothing
+
+- something
+
+- something else
+
+Changed
+=======
+
+- anything
+
+- nothing
+
+- something else
+
+"
+    );
+    assert_eq!(
+        fragment.to_rst(2).unwrap(),
+        "\
+Added
+-----
+
+- nothing
+
+- something
+
+- something else
+
+Changed
+-------
+
+- anything
+
+- nothing
+
+- something else
+
+"
+    );
+    assert_eq!(
+        fragment.to_rst(3).unwrap(),
+        "\
+Added
+.....
+
+- nothing
+
+- something
+
+- something else
+
+Changed
+.......
+
+- anything
+
+- nothing
+
+- something else
+
+"
+    );
 }
 
 /******************************************************************************/
