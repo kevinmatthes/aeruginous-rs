@@ -31,6 +31,10 @@ use sysexits::Result;
 /// being the accepted command line arguments and options, respectively.
 #[derive(Subcommand)]
 pub enum Action {
+    /// Create a CFF from a given manifest file.
+    #[cfg(feature = "cff-create")]
+    CffCreate(crate::CffCreate),
+
     /// Extract the citation information from a given and valid CFF file.
     Cffreference(crate::Cffreference),
 
@@ -124,6 +128,8 @@ impl Action {
     /// See [`PatternIOProcessor::io`].
     pub fn run(&self) -> Result<()> {
         match self {
+            #[cfg(feature = "cff-create")]
+            Self::CffCreate(c) => c.main(),
             Self::Cffreference(c) => c.main(),
             Self::CffReleaseToday { file_to_edit } => {
                 let mut buffer = String::new();
