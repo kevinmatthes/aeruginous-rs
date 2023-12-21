@@ -385,7 +385,7 @@
 #![allow(clippy::multiple_crate_versions)]
 
 mod application;
-mod cffreference;
+mod cff;
 mod changelog;
 mod complain;
 mod graphing;
@@ -398,7 +398,7 @@ mod version;
 
 pub use crate::{
     application::{Action, Clap as Application},
-    cffreference::Cffreference,
+    cff::Cffreference,
     changelog::{
         CommentChanges, Fragment, FragmentExportFormat, Ronlog, RonlogAction,
         RonlogReferences, RonlogSection,
@@ -420,6 +420,9 @@ pub use crate::{
     },
     version::{Range as VersionRange, Version},
 };
+
+#[cfg(feature = "cff-create")]
+pub use crate::cff::Create as CffCreate;
 
 /// This crate's name.
 pub const NAME: &str = "aeruginous";
