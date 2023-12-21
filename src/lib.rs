@@ -444,7 +444,9 @@ pub use crate::{
 };
 
 #[cfg(feature = "cff-create")]
-pub use crate::cff::Create as CffCreate;
+pub use crate::cff::{
+    Create as CffCreate, ManifestType as CffCreateManifestType,
+};
 
 /// This crate's name.
 pub const NAME: &str = "aeruginous";
