@@ -61,6 +61,7 @@
 //! 1. [Introduction](#introduction)
 //! 1. [Installation](#installation)
 //! 1. [Supported Subcommands](#supported-subcommands)
+//!    1. [`cff-create`](#cff-create)
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`cff-release-today`](#cff-release-today)
 //!    1. [`comment-changes`](#comment-changes)
@@ -70,6 +71,7 @@
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
 //! <!--
+//!    1. [`cff-create`](#cff-create)
 //!    1. [`cffreference`](#cffreference)
 //!    1. [`cff-release-today`](#cff-release-today)
 //!    1. [`comment-changes`](#comment-changes)
@@ -147,6 +149,26 @@
 //! ```
 //!
 //! ## Supported Subcommands
+//!
+//! ### `cff-create`
+//!
+//! > To be called with:
+//! >
+//! > - `cffcreate`
+//! > - `cff-create`
+//! > - `mkcff`
+//!
+//! > To be installed with:
+//! >
+//! > - `-F cff-create`
+//!
+//! This mode will analyse a given project manifest and create an initial
+//! CITATION.cff from it.  Please note that the result does not necessarily
+//! validate such that further adjustments are recommended.
+//!
+//! Supported manifest formats are:
+//!
+//! - Cargo.toml
 //!
 //! ### `cffreference`
 //!
