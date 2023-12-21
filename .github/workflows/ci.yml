@@ -70,6 +70,24 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - run: cargo ${{ matrix.subcommand }}
+    strategy:
+      matrix:
+        subcommand:
+          - fmt --check
+          - r -- complain src/ tests/
+          - t
+
+  cargo-features:
+    runs-on: ubuntu-latest
+    steps:
+      - run: rustup update
+
+      - uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
       - run: cargo ${{ matrix.subcommand }} ${{ matrix.features }}
     strategy:
       matrix:
@@ -82,8 +100,6 @@ jobs:
           - c
           - clippy
           - d
-          - fmt --check
-          - r -- complain src/ tests/
           - t
 
   cffconvert:
