@@ -168,7 +168,7 @@
 //!
 //! Supported manifest formats are:
 //!
-//! - Cargo.toml
+//! - Cargo.toml (`rs`)
 //!
 //! ### `cffreference`
 //!
