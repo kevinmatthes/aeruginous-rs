@@ -241,16 +241,25 @@ impl Logic {
 
     fn rewrite_cargo_toml(&self, file: &PathBuf) -> Result<()> {
         if let Ok(mut manifest) = file.read()?.parse::<toml::Table>() {
-            if manifest["package"]["version"].as_str().is_some() {
-                manifest["package"]["version"] =
-                    self.new_version.clone().into();
-                file.truncate(Box::new(manifest.to_string()))?;
+            if manifest.get("package").is_some() {
+                if manifest["package"].get("version").is_some() {
+                    manifest["package"]["version"] =
+                        self.new_version.clone().into();
+                    file.truncate(Box::new(manifest.to_string()))?;
 
-                Ok(())
+                    Ok(())
+                } else {
+                    ceprintlns!(
+                      "Cargo.toml"!Red,
+                      "does not contain a `package.version` field."
+                    );
+
+                    Err(ExitCode::DataErr)
+                }
             } else {
                 ceprintlns!(
-                  "Cargo.toml"!Red,
-                  "does not contain a `package.version` field."
+                    "Cargo.toml"!Red,
+                    "does not contain a `package` section."
                 );
 
                 Err(ExitCode::DataErr)
