@@ -201,11 +201,11 @@ impl Create {
 }
 
 macro_rules! manifest {
-    ( Cargo.toml: $manifest:ident ! $( $field:literal -> $variable:expr ),+ ) => {
+    ( Cargo.toml: $m:ident ! $( $f:literal -> $v:expr ),+ ) => {
         $(
-            if $manifest.get($field).is_some() {
-                $variable = Some(
-                    $manifest[$field]
+            if $m.get($f).is_some() {
+                $v = Some(
+                    $m[$f]
                         .to_string()
                         .trim_matches('"')
                         .to_string()
