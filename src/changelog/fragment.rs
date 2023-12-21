@@ -117,6 +117,7 @@ impl Fragment {
 impl crate::ToMd for Fragment {
     fn to_md(&self, header_level: u8) -> Result<String> {
         if (1..=3).contains(&header_level) {
+            let header_introduction = "#".repeat(header_level.into());
             let mut result = String::new();
 
             for (link_name, target) in &self.references {
@@ -129,8 +130,7 @@ impl crate::ToMd for Fragment {
 
             for (category, changes) in &self.changes {
                 result.append_as_line(format!(
-                    "{} {category}\n",
-                    "#".repeat(header_level.into())
+                    "{header_introduction} {category}\n",
                 ));
 
                 for change in changes {
@@ -147,38 +147,34 @@ impl crate::ToMd for Fragment {
 
 impl crate::ToRst for Fragment {
     fn to_rst(&self, header_level: u8) -> Result<String> {
-        if (1..=3).contains(&header_level) {
-            let mut result = String::new();
+        let header_character = match header_level {
+            1 => Ok("="),
+            2 => Ok("-"),
+            3 => Ok("."),
+            _ => Err(ExitCode::DataErr),
+        }?;
+        let mut result = String::new();
 
-            for (link_name, target) in &self.references {
-                result.append_as_line(format!(".. _{link_name}:  {target}"));
-            }
-
-            if !self.references.is_empty() {
-                result.push('\n');
-            }
-
-            for (category, changes) in &self.changes {
-                result.append_as_line(format!(
-                    "{category}\n{}\n",
-                    match header_level {
-                        1 => "=",
-                        2 => "-",
-                        3 => ".",
-                        _ => unreachable!(),
-                    }
-                    .repeat(category.len())
-                ));
-
-                for change in changes {
-                    result.append_as_line(format!("- {change}\n"));
-                }
-            }
-
-            Ok(result)
-        } else {
-            Err(ExitCode::DataErr)
+        for (link_name, target) in &self.references {
+            result.append_as_line(format!(".. _{link_name}:  {target}"));
         }
+
+        if !self.references.is_empty() {
+            result.push('\n');
+        }
+
+        for (category, changes) in &self.changes {
+            result.append_as_line(format!(
+                "{category}\n{}\n",
+                header_character.repeat(category.len())
+            ));
+
+            for change in changes {
+                result.append_as_line(format!("- {change}\n"));
+            }
+        }
+
+        Ok(result)
     }
 }
 
