@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "ronlog:  new section being unsorted",
+    ],
+  },
+)
