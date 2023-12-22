@@ -156,4 +156,14 @@ fn ignore_all_lints() {
     );
 }
 
+#[test]
+fn repository_check() {
+    let mut ac = Complain::default();
+
+    ac.push("src/");
+    ac.push("tests/");
+
+    assert!(ac.main().is_ok());
+}
+
 /******************************************************************************/
