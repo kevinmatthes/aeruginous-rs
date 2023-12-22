@@ -104,13 +104,7 @@ impl Fragment {
             entries.sort();
         }
 
-        self.changes.sort_by(|key_1, value_1, key_2, value_2| {
-            if key_1 == key_2 {
-                value_1.cmp(value_2)
-            } else {
-                key_1.cmp(key_2)
-            }
-        });
+        self.changes.sort_by(|key_1, _, key_2, _| key_1.cmp(key_2));
     }
 }
 

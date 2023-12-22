@@ -5,7 +5,7 @@
       "CI:  add feature-related Cargo checks to top-level CI job",
     ],
     "Fixed": [
-      "improve coverage of src/changelog/fragment.rs",
+      "coverage of src/changelog/fragment.rs",
     ],
   },
 )

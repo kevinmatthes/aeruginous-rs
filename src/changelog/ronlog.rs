@@ -193,6 +193,7 @@ impl Logic {
                     .or_insert(target);
             }
 
+            section.changes.sort();
             ronlog.add_section(section);
 
             self.cli.output_file.truncate(Box::new(ronlog.to_ron(2)?))
