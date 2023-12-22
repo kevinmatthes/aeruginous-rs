@@ -153,7 +153,7 @@ impl Complain {
     }
 
     /// Query the current state of settings.
-    pub fn state(&self) -> (&Vec<PathBuf>, [bool; 7], IndentationUnit, usize) {
+    const pub fn state(&self) -> (&Vec<PathBuf>, [bool; 7], IndentationUnit, usize) {
         (
             &self.files,
             [
