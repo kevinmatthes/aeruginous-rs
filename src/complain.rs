@@ -71,6 +71,41 @@ pub struct Complain {
 }
 
 impl Complain {
+    /// Ignore CRLFs.
+    pub fn ignore_carriage_return_line_feeds(&mut self) {
+        self.ignore_carriage_return_line_feeds = true;
+    }
+
+    /// Ignore too long lines.
+    pub fn ignore_line_width_issues(&mut self) {
+        self.ignore_line_width_issues = true;
+    }
+
+    /// Ignore missing trailing newline characters.
+    pub fn ignore_missing_final_line_feed(&mut self) {
+        self.ignore_missing_final_line_feed = true;
+    }
+
+    /// Ignore the application of multiple indentation units.
+    pub fn ignore_mixed_indentation(&mut self) {
+        self.ignore_mixed_indentation = true;
+    }
+
+    /// Ignore tab characters in input lines.
+    pub fn ignore_tabs_within_lines(&mut self) {
+        self.ignore_tabs_within_lines = true;
+    }
+
+    /// Ignore lines ending with spaces and / or tab characters.
+    pub fn ignore_trailing_white_space_characters(&mut self) {
+        self.ignore_trailing_white_space_characters = true;
+    }
+
+    /// Ignore applications of the opposite indentation unit.
+    pub fn ignore_wrong_indentation(&mut self) {
+        self.ignore_wrong_indentation = true;
+    }
+
     /// Set another indentation unit.
     pub fn indent_by(&mut self, i: IndentationUnit) {
         self.indent_by = i;
@@ -106,6 +141,14 @@ impl Complain {
         }
     }
 
+    /// Push a new path to the list of paths to process.
+    pub fn push<T>(&mut self, path: T)
+    where
+        PathBuf: From<T>,
+    {
+        self.files.push(PathBuf::from(path));
+    }
+
     /// Process this instance.
     ///
     /// # Errors
@@ -115,6 +158,27 @@ impl Complain {
     /// - [`Self::main`]
     pub fn process(&self) -> Result<usize> {
         self.wrap().process()
+    }
+
+    /// Query the current state of settings.
+    #[must_use]
+    pub const fn state(
+        &self,
+    ) -> (&Vec<PathBuf>, [bool; 7], IndentationUnit, usize) {
+        (
+            &self.files,
+            [
+                self.ignore_carriage_return_line_feeds,
+                self.ignore_line_width_issues,
+                self.ignore_missing_final_line_feed,
+                self.ignore_mixed_indentation,
+                self.ignore_tabs_within_lines,
+                self.ignore_trailing_white_space_characters,
+                self.ignore_wrong_indentation,
+            ],
+            self.indent_by,
+            self.line_width,
+        )
     }
 
     fn wrap(&self) -> Logic {
@@ -127,8 +191,14 @@ impl Complain {
     }
 }
 
+impl Default for Complain {
+    fn default() -> Self {
+        Self::new(Vec::new())
+    }
+}
+
 /// The possible indentation units.
-#[derive(Clone, Copy, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub enum IndentationUnit {
     /// Indent by spaces.
     #[default]
@@ -338,10 +408,28 @@ impl Logic {
 
     fn process(&mut self) -> Result<usize> {
         for f in self.cli.files.clone() {
-            self.complain(&f)?;
+            if f.is_dir() {
+                self.process_dir(f.read_dir()?)?;
+            } else {
+                self.complain(&f)?;
+            }
         }
 
         Ok(self.total_errors)
+    }
+
+    fn process_dir(&mut self, directory: std::fs::ReadDir) -> Result<()> {
+        for entry in directory {
+            let entry = entry?.path();
+
+            if entry.is_dir() {
+                self.process_dir(entry.read_dir()?)?;
+            } else {
+                self.complain(&entry)?;
+            }
+        }
+
+        Ok(())
     }
 }
 

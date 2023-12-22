@@ -122,4 +122,48 @@ make_test!(@path @success
     ac_success_license_file: "LICENSE"
 );
 
+#[test]
+fn default() {
+    assert_eq!(
+        Complain::default().state(),
+        (&Vec::new(), [false; 7], IndentationUnit::Spaces, 80)
+    );
+}
+
+#[test]
+fn ignore_all_lints() {
+    let mut ac = Complain::new(vec![PathBuf::from(
+        "graphs/invalid/too_long_comments.agd",
+    )]);
+
+    ac.ignore_carriage_return_line_feeds();
+    ac.ignore_line_width_issues();
+    ac.ignore_missing_final_line_feed();
+    ac.ignore_mixed_indentation();
+    ac.ignore_tabs_within_lines();
+    ac.ignore_trailing_white_space_characters();
+    ac.ignore_wrong_indentation();
+
+    assert!(ac.main().is_ok());
+    assert_eq!(
+        ac.state(),
+        (
+            &vec![PathBuf::from("graphs/invalid/too_long_comments.agd")],
+            [true; 7],
+            IndentationUnit::Spaces,
+            80
+        )
+    );
+}
+
+#[test]
+fn repository_check() {
+    let mut ac = Complain::default();
+
+    ac.push("src/");
+    ac.push("tests/");
+
+    assert!(ac.main().is_ok());
+}
+
 /******************************************************************************/
