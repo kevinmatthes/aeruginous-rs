@@ -67,7 +67,10 @@ impl Default for Cff {
 
 impl Display for Cff {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut keywords = self.keywords.clone();
         let mut s = String::new();
+
+        keywords.sort();
 
         if let Some(abstrct) = &self.abstrct {
             s.append_as_line(format!("abstract: {abstrct}"));
@@ -86,16 +89,10 @@ impl Display for Cff {
 
         s.append_as_line(format!("cff-version: {}", self.cff_version));
         s.append_as_line(format!("date-released: {}", self.date_released));
+        s.append_as_line("keywords:");
 
-        if !self.keywords.is_empty() {
-            let mut keywords = self.keywords.clone();
-
-            keywords.sort();
-            s.append_as_line("keywords:");
-
-            for keyword in keywords {
-                s.append_as_line(format!("  - {keyword}"));
-            }
+        for keyword in keywords {
+            s.append_as_line(format!("  - {keyword}"));
         }
 
         if let Some(license) = &self.license {
@@ -184,16 +181,18 @@ impl Create {
     }
 
     /// Create a new instance.
-    #[must_use]
-    pub const fn new(
-        input_file: Option<PathBuf>,
+    pub fn new<T>(
+        input_file: Option<T>,
         manifest_type: ManifestType,
-        output_file: Option<PathBuf>,
-    ) -> Self {
+        output_file: Option<T>,
+    ) -> Self
+    where
+        PathBuf: From<T>,
+    {
         Self {
-            input_file,
+            input_file: input_file.map(|i| PathBuf::from(i)),
             manifest_type,
-            output_file,
+            output_file: output_file.map(|o| PathBuf::from(o)),
         }
     }
 
