@@ -2,7 +2,7 @@
   references: {},
   changes: {
     "Added": [
-      "tests/cff_create.rs",
+      "tests/cff_create.rs; fixes #938",
     ],
   },
 )
