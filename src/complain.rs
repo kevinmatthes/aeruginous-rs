@@ -141,6 +141,14 @@ impl Complain {
         }
     }
 
+    /// Push a new path to the list of paths to process.
+    pub fn push<T>(&mut self, path: T)
+    where
+        PathBuf: From<T>,
+    {
+        self.files.push(PathBuf::from(path));
+    }
+
     /// Process this instance.
     ///
     /// # Errors
@@ -400,10 +408,28 @@ impl Logic {
 
     fn process(&mut self) -> Result<usize> {
         for f in self.cli.files.clone() {
-            self.complain(&f)?;
+            if f.is_dir() {
+                self.process_dir(f.read_dir()?)?;
+            } else {
+                self.complain(&f)?;
+            }
         }
 
         Ok(self.total_errors)
+    }
+
+    fn process_dir(&mut self, directory: std::fs::ReadDir) -> Result<()> {
+        for entry in directory {
+            let entry = entry?.path();
+
+            if entry.is_dir() {
+                self.process_dir(entry.read_dir()?)?;
+            } else {
+                self.complain(&entry)?;
+            }
+        }
+
+        Ok(())
     }
 }
 
