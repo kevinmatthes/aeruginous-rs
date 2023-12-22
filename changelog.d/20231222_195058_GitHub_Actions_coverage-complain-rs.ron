@@ -7,7 +7,7 @@
     ],
     "Fixed": [
       "complain:  traverse directories recursively",
-      "improve coverage for Complain",
+      "improve coverage of src/complain.rs",
     ],
   },
 )
