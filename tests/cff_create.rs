@@ -17,6 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
+#![cfg(feature = "cff-create")]
+
 use aeruginous::{
     CffCreate, CffCreateManifestType, PatternWriter, ReadFile, NAME,
     SELF_DESCRIPTION, VERSION,
