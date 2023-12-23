@@ -20,16 +20,16 @@
 #![cfg(feature = "cff-create")]
 
 use crate::{AppendAsLine, PatternWriter, ReadFile};
-use std::{fmt::Display, path::PathBuf};
+use std::{cmp::Ordering, fmt::Display, path::PathBuf};
 use sysexits::{ExitCode, Result};
 
 struct Cff {
     abstrct: Option<String>,
     authors: Vec<CffAuthor>,
     cff_version: String,
-    date_released: String,
+    date_released: Option<String>,
     keywords: Vec<String>,
-    license: Option<String>,
+    license: CffLicense,
     message: String,
     repository_code: Option<String>,
     title: Option<String>,
@@ -43,12 +43,14 @@ impl Cff {
             abstrct: None,
             authors: Vec::new(),
             cff_version: "1.2.0".to_string(),
-            date_released: chrono::Local::now()
-                .date_naive()
-                .format("%Y-%m-%d")
-                .to_string(),
+            date_released: Some(
+                chrono::Local::now()
+                    .date_naive()
+                    .format("%Y-%m-%d")
+                    .to_string(),
+            ),
             keywords: Vec::new(),
-            license: None,
+            license: CffLicense::default(),
             message: "Please cite this project using these information."
                 .to_string(),
             repository_code: None,
@@ -68,6 +70,7 @@ impl Default for Cff {
 impl Display for Cff {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut keywords = self.keywords.clone();
+        let licenses = self.license.to_string();
         let mut s = String::new();
 
         keywords.sort();
@@ -88,15 +91,19 @@ impl Display for Cff {
         }
 
         s.append_as_line(format!("cff-version: {}", self.cff_version));
-        s.append_as_line(format!("date-released: {}", self.date_released));
+
+        if let Some(date_released) = &self.date_released {
+            s.append_as_line(format!("date-released: {date_released}"));
+        }
+
         s.append_as_line("keywords:");
 
         for keyword in keywords {
             s.append_as_line(format!("  - {keyword}"));
         }
 
-        if let Some(license) = &self.license {
-            s.append_as_line(format!("license: {license}"));
+        if !licenses.is_empty() {
+            s.append_as_line(self.license.to_string());
         }
 
         s.append_as_line(format!("message: {}", self.message));
@@ -150,6 +157,64 @@ impl Display for CffAuthor {
     }
 }
 
+struct CffLicense {
+    licenses: Vec<String>,
+}
+
+impl CffLicense {
+    fn from_cargo_toml(license: &str) -> Self {
+        let mut licenses = Vec::new();
+
+        if license.contains(' ') {
+            for license in license.split_whitespace() {
+                if license != "OR" {
+                    licenses.push(license.to_string());
+                }
+            }
+        } else {
+            licenses.push(license.to_string());
+        }
+
+        Self { licenses }
+    }
+
+    const fn new() -> Self {
+        Self {
+            licenses: Vec::new(),
+        }
+    }
+}
+
+impl Default for CffLicense {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl Display for CffLicense {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut result = String::new();
+
+        match self.licenses.len().cmp(&1) {
+            Ordering::Equal => {
+                result.push_str(&format!("license: {}", self.licenses[0]));
+            }
+            Ordering::Greater => {
+                result.append_as_line("license:");
+
+                for license in &self.licenses {
+                    result.append_as_line(format!("  - {license}"));
+                }
+
+                result = result.trim_end().to_string();
+            }
+            Ordering::Less => {}
+        }
+
+        write!(f, "{result}")
+    }
+}
+
 /// Extract the citation information from a given and valid CFF file.
 #[derive(clap::Parser, Clone)]
 #[command(visible_aliases = ["cffcreate", "mkcff"])]
@@ -165,6 +230,10 @@ pub struct Create {
     /// The output file to write to.
     #[arg(long, short)]
     output_file: Option<PathBuf>,
+
+    /// Do not generate an initial release date.
+    #[arg(long)]
+    suppress_release_date: bool,
 }
 
 impl Create {
@@ -193,7 +262,13 @@ impl Create {
             input_file: input_file.map(|i| PathBuf::from(i)),
             manifest_type,
             output_file: output_file.map(|o| PathBuf::from(o)),
+            suppress_release_date: false,
         }
+    }
+
+    /// Do not generate an initial release date.
+    pub fn suppress_release_date(&mut self) {
+        self.suppress_release_date = true;
     }
 
     fn wrap(&self) -> Logic {
@@ -227,6 +302,11 @@ struct Logic {
 impl Logic {
     fn main(&mut self) -> Result<()> {
         self.read()?;
+
+        if self.cli.suppress_release_date {
+            self.cff.date_released = None;
+        }
+
         self.cli
             .output_file
             .truncate(Box::new(self.cff.to_string()))
@@ -247,12 +327,17 @@ impl Logic {
 
             manifest!(Cargo.toml: manifest !
                 "description" -> self.cff.abstrct,
-                "license" -> self.cff.license,
                 "repository" -> self.cff.repository_code,
                 "name" -> self.cff.title,
                 "homepage" -> self.cff.url,
                 "version" -> self.cff.version
             );
+
+            if manifest.get("license").is_some() {
+                self.cff.license = CffLicense::from_cargo_toml(
+                    manifest["license"].to_string().trim_matches('"'),
+                );
+            }
 
             if manifest.get("categories").is_some() {
                 for category in manifest["categories"]
