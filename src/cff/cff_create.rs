@@ -20,7 +20,7 @@
 #![cfg(feature = "cff-create")]
 
 use crate::{AppendAsLine, PatternWriter, ReadFile};
-use std::{fmt::Display, path::PathBuf};
+use std::{cmp::Ordering, fmt::Display, path::PathBuf};
 use sysexits::{ExitCode, Result};
 
 struct Cff {
@@ -178,7 +178,7 @@ impl CffLicense {
         Self { licenses }
     }
 
-    fn new() -> Self {
+    const fn new() -> Self {
         Self {
             licenses: Vec::new(),
         }
@@ -195,16 +195,20 @@ impl Display for CffLicense {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut result = String::new();
 
-        if self.licenses.len() == 1 {
-            result.push_str(&format!("license: {}", self.licenses[0]));
-        } else if self.licenses.len() > 1 {
-            result.append_as_line("license:");
-
-            for license in &self.licenses {
-                result.append_as_line(format!("  - {license}"));
+        match self.licenses.len().cmp(&1) {
+            Ordering::Equal => {
+                result.push_str(&format!("license: {}", self.licenses[0]));
             }
+            Ordering::Greater => {
+                result.append_as_line("license:");
 
-            result = result.trim_end().to_string();
+                for license in &self.licenses {
+                    result.append_as_line(format!("  - {license}"));
+                }
+
+                result = result.trim_end().to_string();
+            }
+            Ordering::Less => {}
         }
 
         write!(f, "{result}")
