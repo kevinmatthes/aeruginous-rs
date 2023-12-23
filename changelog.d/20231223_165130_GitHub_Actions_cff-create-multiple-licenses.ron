@@ -1,9 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "cff-create:  appropriate handling of multiple licenses",
-      "cff-create:  suppress release date generation on demand",
-    ],
-  },
-)

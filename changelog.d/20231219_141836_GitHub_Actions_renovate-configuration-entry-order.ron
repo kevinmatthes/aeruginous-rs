@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Fixed": [
-      "sort Renovate configuration entries by alphabet",
-    ],
-  },
-)

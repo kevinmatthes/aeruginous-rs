@@ -29,6 +29,10 @@ version = "0.31.0"
 features = ["derive"]
 version = "1.0.193"
 
+[features]
+cff-create = []
+default = ["cff-create"]
+
 [package]
 authors = ["Kevin Matthes <aeruginous.rs@gmail.com>"]
 categories = ["command-line-utilities", "config", "development-tools", "rust-patterns", "template-engine"]
@@ -42,8 +46,4 @@ name = "aeruginous"
 readme = "README.md"
 repository = "https://github.com/kevinmatthes/aeruginous-rs"
 rust-version = "1.74.1"
-version = "3.4.1"
-
-[features]
-default = ["cff-create"]
-cff-create = []
+version = "3.5.0"
