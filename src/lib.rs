@@ -83,7 +83,7 @@
 //!    1. [`uncrlf`](#uncrlf)
 //! -->
 //!
-//! The current code coverage is **<!-- cov -->58.51%<!-- cov -->**.
+//! The current code coverage is **<!-- cov -->71.22%<!-- cov -->**.
 //!
 //! ## License
 //!
@@ -456,6 +456,6 @@ pub const SELF_DESCRIPTION: &str =
     "The Aeruginous Open Source Development Toolbox";
 
 /// This crate's version.
-pub const VERSION: &str = "v3.4.1";
+pub const VERSION: &str = "v3.5.0";
 
 /******************************************************************************/
