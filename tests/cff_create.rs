@@ -46,23 +46,20 @@ fn cargo_toml_empty() {
 fn cargo_toml_empty_package_section() {
     let i = "cargo_empty_package_section.toml";
     let o = "cargo_empty_package_section.cff";
+    let mut cc = CffCreate::new(Some(i), CffCreateManifestType::Rust, Some(o));
 
+    cc.suppress_release_date();
     i.truncate(Box::new("[package]\n".to_string())).unwrap();
 
-    assert!(
-        CffCreate::new(Some(i), CffCreateManifestType::Rust, Some(o))
-            .main()
-            .is_ok(),
-    );
+    assert!(cc.main().is_ok());
     assert_eq!(
         o.read().unwrap(),
         "\
 cff-version: 1.2.0
-date-released: 2023-12-22
 keywords:
   - Rust
 message: Please cite this project using these information.
-"
+",
     );
 
     remove_file(i).unwrap();
@@ -98,6 +95,36 @@ fn cargo_toml_invalid_toml() {
     );
 
     remove_file(i).unwrap();
+}
+
+#[test]
+fn cargo_toml_multiple_licenses() {
+    let i = "cargo_multiple_licenses.toml";
+    let o = "cargo_multiple_licenses.cff";
+    let mut cc = CffCreate::new(Some(i), CffCreateManifestType::Rust, Some(o));
+
+    cc.suppress_release_date();
+    i.truncate(Box::new(
+        "[package]\nlicense = \"Apache-2.0 OR MIT\"".to_string(),
+    ))
+    .unwrap();
+
+    assert!(cc.main().is_ok());
+    assert_eq!(
+        o.read().unwrap(),
+        "\
+cff-version: 1.2.0
+keywords:
+  - Rust
+license:
+  - Apache-2.0
+  - MIT
+message: Please cite this project using these information.
+"
+    );
+
+    remove_file(i).unwrap();
+    remove_file(o).unwrap();
 }
 
 #[test]
