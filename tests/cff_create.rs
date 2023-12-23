@@ -28,6 +28,39 @@ use std::fs::remove_file;
 use sysexits::ExitCode;
 
 #[test]
+fn cargo_toml_author_without_email() {
+    let i = "cargo_author_without_email.toml";
+    let o = "cargo_author_without_email.cff";
+    let mut cc = CffCreate::new(Some(i), CffCreateManifestType::Rust, Some(o));
+
+    cc.suppress_release_date();
+    i.truncate(Box::new(
+        "\
+[package]
+authors = [\"Emma Xample\"]
+"
+        .to_string(),
+    ))
+    .unwrap();
+
+    assert!(cc.main().is_ok());
+    assert_eq!(
+        o.read().unwrap(),
+        "\
+authors:
+  - name: Emma Xample
+cff-version: 1.2.0
+keywords:
+  - Rust
+message: Please cite this project using these information.
+"
+    );
+
+    remove_file(i).unwrap();
+    remove_file(o).unwrap();
+}
+
+#[test]
 fn cargo_toml_empty() {
     let i = "cargo_empty.toml";
     let o = "cargo_empty.cff";

@@ -130,7 +130,7 @@ impl Display for Cff {
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 struct CffAuthor {
-    email: String,
+    email: Option<String>,
     name: String,
 }
 
@@ -138,12 +138,19 @@ impl CffAuthor {
     fn from_cargo_toml(author: &str) -> Result<Self> {
         if let Some((name, email)) = author.split_once('<') {
             Ok(Self {
-                email: email
-                    .trim()
-                    .trim_matches(|c| "<>".contains(c))
-                    .trim()
-                    .to_string(),
+                email: Some(
+                    email
+                        .trim()
+                        .trim_matches(|c| "<>".contains(c))
+                        .trim()
+                        .to_string(),
+                ),
                 name: name.trim().to_string(),
+            })
+        } else if !author.is_empty() {
+            Ok(Self {
+                email: None,
+                name: author.to_string(),
             })
         } else {
             Err(ExitCode::DataErr)
@@ -153,7 +160,11 @@ impl CffAuthor {
 
 impl Display for CffAuthor {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "  - email: {}\n    name: {}", self.email, self.name)
+        if let Some(email) = &self.email {
+            write!(f, "  - email: {email}\n    name: {}", self.name)
+        } else {
+            write!(f, "  - name: {}", self.name)
+        }
     }
 }
 
