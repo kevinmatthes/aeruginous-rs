@@ -48,6 +48,7 @@ The Aeruginous Open Source Development Toolbox.
    1. [`comment-changes`](#comment-changes)
    1. [`complain`](#complain)
    1. [`increment-version`](#increment-version)
+   1. [`mkcws`](#mkcws)
    1. [`ronlog`](#ronlog)
    1. [`rs2md`](#rs2md)
    1. [`uncrlf`](#uncrlf)
@@ -59,12 +60,13 @@ The Aeruginous Open Source Development Toolbox.
    1. [`complain`](#complain)
    1. [`graph-description`](#graph-description)
    1. [`increment-version`](#increment-version)
+   1. [`mkcws`](#mkcws)
    1. [`ronlog`](#ronlog)
    1. [`rs2md`](#rs2md)
    1. [`uncrlf`](#uncrlf)
 -->
 
-The current code coverage is **<!-- cov -->71.22%<!-- cov -->**.
+The current code coverage is **<!-- cov -->70.97%<!-- cov -->**.
 
 ## License
 
@@ -313,6 +315,35 @@ regarding given input files.
 
 This subcommand will increment the hard-coded version strings in the given
 files by the specified version range.
+
+### `mkcws`
+
+> To be called with:
+>
+> - `mkcws`
+
+> To be installed with:
+>
+> - `-F mkcws`
+
+IDEs based on the source code of Visual Studio Code have the interesting
+feature of keeping the current editor view across subsequent sessions.  When
+starting the IDE, it will restore the latest state in order to enable a
+seamless continuation of work.  Users are allowed to export the current view
+as a Code Workspace to save their access to multiple editor states.  These
+Code Workspaces are configuration files using a JSON-based notation in order
+to store information on the Workspace's root directory as well as some
+optional settings unique to that particular Workspace.
+
+Usually, operating systems can be configured regarding the default
+application for handling a certain file type.  This also holds for Code
+Workspaces.  If the operating system is set to open Code Workspaces with a
+Visual Studio Code-like IDE, the Code Workspaces can be used as project
+launching shortcuts for a convenient user expericence with the IDE.
+
+This application mode aims to simplify the creation of new Code Workspace
+files by the provision of a rather simple and intuitive command line
+interface to define a minimal and valid Code Workspace from scratch.
 
 ### `ronlog`
 
