@@ -67,6 +67,7 @@
 //!    1. [`comment-changes`](#comment-changes)
 //!    1. [`complain`](#complain)
 //!    1. [`increment-version`](#increment-version)
+//!    1. [`mkcws`](#mkcws)
 //!    1. [`ronlog`](#ronlog)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
@@ -78,6 +79,7 @@
 //!    1. [`complain`](#complain)
 //!    1. [`graph-description`](#graph-description)
 //!    1. [`increment-version`](#increment-version)
+//!    1. [`mkcws`](#mkcws)
 //!    1. [`ronlog`](#ronlog)
 //!    1. [`rs2md`](#rs2md)
 //!    1. [`uncrlf`](#uncrlf)
@@ -347,6 +349,19 @@
 //! that sorted list without breaking the sorting.  For example, if a particular
 //! RONLOG should contain sections for some versions v1.0.0, v0.2.0, and v0.1.0,
 //! a new section on v0.3.0 would be inserted between v1.0.0 and v0.2.0.
+//!
+//! ### `mkcws`
+//!
+//! > To be called with:
+//! >
+//! > - `mkcws`
+//!
+//! > To be installed with:
+//! >
+//! > - `-F mkcws`
+//!
+//! With this application mode, new Code Workspaces for Visual Studio Code-like
+//! IDEs can be created.
 //!
 //! ### `rs2md`
 //!
