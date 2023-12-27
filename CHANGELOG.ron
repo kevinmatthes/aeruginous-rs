@@ -8,6 +8,36 @@
       references: {},
       version: (
         major: 3,
+        minor: 6,
+        patch: 0,
+      ),
+      released: "2023-12-27T20:02:53.875907234Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "CI:  add ``mkcws`` feature",
+            "Cargo.toml:  declare new feature ``mkcws``",
+            "Cargo.toml:  keyword ``linter``; fixes #961",
+            "Cargo.toml:  keyword ``toolbox``; fixes #960",
+            "README:  document mkcws; fixes #967",
+            "mkcws",
+          ],
+          "Fixed": [
+            "cff-create:  unit tests",
+          ],
+          "Removed": [
+            "Cargo.toml:  keyword ``rs2md``; fixes #963",
+            "Cargo.toml:  keyword ``uncrlf``; fixes #962",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
         minor: 5,
         patch: 0,
       ),
