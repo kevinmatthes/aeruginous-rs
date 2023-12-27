@@ -186,10 +186,10 @@ keywords:
   - command-line-utilities
   - config
   - development-tools
-  - rs2md
+  - linter
   - rust-patterns
   - template-engine
-  - uncrlf
+  - toolbox
 license: GPL-3.0
 message: Please cite this project using these information.
 repository-code: https://github.com/kevinmatthes/aeruginous-rs
