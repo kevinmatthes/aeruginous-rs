@@ -335,6 +335,19 @@
 //! This subcommand will increment the hard-coded version strings in the given
 //! files by the specified version range.
 //!
+//! ### `mkcws`
+//!
+//! > To be called with:
+//! >
+//! > - `mkcws`
+//!
+//! > To be installed with:
+//! >
+//! > - `-F mkcws`
+//!
+//! With this application mode, new Code Workspaces for Visual Studio Code-like
+//! IDEs can be created.
+//!
 //! ### `ronlog`
 //!
 //! > To be called with:
@@ -349,19 +362,6 @@
 //! that sorted list without breaking the sorting.  For example, if a particular
 //! RONLOG should contain sections for some versions v1.0.0, v0.2.0, and v0.1.0,
 //! a new section on v0.3.0 would be inserted between v1.0.0 and v0.2.0.
-//!
-//! ### `mkcws`
-//!
-//! > To be called with:
-//! >
-//! > - `mkcws`
-//!
-//! > To be installed with:
-//! >
-//! > - `-F mkcws`
-//!
-//! With this application mode, new Code Workspaces for Visual Studio Code-like
-//! IDEs can be created.
 //!
 //! ### `rs2md`
 //!
