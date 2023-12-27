@@ -345,8 +345,24 @@
 //! >
 //! > - `-F mkcws`
 //!
-//! With this application mode, new Code Workspaces for Visual Studio Code-like
-//! IDEs can be created.
+//! IDEs based on the source code of Visual Studio Code have the interesting
+//! feature of keeping the current editor view across subsequent sessions.  When
+//! starting the IDE, it will restore the latest state in order to enable a
+//! seamless continuation of work.  Users are allowed to export the current view
+//! as a Code Workspace to save their access to multiple editor states.  These
+//! Code Workspaces are configuration files using a JSON-based notation in order
+//! to store information on the Workspace's root directory as well as some
+//! optional settings unique to that particular Workspace.
+//!
+//! Usually, operating systems can be configured regarding the default
+//! application for handling a certain file type.  This also holds for Code
+//! Workspaces.  If the operating system is set to open Code Workspaces with a
+//! Visual Studio Code-like IDE, the Code Workspaces can be used as project
+//! launching shortcuts for a convenient user expericence with the IDE.
+//!
+//! This application mode aims to simplify the creation of new Code Workspace
+//! files by the provision of a rather simple and intuitive command line
+//! interface to define a minimal and valid Code Workspace from scratch.
 //!
 //! ### `ronlog`
 //!
