@@ -1,0 +1,10 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CI:  add ``mkcws`` feature",
+      "Cargo.toml:  declare new feature ``mkcws``",
+      "mkcws",
+    ],
+  },
+)
