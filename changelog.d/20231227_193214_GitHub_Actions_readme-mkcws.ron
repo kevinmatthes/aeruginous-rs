@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "README:  document mkcws; fixes #967",
-    ],
-  },
-)
