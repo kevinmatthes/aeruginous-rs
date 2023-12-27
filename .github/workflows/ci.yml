@@ -95,6 +95,7 @@ jobs:
           - --all-features
           - --no-default-features
           - --no-default-features -F cff-create
+          - --no-default-features -F mkcws
         subcommand:
           - b
           - c

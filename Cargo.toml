@@ -31,7 +31,8 @@ version = "1.0.193"
 
 [features]
 cff-create = []
-default = ["cff-create"]
+default = ["cff-create", "mkcws"]
+mkcws = []
 
 [package]
 authors = ["Kevin Matthes <aeruginous.rs@gmail.com>"]

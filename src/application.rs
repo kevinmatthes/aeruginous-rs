@@ -63,6 +63,18 @@ pub enum Action {
     /// Increment a hard-coded version string in some files.
     IncrementVersion(crate::IncrementVersion),
 
+    /// Create a new Code Workspace.
+    #[cfg(feature = "mkcws")]
+    Mkcws {
+        /// The directory to link.
+        #[arg(long, short)]
+        directory: PathBuf,
+
+        /// The file to write the result to.
+        #[arg(long, short)]
+        output_file: Option<PathBuf>,
+    },
+
     /// Interact with RON CHANGELOGs.
     Ronlog(crate::Ronlog),
 
@@ -162,6 +174,15 @@ impl Action {
             }
             */
             Self::IncrementVersion(i) => i.main(),
+            #[cfg(feature = "mkcws")]
+            Self::Mkcws {
+                directory,
+                output_file,
+            } => output_file.truncate(Box::new(
+                "{ \"folders\" : [ { \"path\" : \"".to_string()
+                    + &format!("{}", directory.display())
+                    + "\", }, ], \"settings\" : [], }\n",
+            )),
             Self::Ronlog(r) => r.main(),
             Self::Rs2md {
                 extract_inner,
