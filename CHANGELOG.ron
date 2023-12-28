@@ -9,6 +9,24 @@
       version: (
         major: 3,
         minor: 6,
+        patch: 1,
+      ),
+      released: "2023-12-28T19:41:38.116808857Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Changed": [
+            "MSRV:  1.75.0",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 6,
         patch: 0,
       ),
       released: "2023-12-27T20:02:53.875907234Z",
