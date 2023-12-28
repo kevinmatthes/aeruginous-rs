@@ -2,7 +2,7 @@
   references: {},
   changes: {
     "Changed": [
-      "MSRV:  v1.75.0",
+      "MSRV:  1.75.0",
     ],
   },
 )
