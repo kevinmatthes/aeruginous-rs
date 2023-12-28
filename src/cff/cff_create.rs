@@ -23,111 +23,6 @@ use crate::{AppendAsLine, PatternWriter, ReadFile};
 use std::{cmp::Ordering, fmt::Display, path::PathBuf};
 use sysexits::{ExitCode, Result};
 
-struct Cff {
-    abstrct: Option<String>,
-    authors: Vec<CffAuthor>,
-    cff_version: String,
-    date_released: Option<String>,
-    keywords: Vec<String>,
-    license: CffLicense,
-    message: String,
-    repository_code: Option<String>,
-    title: Option<String>,
-    url: Option<String>,
-    version: Option<String>,
-}
-
-impl Cff {
-    fn new() -> Self {
-        Self {
-            abstrct: None,
-            authors: Vec::new(),
-            cff_version: "1.2.0".to_string(),
-            date_released: Some(
-                chrono::Local::now()
-                    .date_naive()
-                    .format("%Y-%m-%d")
-                    .to_string(),
-            ),
-            keywords: Vec::new(),
-            license: CffLicense::default(),
-            message: "Please cite this project using these information."
-                .to_string(),
-            repository_code: None,
-            title: None,
-            url: None,
-            version: None,
-        }
-    }
-}
-
-impl Default for Cff {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl Display for Cff {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut keywords = self.keywords.clone();
-        let licenses = self.license.to_string();
-        let mut s = String::new();
-
-        keywords.sort();
-
-        if let Some(abstrct) = &self.abstrct {
-            s.append_as_line(format!("abstract: {abstrct}"));
-        }
-
-        if !self.authors.is_empty() {
-            let mut authors = self.authors.clone();
-
-            authors.sort();
-            s.append_as_line("authors:");
-
-            for author in authors {
-                s.append_as_line(author.to_string());
-            }
-        }
-
-        s.append_as_line(format!("cff-version: {}", self.cff_version));
-
-        if let Some(date_released) = &self.date_released {
-            s.append_as_line(format!("date-released: {date_released}"));
-        }
-
-        s.append_as_line("keywords:");
-
-        for keyword in keywords {
-            s.append_as_line(format!("  - {keyword}"));
-        }
-
-        if !licenses.is_empty() {
-            s.append_as_line(self.license.to_string());
-        }
-
-        s.append_as_line(format!("message: {}", self.message));
-
-        if let Some(repository_code) = &self.repository_code {
-            s.append_as_line(format!("repository-code: {repository_code}"));
-        }
-
-        if let Some(title) = &self.title {
-            s.append_as_line(format!("title: {title}"));
-        }
-
-        if let Some(url) = &self.url {
-            s.append_as_line(format!("url: {url}"));
-        }
-
-        if let Some(version) = &self.version {
-            s.append_as_line(format!("version: {version}"));
-        }
-
-        write!(f, "{s}")
-    }
-}
-
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 struct CffAuthor {
     email: Option<String>,
@@ -226,6 +121,111 @@ impl Display for CffLicense {
     }
 }
 
+struct CitationCff {
+    abstrct: Option<String>,
+    authors: Vec<CffAuthor>,
+    cff_version: String,
+    date_released: Option<String>,
+    keywords: Vec<String>,
+    license: CffLicense,
+    message: String,
+    repository_code: Option<String>,
+    title: Option<String>,
+    url: Option<String>,
+    version: Option<String>,
+}
+
+impl CitationCff {
+    fn new() -> Self {
+        Self {
+            abstrct: None,
+            authors: Vec::new(),
+            cff_version: "1.2.0".to_string(),
+            date_released: Some(
+                chrono::Local::now()
+                    .date_naive()
+                    .format("%Y-%m-%d")
+                    .to_string(),
+            ),
+            keywords: Vec::new(),
+            license: CffLicense::default(),
+            message: "Please cite this project using these information."
+                .to_string(),
+            repository_code: None,
+            title: None,
+            url: None,
+            version: None,
+        }
+    }
+}
+
+impl Default for CitationCff {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl Display for CitationCff {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut keywords = self.keywords.clone();
+        let licenses = self.license.to_string();
+        let mut s = String::new();
+
+        keywords.sort();
+
+        if let Some(abstrct) = &self.abstrct {
+            s.append_as_line(format!("abstract: {abstrct}"));
+        }
+
+        if !self.authors.is_empty() {
+            let mut authors = self.authors.clone();
+
+            authors.sort();
+            s.append_as_line("authors:");
+
+            for author in authors {
+                s.append_as_line(author.to_string());
+            }
+        }
+
+        s.append_as_line(format!("cff-version: {}", self.cff_version));
+
+        if let Some(date_released) = &self.date_released {
+            s.append_as_line(format!("date-released: {date_released}"));
+        }
+
+        s.append_as_line("keywords:");
+
+        for keyword in keywords {
+            s.append_as_line(format!("  - {keyword}"));
+        }
+
+        if !licenses.is_empty() {
+            s.append_as_line(self.license.to_string());
+        }
+
+        s.append_as_line(format!("message: {}", self.message));
+
+        if let Some(repository_code) = &self.repository_code {
+            s.append_as_line(format!("repository-code: {repository_code}"));
+        }
+
+        if let Some(title) = &self.title {
+            s.append_as_line(format!("title: {title}"));
+        }
+
+        if let Some(url) = &self.url {
+            s.append_as_line(format!("url: {url}"));
+        }
+
+        if let Some(version) = &self.version {
+            s.append_as_line(format!("version: {version}"));
+        }
+
+        write!(f, "{s}")
+    }
+}
+
 /// Extract the citation information from a given and valid CFF file.
 #[derive(clap::Parser, Clone)]
 #[command(visible_aliases = ["cffcreate", "mkcff"])]
@@ -284,7 +284,7 @@ impl Create {
 
     fn wrap(&self) -> Logic {
         Logic {
-            cff: Cff::default(),
+            cff: CitationCff::default(),
             cli: self.clone(),
         }
     }
@@ -306,7 +306,7 @@ macro_rules! manifest {
 }
 
 struct Logic {
-    cff: Cff,
+    cff: CitationCff,
     cli: Create,
 }
 

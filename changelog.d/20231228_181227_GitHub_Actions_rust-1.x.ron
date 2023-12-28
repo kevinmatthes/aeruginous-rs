@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "MSRV:  1.75.0",
+    ],
+  },
+)
