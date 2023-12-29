@@ -30,7 +30,15 @@
 ################################################################################
 
 # The default recipe to execute.
-default: coverage
+default: ci
+
+# Run all CI steps.
+ci:
+    cargo fmt --check
+    cargo r -- complain src/ tests/
+    just feature cff-create
+    just feature mkcws
+    just features
 
 # Clean the repository.
 clean:
@@ -39,6 +47,28 @@ clean:
 # Determine the coverage.
 coverage: llvm-cov
     pycobertura show cobertura.xml
+
+# Run all feature dependent CI steps for a single feature configuration.
+feature f:
+    cargo build --no-default-features -F {{ f }}
+    cargo check --no-default-features -F {{ f }}
+    cargo clippy --no-default-features -F {{ f }}
+    cargo doc --no-default-features -F {{ f }}
+    cargo test --no-default-features -F {{ f }}
+
+# Run all feature dependent CI steps for the given, fixed feature set.
+feature-set s:
+    cargo build {{ s }}
+    cargo check {{ s }}
+    cargo clippy {{ s }}
+    cargo doc {{ s }}
+    cargo test {{ s }}
+
+# Run all feature dependent CI steps for all fixed feature sets.
+features:
+    just feature-set \;
+    just feature-set --all-features
+    just feature-set --no-default-features
 
 # Run the coverage tool.
 llvm-cov: clean
