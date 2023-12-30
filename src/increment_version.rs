@@ -191,6 +191,11 @@ impl Logic {
                 buffer.append_as_line(
                     line.replace(&self.old_version, &self.new_version),
                 );
+            } else if line.starts_with("date-released:") {
+                buffer.append_as_line(format!(
+                    "date-released: {}",
+                    chrono::Local::now().date_naive().format("%Y-%m-%d")
+                ));
             } else {
                 buffer.append_as_line(line);
             }
