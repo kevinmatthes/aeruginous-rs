@@ -84,8 +84,6 @@ jobs:
             -R Cargo.toml \
             -e CITATION.cff \
             -e src/lib.rs
-          cargo r -- cff-release-today .github/aeruginous.cff
-          cargo r -- cff-release-today CITATION.cff
           cargo r -- ronlog release -i changelog.d/ -v "$(cat .version)"
           cargo llvm-cov --cobertura --output-path cobertura.xml
           sed "s/<!-- cov -->.*<!-- cov -->/<!-- cov -->$( \
