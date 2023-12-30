@@ -1,0 +1,9 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      ".vscode/tasks.json",
+      "Just:  recipes for local CI execution",
+    ],
+  },
+)
