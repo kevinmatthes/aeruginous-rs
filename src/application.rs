@@ -38,8 +38,14 @@ pub enum Action {
     /// Extract the citation information from a given and valid CFF file.
     Cffreference(crate::Cffreference),
 
+    /// ⚠️  DEPRECATED.
+    ///
     /// Increment the release date in CFFs.
-    #[command(visible_aliases = ["cffrel", "cff-rel", "cffreleasetoday"])]
+    ///
+    /// This application mode is deprecated.  Please use `aeruginous
+    /// increment-version [-e|-R] <FILE>` instead.
+    #[command(aliases = ["cffrel", "cff-rel", "cffreleasetoday"])]
+    #[deprecated(since = "3.6.2", note = "use `IncrementVersion` instead")]
     CffReleaseToday {
         /// The file to work on.
         file_to_edit: PathBuf,
@@ -143,7 +149,13 @@ impl Action {
             #[cfg(feature = "cff-create")]
             Self::CffCreate(c) => c.main(),
             Self::Cffreference(c) => c.main(),
+            #[allow(deprecated)]
             Self::CffReleaseToday { file_to_edit } => {
+                crate::ceprintlns!(
+                    "DEPRECATED"!Red,
+                    "Please use `increment-version` instead."
+                );
+
                 let mut buffer = String::new();
 
                 for line in
