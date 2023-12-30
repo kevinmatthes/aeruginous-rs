@@ -206,35 +206,39 @@ impl Logic {
     }
 
     fn main(&mut self) -> Result<()> {
+        macro_rules! for_file_in {
+            ($v:ident { $( $n:literal -> $m:ident ),+ }) => {
+                for file in &self.cli.$v {
+                    match file
+                        .file_name()
+                        .ok_or(ExitCode::Usage)?
+                        .to_str()
+                        .ok_or(ExitCode::DataErr)?
+                    {
+                        $(
+                            $n => self.$m(file)?,
+                        )+
+                        "Cargo.lock" => self.edit_cargo_lock(file)?,
+                        _ => match file.extension() {
+                            None => self.edit_normal_file(file)?,
+                            Some(extension) => {
+                                match extension
+                                    .to_str()
+                                    .ok_or(ExitCode::DataErr)?
+                                {
+                                    "cff" => self.edit_citation_cff(file)?,
+                                    _ => self.edit_normal_file(file)?,
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
         self.determine_new_version()?;
-
-        for file in &self.cli.file_to_edit {
-            match file
-                .file_name()
-                .ok_or(ExitCode::Usage)?
-                .to_str()
-                .ok_or(ExitCode::DataErr)?
-            {
-                "Cargo.lock" => self.edit_cargo_lock(file)?,
-                "Cargo.toml" => self.edit_cargo_toml(file)?,
-                "CITATION.cff" => self.edit_citation_cff(file)?,
-                _ => self.edit_normal_file(file)?,
-            }
-        }
-
-        for file in &self.cli.file_to_rewrite {
-            match file
-                .file_name()
-                .ok_or(ExitCode::Usage)?
-                .to_str()
-                .ok_or(ExitCode::DataErr)?
-            {
-                "Cargo.lock" => self.edit_cargo_lock(file)?,
-                "Cargo.toml" => self.rewrite_cargo_toml(file)?,
-                "CITATION.cff" => self.edit_citation_cff(file)?,
-                _ => self.edit_normal_file(file)?,
-            }
-        }
+        for_file_in!(file_to_edit { "Cargo.toml" -> edit_cargo_toml });
+        for_file_in!(file_to_rewrite { "Cargo.toml" -> rewrite_cargo_toml });
 
         Ok(())
     }
