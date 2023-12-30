@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "README:  deprecation note on cff-release-today",
+    ],
+    "Deprecated": [
+      "cff-release-today",
+    ],
+  },
+)
