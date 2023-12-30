@@ -63,7 +63,7 @@
 //! 1. [Supported Subcommands](#supported-subcommands)
 //!    1. [`cff-create`](#cff-create)
 //!    1. [`cffreference`](#cffreference)
-//!    1. [`cff-release-today`](#cff-release-today)
+//!    1. ⚠️  [`cff-release-today`](#cff-release-today) (deprecated)
 //!    1. [`comment-changes`](#comment-changes)
 //!    1. [`complain`](#complain)
 //!    1. [`increment-version`](#increment-version)
@@ -74,7 +74,7 @@
 //! <!--
 //!    1. [`cff-create`](#cff-create)
 //!    1. [`cffreference`](#cffreference)
-//!    1. [`cff-release-today`](#cff-release-today)
+//!    1. ⚠️  [`cff-release-today`](#cff-release-today) (deprecated)
 //!    1. [`comment-changes`](#comment-changes)
 //!    1. [`complain`](#complain)
 //!    1. [`graph-description`](#graph-description)
@@ -193,6 +193,9 @@
 //! `cffreference` to write to [`std::io::Stdout`].
 //!
 //! ### `cff-release-today`
+//!
+//! ⚠️  This mode is deprecated.  Please use
+//! [`increment-version`](#increment-version) instead.  ⚠️
 //!
 //! > To be called with:
 //! >
