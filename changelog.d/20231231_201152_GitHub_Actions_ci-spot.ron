@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "CI:  execute Just recipe as SPOT",
+    ],
+    "Removed": [
+      "CI:  redundant Cargo-related CI jobs",
+    ],
+  },
+)
