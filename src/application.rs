@@ -85,25 +85,7 @@ pub enum Action {
     Ronlog(crate::Ronlog),
 
     /// Extract Markdown code from Rust documentation comments.
-    Rs2md {
-        /// Whether to extract Rust documentation comments starting with `///`.
-        #[arg(long = "inner")]
-        extract_inner: bool,
-
-        /// Whether to extract Rust documentation comments starting with `//!`.
-        #[arg(long = "outer")]
-        extract_outer: bool,
-
-        /// The Rust files to read from, defaulting to [`std::io::Stdin`], if
-        /// omitted.
-        #[arg(long = "input", short)]
-        input_file: Vec<PathBuf>,
-
-        /// The Markdown file to write to, defaulting to [`std::io::Stdout`], if
-        /// omitted.
-        #[arg(long = "output", short)]
-        output_file: Option<PathBuf>,
-    },
+    Rs2md(crate::Rs2md),
 
     /// Remove CRLFs from the given file.
     Uncrlf {
@@ -122,23 +104,6 @@ pub enum Action {
 }
 
 impl Action {
-    fn rs2md(s: &str, extract_inner: bool, extract_outer: bool) -> String {
-        s.lines()
-            .map(str::trim_start)
-            .filter(|l| {
-                (extract_inner && l.starts_with("///"))
-                    || (extract_outer && l.starts_with("//!"))
-            })
-            .map(|l| {
-                if l.len() > 3 {
-                    l.split_at(4).1.trim_end().to_string() + "\n"
-                } else {
-                    "\n".to_string()
-                }
-            })
-            .collect::<String>()
-    }
-
     /// Execute the selected action.
     ///
     /// # Errors
@@ -196,15 +161,7 @@ impl Action {
                     + "\", }, ], \"settings\" : [], }\n",
             )),
             Self::Ronlog(r) => r.main(),
-            Self::Rs2md {
-                extract_inner,
-                extract_outer,
-                input_file,
-                output_file,
-            } => (|s: String| -> String {
-                Self::rs2md(&s, *extract_inner, *extract_outer)
-            })
-            .io(input_file, output_file),
+            Self::Rs2md(r) => r.main(),
             Self::Uncrlf {
                 file_to_edit,
                 input_file,

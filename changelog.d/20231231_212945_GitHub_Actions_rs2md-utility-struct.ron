@@ -1,0 +1,15 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "Rs2md",
+      "src/utilities.rs",
+      "tests/utilities.rs",
+      "tests/assets/gpl-3.0-inner.rs",
+      "tests/assets/gpl-3.0-outer.rs",
+    ],
+    "Changed": [
+      "rs2md:  outsource logic to dedicated struct",
+    ],
+  },
+)
