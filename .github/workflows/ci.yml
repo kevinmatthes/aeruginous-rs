@@ -56,6 +56,7 @@ jobs:
       - cargo
       - cargo-features
       - cffconvert
+      - just
       - renovate-linter
     runs-on: ubuntu-latest
     steps:
@@ -125,6 +126,19 @@ jobs:
           - cffs/input_5.cff
           - cffs/input_6.cff
           - cffs/input_7.cff
+
+  just:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@4.1.1
+        with:
+          persist-credentials: false
+
+      - uses: taiki-e/install-action@v2.23.7
+        with:
+          tool: just
+
+      - run: just ci
 
   renovate-linter:
     runs-on: ubuntu-latest
