@@ -450,6 +450,7 @@ mod macros;
 mod pattern;
 mod running;
 mod traits;
+mod utilities;
 mod version;
 
 pub use crate::{
@@ -474,6 +475,7 @@ pub use crate::{
         AppendAsLine, ColourMessage, ConvertBuffer, FromMd, FromRon, FromRst,
         FromXml, Prefer, ReadFile, ToMd, ToRon, ToRst, ToStderr, ToXml,
     },
+    utilities::Rs2md,
     version::{Range as VersionRange, Version},
 };
 
