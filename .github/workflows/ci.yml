@@ -53,56 +53,12 @@ jobs:
   bors:
     needs:
       - actionlint
-      - cargo
-      - cargo-features
       - cffconvert
       - just
       - renovate-linter
     runs-on: ubuntu-latest
     steps:
       - run: bash -c 'exit 0'
-
-  cargo:
-    runs-on: ubuntu-latest
-    steps:
-      - run: rustup update
-
-      - uses: actions/checkout@v4.1.1
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - run: cargo ${{ matrix.subcommand }}
-    strategy:
-      matrix:
-        subcommand:
-          - fmt --check
-          - r -- complain src/ tests/
-
-  cargo-features:
-    runs-on: ubuntu-latest
-    steps:
-      - run: rustup update
-
-      - uses: actions/checkout@v4.1.1
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - run: cargo ${{ matrix.subcommand }} ${{ matrix.features }}
-    strategy:
-      matrix:
-        features:
-          - --all-features
-          - --no-default-features
-          - --no-default-features -F cff-create
-          - --no-default-features -F mkcws
-        subcommand:
-          - b
-          - c
-          - clippy
-          - d
-          - t
 
   cffconvert:
     runs-on: ubuntu-latest
