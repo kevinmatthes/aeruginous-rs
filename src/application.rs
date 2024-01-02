@@ -71,20 +71,13 @@ pub enum Action {
 
     /// Create a new Code Workspace.
     #[cfg(feature = "mkcws")]
-    Mkcws {
-        /// The directory to link.
-        #[arg(long, short)]
-        directory: PathBuf,
-
-        /// The file to write the result to.
-        #[arg(long, short)]
-        output_file: Option<PathBuf>,
-    },
+    Mkcws(crate::Mkcws),
 
     /// Interact with RON CHANGELOGs.
     Ronlog(crate::Ronlog),
 
     /// Extract Markdown code from Rust documentation comments.
+    #[cfg(feature = "rs2md")]
     Rs2md(crate::Rs2md),
 
     /// Remove CRLFs from the given file.
@@ -152,15 +145,9 @@ impl Action {
             */
             Self::IncrementVersion(i) => i.main(),
             #[cfg(feature = "mkcws")]
-            Self::Mkcws {
-                directory,
-                output_file,
-            } => output_file.truncate(Box::new(
-                "{ \"folders\" : [ { \"path\" : \"".to_string()
-                    + &format!("{}", directory.display())
-                    + "\", }, ], \"settings\" : [], }\n",
-            )),
+            Self::Mkcws(m) => m.main(),
             Self::Ronlog(r) => r.main(),
+            #[cfg(feature = "rs2md")]
             Self::Rs2md(r) => r.main(),
             Self::Uncrlf {
                 file_to_edit,

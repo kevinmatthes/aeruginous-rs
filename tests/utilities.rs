@@ -17,15 +17,15 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::{ReadFile, Rs2md};
-use std::fs::remove_file;
-
 macro_rules! make_test {
     ( @rs2md @none $( $n:ident -> $i:expr , $o:expr ),+ ) => {
         $(
+            #[cfg(feature = "rs2md")]
             #[test]
             fn $n() {
-                assert!(Rs2md::new(
+                use aeruginous::ReadFile;
+
+                assert!(aeruginous::Rs2md::new(
                     vec![
                         "tests/assets/gpl-3.0-inner.rs",
                         "tests/assets/gpl-3.0-outer.rs"
@@ -42,16 +42,19 @@ macro_rules! make_test {
                         .is_empty()
                 );
 
-                remove_file(concat!(stringify!($n), ".md")).unwrap();
+                std::fs::remove_file(concat!(stringify!($n), ".md")).unwrap();
             }
         )+
     };
 
     ( @rs2md @once $( $n:ident -> $i:expr , $o:expr ),+ ) => {
         $(
+            #[cfg(feature = "rs2md")]
             #[test]
             fn $n() {
-                assert!(Rs2md::new(
+                use aeruginous::ReadFile;
+
+                assert!(aeruginous::Rs2md::new(
                     vec![
                         "tests/assets/gpl-3.0-inner.rs",
                         "tests/assets/gpl-3.0-outer.rs"
@@ -81,16 +84,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 "
                 );
 
-                remove_file(concat!(stringify!($n), ".md")).unwrap();
+                std::fs::remove_file(concat!(stringify!($n), ".md")).unwrap();
             }
         )+
     };
 
     ( @rs2md @twice $( $n:ident -> $i:expr , $o:expr ),+ ) => {
         $(
+            #[cfg(feature = "rs2md")]
             #[test]
             fn $n() {
-                assert!(Rs2md::new(
+                use aeruginous::ReadFile;
+
+                assert!(aeruginous::Rs2md::new(
                     vec![
                         "tests/assets/gpl-3.0-inner.rs",
                         "tests/assets/gpl-3.0-outer.rs"
@@ -134,7 +140,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 "
                 );
 
-                remove_file(concat!(stringify!($n), ".md")).unwrap();
+                std::fs::remove_file(concat!(stringify!($n), ".md")).unwrap();
             }
         )+
     };
