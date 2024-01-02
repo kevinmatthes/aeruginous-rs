@@ -143,4 +143,56 @@ impl Rs2md {
     }
 }
 
+/// Remove CRLFs from the given file.
+#[cfg(feature = "uncrlf")]
+#[derive(clap::Parser, Clone)]
+pub struct Uncrlf {
+    /// The file to edit; overrides `input_file` and `output_file`.
+    #[arg(long = "edit", short = 'e')]
+    file_to_edit: Option<std::path::PathBuf>,
+
+    /// The file to read from, defaulting to [`std::io::Stdin`], if omitted.
+    #[arg(long = "input", short)]
+    input_file: Option<std::path::PathBuf>,
+
+    /// The file to write to, defaulting to [`std::io::Stdout`], if omitted.
+    #[arg(long = "output", short)]
+    output_file: Option<std::path::PathBuf>,
+}
+
+#[cfg(feature = "uncrlf")]
+impl Uncrlf {
+    /// Remove CRLFs from the given file.
+    ///
+    /// # Errors
+    ///
+    /// See
+    ///
+    /// - [`crate::PatternIOProcessor::io`]
+    pub fn main(&self) -> sysexits::Result<()> {
+        use crate::{PatternIOProcessor, Prefer};
+
+        (|s: String| s.replace("\r\n", "\n")).io(
+            self.input_file.prefer(self.file_to_edit.clone()),
+            self.output_file.prefer(self.file_to_edit.clone()),
+        )
+    }
+
+    /// Create a new instance.
+    pub fn new<T>(
+        input_file: Option<T>,
+        output_file: Option<T>,
+        file_to_edit: Option<T>,
+    ) -> Self
+    where
+        std::path::PathBuf: From<T>,
+    {
+        Self {
+            file_to_edit: file_to_edit.map(Into::into),
+            input_file: input_file.map(Into::into),
+            output_file: output_file.map(Into::into),
+        }
+    }
+}
+
 /******************************************************************************/

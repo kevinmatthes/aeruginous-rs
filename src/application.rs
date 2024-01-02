@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{AppendAsLine, PatternIOProcessor, PatternWriter, Prefer};
+use crate::{AppendAsLine, PatternWriter};
 use clap::{Parser, Subcommand};
 use std::{io::BufRead, path::PathBuf};
 use sysexits::Result;
@@ -81,19 +81,8 @@ pub enum Action {
     Rs2md(crate::Rs2md),
 
     /// Remove CRLFs from the given file.
-    Uncrlf {
-        /// The file to edit; overrides `input_file` and `output_file`.
-        #[arg(long = "edit", short = 'e')]
-        file_to_edit: Option<PathBuf>,
-
-        /// The file to read from, defaulting to [`std::io::Stdin`], if omitted.
-        #[arg(long = "input", short)]
-        input_file: Option<PathBuf>,
-
-        /// The file to write to, defaulting to [`std::io::Stdout`], if omitted.
-        #[arg(long = "output", short)]
-        output_file: Option<PathBuf>,
-    },
+    #[cfg(feature = "uncrlf")]
+    Uncrlf(crate::Uncrlf),
 }
 
 impl Action {
@@ -101,7 +90,7 @@ impl Action {
     ///
     /// # Errors
     ///
-    /// See [`PatternIOProcessor::io`].
+    /// See [`crate::PatternIOProcessor::io`].
     pub fn run(&self) -> Result<()> {
         match self {
             #[cfg(feature = "cff-create")]
@@ -149,18 +138,8 @@ impl Action {
             Self::Ronlog(r) => r.main(),
             #[cfg(feature = "rs2md")]
             Self::Rs2md(r) => r.main(),
-            Self::Uncrlf {
-                file_to_edit,
-                input_file,
-                output_file,
-            } => |mut s: String| -> String {
-                s.retain(|c| c != '\r');
-                s
-            }
-            .io(
-                input_file.prefer(file_to_edit.clone()),
-                output_file.prefer(file_to_edit.clone()),
-            ),
+            #[cfg(feature = "uncrlf")]
+            Self::Uncrlf(u) => u.main(),
         }
     }
 }

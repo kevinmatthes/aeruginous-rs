@@ -489,6 +489,9 @@ pub use crate::utilities::Mkcws;
 #[cfg(feature = "rs2md")]
 pub use crate::utilities::Rs2md;
 
+#[cfg(feature = "uncrlf")]
+pub use crate::utilities::Uncrlf;
+
 /// This crate's name.
 pub const NAME: &str = "aeruginous";
 

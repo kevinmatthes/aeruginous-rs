@@ -176,4 +176,21 @@ fn mkcws() {
     std::fs::remove_file("cwd.code-workspace").unwrap();
 }
 
+#[cfg(feature = "uncrlf")]
+#[test]
+fn uncrlf() {
+    use aeruginous::{PatternWriter, ReadFile};
+
+    "uncrlf.txt"
+        .truncate(Box::new("TEST\r\nTest\n\rtest\r\n".to_string()))
+        .unwrap();
+
+    assert!(aeruginous::Uncrlf::new(None, None, Some("uncrlf.txt"))
+        .main()
+        .is_ok());
+
+    assert_eq!("uncrlf.txt".read().unwrap(), "TEST\nTest\n\rtest\n");
+    std::fs::remove_file("uncrlf.txt").unwrap();
+}
+
 /******************************************************************************/
