@@ -46,8 +46,19 @@ impl Mkcws {
         self.output_file.truncate(Box::new(
             "{ \"folders\" : [ { \"path\" : \"".to_string()
                 + &format!("{}", self.directory.display())
-                + "\", }, ], \"settings\" : [], }\n",
+                + "\" } ] }\n",
         ))
+    }
+
+    /// Create a new instance.
+    pub fn new<T>(directory: T, output_file: Option<T>) -> Self
+    where
+        std::path::PathBuf: From<T>,
+    {
+        Self {
+            directory: std::path::PathBuf::from(directory),
+            output_file: output_file.map(Into::into),
+        }
     }
 }
 
