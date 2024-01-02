@@ -159,4 +159,21 @@ make_test!(@rs2md @twice
     rs2md_both_inner_and_outer -> true, true
 );
 
+#[cfg(feature = "mkcws")]
+#[test]
+fn mkcws() {
+    use aeruginous::ReadFile;
+
+    assert!(aeruginous::Mkcws::new(".", Some("cwd.code-workspace"))
+        .main()
+        .is_ok());
+
+    assert_eq!(
+        "cwd.code-workspace".read().unwrap(),
+        "{ \"folders\" : [ { \"path\" : \".\" } ] }\n"
+    );
+
+    std::fs::remove_file("cwd.code-workspace").unwrap();
+}
+
 /******************************************************************************/
