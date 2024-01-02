@@ -66,7 +66,7 @@ The Aeruginous Open Source Development Toolbox.
    1. [`uncrlf`](#uncrlf)
 -->
 
-The current code coverage is **<!-- cov -->73.75%<!-- cov -->**.
+The current code coverage is **<!-- cov -->73.62%<!-- cov -->**.
 
 ## License
 
