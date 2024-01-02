@@ -172,11 +172,7 @@ impl Uncrlf {
     pub fn main(&self) -> sysexits::Result<()> {
         use crate::{PatternIOProcessor, Prefer};
 
-        (|mut s: String| {
-            s.retain(|c| c != '\r');
-            s
-        })
-        .io(
+        (|s: String| s.replace("\r\n", "\n")).io(
             self.input_file.prefer(self.file_to_edit.clone()),
             self.output_file.prefer(self.file_to_edit.clone()),
         )
