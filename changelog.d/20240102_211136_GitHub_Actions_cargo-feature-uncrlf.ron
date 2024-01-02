@@ -1,0 +1,17 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "Cargo.toml:  declare new feature ``uncrlf`` as part of ``utilities``",
+      "Just:  CI step for feature ``uncrlf``",
+      "Uncrlf",
+      "uncrlf:  unit tests",
+    ],
+    "Changed": [
+      "uncrlf:  outsource logic to dedicated struct",
+    ],
+    "Fixed": [
+      "uncrlf:  removing all `\\r` occurences",
+    ],
+  },
+)
