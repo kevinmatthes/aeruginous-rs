@@ -40,6 +40,7 @@ ci:
     just feature cff-create
     just feature mkcws
     just feature rs2md
+    just feature uncrlf
     just feature utilities
     just features
 
