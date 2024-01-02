@@ -32,7 +32,7 @@ version = "1.0.194"
 [features]
 cff = ["cff-create"]
 cff-create = []
-default = ["cff-create", "mkcws"]
+default = ["cff", "utilities"]
 mkcws = []
 rs2md = []
 utilities = ["mkcws", "rs2md"]
