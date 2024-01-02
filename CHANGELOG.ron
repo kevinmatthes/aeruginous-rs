@@ -9,6 +9,53 @@
       version: (
         major: 3,
         minor: 6,
+        patch: 2,
+      ),
+      released: "2024-01-02T17:50:21.417205892Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            ".vscode/tasks.json",
+            "Cargo.toml:  declare new feature ``cff``",
+            "Cargo.toml:  declare new feature ``rs2md``",
+            "Cargo.toml:  declare new feature ``utilities``",
+            "Just:  recipes for local CI execution",
+            "Mkcws",
+            "README:  deprecation note on cff-release-today",
+            "Rs2md",
+            "increment-version:  CFF mode now also updates the release date",
+            "mkcws:  unit tests",
+            "src/utilities.rs",
+            "tests/assets/gpl-3.0-inner.rs",
+            "tests/assets/gpl-3.0-outer.rs",
+            "tests/utilities.rs",
+          ],
+          "Changed": [
+            "CI:  execute Just recipe as SPOT",
+            "CI:  simplify RONLOG assembly workflow",
+            "Cargo.toml:  set default features to ``cff`` and ``utilities``",
+            "mkcws:  outsource logic to dedicated struct",
+            "rs2md:  outsource logic to dedicated struct",
+          ],
+          "Deprecated": [
+            "cff-release-today",
+          ],
+          "Fixed": [
+            "increment-version:  treat all files with ``*.cff`` extension as CITATION.cff files",
+          ],
+          "Removed": [
+            "CI:  redundant Cargo-related CI jobs",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 6,
         patch: 1,
       ),
       released: "2023-12-28T19:41:38.116808857Z",
