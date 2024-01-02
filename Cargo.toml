@@ -34,6 +34,7 @@ cff-create = []
 default = ["cff-create", "mkcws"]
 mkcws = []
 rs2md = []
+utilities = ["mkcws", "rs2md"]
 
 [package]
 authors = ["Kevin Matthes <aeruginous.rs@gmail.com>"]
