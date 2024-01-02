@@ -36,8 +36,11 @@ default: ci
 ci:
     cargo fmt --check
     cargo r -- complain src/ tests/
+    just feature cff
     just feature cff-create
     just feature mkcws
+    just feature rs2md
+    just feature utilities
     just features
 
 # Clean the repository.
