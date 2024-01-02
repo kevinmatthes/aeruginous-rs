@@ -30,6 +30,7 @@ features = ["derive"]
 version = "1.0.194"
 
 [features]
+cff = ["cff-create"]
 cff-create = []
 default = ["cff-create", "mkcws"]
 mkcws = []
