@@ -9,6 +9,33 @@
       version: (
         major: 3,
         minor: 6,
+        patch: 3,
+      ),
+      released: "2024-01-02T21:18:22.499789244Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "Cargo.toml:  declare new feature ``uncrlf`` as part of ``utilities``",
+            "Just:  CI step for feature ``uncrlf``",
+            "Uncrlf",
+            "uncrlf:  unit tests",
+          ],
+          "Changed": [
+            "uncrlf:  outsource logic to dedicated struct",
+          ],
+          "Fixed": [
+            "uncrlf:  removing all `\\r` occurrences",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 6,
         patch: 2,
       ),
       released: "2024-01-02T17:50:21.417205892Z",
