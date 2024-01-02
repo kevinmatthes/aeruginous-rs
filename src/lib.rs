@@ -475,7 +475,6 @@ pub use crate::{
         AppendAsLine, ColourMessage, ConvertBuffer, FromMd, FromRon, FromRst,
         FromXml, Prefer, ReadFile, ToMd, ToRon, ToRst, ToStderr, ToXml,
     },
-    utilities::Rs2md,
     version::{Range as VersionRange, Version},
 };
 
@@ -483,6 +482,12 @@ pub use crate::{
 pub use crate::cff::{
     Create as CffCreate, ManifestType as CffCreateManifestType,
 };
+
+#[cfg(feature = "mkcws")]
+pub use crate::utilities::Mkcws;
+
+#[cfg(feature = "rs2md")]
+pub use crate::utilities::Rs2md;
 
 /// This crate's name.
 pub const NAME: &str = "aeruginous";
