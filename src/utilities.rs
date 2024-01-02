@@ -181,6 +181,22 @@ impl Uncrlf {
             self.output_file.prefer(self.file_to_edit.clone()),
         )
     }
+
+    /// Create a new instance.
+    pub fn new<T>(
+        input_file: Option<T>,
+        output_file: Option<T>,
+        file_to_edit: Option<T>,
+    ) -> Self
+    where
+        std::path::PathBuf: From<T>,
+    {
+        Self {
+            file_to_edit: file_to_edit.map(Into::into),
+            input_file: input_file.map(Into::into),
+            output_file: output_file.map(Into::into),
+        }
+    }
 }
 
 /******************************************************************************/
