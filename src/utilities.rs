@@ -17,11 +17,42 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::PatternIOProcessor;
-use std::path::PathBuf;
-use sysexits::Result;
+/// Create a new Code Workspace.
+#[cfg(feature = "mkcws")]
+#[derive(clap::Parser, Clone)]
+pub struct Mkcws {
+    /// The directory to link.
+    #[arg(long, short)]
+    directory: std::path::PathBuf,
+
+    /// The file to write the result to, defaulting to [`std::io::Stdin`], if
+    /// omitted.
+    #[arg(long, short)]
+    output_file: Option<std::path::PathBuf>,
+}
+
+#[cfg(feature = "mkcws")]
+impl Mkcws {
+    /// Create a new Code Workspace.
+    ///
+    /// # Errors
+    ///
+    /// See
+    ///
+    /// - [`crate::PatternWriter::truncate`]
+    pub fn main(&self) -> sysexits::Result<()> {
+        use crate::PatternWriter;
+
+        self.output_file.truncate(Box::new(
+            "{ \"folders\" : [ { \"path\" : \"".to_string()
+                + &format!("{}", self.directory.display())
+                + "\", }, ], \"settings\" : [], }\n",
+        ))
+    }
+}
 
 /// Extract Markdown code from Rust documentation comments.
+#[cfg(feature = "rs2md")]
 #[derive(clap::Parser, Clone)]
 pub struct Rs2md {
     /// Whether to extract Rust documentation comments starting with `///`.
@@ -35,14 +66,15 @@ pub struct Rs2md {
     /// The Rust files to read from, defaulting to [`std::io::Stdin`], if
     /// omitted.
     #[arg(long = "input", short)]
-    input_file: Vec<PathBuf>,
+    input_file: Vec<std::path::PathBuf>,
 
     /// The Markdown file to write to, defaulting to [`std::io::Stdout`], if
     /// omitted.
     #[arg(long = "output", short)]
-    output_file: Option<PathBuf>,
+    output_file: Option<std::path::PathBuf>,
 }
 
+#[cfg(feature = "rs2md")]
 impl Rs2md {
     /// Extract Markdown code from Rust documentation comments.
     ///
@@ -50,8 +82,10 @@ impl Rs2md {
     ///
     /// See
     ///
-    /// - [`PatternIOProcessor::io`]
-    pub fn main(&self) -> Result<()> {
+    /// - [`crate::PatternIOProcessor::io`]
+    pub fn main(&self) -> sysexits::Result<()> {
+        use crate::PatternIOProcessor;
+
         (|s: String| {
             s.lines()
                 .map(str::trim_start)
@@ -79,7 +113,7 @@ impl Rs2md {
         extract_outer: bool,
     ) -> Self
     where
-        PathBuf: From<T>,
+        std::path::PathBuf: From<T>,
     {
         Self {
             extract_inner,
