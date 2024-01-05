@@ -17,10 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{AppendAsLine, PatternWriter};
 use clap::{Parser, Subcommand};
-use std::{io::BufRead, path::PathBuf};
-use sysexits::Result;
 
 /// The supported application modes.
 ///
@@ -37,19 +34,6 @@ pub enum Action {
 
     /// Extract the citation information from a given and valid CFF file.
     Cffreference(crate::Cffreference),
-
-    /// ⚠️  DEPRECATED.
-    ///
-    /// Increment the release date in CFFs.
-    ///
-    /// This application mode is deprecated.  Please use `aeruginous
-    /// increment-version [-e|-R] <FILE>` instead.
-    #[command(aliases = ["cffrel", "cff-rel", "cffreleasetoday"])]
-    #[deprecated(since = "3.6.2", note = "use `IncrementVersion` instead")]
-    CffReleaseToday {
-        /// The file to work on.
-        file_to_edit: PathBuf,
-    },
 
     /// Create comments on the commits of a branch in this repository.
     CommentChanges(crate::CommentChanges),
@@ -91,40 +75,11 @@ impl Action {
     /// # Errors
     ///
     /// See [`crate::PatternIOProcessor::io`].
-    pub fn run(&self) -> Result<()> {
+    pub fn run(&self) -> sysexits::Result<()> {
         match self {
             #[cfg(feature = "cff-create")]
             Self::CffCreate(c) => c.main(),
             Self::Cffreference(c) => c.main(),
-            #[allow(deprecated)]
-            Self::CffReleaseToday { file_to_edit } => {
-                crate::ceprintlns!(
-                    "DEPRECATED"!Red,
-                    "Please use `increment-version` instead."
-                );
-
-                let mut buffer = String::new();
-
-                for line in
-                    std::io::BufReader::new(std::fs::File::open(file_to_edit)?)
-                        .lines()
-                {
-                    let line = line?;
-
-                    if line.starts_with("date-released:") {
-                        buffer.append_as_line(format!(
-                            "date-released: {}",
-                            chrono::Local::now()
-                                .date_naive()
-                                .format("%Y-%m-%d")
-                        ));
-                    } else {
-                        buffer.append_as_line(line);
-                    }
-                }
-
-                file_to_edit.truncate(Box::new(buffer))
-            }
             Self::CommentChanges(c) => c.main(),
             Self::Complain(c) => c.main(),
             /*
