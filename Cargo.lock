@@ -472,9 +472,9 @@ dependencies = [
 
 [[package]]
 name = "sysexits"
-version = "0.7.7"
+version = "0.7.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "863d0ebf4f8f10e7e33c82f7fe18e2a09952028011bf0cc7a9a3b8df9bb1cf56"
+checksum = "95064172f25567421356581255f10978bede5dac755002089ecc6114a17779af"
 
 [[package]]
 name = "tinyvec"
