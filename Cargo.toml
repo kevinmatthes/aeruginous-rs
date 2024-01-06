@@ -2,7 +2,7 @@
 anstyle = "1.0.4"
 cargo-lock = "9.0.0"
 ron = "0.8.1"
-sysexits = "0.7.8"
+sysexits = "0.7.10"
 toml = "0.8.8"
 
 [dependencies.chrono]
@@ -27,7 +27,7 @@ version = "0.31.0"
 
 [dependencies.serde]
 features = ["derive"]
-version = "1.0.194"
+version = "1.0.195"
 
 [features]
 cff = ["cff-create"]
