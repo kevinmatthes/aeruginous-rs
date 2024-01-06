@@ -6,7 +6,6 @@
       "CI:  recreate logo on demand",
       "Just:  recipe for logo generation",
       "apply new logo in documentation",
-      "assets/aeruginous.asy",
       "complain:  ask for inline mercy for rule AC-0003",
     ],
   },
