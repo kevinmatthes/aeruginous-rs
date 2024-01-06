@@ -80,6 +80,6 @@ llvm-cov: clean
 
 # Render the project logo.
 logo:
-    asy assets/aeruginous.asy -o assets/
+    asy .github/aeruginous.asy
 
 ################################################################################
