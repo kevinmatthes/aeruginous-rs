@@ -259,7 +259,9 @@ impl Logic {
         for l in self.data.lines() {
             let c = l.chars().count();
 
-            if c > self.cli.line_width {
+            if c > self.cli.line_width
+                && !l.contains("#[aeruginous::mercy::0003]")
+            {
                 self.errors += 1;
 
                 ceprintlns!(
