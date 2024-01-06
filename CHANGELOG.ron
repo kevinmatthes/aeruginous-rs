@@ -9,6 +9,32 @@
       version: (
         major: 3,
         minor: 6,
+        patch: 4,
+      ),
+      released: "2024-01-06T20:08:32.353040735Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            ".github/aeruginous.asy",
+            "CI:  recreate logo on demand",
+            "Just:  recipe for logo generation",
+            "README:  apply new logo",
+            "apply new logo in documentation",
+            "complain:  ask for inline mercy for rule ÆC-0003",
+          ],
+          "Changed": [
+            "complain:  rename linting rules to ÆC-xxxx in accordance to new logo",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 6,
         patch: 3,
       ),
       released: "2024-01-02T21:18:22.499789244Z",
