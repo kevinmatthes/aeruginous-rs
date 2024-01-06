@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "README:  apply new logo",
+    ],
+    "Changed": [
+      "complain:  rename linting rules to ÆC-xxxx in accordance to new logo",
+    ],
+  },
+)
