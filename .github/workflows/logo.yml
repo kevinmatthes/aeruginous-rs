@@ -1,0 +1,66 @@
+######################## GNU General Public License 3.0 ########################
+##                                                                            ##
+## Copyright (C) 2023 Kevin Matthes                                           ##
+##                                                                            ##
+## This program is free software: you can redistribute it and/or modify       ##
+## it under the terms of the GNU General Public License as published by       ##
+## the Free Software Foundation, either version 3 of the License, or          ##
+## (at your option) any later version.                                        ##
+##                                                                            ##
+## This program is distributed in the hope that it will be useful,            ##
+## but WITHOUT ANY WARRANTY; without even the implied warranty of             ##
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the              ##
+## GNU General Public License for more details.                               ##
+##                                                                            ##
+## You should have received a copy of the GNU General Public License          ##
+## along with this program.  If not, see <https://www.gnu.org/licenses/>.     ##
+##                                                                            ##
+################################################################################
+
+################################################################################
+##
+##  AUTHOR      Kevin Matthes
+##  BRIEF       Recreate the project logo.
+##  COPYRIGHT   GPL-3.0
+##  DATE        2023
+##  FILE        logo.yml
+##  NOTE        See `LICENSE' for full license.
+##              See `README.md' for project details.
+##
+################################################################################
+
+name: logo
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - assets/aeruginous.asy
+
+permissions:
+  contents: write
+
+jobs:
+  reformat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - uses: fregante/setup-git-user@v2.0.1
+
+      - uses: taiki-e/install-action@v2.23.9
+        with:
+          tool: just
+
+      - run: |
+          sudo apt-get install asymptote -y
+          just logo
+          git add .
+          git commit --allow-empty -m '[GitHub Actions] just logo'
+          git push
+
+################################################################################
