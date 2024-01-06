@@ -415,6 +415,9 @@
 //!
 //! <!------------------------------------------------------------------------->
 
+#![doc(
+    html_logo_url = "https://github.com/kevinmatthes/aeruginous-rs/raw/main/aeruginous.svg" // #[aeruginous::mercy::0003]
+)]
 #![deny(
     clippy::all,
     clippy::cargo,
