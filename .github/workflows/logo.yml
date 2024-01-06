@@ -20,66 +20,47 @@
 ################################################################################
 ##
 ##  AUTHOR      Kevin Matthes
-##  BRIEF       The recipes in order to test this project.
+##  BRIEF       Recreate the project logo.
 ##  COPYRIGHT   GPL-3.0
 ##  DATE        2023
-##  FILE        .justfile
+##  FILE        logo.yml
 ##  NOTE        See `LICENSE' for full license.
 ##              See `README.md' for project details.
 ##
 ################################################################################
 
-# The default recipe to execute.
-default: ci
+name: logo
 
-# Run all CI steps.
-ci:
-    cargo fmt --check
-    cargo r -- complain src/ tests/
-    just feature cff
-    just feature cff-create
-    just feature mkcws
-    just feature rs2md
-    just feature uncrlf
-    just feature utilities
-    just features
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - .github/aeruginous.asy
 
-# Clean the repository.
-clean:
-    git clean -dfx
+permissions:
+  contents: write
 
-# Determine the coverage.
-coverage: llvm-cov
-    pycobertura show cobertura.xml
+jobs:
+  asymptote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
 
-# Run all feature dependent CI steps for a single feature configuration.
-feature f:
-    cargo build --no-default-features -F {{ f }}
-    cargo check --no-default-features -F {{ f }}
-    cargo clippy --no-default-features -F {{ f }}
-    cargo doc --no-default-features -F {{ f }}
-    cargo test --no-default-features -F {{ f }}
+      - uses: fregante/setup-git-user@v2.0.1
 
-# Run all feature dependent CI steps for the given, fixed feature set.
-feature-set s:
-    cargo build {{ s }}
-    cargo check {{ s }}
-    cargo clippy {{ s }}
-    cargo doc {{ s }}
-    cargo test {{ s }}
+      - uses: taiki-e/install-action@v2.23.9
+        with:
+          tool: just
 
-# Run all feature dependent CI steps for all fixed feature sets.
-features:
-    just feature-set \;
-    just feature-set --all-features
-    just feature-set --no-default-features
-
-# Run the coverage tool.
-llvm-cov: clean
-    cargo llvm-cov --cobertura --output-path cobertura.xml
-
-# Render the project logo.
-logo:
-    asy .github/aeruginous.asy
+      - run: |
+          sudo apt-get install asymptote -y
+          just logo
+          git add .
+          git commit --allow-empty -m '[GitHub Actions] just logo'
+          git push
 
 ################################################################################
