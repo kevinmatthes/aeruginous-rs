@@ -36,13 +36,13 @@ on:
     branches-ignore:
       - main
     paths:
-      - assets/aeruginous.asy
+      - .github/aeruginous.asy
 
 permissions:
   contents: write
 
 jobs:
-  reformat:
+  asymptote:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
