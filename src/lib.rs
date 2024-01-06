@@ -39,7 +39,17 @@
 //!
 //! <!------------------------------------------------------------------------->
 //!
-//! # `aeruginous`
+//! <p align = 'center'>
+//! <a href = 'https://github.com/kevinmatthes/aeruginous-rs'>
+//! <img
+//!   height = '200'
+//!   src =
+//!     'https://github.com/kevinmatthes/aeruginous-rs/raw/main/aeruginous.svg'
+//! />
+//! </a>
+//! <br/>
+//! The Aeruginous Open Source Development Toolbox
+//! </p>
 //!
 //! ## Summary
 //!
@@ -54,8 +64,6 @@
 //! [![][docs]][docs-rs]
 //! [![][downloads]][crate]
 //! [![][msrv]][repository]
-//!
-//! The Aeruginous Open Source Development Toolbox.
 //!
 //! 1. [License](#license)
 //! 1. [Introduction](#introduction)
@@ -83,7 +91,7 @@
 //!    1. [`uncrlf`](#uncrlf)
 //! -->
 //!
-//! The current code coverage is **<!-- cov -->74.64%<!-- cov -->**.
+//! The current code coverage is **<!-- cov -->74.65%<!-- cov -->**.
 //!
 //! ## License
 //!

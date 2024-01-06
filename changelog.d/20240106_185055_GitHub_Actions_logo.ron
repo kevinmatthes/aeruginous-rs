@@ -6,7 +6,7 @@
       "CI:  recreate logo on demand",
       "Just:  recipe for logo generation",
       "apply new logo in documentation",
-      "complain:  ask for inline mercy for rule AC-0003",
+      "complain:  ask for inline mercy for rule ÆC-0003",
     ],
   },
 )
