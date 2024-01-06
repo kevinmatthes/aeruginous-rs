@@ -221,12 +221,12 @@ struct Logic {
 }
 
 impl Logic {
-    fn ac_0001(&mut self) -> Result<()> {
+    fn aec_0001(&mut self) -> Result<()> {
         if !self.data.ends_with('\n') {
             self.errors += 1;
 
             ceprintlns!(
-                "AC-0001"!Green,
+                "ÆC-0001"!Green,
                 "File not terminated by line feed."
             );
         }
@@ -234,7 +234,7 @@ impl Logic {
         Ok(())
     }
 
-    fn ac_0002(&mut self) -> Result<()> {
+    fn aec_0002(&mut self) -> Result<()> {
         let mut line = 1;
 
         for l in self.data.split_inclusive('\n') {
@@ -242,7 +242,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AC-0002"!Yellow,
+                    "ÆC-0002"!Yellow,
                     "CRLF in line {line}."
                 );
             }
@@ -253,7 +253,7 @@ impl Logic {
         Ok(())
     }
 
-    fn ac_0003(&mut self) -> Result<()> {
+    fn aec_0003(&mut self) -> Result<()> {
         let mut line = 1;
 
         for l in self.data.lines() {
@@ -265,7 +265,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AC-0003"!Red,
+                    "ÆC-0003"!Red,
                     "Line {line} is {} character(s) too long.",
                     c - self.cli.line_width
                 );
@@ -277,7 +277,7 @@ impl Logic {
         Ok(())
     }
 
-    fn ac_0004(&mut self) -> Result<()> {
+    fn aec_0004(&mut self) -> Result<()> {
         let mut line = 1;
 
         for l in self.data.lines() {
@@ -285,7 +285,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AC-0004"!Green,
+                    "ÆC-0004"!Green,
                     "TWS in line {line}."
                 );
             }
@@ -296,7 +296,7 @@ impl Logic {
         Ok(())
     }
 
-    fn ac_0005(&mut self) -> Result<()> {
+    fn aec_0005(&mut self) -> Result<()> {
         let mut line = 1;
         let trigger = match self.cli.indent_by {
             IndentationUnit::Spaces => '\t',
@@ -308,7 +308,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AC-0005"!Green,
+                    "ÆC-0005"!Green,
                     "Line {line} indented by {}.",
                     if trigger == '\t' { "tabs" } else { "spaces" }
                 );
@@ -320,7 +320,7 @@ impl Logic {
         Ok(())
     }
 
-    fn ac_0006(&mut self) -> Result<()> {
+    fn aec_0006(&mut self) -> Result<()> {
         let mut line = 1;
 
         for l in self.data.lines() {
@@ -332,7 +332,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AC-0006"!Yellow,
+                    "ÆC-0006"!Yellow,
                     "Line {line} is indented by both spaces and tabs."
                 );
             }
@@ -343,7 +343,7 @@ impl Logic {
         Ok(())
     }
 
-    fn ac_0007(&mut self) -> Result<()> {
+    fn aec_0007(&mut self) -> Result<()> {
         let mut line = 1;
 
         for l in self.data.lines() {
@@ -351,7 +351,7 @@ impl Logic {
                 self.errors += 1;
 
                 ceprintlns!(
-                    "AC-0007"!Yellow,
+                    "ÆC-0007"!Yellow,
                     "Tabs within line {line}."
                 );
             }
@@ -366,31 +366,31 @@ impl Logic {
         self.data = f.read()?;
 
         if !self.cli.ignore_missing_final_line_feed {
-            self.ac_0001()?;
+            self.aec_0001()?;
         }
 
         if !self.cli.ignore_carriage_return_line_feeds {
-            self.ac_0002()?;
+            self.aec_0002()?;
         }
 
         if !self.cli.ignore_line_width_issues {
-            self.ac_0003()?;
+            self.aec_0003()?;
         }
 
         if !self.cli.ignore_trailing_white_space_characters {
-            self.ac_0004()?;
+            self.aec_0004()?;
         }
 
         if !self.cli.ignore_wrong_indentation {
-            self.ac_0005()?;
+            self.aec_0005()?;
         }
 
         if !self.cli.ignore_mixed_indentation {
-            self.ac_0006()?;
+            self.aec_0006()?;
         }
 
         if !self.cli.ignore_tabs_within_lines {
-            self.ac_0007()?;
+            self.aec_0007()?;
         }
 
         ceprintlns!("ˇ;{\"};ˇ"!Blue, "{} {}", self.errors, f.display());
