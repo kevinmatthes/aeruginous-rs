@@ -78,4 +78,8 @@ features:
 llvm-cov: clean
     cargo llvm-cov --cobertura --output-path cobertura.xml
 
+# Render the project logo.
+logo:
+    asy assets/aeruginous.asy -o assets/
+
 ################################################################################
