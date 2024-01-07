@@ -18,7 +18,8 @@
 \******************************************************************************/
 
 use crate::{
-    Fragment, FromRon, FromXml, PatternWriter, ReadFile, ToRon, Version,
+    Fragment, FromRon, FromRst, FromXml, PatternWriter, ReadFile, ToRon,
+    Version,
 };
 use chrono::{DateTime, Local};
 use std::{path::PathBuf, str::FromStr};
@@ -162,6 +163,12 @@ impl Logic {
                         match extension.to_str() {
                             Some("ron") => {
                                 section.add_changes(Fragment::from_ron(
+                                    &entry.read()?,
+                                )?);
+                                std::fs::remove_file(entry)?;
+                            }
+                            Some("rst") => {
+                                section.add_changes(Fragment::from_rst(
                                     &entry.read()?,
                                 )?);
                                 std::fs::remove_file(entry)?;
