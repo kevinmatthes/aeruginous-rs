@@ -119,6 +119,45 @@ impl Fragment {
     }
 }
 
+impl crate::FromRst for Fragment {
+    fn from_rst(rst: &str) -> Result<Self> {
+        let mut category = String::new();
+        let mut previous_line = String::new();
+        let mut result = Self::default();
+
+        for line in rst.lines() {
+            if line.starts_with(".. _") && line.contains(':') {
+                if let Some(reference) = line.strip_prefix(".. _") {
+                    if let Some((link, target)) = reference.split_once(':') {
+                        result.reference(indexmap::IndexMap::from([(
+                            link.trim().to_string(),
+                            target.trim().to_string(),
+                        )]));
+                    }
+                }
+            } else if line.starts_with(|c| "=-.".contains(c))
+                && !previous_line.is_empty()
+            {
+                if let Some(c) = line.chars().next() {
+                    if c.to_string().repeat(previous_line.len()) == line {
+                        category = previous_line;
+                    }
+                }
+            } else if line.starts_with(|c| "*-".contains(c))
+                && !category.is_empty()
+            {
+                if let Some(change) = line.strip_prefix(|c| "*-".contains(c)) {
+                    result.insert(category.trim(), change.trim());
+                }
+            }
+
+            previous_line = line.to_string();
+        }
+
+        Ok(result)
+    }
+}
+
 impl crate::ToMd for Fragment {
     fn to_md(&self, header_level: u8) -> Result<String> {
         if (1..=3).contains(&header_level) {
