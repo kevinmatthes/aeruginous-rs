@@ -19,7 +19,6 @@
 
 use crate::{FragmentExportFormat, PatternWriter, ToMd, ToRon, ToRst, ToXml};
 use git2::{Oid, Repository};
-use indexmap::IndexMap;
 use sysexits::{ExitCode, Result};
 
 /// Create comments on the commits of a branch in this repository.
@@ -137,9 +136,8 @@ impl CommentChanges {
         Logic {
             branch: String::new(),
             categories: Vec::new(),
-            changes: IndexMap::new(),
             cli: self.clone(),
-            hyperlinks: IndexMap::new(),
+            fragment: crate::Fragment::default(),
             repository: None,
             stop_at_tag_oid: None,
             user: String::new(),
@@ -150,9 +148,8 @@ impl CommentChanges {
 struct Logic {
     branch: String,
     categories: Vec<String>,
-    changes: IndexMap<String, Vec<String>>,
     cli: CommentChanges,
-    hyperlinks: crate::RonlogReferences,
+    fragment: crate::Fragment,
     repository: Option<Repository>,
     stop_at_tag_oid: Option<Oid>,
     user: String,
@@ -236,17 +233,6 @@ impl Logic {
         }
     }
 
-    fn insert(
-        map: &mut IndexMap<String, Vec<String>>,
-        category: String,
-        change: String,
-    ) {
-        map.entry(category.clone()).or_default();
-        let mut changes = map[&category].clone();
-        changes.push(change);
-        map.insert(category, changes);
-    }
-
     fn main(&mut self) -> Result<()> {
         self.preprocess()?;
         self.query()?;
@@ -271,14 +257,14 @@ impl Logic {
         }
 
         self.categories.append(&mut self.cli.category.clone());
-
-        self.hyperlinks = self
-            .cli
-            .link
-            .iter()
-            .zip(self.cli.target.iter())
-            .map(|(a, b)| (a.to_string(), b.to_string()))
-            .collect();
+        self.fragment.reference(
+            self.cli
+                .link
+                .iter()
+                .zip(self.cli.target.iter())
+                .map(|(a, b)| (a.to_string(), b.to_string()))
+                .collect(),
+        );
 
         Repository::open(".").map_or_else(
             |_| {
@@ -328,7 +314,6 @@ impl Logic {
                 Ok(mut revwalk) => match revwalk.push_head() {
                     Ok(()) => {
                         let mut count = 1;
-                        let mut result = IndexMap::new();
 
                         for oid in revwalk {
                             if let Some(depth) = self.cli.depth {
@@ -360,11 +345,8 @@ impl Logic {
                                                 summary.trim()
                                             })
                                         {
-                                            Self::insert(
-                                                &mut result,
-                                                category,
-                                                change,
-                                            );
+                                            self.fragment
+                                                .insert(&category, &change);
                                         } else if self.cli.force {
                                             if let Some((category, change)) =
                                                 self.harvest_message(
@@ -375,11 +357,8 @@ impl Logic {
                                                     },
                                                 )
                                             {
-                                                Self::insert(
-                                                    &mut result,
-                                                    category,
-                                                    change,
-                                                );
+                                                self.fragment
+                                                    .insert(&category, &change);
                                             }
                                         }
                                     }
@@ -399,8 +378,6 @@ impl Logic {
                             count += 1;
                         }
 
-                        self.changes = result;
-
                         Ok(())
                     }
                     Err(error) => {
@@ -419,15 +396,13 @@ impl Logic {
     }
 
     fn report(&mut self) -> Result<()> {
-        let mut fragment =
-            crate::Fragment::new(&self.hyperlinks, &self.changes);
-        fragment.sort();
+        self.fragment.sort();
 
         let content = match self.cli.extension {
-            FragmentExportFormat::Md => fragment.to_md(self.cli.heading),
-            FragmentExportFormat::Ron => fragment.to_ron(2),
-            FragmentExportFormat::Rst => fragment.to_rst(self.cli.heading),
-            FragmentExportFormat::Xml => fragment.to_xml(),
+            FragmentExportFormat::Md => self.fragment.to_md(self.cli.heading),
+            FragmentExportFormat::Ron => self.fragment.to_ron(2),
+            FragmentExportFormat::Rst => self.fragment.to_rst(self.cli.heading),
+            FragmentExportFormat::Xml => self.fragment.to_xml(),
         }?;
 
         if !std::path::Path::new(&self.cli.output_directory).try_exists()? {
