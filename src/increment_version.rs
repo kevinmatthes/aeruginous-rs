@@ -194,7 +194,7 @@ impl Logic {
             } else if line.starts_with("date-released:") {
                 buffer.append_as_line(format!(
                     "date-released: {}",
-                    chrono::Local::now().date_naive().format("%Y-%m-%d")
+                    chrono::Local::now().format("%Y-%m-%d")
                 ));
             } else {
                 buffer.append_as_line(line);
