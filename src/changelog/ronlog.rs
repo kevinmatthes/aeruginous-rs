@@ -255,7 +255,7 @@ pub struct Ronlog {
     #[arg(long, short)]
     target: Vec<String>,
 
-    /// The publication time to use.
+    /// The timestamp to use instead of "now"; %Y%m%dT%H%M%S%z.
     #[arg(long, short = 'T', visible_aliases = ["when"])]
     timestamp: Option<String>,
 
