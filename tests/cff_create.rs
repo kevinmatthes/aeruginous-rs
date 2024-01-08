@@ -198,7 +198,7 @@ url: https://github.com/kevinmatthes/aeruginous-rs
 version: {}
 ",
             SELF_DESCRIPTION,
-            Local::now().date_naive().format("%Y-%m-%d"),
+            Local::now().format("%Y-%m-%d"),
             NAME,
             VERSION.trim_matches('v')
         )
