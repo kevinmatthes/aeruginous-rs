@@ -17,13 +17,40 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::{Fragment, FragmentExportFormat, ToMd, ToRst};
+use aeruginous::{Fragment, FragmentExportFormat, FromRst, ToMd, ToRst};
 use indexmap::IndexMap;
 use sysexits::ExitCode;
 
 #[test]
 fn debug_trait() {
     assert_eq!(format!("{:?}", FragmentExportFormat::Md), "Md");
+    assert_eq!(format!("{:?}", FragmentExportFormat::Ron), "Ron");
+    assert_eq!(format!("{:?}", FragmentExportFormat::Rst), "Rst");
+    assert_eq!(format!("{:?}", FragmentExportFormat::Xml), "Xml");
+}
+
+#[test]
+fn from_rst() {
+    let rst = "\
+.. _a.rs:  src/a.rs
+.. _b.rs:  src/b.rs
+.. _d.rs:  src/d.rs
+
+Added
+.....
+
+- source file `a.rs`_
+
+- source file `b.rs`_
+
+Fixed
+.....
+
+- known bug in `d.rs`_
+
+";
+
+    assert_eq!(Fragment::from_rst(rst).unwrap().to_rst(3).unwrap(), rst);
 }
 
 #[test]
