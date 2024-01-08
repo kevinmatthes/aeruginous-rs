@@ -60,21 +60,22 @@ impl Fragment {
       changes: IndexMap<String, Vec<String>>
     );
 
+    /// Insert a new change into a category.
+    pub fn insert(&mut self, category: &str, change: &str) {
+        self.changes
+            .entry(category.to_string())
+            .and_modify(|v| v.push(change.to_string()))
+            .or_insert(vec![change.to_string()]);
+    }
+
     /// Add another instance's contents to this one's.
     pub fn merge(&mut self, other: Self) {
-        for (link, target) in other.references {
-            self.references
-                .entry(link)
-                .and_modify(|t| *t = target.clone())
-                .or_insert(target);
-        }
+        self.reference(other.references.clone());
 
         for (category, changes) in other.changes {
-            self.changes.entry(category.clone()).or_default();
-
-            let mut change_list = self.changes[&category].clone();
-            change_list.append(&mut changes.clone());
-            self.changes.insert(category, change_list);
+            for change in changes {
+                self.insert(&category, &change);
+            }
         }
     }
 
@@ -105,6 +106,55 @@ impl Fragment {
         }
 
         self.changes.sort_by(|key_1, _, key_2, _| key_1.cmp(key_2));
+    }
+
+    /// Add references to this fragment.
+    pub fn reference(&mut self, references: RonlogReferences) {
+        for (link, target) in references {
+            self.references
+                .entry(link)
+                .and_modify(|t| *t = target.clone())
+                .or_insert(target);
+        }
+    }
+}
+
+impl crate::FromRst for Fragment {
+    fn from_rst(rst: &str) -> Result<Self> {
+        let mut category = String::new();
+        let mut previous_line = String::new();
+        let mut result = Self::default();
+
+        for line in rst.lines() {
+            if line.starts_with(".. _") && line.contains(':') {
+                if let Some(reference) = line.strip_prefix(".. _") {
+                    if let Some((link, target)) = reference.split_once(':') {
+                        result.reference(indexmap::IndexMap::from([(
+                            link.trim().to_string(),
+                            target.trim().to_string(),
+                        )]));
+                    }
+                }
+            } else if line.starts_with(|c| "=-.".contains(c))
+                && !previous_line.is_empty()
+            {
+                if let Some(c) = line.chars().next() {
+                    if c.to_string().repeat(previous_line.len()) == line {
+                        category = previous_line;
+                    }
+                }
+            } else if line.starts_with(|c| "*-".contains(c))
+                && !category.is_empty()
+            {
+                if let Some(change) = line.strip_prefix(|c| "*-".contains(c)) {
+                    result.insert(category.trim(), change.trim());
+                }
+            }
+
+            previous_line = line.to_string();
+        }
+
+        Ok(result)
     }
 }
 

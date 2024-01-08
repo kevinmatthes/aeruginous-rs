@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "Fragment::insert, Fragment::reference",
+    ],
+    "Fixed": [
+      "comment-changes:  simplify logic",
+    ],
+  },
+)
