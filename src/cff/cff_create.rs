@@ -142,10 +142,7 @@ impl CitationCff {
             authors: Vec::new(),
             cff_version: "1.2.0".to_string(),
             date_released: Some(
-                chrono::Local::now()
-                    .date_naive()
-                    .format("%Y-%m-%d")
-                    .to_string(),
+                chrono::Local::now().format("%Y-%m-%d").to_string(),
             ),
             keywords: Vec::new(),
             license: CffLicense::default(),
