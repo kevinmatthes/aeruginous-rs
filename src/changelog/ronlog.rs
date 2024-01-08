@@ -149,6 +149,13 @@ impl Logic {
                 },
             )?;
 
+            if let Some(timestamp) = &self.cli.timestamp {
+                section.release_at(
+                    DateTime::parse_from_str(timestamp, "%Y%m%dT%H%M%S%z")
+                        .map_or(Err(ExitCode::DataErr), Ok)?,
+                );
+            }
+
             if !self.cli.output_file.exists() {
                 self.init(None)?;
             }
@@ -247,6 +254,10 @@ pub struct Ronlog {
     /// The hyperlinks' targets.
     #[arg(long, short)]
     target: Vec<String>,
+
+    /// The timestamp to use instead of "now"; %Y%m%dT%H%M%S%z.
+    #[arg(long, short = 'T', visible_aliases = ["when"])]
+    timestamp: Option<String>,
 
     /// The version to use.
     #[arg(long, short)]
@@ -376,6 +387,15 @@ impl Section {
             introduction,
             changes,
         })
+    }
+
+    /// Override the default release timestamp.
+    pub fn release_at<T>(&mut self, when: DateTime<T>)
+    where
+        DateTime<Local>: From<DateTime<T>>,
+        T: chrono::TimeZone,
+    {
+        self.released = when.into();
     }
 }
 
