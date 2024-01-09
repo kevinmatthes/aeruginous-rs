@@ -855,6 +855,53 @@
       references: {},
       version: (
         major: 1,
+        minor: 1,
+        patch: 0,
+      ),
+      released: "2023-05-23T20:47:46+02:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "CI:  run ``comment-changes`` on PR creation",
+            "CITATION.cff:  project keyword ``changelog``",
+            "CITATION.cff:  project keyword ``comment-changes``",
+            "CLI:  allow for long argument parameter names",
+            "Cargo.lock:  dependencies of ``git2``",
+            "Cargo.toml:  dependency ``git2``",
+            "Cargo.toml:  project keyword ``changelog``",
+            "GitHub Action workflow:  ``cargo update`` on demand",
+            "GitHub Action workflow:  ``comment-changes`` on demand",
+            "README:  document comment-changes",
+            "README:  verbose example for ``comment-changes``",
+            "comment-changes:  creation",
+            "comment-changes:  ignore whitespaces around delimiter",
+            "comment-changes:  link resolution for target file",
+            "documentation:  software licenses of ``git2`` crate",
+            "lints:  deny unused ``mut`` keyword",
+            "src/comment_changes.rs:  creation",
+            "tests/comment_changes.rs:  creation",
+          ],
+          "Changed": [
+            "CI:  commit message of MSRV upgrade",
+            "CI:  commit messages of README mirroring workflow",
+            "``cargo update``",
+          ],
+          "Fixed": [
+            "CI:  settings of MSRV upgrade workflow",
+            "CI:  settings of README mirroring workflow",
+          ],
+          "Removed": [
+            "CI:  Scriv fragment creation workflow",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 1,
         minor: 0,
         patch: 0,
       ),
