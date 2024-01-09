@@ -856,6 +856,45 @@
       version: (
         major: 1,
         minor: 1,
+        patch: 2,
+      ),
+      released: "2023-05-27T04:05:54+02:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "CI:  ``cargo b``",
+            "CI:  ``cargo d``",
+            "CI:  ``cargo nextest r``",
+            "CI:  only allow for the categories configured for Scriv",
+            "comment-changes:  option to configure Keep a Changelog categories",
+            "src/graph.rs:  creation",
+            "tests/graph.rs:  creation",
+          ],
+          "Changed": [
+            "CI:  commit message of MSRV workflow",
+            "CI:  simplify CI workflow",
+            "``cargo update``",
+            "comment-changes:  configure default directory using Clap",
+            "src/running.rs:  adjust spacing",
+            "src/version.rs:  adjust spacing",
+          ],
+          "Fixed": [
+            "CI:  shell script of MSRV workflow",
+            "comment-changes:  wrong interpretation of categories",
+          ],
+          "Removed": [
+            "CI:  run ``comment-changes`` on PR",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 1,
+        minor: 1,
         patch: 1,
       ),
       released: "2023-05-25T08:19:15+02:00",
