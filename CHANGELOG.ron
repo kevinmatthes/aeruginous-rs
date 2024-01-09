@@ -855,6 +855,38 @@
       references: {},
       version: (
         major: 0,
+        minor: 2,
+        patch: 0,
+      ),
+      released: "2023-03-14T21:24:03+01:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "CFF:  cite Rust crate ``chrono``",
+            "CFF:  project keyword ``cffreference``",
+            "Cargo.toml:  project keyword ``cffreference``",
+            "README:  docs.rs badge",
+            "README:  document cffreference",
+            "cffreference:  creation",
+            "src/pattern_io_processor.rs:  creation",
+            "src/pattern_reader.rs:  creation",
+            "src/pattern_writer.rs:  creation",
+          ],
+          "Changed": [
+            "Cargo.toml:  sort package metadata by alphabet",
+            "GitHub Action workflow:  rename README mirroring workflow",
+            "rs2md:  make Boolean switch presence suffice",
+            "src/application.rs:  apply new Rust coding pattern inspired traits",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 0,
         minor: 1,
         patch: 0,
       ),
