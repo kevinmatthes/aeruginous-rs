@@ -9,6 +9,25 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 1,
+      ),
+      released: "2024-01-09T16:23:32.499679532Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Fixed": [
+            "Fragment::from_rst:  do not discard continued lines",
+            "test case for Fragment::from_rst",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 0,
       ),
       released: "2024-01-09T15:27:30.333232421Z",
