@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Fixed": [
-      "simplify date generation with chrono::Local::now",
-    ],
-  },
-)

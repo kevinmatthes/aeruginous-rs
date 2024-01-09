@@ -1,9 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "further test cases for Fragment",
-      "ronlog:  accept arbitrary release date",
-    ],
-  },
-)

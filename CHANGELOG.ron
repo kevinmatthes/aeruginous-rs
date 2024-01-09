@@ -8,6 +8,37 @@
       references: {},
       version: (
         major: 3,
+        minor: 7,
+        patch: 0,
+      ),
+      released: "2024-01-09T15:27:30.333232421Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "Fragment::insert, Fragment::reference",
+            "Just:  export generated SVG logo as PNG",
+            "aeruginous.png",
+            "further test cases for Fragment",
+            "impl FromRst for Fragment",
+            "ronlog:  accept RST fragments for input",
+            "ronlog:  accept arbitrary release date",
+          ],
+          "Changed": [
+            "CI:  enable PNG export of SVG logo",
+          ],
+          "Fixed": [
+            "comment-changes:  simplify logic",
+            "simplify date generation with chrono::Local::now",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
         minor: 6,
         patch: 4,
       ),
