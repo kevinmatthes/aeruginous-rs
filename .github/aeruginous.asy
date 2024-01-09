@@ -35,7 +35,7 @@ for (int i = 0; i < 5; ++i)
 draw (circle ((0,0), 1), linewidth (1.5));
 draw (circle ((0,0), 1.25), linewidth (1.8));
 
-// Text.
+// Project name icon.
 label ("\Huge Æ", (0,0));
 
 /******************************************************************************/

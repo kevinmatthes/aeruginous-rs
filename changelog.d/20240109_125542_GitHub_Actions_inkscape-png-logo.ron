@@ -1,0 +1,12 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "Just:  export generated SVG logo as PNG",
+      "aeruginous.png",
+    ],
+    "Changed": [
+      "CI:  enable PNG export of SVG logo",
+    ],
+  },
+)

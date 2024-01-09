@@ -57,7 +57,7 @@ jobs:
           tool: just
 
       - run: |
-          sudo apt-get install asymptote -y
+          sudo apt-get install asymptote inkscape -y
           just logo
           git add .
           git commit --allow-empty -m '[GitHub Actions] just logo'
