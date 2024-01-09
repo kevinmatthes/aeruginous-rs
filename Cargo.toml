@@ -11,7 +11,7 @@ version = "0.4.31"
 
 [dependencies.clap]
 features = ["derive"]
-version = "4.4.13"
+version = "4.4.14"
 
 [dependencies.git2]
 default-features = false
@@ -51,4 +51,4 @@ name = "aeruginous"
 readme = "README.md"
 repository = "https://github.com/kevinmatthes/aeruginous-rs"
 rust-version = "1.75.0"
-version = "3.6.4"
+version = "3.7.0"

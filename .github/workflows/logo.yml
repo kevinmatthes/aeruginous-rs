@@ -52,12 +52,12 @@ jobs:
 
       - uses: fregante/setup-git-user@v2.0.1
 
-      - uses: taiki-e/install-action@v2.24.1
+      - uses: taiki-e/install-action@v2.24.2
         with:
           tool: just
 
       - run: |
-          sudo apt-get install asymptote -y
+          sudo apt-get install asymptote inkscape -y
           just logo
           git add .
           git commit --allow-empty -m '[GitHub Actions] just logo'

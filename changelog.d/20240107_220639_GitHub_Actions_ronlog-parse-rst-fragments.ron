@@ -1,9 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "impl FromRst for Fragment",
-      "ronlog:  accept RST fragments for input",
-    ],
-  },
-)
