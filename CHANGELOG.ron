@@ -856,6 +856,31 @@
       version: (
         major: 1,
         minor: 1,
+        patch: 1,
+      ),
+      released: "2023-05-25T08:19:15+02:00",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "comment-changes:  category checker",
+            "src/comment_changes.rs:  CommentChanges::resolve_links",
+            "tests/comment_changes.rs:  test case for link resolution",
+          ],
+          "Fixed": [
+            "CI:  ``cargo update`` workflow now meets ``comment-changes`` requirements",
+            "comment-changes:  missing ``_`` in link resolution",
+            "src/comment_changes.rs:  link correct method in documentation",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 1,
+        minor: 1,
         patch: 0,
       ),
       released: "2023-05-23T20:47:46+02:00",
