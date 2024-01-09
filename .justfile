@@ -81,5 +81,6 @@ llvm-cov: clean
 # Render the project logo.
 logo:
     asy .github/aeruginous.asy
+    inkscape -w 1024 -h 1024 aeruginous.svg -o aeruginous.png
 
 ################################################################################
