@@ -122,6 +122,7 @@ impl Fragment {
 impl crate::FromRst for Fragment {
     fn from_rst(rst: &str) -> Result<Self> {
         let mut category = String::new();
+        let mut change = String::new();
         let mut previous_line = String::new();
         let mut result = Self::default();
 
@@ -146,9 +147,16 @@ impl crate::FromRst for Fragment {
             } else if line.starts_with(|c| "*-".contains(c))
                 && !category.is_empty()
             {
-                if let Some(change) = line.strip_prefix(|c| "*-".contains(c)) {
-                    result.insert(category.trim(), change.trim());
+                if let Some(new_change) =
+                    line.strip_prefix(|c| "*-".contains(c))
+                {
+                    change.append_as_line(new_change);
                 }
+            } else if line.starts_with("  ") && !line.trim().is_empty() {
+                change.append_as_line(line);
+            } else if line.trim().is_empty() && !change.is_empty() {
+                result.insert(category.trim(), change.trim());
+                change.clear();
             }
 
             previous_line = line.to_string();

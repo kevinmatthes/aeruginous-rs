@@ -46,6 +46,9 @@ Added
 Fixed
 .....
 
+- another bug ...
+  ... whose description takes two lines
+
 - known bug in `d.rs`_
 
 ";

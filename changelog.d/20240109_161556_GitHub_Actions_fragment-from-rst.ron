@@ -1,0 +1,9 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "Fragment::from_rst:  do not discard continued lines",
+      "test case for Fragment::from_rst",
+    ],
+  },
+)
