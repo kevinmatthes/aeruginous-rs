@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "logo:  linewidth and contrast",
+    ],
+  },
+)
