@@ -10,7 +10,6 @@
 [downloads]:  https://img.shields.io/crates/d/aeruginous
 [gpl3]:  https://github.com/kevinmatthes/aeruginous-rs/blob/main/LICENSE
 [lcns]:  https://img.shields.io/github/license/kevinmatthes/aeruginous-rs
-[lcnss]:  https://github.com/kevinmatthes/aeruginous-rs/tree/main/LICENSEs
 [lst]:  https://img.shields.io/github/last-commit/kevinmatthes/aeruginous-rs
 [msrv]:  https://img.shields.io/badge/MSRV-1.75.0-brightgreen
 [release]:  https://github.com/kevinmatthes/aeruginous-rs/releases/latest
@@ -47,6 +46,7 @@ The Aeruginous Open Source Development Toolbox
 [![][msrv]][repository]
 
 1. [License](#license)
+1. [Dependencies](#dependencies)
 1. [Introduction](#introduction)
 1. [Installation](#installation)
 1. [Supported Subcommands](#supported-subcommands)
@@ -97,8 +97,63 @@ follows:
 > You should have received a copy of the GNU General Public License
 > along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-License information about the dependencies this software requires to work
-can be found in [`LICENSEs`][lcnss].
+## Dependencies
+
+### GitHub Actions
+
+- baptiste0928/cargo-install
+  [![](https://img.shields.io/github/license/baptiste0928/cargo-install)
+  ](https://github.com/baptiste0928/cargo-install)
+
+- fregante/setup-git-user
+  [![](https://img.shields.io/github/license/fregante/setup-git-user)
+  ](https://github.com/fregante/setup-git-user)
+
+### Rust
+
+- [`anstyle`]
+  [![](https://img.shields.io/crates/l/anstyle)
+  ](https://github.com/rust-cli/anstyle)
+
+- [`cargo_lock`]
+  [![](https://img.shields.io/crates/l/cargo-lock)
+  ](https://github.com/rustsec/rustsec)
+
+- [`chrono`]
+  [![](https://img.shields.io/crates/l/chrono)
+  ](https://github.com/chronotope/chrono)
+
+- [`clap`]
+  [![](https://img.shields.io/crates/l/clap)
+  ](https://github.com/clap-rs/clap)
+
+- [`git2`]
+  [![](https://img.shields.io/crates/l/git2)
+  ](https://github.com/rust-lang/git2-rs)
+
+- [`indexmap`]
+  [![](https://img.shields.io/crates/l/indexmap)
+  ](https://github.com/bluss/indexmap)
+
+- [`quick_xml`]
+  [![](https://img.shields.io/crates/l/quick-xml)
+  ](https://github.com/tafia/quick-xml)
+
+- [`ron`]
+  [![](https://img.shields.io/crates/l/ron)
+  ](https://github.com/ron-rs/ron)
+
+- [`serde`]
+  [![](https://img.shields.io/crates/l/serde)
+  ](https://github.com/serde-rs/serde)
+
+- [`sysexits`]
+  [![](https://img.shields.io/crates/l/sysexits)
+  ](https://github.com/sorairolake/sysexits-rs)
+
+- [`toml`]
+  [![](https://img.shields.io/crates/l/toml)
+  ](https://github.com/toml-rs/toml)
 
 ## Introduction
 
