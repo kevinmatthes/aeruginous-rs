@@ -120,8 +120,8 @@ references:
     license: "CC-BY-4.0"
     doi: 10.5281/zenodo.5171937
   - type: software
-    date-released: 2024-01-11
-    version: 4.4.15
+    date-released: 2024-01-12
+    version: 4.4.16
     abstract: A full featured, fast Command Line Argument Parser for Rust
     authors:
       - alias: kbknapp
