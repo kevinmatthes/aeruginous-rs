@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Fixed": [
-      "curl-cffref:  allow for empty commits; fixes #1074",
-    ],
-  },
-)
