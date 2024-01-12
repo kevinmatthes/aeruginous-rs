@@ -22,20 +22,37 @@ settings.outformat = "svg";
 size (50);
 
 // Gear.
-for (int i = 0; i < 42; ++i)
+draw (circle ((0,0), 1), linewidth (2) + white);
+draw (circle ((0,0), 1.25), linewidth (2.3) + white);
+
+for (int i = 0; i < 42; ++i) {
+    filldraw (
+        rotate (i * 360 / 42) * (
+            (0,1.42) -- (-.065,1.3) -- (.065,1.3) -- cycle
+        ),
+        white,
+        white
+    );
+
     filldraw (
         rotate (i * 360 / 42) * (
             (0,1.4) -- (-.05,1.3) -- (.05,1.3) -- cycle
         )
     );
+}
 
-for (int i = 0; i < 5; ++i)
+for (int i = 0; i < 5; ++i) {
+    draw (rotate (72 * i) * circle ((0,1.12), .1), linewidth (1.5) + white);
     draw (rotate (72 * i) * circle ((0,1.12), .1), linewidth (1));
+}
 
 draw (circle ((0,0), 1), linewidth (1.5));
 draw (circle ((0,0), 1.25), linewidth (1.8));
 
 // Project name icon.
-label ("\Huge Æ", (0,0));
+for (int i = 0; i < 360; ++i)
+    label ("\Huge \bf Æ", rotate (i) * (0.01,0), white);
+
+label ("\Huge \bf Æ", (0,0));
 
 /******************************************************************************/
