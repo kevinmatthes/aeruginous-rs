@@ -60,9 +60,14 @@ runs:
         crate: aeruginous
 
     - run: |
-        curl https://raw.githubusercontent.com/${{ inputs.repository }}/${{ inputs.branch }}/CITATION.cff | aeruginous cffreference -o CITATION.cff
+        curl https://raw.githubusercontent.com/${{
+            inputs.repository
+          }}/${{
+            inputs.branch
+          }}/CITATION.cff | aeruginous cffreference -o CITATION.cff
         git add CITATION.cff
-        git commit -m '[Aeruginous] Update CFF data of ${{ inputs.repository }}'
+        git commit --allow-empty -m \
+          '[Aeruginous] Update CFF data of ${{ inputs.repository }}'
       shell: bash
 
 ################################################################################
