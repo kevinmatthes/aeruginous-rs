@@ -105,6 +105,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v1.0.0
+      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v1.0.1
 
 ################################################################################
