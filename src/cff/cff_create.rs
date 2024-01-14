@@ -223,7 +223,7 @@ impl Display for CitationCff {
     }
 }
 
-/// Extract the citation information from a given and valid CFF file.
+/// Create a CFF from a given manifest file.
 #[derive(clap::Parser, Clone)]
 #[command(visible_aliases = ["cffcreate", "mkcff"])]
 pub struct Create {
