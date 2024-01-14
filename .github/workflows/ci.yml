@@ -92,7 +92,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: taiki-e/install-action@v2.24.3
+      - uses: taiki-e/install-action@v2.25.0
         with:
           tool: just
 
@@ -105,6 +105,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v1.0.0
+      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v1.0.1
 
 ################################################################################

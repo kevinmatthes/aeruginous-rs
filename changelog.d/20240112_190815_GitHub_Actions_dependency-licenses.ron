@@ -1,0 +1,33 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "README:  list of dependencies",
+    ],
+    "Removed": [
+      "LICENSEs/README.rst",
+      "LICENSEs/baptiste0928/cargo-install/LICENSE",
+      "LICENSEs/bluss/indexmap/LICENSE-Apache-2.0",
+      "LICENSEs/bluss/indexmap/LICENSE-MIT",
+      "LICENSEs/chronotope/chrono/LICENSE",
+      "LICENSEs/clap-rs/clap/LICENSE-Apache-2.0",
+      "LICENSEs/clap-rs/clap/LICENSE-MIT",
+      "LICENSEs/fregante/setup-git-user/LICENSE",
+      "LICENSEs/ron-rs/ron/LICENSE-Apache-2.0",
+      "LICENSEs/ron-rs/ron/LICENSE-MIT",
+      "LICENSEs/rust-cli/anstyle/LICENSE-Apache-2.0",
+      "LICENSEs/rust-cli/anstyle/LICENSE-MIT",
+      "LICENSEs/rust-lang/git2-rs/LICENSE-Apache-2.0",
+      "LICENSEs/rust-lang/git2-rs/LICENSE-MIT",
+      "LICENSEs/rustsec/rustsec/LICENSE-Apache-2.0",
+      "LICENSEs/rustsec/rustsec/LICENSE-MIT",
+      "LICENSEs/serde-rs/serde/LICENSE-Apache-2.0",
+      "LICENSEs/serde-rs/serde/LICENSE-MIT",
+      "LICENSEs/sorairolake/sysexits-rs/LICENSE-Apache-2.0",
+      "LICENSEs/sorairolake/sysexits-rs/LICENSE-MIT",
+      "LICENSEs/tafia/quick-xml/LICENSE",
+      "LICENSEs/toml-rs/toml/LICENSE-Apache-2.0",
+      "LICENSEs/toml-rs/toml/LICENSE-MIT",
+    ],
+  },
+)
