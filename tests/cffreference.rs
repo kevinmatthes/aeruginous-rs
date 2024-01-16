@@ -17,7 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
-use aeruginous::{Cffreference, ReadFile};
+use aeruginous::Cffreference;
+use aeruginous_io::PathBufLikeReader;
 use std::{fs::remove_file, path::PathBuf};
 
 macro_rules! make_test {
@@ -32,8 +33,10 @@ macro_rules! make_test {
             .unwrap();
 
             assert_eq!(
-                "./cffs/expectation.yml".read().unwrap(),
-                concat!("./cffs/output_", $n, ".cff").read().unwrap()
+                "./cffs/expectation.yml".read_silently().unwrap(),
+                concat!("./cffs/output_", $n, ".cff")
+                    .read_silently()
+                    .unwrap()
             );
 
             remove_file(concat!("./cffs/output_", $n, ".cff")).unwrap();
