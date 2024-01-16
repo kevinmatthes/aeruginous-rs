@@ -73,6 +73,11 @@ jobs:
 
       - uses: ./curl-cffref
         with:
+          branch: main
+          repository: kevinmatthes/aeruginous-io
+
+      - uses: ./curl-cffref
+        with:
           branch: develop
           repository: sorairolake/sysexits-rs
 
