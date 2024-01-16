@@ -17,7 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{ceprintln, ReadFile};
+use crate::ceprintln;
+use aeruginous_io::OptionReader;
 use sysexits::{ExitCode, Result};
 
 /// An Aeruginous Graph Description.
@@ -195,12 +196,12 @@ impl GraphDescription {
     ///
     /// See
     ///
-    /// - [`ReadFile::read`]
+    /// - [`aeruginous_io::OptionReader::read_loudly`]
     /// - [`Self::check_for_typos`]
     /// - [`Self::read`]
     pub fn main(input: &Option<std::path::PathBuf>) -> Result<()> {
         let mut agd = Self::new();
-        let input = input.read()?;
+        let input = input.read_loudly(std::io::stdin().lock())?;
         let lines = agd.check_line_width(&input)?;
         agd.read(&input)?;
         let typos = agd.check_for_typos()?;
