@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Fixed": [
-      "documentation of CffCreate struct; fixes #1084",
-    ],
-  },
-)
