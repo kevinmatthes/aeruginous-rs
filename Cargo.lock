@@ -6,6 +6,7 @@ version = 3
 name = "aeruginous"
 version = "3.7.2"
 dependencies = [
+ "aeruginous-io",
  "anstyle",
  "cargo-lock",
  "chrono",
@@ -17,6 +18,15 @@ dependencies = [
  "serde",
  "sysexits",
  "toml 0.8.8",
+]
+
+[[package]]
+name = "aeruginous-io"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "24eb7eebeed896dbfe5e0cbe22b3e3c3fd249aa1ea8fb4345408a88769dd4893"
+dependencies = [
+ "sysexits",
 ]
 
 [[package]]
