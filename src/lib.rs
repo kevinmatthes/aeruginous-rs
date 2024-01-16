@@ -543,7 +543,7 @@ pub use crate::{
     running::Running,
     traits::{
         AppendAsLine, ColourMessage, ConvertBuffer, FromMd, FromRon, FromRst,
-        FromXml, Prefer, ReadFile, ToMd, ToRon, ToRst, ToStderr, ToXml,
+        FromXml, Prefer, ToMd, ToRon, ToRst, ToStderr, ToXml,
     },
     version::{Range as VersionRange, Version},
 };
@@ -561,6 +561,9 @@ pub use crate::utilities::Rs2md;
 
 #[cfg(feature = "uncrlf")]
 pub use crate::utilities::Uncrlf;
+
+#[allow(deprecated)]
+pub use crate::traits::ReadFile;
 
 /// This crate's name.
 pub const NAME: &str = "aeruginous";
