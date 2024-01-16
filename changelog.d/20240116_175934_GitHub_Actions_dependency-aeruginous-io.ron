@@ -1,0 +1,10 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CFF:  cite Rust crate ``aeruginous-io``",
+      "dependency:  Rust crate ``aeruginous-io``",
+      "documentation:  software license of ``aeruginous-io`` crate",
+    ],
+  },
+)
