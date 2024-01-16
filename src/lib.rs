@@ -91,7 +91,7 @@
 //!    1. [`uncrlf`](#uncrlf)
 //! -->
 //!
-//! The current code coverage is **<!-- cov -->75.22%<!-- cov -->**.
+//! The current code coverage is **<!-- cov -->75.19%<!-- cov -->**.
 //!
 //! ## License
 //!
@@ -127,6 +127,10 @@
 //!   ](https://github.com/fregante/setup-git-user)
 //!
 //! ### Rust
+//!
+//! - [`aeruginous_io`]
+//!   [![](https://img.shields.io/crates/l/aeruginous-io)
+//!   ](https://github.com/kevinmatthes/aeruginous-io)
 //!
 //! - [`anstyle`]
 //!   [![](https://img.shields.io/crates/l/anstyle)
@@ -522,7 +526,7 @@ pub use crate::{
     running::Running,
     traits::{
         AppendAsLine, ColourMessage, ConvertBuffer, FromMd, FromRon, FromRst,
-        FromXml, Prefer, ReadFile, ToMd, ToRon, ToRst, ToStderr, ToXml,
+        FromXml, Prefer, ToMd, ToRon, ToRst, ToStderr, ToXml,
     },
     version::{Range as VersionRange, Version},
 };
@@ -541,6 +545,9 @@ pub use crate::utilities::Rs2md;
 #[cfg(feature = "uncrlf")]
 pub use crate::utilities::Uncrlf;
 
+#[allow(deprecated)]
+pub use crate::traits::ReadFile;
+
 /// This crate's name.
 pub const NAME: &str = "aeruginous";
 
@@ -549,6 +556,6 @@ pub const SELF_DESCRIPTION: &str =
     "The Aeruginous Open Source Development Toolbox";
 
 /// This crate's version.
-pub const VERSION: &str = "v3.7.2";
+pub const VERSION: &str = "v3.7.3";
 
 /******************************************************************************/

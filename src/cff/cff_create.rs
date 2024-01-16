@@ -19,7 +19,8 @@
 
 #![cfg(feature = "cff-create")]
 
-use crate::{AppendAsLine, PatternWriter, ReadFile};
+use crate::{AppendAsLine, PatternWriter};
+use aeruginous_io::OptionReader;
 use std::{cmp::Ordering, fmt::Display, path::PathBuf};
 use sysexits::{ExitCode, Result};
 
@@ -223,7 +224,7 @@ impl Display for CitationCff {
     }
 }
 
-/// Extract the citation information from a given and valid CFF file.
+/// Create a CFF from a given manifest file.
 #[derive(clap::Parser, Clone)]
 #[command(visible_aliases = ["cffcreate", "mkcff"])]
 pub struct Create {
@@ -251,7 +252,7 @@ impl Create {
     ///
     /// See
     ///
-    /// - [`ReadFile::read`]
+    /// - [`aeruginous_io::OptionReader::read_loudly`]
     /// - [`sysexits::ExitCode::DataErr`]
     pub fn main(&self) -> Result<()> {
         self.wrap().main()
@@ -327,7 +328,11 @@ impl Logic {
     }
 
     fn rust(&mut self) -> Result<()> {
-        if let Ok(manifest) = self.cli.input_file.read()?.parse::<toml::Table>()
+        if let Ok(manifest) = self
+            .cli
+            .input_file
+            .read_loudly(std::io::stdin().lock())?
+            .parse::<toml::Table>()
         {
             let manifest = manifest.get("package").ok_or(ExitCode::DataErr)?;
 

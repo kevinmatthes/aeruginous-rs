@@ -74,7 +74,7 @@ The Aeruginous Open Source Development Toolbox
    1. [`uncrlf`](#uncrlf)
 -->
 
-The current code coverage is **<!-- cov -->75.22%<!-- cov -->**.
+The current code coverage is **<!-- cov -->75.19%<!-- cov -->**.
 
 ## License
 
@@ -110,6 +110,10 @@ follows:
   ](https://github.com/fregante/setup-git-user)
 
 ### Rust
+
+- [`aeruginous_io`]
+  [![](https://img.shields.io/crates/l/aeruginous-io)
+  ](https://github.com/kevinmatthes/aeruginous-io)
 
 - [`anstyle`]
   [![](https://img.shields.io/crates/l/anstyle)

@@ -22,6 +22,7 @@ use std::{io::stdin, path::PathBuf};
 use sysexits::Result;
 
 /// Read from common sources of input.
+#[deprecated(since = "3.7.3", note = "use `aeruginous_io` instead")]
 pub trait ReadFile {
     /// The shared logic of all methods.
     ///
@@ -56,6 +57,7 @@ pub trait ReadFile {
     }
 }
 
+#[allow(deprecated)]
 impl ReadFile for Option<PathBuf> {
     fn behaviour(&self, show_error_messages: bool) -> Result<String> {
         self.as_ref().map_or_else(
@@ -65,12 +67,14 @@ impl ReadFile for Option<PathBuf> {
     }
 }
 
+#[allow(deprecated)]
 impl ReadFile for &Option<PathBuf> {
     fn behaviour(&self, show_error_messages: bool) -> Result<String> {
         (*self).behaviour(show_error_messages)
     }
 }
 
+#[allow(deprecated)]
 impl ReadFile for PathBuf {
     fn behaviour(&self, show_error_messages: bool) -> Result<String> {
         if self.is_dir() {
@@ -108,6 +112,7 @@ impl ReadFile for PathBuf {
     }
 }
 
+#[allow(deprecated)]
 impl ReadFile for std::io::Stdin {
     fn behaviour(&self, show_error_messages: bool) -> Result<String> {
         let mut result = String::new();
@@ -123,12 +128,14 @@ impl ReadFile for std::io::Stdin {
     }
 }
 
+#[allow(deprecated)]
 impl ReadFile for &str {
     fn behaviour(&self, show_error_messages: bool) -> Result<String> {
         PathBuf::from(self).behaviour(show_error_messages)
     }
 }
 
+#[allow(deprecated)]
 impl ReadFile for &Vec<PathBuf> {
     fn behaviour(&self, show_error_messages: bool) -> Result<String> {
         if self.is_empty() {

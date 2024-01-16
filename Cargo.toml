@@ -1,4 +1,5 @@
 [dependencies]
+aeruginous-io = "0.3.0"
 anstyle = "1.0.4"
 cargo-lock = "9.0.0"
 ron = "0.8.1"
@@ -11,7 +12,7 @@ version = "0.4.31"
 
 [dependencies.clap]
 features = ["derive"]
-version = "4.4.16"
+version = "4.4.18"
 
 [dependencies.git2]
 default-features = false
@@ -51,4 +52,4 @@ name = "aeruginous"
 readme = "README.md"
 repository = "https://github.com/kevinmatthes/aeruginous-rs"
 rust-version = "1.75.0"
-version = "3.7.2"
+version = "3.7.3"

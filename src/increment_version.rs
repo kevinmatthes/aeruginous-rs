@@ -17,9 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{
-    ceprintlns, AppendAsLine, PatternWriter, ReadFile, Version, VersionRange,
-};
+use crate::{ceprintlns, AppendAsLine, PatternWriter, Version, VersionRange};
+use aeruginous_io::PathBufLikeReader;
 use std::{path::PathBuf, str::FromStr};
 use sysexits::{ExitCode, Result};
 
@@ -55,8 +54,8 @@ impl IncrementVersion {
     ///
     /// See
     ///
+    /// - [`aeruginous_io::PathBufLikeReader::read_loudly`]
     /// - [`PatternWriter::truncate`]
-    /// - [`ReadFile::read`]
     /// - [`Version::from_str`]
     /// - [`sysexits::ExitCode::DataErr`]
     /// - [`sysexits::ExitCode::Unavailable`]
@@ -161,7 +160,7 @@ impl Logic {
         let mut package_reached = false;
         let mut package_updated = false;
 
-        for line in file.read()?.lines() {
+        for line in file.read_loudly()?.lines() {
             if line.starts_with("[package]") {
                 package_reached = true;
             }
@@ -186,7 +185,7 @@ impl Logic {
     fn edit_citation_cff(&self, file: &PathBuf) -> Result<()> {
         let mut buffer = String::new();
 
-        for line in file.read()?.lines() {
+        for line in file.read_loudly()?.lines() {
             if line.starts_with("version:") {
                 buffer.append_as_line(
                     line.replace(&self.old_version, &self.new_version),
@@ -206,7 +205,8 @@ impl Logic {
 
     fn edit_normal_file(&self, file: &PathBuf) -> Result<()> {
         file.truncate(Box::new(
-            file.read()?.replace(&self.old_version, &self.new_version),
+            file.read_loudly()?
+                .replace(&self.old_version, &self.new_version),
         ))
     }
 
@@ -249,7 +249,7 @@ impl Logic {
     }
 
     fn rewrite_cargo_toml(&self, file: &PathBuf) -> Result<()> {
-        if let Ok(mut manifest) = file.read()?.parse::<toml::Table>() {
+        if let Ok(mut manifest) = file.read_loudly()?.parse::<toml::Table>() {
             if manifest.get("package").is_some() {
                 if manifest["package"].get("version").is_some() {
                     manifest["package"]["version"] =

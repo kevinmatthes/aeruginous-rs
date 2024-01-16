@@ -4,7 +4,7 @@ authors:
     family-names: Matthes
     given-names: Kevin
 cff-version: 1.2.0
-date-released: 2024-01-12
+date-released: 2024-01-16
 keywords:
   - Rust
   - aeruginous
@@ -36,7 +36,7 @@ repository-artifact: https://crates.io/crates/aeruginous
 repository-code: https://github.com/kevinmatthes/aeruginous-rs
 title: Aeruginous
 url: https://github.com/kevinmatthes/aeruginous-rs
-version: 3.7.2
+version: 3.7.3
 references:
   - type: software
     date-released: 2023-09-15
@@ -120,8 +120,8 @@ references:
     license: "CC-BY-4.0"
     doi: 10.5281/zenodo.5171937
   - type: software
-    date-released: 2024-01-12
-    version: 4.4.16
+    date-released: 2024-01-16
+    version: 4.4.18
     abstract: A full featured, fast Command Line Argument Parser for Rust
     authors:
       - alias: kbknapp
@@ -135,6 +135,24 @@ references:
     repository-code: https://github.com/clap-rs/clap
     title: clap
     url: https://docs.rs/clap
+  - type: software
+    abstract: |
+      A set of input / output utilities for the Aeruginous Open Source Development
+      Toolbox.
+    authors:
+      - alias: kevinmatthes
+        family-names: Matthes
+        given-names: Kevin
+    date-released: 2024-01-14
+    keywords:
+      - Rust
+      - aeruginous
+    license: GPL-3.0
+    repository-artifact: https://crates.io/crates/aeruginous-io
+    repository-code: https://github.com/kevinmatthes/aeruginous-io
+    title: aeruginous-io
+    url: https://github.com/kevinmatthes/aeruginous-io
+    version: 0.3.0
   - type: software
     date-released: 2024-01-06
     version: 0.7.10
