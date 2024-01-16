@@ -118,8 +118,8 @@ impl Complain {
     ///
     /// See
     ///
+    /// - [`aeruginous_io::PathBufLikeReader::read_loudly`]
     /// - [`crate::ColourMessage`]
-    /// - [`aeruginous_io::PathBufLikeReader`]
     /// - [`sysexits::ExitCode::DataErr`]
     pub fn main(&self) -> Result<()> {
         self.wrap().main()
@@ -154,9 +154,7 @@ impl Complain {
     ///
     /// # Errors
     ///
-    /// See
-    ///
-    /// - [`Self::main`]
+    /// See [`Self::main`].
     pub fn process(&self) -> Result<usize> {
         self.wrap().process()
     }
