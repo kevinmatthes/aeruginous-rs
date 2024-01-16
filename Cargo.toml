@@ -12,7 +12,7 @@ version = "0.4.31"
 
 [dependencies.clap]
 features = ["derive"]
-version = "4.4.17"
+version = "4.4.18"
 
 [dependencies.git2]
 default-features = false
