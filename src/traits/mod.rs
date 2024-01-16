@@ -32,7 +32,9 @@ pub use file_formats::{
     FromMd, FromRon, FromRst, FromXml, ToMd, ToRon, ToRst, ToXml,
 };
 pub use prefer::Prefer;
-pub use read_file::ReadFile;
 pub use to_stderr::ToStderr;
+
+#[allow(deprecated)]
+pub use read_file::ReadFile;
 
 /******************************************************************************/

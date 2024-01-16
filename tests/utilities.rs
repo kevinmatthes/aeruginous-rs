@@ -23,7 +23,7 @@ macro_rules! make_test {
             #[cfg(feature = "rs2md")]
             #[test]
             fn $n() {
-                use aeruginous::ReadFile;
+                use aeruginous_io::PathBufLikeReader;
 
                 assert!(aeruginous::Rs2md::new(
                     vec![
@@ -37,7 +37,7 @@ macro_rules! make_test {
 
                 assert!(
                     concat!(stringify!($n), ".md")
-                        .read()
+                        .read_silently()
                         .unwrap()
                         .is_empty()
                 );
@@ -52,7 +52,7 @@ macro_rules! make_test {
             #[cfg(feature = "rs2md")]
             #[test]
             fn $n() {
-                use aeruginous::ReadFile;
+                use aeruginous_io::PathBufLikeReader;
 
                 assert!(aeruginous::Rs2md::new(
                     vec![
@@ -65,7 +65,7 @@ macro_rules! make_test {
                 ).main().is_ok());
 
                 assert_eq!(
-                    concat!(stringify!($n), ".md").read().unwrap(),
+                    concat!(stringify!($n), ".md").read_silently().unwrap(),
                     "\
 Copyright (C) 2023 Kevin Matthes
 
@@ -94,7 +94,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
             #[cfg(feature = "rs2md")]
             #[test]
             fn $n() {
-                use aeruginous::ReadFile;
+                use aeruginous_io::PathBufLikeReader;
 
                 assert!(aeruginous::Rs2md::new(
                     vec![
@@ -107,7 +107,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
                 ).main().is_ok());
 
                 assert_eq!(
-                    concat!(stringify!($n), ".md").read().unwrap(),
+                    concat!(stringify!($n), ".md").read_silently().unwrap(),
                     "\
 Copyright (C) 2023 Kevin Matthes
 
@@ -162,14 +162,14 @@ make_test!(@rs2md @twice
 #[cfg(feature = "mkcws")]
 #[test]
 fn mkcws() {
-    use aeruginous::ReadFile;
+    use aeruginous_io::PathBufLikeReader;
 
     assert!(aeruginous::Mkcws::new(".", Some("cwd.code-workspace"))
         .main()
         .is_ok());
 
     assert_eq!(
-        "cwd.code-workspace".read().unwrap(),
+        "cwd.code-workspace".read_silently().unwrap(),
         "{ \"folders\" : [ { \"path\" : \".\" } ] }\n"
     );
 
@@ -179,7 +179,8 @@ fn mkcws() {
 #[cfg(feature = "uncrlf")]
 #[test]
 fn uncrlf() {
-    use aeruginous::{PatternWriter, ReadFile};
+    use aeruginous::PatternWriter;
+    use aeruginous_io::PathBufLikeReader;
 
     "uncrlf.txt"
         .truncate(Box::new("TEST\r\nTest\n\rtest\r\n".to_string()))
@@ -189,7 +190,11 @@ fn uncrlf() {
         .main()
         .is_ok());
 
-    assert_eq!("uncrlf.txt".read().unwrap(), "TEST\nTest\n\rtest\n");
+    assert_eq!(
+        "uncrlf.txt".read_silently().unwrap(),
+        "TEST\nTest\n\rtest\n"
+    );
+
     std::fs::remove_file("uncrlf.txt").unwrap();
 }
 

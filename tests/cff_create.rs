@@ -20,9 +20,10 @@
 #![cfg(feature = "cff-create")]
 
 use aeruginous::{
-    CffCreate, CffCreateManifestType, PatternWriter, ReadFile, NAME,
-    SELF_DESCRIPTION, VERSION,
+    CffCreate, CffCreateManifestType, PatternWriter, NAME, SELF_DESCRIPTION,
+    VERSION,
 };
+use aeruginous_io::PathBufLikeReader;
 use chrono::Local;
 use std::fs::remove_file;
 use sysexits::ExitCode;
@@ -45,7 +46,7 @@ authors = [\"Emma Xample\"]
 
     assert!(cc.main().is_ok());
     assert_eq!(
-        o.read().unwrap(),
+        o.read_silently().unwrap(),
         "\
 authors:
   - name: Emma Xample
@@ -86,7 +87,7 @@ fn cargo_toml_empty_package_section() {
 
     assert!(cc.main().is_ok());
     assert_eq!(
-        o.read().unwrap(),
+        o.read_silently().unwrap(),
         "\
 cff-version: 1.2.0
 keywords:
@@ -144,7 +145,7 @@ fn cargo_toml_multiple_licenses() {
 
     assert!(cc.main().is_ok());
     assert_eq!(
-        o.read().unwrap(),
+        o.read_silently().unwrap(),
         "\
 cff-version: 1.2.0
 keywords:
@@ -169,7 +170,7 @@ fn project_manifest() {
         .unwrap();
 
     assert_eq!(
-        o.read().unwrap(),
+        o.read_silently().unwrap(),
         format!(
             "\
 abstract: {}.

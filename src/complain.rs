@@ -17,7 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{ceprintlns, ReadFile};
+use crate::ceprintlns;
+use aeruginous_io::PathBufLikeReader;
 use std::path::PathBuf;
 use sysexits::Result;
 
@@ -117,8 +118,8 @@ impl Complain {
     ///
     /// See
     ///
+    /// - [`aeruginous_io::PathBufLikeReader::read_loudly`]
     /// - [`crate::ColourMessage`]
-    /// - [`crate::ReadFile`]
     /// - [`sysexits::ExitCode::DataErr`]
     pub fn main(&self) -> Result<()> {
         self.wrap().main()
@@ -153,9 +154,7 @@ impl Complain {
     ///
     /// # Errors
     ///
-    /// See
-    ///
-    /// - [`Self::main`]
+    /// See [`Self::main`].
     pub fn process(&self) -> Result<usize> {
         self.wrap().process()
     }
@@ -363,7 +362,7 @@ impl Logic {
     }
 
     fn complain(&mut self, f: &PathBuf) -> Result<()> {
-        self.data = f.read()?;
+        self.data = f.read_loudly()?;
 
         if !self.cli.ignore_missing_final_line_feed {
             self.aec_0001()?;

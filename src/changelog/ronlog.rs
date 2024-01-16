@@ -18,9 +18,9 @@
 \******************************************************************************/
 
 use crate::{
-    Fragment, FromRon, FromRst, FromXml, PatternWriter, ReadFile, ToRon,
-    Version,
+    Fragment, FromRon, FromRst, FromXml, PatternWriter, ToRon, Version,
 };
+use aeruginous_io::PathBufLikeReader;
 use chrono::{DateTime, Local};
 use std::{path::PathBuf, str::FromStr};
 use sysexits::{ExitCode, Result};
@@ -170,19 +170,19 @@ impl Logic {
                         match extension.to_str() {
                             Some("ron") => {
                                 section.add_changes(Fragment::from_ron(
-                                    &entry.read()?,
+                                    &entry.read_loudly()?,
                                 )?);
                                 std::fs::remove_file(entry)?;
                             }
                             Some("rst") => {
                                 section.add_changes(Fragment::from_rst(
-                                    &entry.read()?,
+                                    &entry.read_loudly()?,
                                 )?);
                                 std::fs::remove_file(entry)?;
                             }
                             Some("xml") => {
                                 section.add_changes(Fragment::from_xml(
-                                    &entry.read()?,
+                                    &entry.read_loudly()?,
                                 )?);
                                 std::fs::remove_file(entry)?;
                             }
@@ -193,7 +193,7 @@ impl Logic {
             }
 
             let mut ronlog =
-                Changelog::from_ron(&self.cli.output_file.read()?)?;
+                Changelog::from_ron(&self.cli.output_file.read_loudly()?)?;
 
             for section in &mut ronlog.sections {
                 section.changes.sort();

@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "migrate to ``aeruginous-io`` for file input",
+    ],
+    "Deprecated": [
+      "ReadFile",
+    ],
+  },
+)

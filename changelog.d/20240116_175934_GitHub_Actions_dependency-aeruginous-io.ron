@@ -3,7 +3,7 @@
   changes: {
     "Added": [
       "CFF:  cite Rust crate ``aeruginous-io``",
-      "dependency:  Rust crate ``aeruginous-io``",
+      "dependency:  Rust crate ``aeruginous-io``; fixes #1088",
       "documentation:  software license of ``aeruginous-io`` crate",
     ],
   },
