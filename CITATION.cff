@@ -136,6 +136,24 @@ references:
     title: clap
     url: https://docs.rs/clap
   - type: software
+    abstract: |
+      A set of input / output utilities for the Aeruginous Open Source Development
+      Toolbox.
+    authors:
+      - alias: kevinmatthes
+        family-names: Matthes
+        given-names: Kevin
+    date-released: 2024-01-14
+    keywords:
+      - Rust
+      - aeruginous
+    license: GPL-3.0
+    repository-artifact: https://crates.io/crates/aeruginous-io
+    repository-code: https://github.com/kevinmatthes/aeruginous-io
+    title: aeruginous-io
+    url: https://github.com/kevinmatthes/aeruginous-io
+    version: 0.3.0
+  - type: software
     date-released: 2024-01-06
     version: 0.7.10
     abstract: The system exit codes as defined by <sysexits.h> for Rust
