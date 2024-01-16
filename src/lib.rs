@@ -130,6 +130,10 @@
 //!
 //! ### Rust
 //!
+//! - [`aeruginous_io`]
+//!   [![](https://img.shields.io/crates/l/aeruginous-io)
+//!   ](https://github.com/kevinmatthes/aeruginous-io)
+//!
 //! - [`anstyle`]
 //!   [![](https://img.shields.io/crates/l/anstyle)
 //!   ](https://github.com/rust-cli/anstyle)
