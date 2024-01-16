@@ -17,6 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
+#[allow(deprecated)]
 use crate::{PatternWriter, ReadFile};
 use sysexits::Result;
 
@@ -56,6 +57,7 @@ pub trait IOProcessor {
     /// The return value shall indicate whether the operation succeeded.
     /// Implementations should rely on the semantics of [`ReadFile`] and
     /// [`PatternWriter`] instead of introducing further exit codes.
+    #[allow(deprecated)]
     fn behaviour(
         &self,
         input: impl ReadFile,
@@ -70,6 +72,7 @@ pub trait IOProcessor {
     /// # Errors
     ///
     /// See [`Self::behaviour`].
+    #[allow(deprecated)]
     fn io(
         &self,
         input: impl ReadFile,
@@ -83,6 +86,7 @@ pub trait IOProcessor {
     /// # Errors
     ///
     /// See [`Self::behaviour`].
+    #[allow(deprecated)]
     fn io_append(
         &self,
         input: impl ReadFile,
@@ -96,6 +100,7 @@ pub trait IOProcessor {
     /// # Errors
     ///
     /// See [`Self::behaviour`].
+    #[allow(deprecated)]
     fn io_append_silently(
         &self,
         input: impl ReadFile,
@@ -109,6 +114,7 @@ pub trait IOProcessor {
     /// # Errors
     ///
     /// See [`Self::behaviour`].
+    #[allow(deprecated)]
     fn io_silent(
         &self,
         input: impl ReadFile,
@@ -122,6 +128,7 @@ pub trait IOProcessor {
     /// # Errors
     ///
     /// See [`Self::behaviour`].
+    #[allow(deprecated)]
     fn io_write(
         &self,
         input: impl ReadFile,
@@ -135,6 +142,7 @@ pub trait IOProcessor {
     /// # Errors
     ///
     /// See [`Self::behaviour`].
+    #[allow(deprecated)]
     fn io_write_silently(
         &self,
         input: impl ReadFile,
@@ -144,6 +152,7 @@ pub trait IOProcessor {
     }
 }
 
+#[allow(deprecated)]
 impl<T: Fn(String) -> String> IOProcessor for T {
     fn behaviour(
         &self,
