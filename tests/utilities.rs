@@ -27,8 +27,8 @@ macro_rules! make_test {
 
                 assert!(aeruginous::Rs2md::new(
                     vec![
-                        "tests/assets/gpl-3.0-inner.rs",
-                        "tests/assets/gpl-3.0-outer.rs"
+                        "tests/assets/GPL-3.0/GPL-3.0_inner.rs",
+                        "tests/assets/GPL-3.0/GPL-3.0_outer.rs"
                     ],
                     Some(concat!(stringify!($n), ".md")),
                     $i,
@@ -56,8 +56,8 @@ macro_rules! make_test {
 
                 assert!(aeruginous::Rs2md::new(
                     vec![
-                        "tests/assets/gpl-3.0-inner.rs",
-                        "tests/assets/gpl-3.0-outer.rs"
+                        "tests/assets/GPL-3.0/GPL-3.0_inner.rs",
+                        "tests/assets/GPL-3.0/GPL-3.0_outer.rs"
                     ],
                     Some(concat!(stringify!($n), ".md")),
                     $i,
@@ -98,8 +98,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
                 assert!(aeruginous::Rs2md::new(
                     vec![
-                        "tests/assets/gpl-3.0-inner.rs",
-                        "tests/assets/gpl-3.0-outer.rs"
+                        "tests/assets/GPL-3.0/GPL-3.0_inner.rs",
+                        "tests/assets/GPL-3.0/GPL-3.0_outer.rs"
                     ],
                     Some(concat!(stringify!($n), ".md")),
                     $i,
