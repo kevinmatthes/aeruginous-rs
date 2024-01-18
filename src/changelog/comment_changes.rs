@@ -17,6 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
+
 use crate::{FragmentExportFormat, PatternWriter, ToMd, ToRon, ToRst, ToXml};
 use git2::{Oid, Repository};
 use sysexits::{ExitCode, Result};
