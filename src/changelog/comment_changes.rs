@@ -185,7 +185,7 @@ impl Logic {
                     let oid = git2::Oid::from_str(stop).map_or_else(
                         |_| {
                             eprintln!("`{stop}` does not seem to exist.");
-                            Err(ExitCode::DataErr)
+                            Err(ExitCode::Usage)
                         },
                         Ok,
                     )?;
