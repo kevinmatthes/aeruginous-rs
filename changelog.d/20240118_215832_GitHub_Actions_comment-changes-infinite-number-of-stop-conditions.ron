@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "comment-changes:  allow for infinite number of stop conditions",
-    ],
-  },
-)

@@ -9,6 +9,33 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 4,
+      ),
+      released: "2024-01-18T22:19:35.387182018Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "comment-changes:  allow for infinite number of stop conditions",
+            "comment-changes:  option ``-@``",
+          ],
+          "Changed": [
+            "rename CITATION.cff test assets; fixes #1112",
+            "rename GPL-3.0 test assets; fixes #1111",
+          ],
+          "Deprecated": [
+            "comment-changes:  option ``-S``",
+            "comment-changes:  option ``-T``",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 3,
       ),
       released: "2024-01-16T22:55:17.898296765Z",
