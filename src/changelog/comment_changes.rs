@@ -339,7 +339,7 @@ impl Logic {
                                     self.stop_conditions.push(oid);
                                     Ok(())
                                 } else {
-                                    eprintln!("`{tag}` cannot be used as stop condition.");
+                                    eprintln!("`{tag}` cannot be used as stop condition."); // #[aeruginous::mercy::0003]
                                     Err(ExitCode::Usage)
                                 }
                             } else {
