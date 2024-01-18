@@ -87,7 +87,7 @@ pub struct CommentChanges {
 
     /// The position to stop at.
     #[arg(long, short = '@')]
-    stop: Option<String>,
+    stop: Vec<String>,
 
     /// ⚠️  DEPRECATED.
     ///
@@ -138,7 +138,7 @@ impl CommentChanges {
             keep_a_changelog: false,
             link: Vec::new(),
             output_directory: ".".to_string(),
-            stop: None,
+            stop: Vec::new(),
             stop_at: None,
             tag: None,
             target: Vec::new(),
@@ -152,8 +152,7 @@ impl CommentChanges {
             cli: self.clone(),
             fragment: crate::Fragment::default(),
             repository: None,
-            stop_at_oid_1: None,
-            stop_at_oid_2: None,
+            stop_conditions: Vec::new(),
             user: String::new(),
         }
     }
@@ -165,25 +164,22 @@ struct Logic {
     cli: CommentChanges,
     fragment: crate::Fragment,
     repository: Option<Repository>,
-    stop_at_oid_1: Option<Oid>,
-    stop_at_oid_2: Option<Oid>,
+    stop_conditions: Vec<Oid>,
     user: String,
 }
 
 impl Logic {
     fn analyse_stop_condition(&mut self) -> Result<()> {
-        if let Some(stop) = &self.cli.stop {
+        for stop in &self.cli.stop {
             if let Some(repository) = &self.repository {
                 if let Ok(target) =
                     repository.resolve_reference_from_short_name(stop)
                 {
-                    self.stop_at_oid_1 = target.target();
-
-                    if self.stop_at_oid_1.is_some() {
-                        Ok(())
+                    if let Some(oid) = target.target() {
+                        self.stop_conditions.push(oid);
                     } else {
                         eprintln!("`{stop}` cannot be used as stop condition.");
-                        Err(ExitCode::Usage)
+                        return Err(ExitCode::Usage);
                     }
                 } else {
                     let oid = git2::Oid::from_str(stop).map_or_else(
@@ -195,19 +191,18 @@ impl Logic {
                     )?;
 
                     if repository.find_commit(oid).is_ok() {
-                        self.stop_at_oid_1 = Some(oid);
-                        Ok(())
+                        self.stop_conditions.push(oid);
                     } else {
                         eprintln!("There is no such commit `{stop}`.");
-                        Err(ExitCode::Usage)
+                        return Err(ExitCode::Usage);
                     }
                 }
             } else {
-                Err(ExitCode::Software)
+                return Err(ExitCode::Software);
             }
-        } else {
-            Ok(())
         }
+
+        Ok(())
     }
 
     fn get_branch(&mut self) -> Result<()> {
@@ -330,21 +325,22 @@ impl Logic {
                 self.repository = Some(r);
                 self.analyse_stop_condition()?;
 
+                if let Some(oid) = &self.cli.stop_at {
+                    self.stop_conditions.push(*oid);
+                }
+
                 if let Some(tag) = &self.cli.tag {
                     if let Some(repository) = &self.repository {
                         if let Ok(target) =
                             repository.resolve_reference_from_short_name(tag)
                         {
                             if target.is_tag() {
-                                self.stop_at_oid_2 = target.target();
-
-                                if self.stop_at_oid_2.is_some() {
+                                if let Some(oid) = target.target() {
+                                    self.stop_conditions.push(oid);
                                     Ok(())
                                 } else {
-                                    eprintln!(
-                                        "There is a problem with tag {tag}."
-                                    );
-                                    Err(ExitCode::DataErr)
+                                    eprintln!("`{tag}` cannot be used as stop condition."); // #[aeruginous::mercy::0003]
+                                    Err(ExitCode::Usage)
                                 }
                             } else {
                                 eprintln!("{tag} does not seem to be a tag.");
@@ -380,14 +376,7 @@ impl Logic {
                             }
 
                             if let Ok(oid) = oid {
-                                if self.cli.stop_at.is_some_and(|o| o == oid)
-                                    || self
-                                        .stop_at_oid_1
-                                        .is_some_and(|o| o == oid)
-                                    || self
-                                        .stop_at_oid_2
-                                        .is_some_and(|o| o == oid)
-                                {
+                                if self.stop_conditions.contains(&oid) {
                                     break;
                                 }
 
