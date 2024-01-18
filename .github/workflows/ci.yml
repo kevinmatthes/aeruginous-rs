@@ -75,13 +75,13 @@ jobs:
         cff:
           - .github/aeruginous.cff
           - CITATION.cff
-          - cffs/input_1.cff
-          - cffs/input_2.cff
-          - cffs/input_3.cff
-          - cffs/input_4.cff
-          - cffs/input_5.cff
-          - cffs/input_6.cff
-          - cffs/input_7.cff
+          - tests/assets/CITATION.cff/input_1.cff
+          - tests/assets/CITATION.cff/input_2.cff
+          - tests/assets/CITATION.cff/input_3.cff
+          - tests/assets/CITATION.cff/input_4.cff
+          - tests/assets/CITATION.cff/input_5.cff
+          - tests/assets/CITATION.cff/input_6.cff
+          - tests/assets/CITATION.cff/input_7.cff
 
   just:
     runs-on: ubuntu-latest
@@ -92,7 +92,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: taiki-e/install-action@v2.25.2
+      - uses: taiki-e/install-action@v2.25.5
         with:
           tool: just
 

@@ -19,37 +19,54 @@
 
 use aeruginous::Cffreference;
 use aeruginous_io::PathBufLikeReader;
-use std::{fs::remove_file, path::PathBuf};
 
 macro_rules! make_test {
-    ( $n:tt -> $name:ident ) => {
-        #[test]
-        fn $name() {
-            Cffreference::new(
-                Some(PathBuf::from(concat!("./cffs/input_", $n, ".cff"))),
-                Some(PathBuf::from(concat!("./cffs/output_", $n, ".cff"))),
-            )
-            .main()
-            .unwrap();
+    ( $( $n:tt -> $name:ident ),+ ) => {
+        $(
+            #[test]
+            fn $name() {
+                Cffreference::new(
+                    Some(std::path::PathBuf::from(concat!(
+                        "tests/assets/CITATION.cff/input_",
+                        $n,
+                        ".cff"
+                    ))),
+                    Some(std::path::PathBuf::from(concat!(
+                        "tests/assets/CITATION.cff/output_",
+                        $n,
+                        ".cff"
+                    ))),
+                )
+                .main()
+                .unwrap();
 
-            assert_eq!(
-                "./cffs/expectation.yml".read_silently().unwrap(),
-                concat!("./cffs/output_", $n, ".cff")
-                    .read_silently()
-                    .unwrap()
-            );
+                assert_eq!(
+                    "tests/assets/CITATION.cff/expectation.yml"
+                        .read_silently()
+                        .unwrap(),
+                    concat!("tests/assets/CITATION.cff/output_", $n, ".cff")
+                        .read_silently()
+                        .unwrap()
+                );
 
-            remove_file(concat!("./cffs/output_", $n, ".cff")).unwrap();
-        }
+                std::fs::remove_file(concat!(
+                    "tests/assets/CITATION.cff/output_",
+                    $n,
+                    ".cff"
+                )).unwrap();
+            }
+        )+
     };
 }
 
-make_test!(1 -> classic);
-make_test!(2 -> data_after_references);
-make_test!(3 -> has_type);
-make_test!(4 -> has_preferred_citation);
-make_test!(5 -> data_after_preferred_citation);
-make_test!(6 -> has_both_preferred_citation_and_type);
-make_test!(7 -> has_both_type_and_preferred_citation);
+make_test!(
+    1 -> classic,
+    2 -> data_after_references,
+    3 -> has_type,
+    4 -> has_preferred_citation,
+    5 -> data_after_preferred_citation,
+    6 -> has_both_preferred_citation_and_type,
+    7 -> has_both_type_and_preferred_citation
+);
 
 /******************************************************************************/
