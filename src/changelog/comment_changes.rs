@@ -89,24 +89,6 @@ pub struct CommentChanges {
     #[arg(long, short = '@')]
     stop: Vec<String>,
 
-    /// ⚠️  DEPRECATED.
-    ///
-    /// The commit to stop at.
-    ///
-    /// This option is deprecated.  Please use `-@` instead.
-    #[arg(long, short = 'S')]
-    #[deprecated(since = "3.7.4", note = "use `Self::stop` instead")]
-    stop_at: Option<Oid>,
-
-    /// ⚠️  DEPRECATED.
-    ///
-    /// The tag to stop at.
-    ///
-    /// This option is deprecated.  Please use `-@` instead.
-    #[arg(long, short = 'T')]
-    #[deprecated(since = "3.7.4", note = "use `Self::stop` instead")]
-    tag: Option<String>,
-
     /// The hyperlinks' targets.
     #[arg(long, short)]
     target: Vec<String>,
@@ -139,8 +121,6 @@ impl CommentChanges {
             link: Vec::new(),
             output_directory: ".".to_string(),
             stop: Vec::new(),
-            stop_at: None,
-            tag: None,
             target: Vec::new(),
         }
     }
@@ -323,39 +303,7 @@ impl Logic {
             },
             |r| {
                 self.repository = Some(r);
-                self.analyse_stop_condition()?;
-
-                if let Some(oid) = &self.cli.stop_at {
-                    self.stop_conditions.push(*oid);
-                }
-
-                if let Some(tag) = &self.cli.tag {
-                    if let Some(repository) = &self.repository {
-                        if let Ok(target) =
-                            repository.resolve_reference_from_short_name(tag)
-                        {
-                            if target.is_tag() {
-                                if let Some(oid) = target.target() {
-                                    self.stop_conditions.push(oid);
-                                    Ok(())
-                                } else {
-                                    eprintln!("`{tag}` cannot be used as stop condition."); // #[aeruginous::mercy::0003]
-                                    Err(ExitCode::Usage)
-                                }
-                            } else {
-                                eprintln!("{tag} does not seem to be a tag.");
-                                Err(ExitCode::Usage)
-                            }
-                        } else {
-                            eprintln!("Tag {tag} does not seem to exist.");
-                            Err(ExitCode::Usage)
-                        }
-                    } else {
-                        Err(ExitCode::Software)
-                    }
-                } else {
-                    Ok(())
-                }
+                self.analyse_stop_condition()
             },
         )
     }
