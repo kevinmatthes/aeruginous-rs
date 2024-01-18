@@ -1,9 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Changed": [
-      "rename CITATION.cff test assets; fixes #1112",
-      "rename GPL-3.0 test assets; fixes #1111",
-    ],
-  },
-)
