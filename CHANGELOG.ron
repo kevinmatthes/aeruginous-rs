@@ -9,6 +9,24 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 5,
+      ),
+      released: "2024-01-23T21:04:53.333304765Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "complain:  skip results without errors unless ``--verbose`` is set",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 4,
       ),
       released: "2024-01-18T22:19:35.387182018Z",
