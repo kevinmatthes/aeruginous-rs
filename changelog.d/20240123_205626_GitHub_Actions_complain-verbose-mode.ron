@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Added": [
-      "complain:  skip results without errors unless ``--verbose`` is set",
-    ],
-  },
-)
