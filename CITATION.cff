@@ -143,7 +143,7 @@ references:
       - alias: kevinmatthes
         family-names: Matthes
         given-names: Kevin
-    date-released: 2024-01-14
+    date-released: 2024-01-25
     keywords:
       - Rust
       - aeruginous
@@ -152,7 +152,7 @@ references:
     repository-code: https://github.com/kevinmatthes/aeruginous-io
     title: aeruginous-io
     url: https://github.com/kevinmatthes/aeruginous-io
-    version: 0.3.0
+    version: 0.4.0
   - type: software
     date-released: 2024-01-18
     version: 0.7.11
