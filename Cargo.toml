@@ -1,5 +1,5 @@
 [dependencies]
-aeruginous-io = "0.3.0"
+aeruginous-io = "0.4.0"
 anstyle = "1.0.4"
 cargo-lock = "9.0.0"
 ron = "0.8.1"
