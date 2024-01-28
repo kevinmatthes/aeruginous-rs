@@ -22,9 +22,9 @@ dependencies = [
 
 [[package]]
 name = "aeruginous-io"
-version = "0.4.0"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "054a6c83ad874a569e04c2600b620ed7deeb78c871eafbc689b9a9ec518e9bcc"
+checksum = "4f8a622b144654f78a2d14e0c2f45b5acba904320b69cc37d79048352f1fa1c0"
 dependencies = [
  "sysexits",
 ]
