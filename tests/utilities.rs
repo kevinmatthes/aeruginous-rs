@@ -179,11 +179,11 @@ fn mkcws() {
 #[cfg(feature = "uncrlf")]
 #[test]
 fn uncrlf() {
-    use aeruginous::PatternWriter;
     use aeruginous_io::PathBufLikeReader;
+    use aeruginous_io::PathBufLikeTruncation;
 
-    "uncrlf.txt"
-        .truncate(Box::new("TEST\r\nTest\n\rtest\r\n".to_string()))
+    "TEST\r\nTest\n\rtest\r\n"
+        .truncate_silently("uncrlf.txt")
         .unwrap();
 
     assert!(aeruginous::Uncrlf::new(None, None, Some("uncrlf.txt"))

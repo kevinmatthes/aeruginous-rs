@@ -1,0 +1,9 @@
+(
+  references: {},
+  changes: {
+    "Deprecated": [
+      "PatternWriter::truncate",
+      "PatternWriter::truncate_silently",
+    ],
+  },
+)
