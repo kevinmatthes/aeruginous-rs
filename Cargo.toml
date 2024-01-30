@@ -1,6 +1,6 @@
 [dependencies]
-aeruginous-io = "0.3.0"
-anstyle = "1.0.4"
+aeruginous-io = "0.6.0"
+anstyle = "1.0.5"
 cargo-lock = "9.0.0"
 ron = "0.8.1"
 sysexits = "0.7.11"
@@ -8,7 +8,7 @@ toml = "0.8.8"
 
 [dependencies.chrono]
 features = ["serde"]
-version = "0.4.31"
+version = "0.4.33"
 
 [dependencies.clap]
 features = ["derive"]
@@ -20,7 +20,7 @@ version = "0.18.1"
 
 [dependencies.indexmap]
 features = ["serde"]
-version = "2.1.0"
+version = "2.2.1"
 
 [dependencies.quick-xml]
 features = ["serialize"]
@@ -28,7 +28,7 @@ version = "0.31.0"
 
 [dependencies.serde]
 features = ["derive"]
-version = "1.0.195"
+version = "1.0.196"
 
 [features]
 cff = ["cff-create"]
@@ -52,4 +52,4 @@ name = "aeruginous"
 readme = "README.md"
 repository = "https://github.com/kevinmatthes/aeruginous-rs"
 rust-version = "1.75.0"
-version = "3.7.4"
+version = "3.7.5"

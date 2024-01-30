@@ -69,6 +69,10 @@ pub struct Complain {
         visible_aliases = ["length", "line", "width"]
     )]
     line_width: usize,
+
+    /// Also print results for files which do not violate against any lint.
+    #[arg(long)]
+    verbose: bool,
 }
 
 impl Complain {
@@ -139,6 +143,7 @@ impl Complain {
             ignore_wrong_indentation: false,
             indent_by: IndentationUnit::Spaces,
             line_width: 80,
+            verbose: false,
         }
     }
 
@@ -392,7 +397,10 @@ impl Logic {
             self.aec_0007()?;
         }
 
-        ceprintlns!("ˇ;{\"};ˇ"!Blue, "{} {}", self.errors, f.display());
+        if self.cli.verbose || self.errors > 0 {
+            ceprintlns!("ˇ;{\"};ˇ"!Blue, "{} {}", self.errors, f.display());
+        }
+
         self.total_errors += self.errors;
         self.errors = 0;
 

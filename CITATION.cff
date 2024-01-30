@@ -4,7 +4,7 @@ authors:
     family-names: Matthes
     given-names: Kevin
 cff-version: 1.2.0
-date-released: 2024-01-18
+date-released: 2024-01-23
 keywords:
   - Rust
   - aeruginous
@@ -36,11 +36,11 @@ repository-artifact: https://crates.io/crates/aeruginous
 repository-code: https://github.com/kevinmatthes/aeruginous-rs
 title: Aeruginous
 url: https://github.com/kevinmatthes/aeruginous-rs
-version: 3.7.4
+version: 3.7.5
 references:
   - type: software
-    date-released: 2023-09-15
-    version: 0.4.31
+    date-released: 2024-01-25
+    version: 0.4.33
     abstract: Date and time library for Rust
     authors:
       - alias: quodlibetor
@@ -143,7 +143,7 @@ references:
       - alias: kevinmatthes
         family-names: Matthes
         given-names: Kevin
-    date-released: 2024-01-14
+    date-released: 2024-01-28
     keywords:
       - Rust
       - aeruginous
@@ -152,7 +152,7 @@ references:
     repository-code: https://github.com/kevinmatthes/aeruginous-io
     title: aeruginous-io
     url: https://github.com/kevinmatthes/aeruginous-io
-    version: 0.3.0
+    version: 0.6.0
   - type: software
     date-released: 2024-01-18
     version: 0.7.11
