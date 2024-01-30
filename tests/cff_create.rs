@@ -20,10 +20,9 @@
 #![cfg(feature = "cff-create")]
 
 use aeruginous::{
-    CffCreate, CffCreateManifestType, PatternWriter, NAME, SELF_DESCRIPTION,
-    VERSION,
+    CffCreate, CffCreateManifestType, NAME, SELF_DESCRIPTION, VERSION,
 };
-use aeruginous_io::PathBufLikeReader;
+use aeruginous_io::{PathBufLikeReader, PathBufLikeTruncation};
 use chrono::Local;
 use std::fs::remove_file;
 use sysexits::ExitCode;
@@ -35,13 +34,11 @@ fn cargo_toml_author_without_email() {
     let mut cc = CffCreate::new(Some(i), CffCreateManifestType::Rust, Some(o));
 
     cc.suppress_release_date();
-    i.truncate(Box::new(
-        "\
+    "\
 [package]
 authors = [\"Emma Xample\"]
 "
-        .to_string(),
-    ))
+    .truncate_silently(i)
     .unwrap();
 
     assert!(cc.main().is_ok());
@@ -66,7 +63,7 @@ fn cargo_toml_empty() {
     let i = "cargo_empty.toml";
     let o = "cargo_empty.cff";
 
-    i.truncate(Box::new(String::default())).unwrap();
+    "".truncate_silently(i).unwrap();
 
     assert_eq!(
         CffCreate::new(Some(i), CffCreateManifestType::Rust, Some(o)).main(),
@@ -83,7 +80,7 @@ fn cargo_toml_empty_package_section() {
     let mut cc = CffCreate::new(Some(i), CffCreateManifestType::Rust, Some(o));
 
     cc.suppress_release_date();
-    i.truncate(Box::new("[package]\n".to_string())).unwrap();
+    "[package]\n".truncate_silently(i).unwrap();
 
     assert!(cc.main().is_ok());
     assert_eq!(
@@ -105,7 +102,8 @@ fn cargo_toml_invalid_author() {
     let i = "cargo_invalid_author.toml";
     let o = "cargo_invalid_author.cff";
 
-    i.truncate(Box::new("[package]\nauthors = [\"\"]\n".to_string()))
+    "[package]\nauthors = [\"\"]\n"
+        .truncate_silently(i)
         .unwrap();
 
     assert_eq!(
@@ -121,7 +119,7 @@ fn cargo_toml_invalid_toml() {
     let i = "cargo_invalid_toml.toml";
     let o = "cargo_invalid_toml.cff";
 
-    i.truncate(Box::new("!\n".to_string())).unwrap();
+    "!\n".truncate_silently(i).unwrap();
 
     assert_eq!(
         CffCreate::new(Some(i), CffCreateManifestType::Rust, Some(o)).main(),
@@ -138,10 +136,9 @@ fn cargo_toml_multiple_licenses() {
     let mut cc = CffCreate::new(Some(i), CffCreateManifestType::Rust, Some(o));
 
     cc.suppress_release_date();
-    i.truncate(Box::new(
-        "[package]\nlicense = \"Apache-2.0 OR MIT\"".to_string(),
-    ))
-    .unwrap();
+    "[package]\nlicense = \"Apache-2.0 OR MIT\""
+        .truncate_silently(i)
+        .unwrap();
 
     assert!(cc.main().is_ok());
     assert_eq!(
