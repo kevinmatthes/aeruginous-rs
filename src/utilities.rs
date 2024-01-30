@@ -37,17 +37,14 @@ impl Mkcws {
     ///
     /// # Errors
     ///
-    /// See
-    ///
-    /// - [`crate::PatternWriter::truncate`]
+    /// See [`sysexits::ExitCode`].
     pub fn main(&self) -> sysexits::Result<()> {
-        use crate::PatternWriter;
+        use aeruginous_io::OptionTruncation;
 
-        self.output_file.truncate(Box::new(
-            "{ \"folders\" : [ { \"path\" : \"".to_string()
-                + &format!("{}", self.directory.display())
-                + "\" } ] }\n",
-        ))
+        ("{ \"folders\" : [ { \"path\" : \"".to_string()
+            + &format!("{}", self.directory.display())
+            + "\" } ] }\n")
+            .truncate_loudly(self.output_file.clone(), std::io::stdout().lock())
     }
 
     /// Create a new instance.
@@ -91,9 +88,7 @@ impl Rs2md {
     ///
     /// # Errors
     ///
-    /// See
-    ///
-    /// - [`crate::PatternIOProcessor::io`]
+    /// See [`sysexits::ExitCode`].
     pub fn main(&self) -> sysexits::Result<()> {
         use crate::PatternIOProcessor;
 
@@ -166,9 +161,7 @@ impl Uncrlf {
     ///
     /// # Errors
     ///
-    /// See
-    ///
-    /// - [`crate::PatternIOProcessor::io`]
+    /// See [`sysexits::ExitCode`].
     pub fn main(&self) -> sysexits::Result<()> {
         use crate::{PatternIOProcessor, Prefer};
 
