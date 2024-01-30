@@ -75,6 +75,7 @@ pub trait Writer {
     /// # Errors
     ///
     /// See [`Self::behaviour`].
+    #[deprecated(since = "3.7.6", note = "use `aeruginous_io` instead")]
     fn truncate(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
         self.behaviour(buffer, false, true, true)
     }
@@ -84,6 +85,7 @@ pub trait Writer {
     /// # Errors
     ///
     /// See [`Self::behaviour`].
+    #[deprecated(since = "3.7.6", note = "use `aeruginous_io` instead")]
     fn truncate_silently(&self, buffer: Box<dyn PatternBuffer>) -> Result<()> {
         self.behaviour(buffer, false, false, true)
     }
