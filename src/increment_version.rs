@@ -17,8 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{ceprintlns, AppendAsLine, PatternWriter, Version, VersionRange};
-use aeruginous_io::PathBufLikeReader;
+use crate::{ceprintlns, AppendAsLine, Version, VersionRange};
+use aeruginous_io::{PathBufLikeReader, PathBufLikeTruncation};
 use std::{path::PathBuf, str::FromStr};
 use sysexits::{ExitCode, Result};
 
@@ -52,14 +52,7 @@ impl IncrementVersion {
     ///
     /// # Errors
     ///
-    /// See
-    ///
-    /// - [`aeruginous_io::PathBufLikeReader::read_loudly`]
-    /// - [`PatternWriter::truncate`]
-    /// - [`Version::from_str`]
-    /// - [`sysexits::ExitCode::DataErr`]
-    /// - [`sysexits::ExitCode::Unavailable`]
-    /// - [`sysexits::ExitCode::Usage`]
+    /// See [`sysexits::ExitCode`].
     pub fn main(&self) -> Result<()> {
         self.wrap().main()
     }
@@ -144,7 +137,7 @@ impl Logic {
             }
 
             if edited {
-                file.truncate(Box::new(lock_file.clone().to_string()))
+                lock_file.to_string().truncate_loudly(file)
             } else {
                 ceprintlns!("Package"!Red, "not found.");
                 Err(ExitCode::DataErr)
@@ -179,7 +172,7 @@ impl Logic {
             }
         }
 
-        file.truncate(Box::new(buffer))
+        buffer.truncate_loudly(file)
     }
 
     fn edit_citation_cff(&self, file: &PathBuf) -> Result<()> {
@@ -200,14 +193,13 @@ impl Logic {
             }
         }
 
-        file.truncate(Box::new(buffer))
+        buffer.truncate_loudly(file)
     }
 
     fn edit_normal_file(&self, file: &PathBuf) -> Result<()> {
-        file.truncate(Box::new(
-            file.read_loudly()?
-                .replace(&self.old_version, &self.new_version),
-        ))
+        file.read_loudly()?
+            .replace(&self.old_version, &self.new_version)
+            .truncate_loudly(file)
     }
 
     fn main(&mut self) -> Result<()> {
@@ -254,7 +246,7 @@ impl Logic {
                 if manifest["package"].get("version").is_some() {
                     manifest["package"]["version"] =
                         self.new_version.clone().into();
-                    file.truncate(Box::new(manifest.to_string()))?;
+                    manifest.to_string().truncate_loudly(file)?;
 
                     Ok(())
                 } else {

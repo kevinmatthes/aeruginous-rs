@@ -17,6 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
+#![allow(deprecated)]
+
 use aeruginous::PatternWriter;
 
 macro_rules! make_test {

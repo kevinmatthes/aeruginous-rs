@@ -17,10 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{
-    Fragment, FromRon, FromRst, FromXml, PatternWriter, ToRon, Version,
-};
-use aeruginous_io::PathBufLikeReader;
+use crate::{Fragment, FromRon, FromRst, FromXml, ToRon, Version};
+use aeruginous_io::{PathBufLikeReader, PathBufLikeTruncation};
 use chrono::{DateTime, Local};
 use std::{path::PathBuf, str::FromStr};
 use sysexits::{ExitCode, Result};
@@ -69,7 +67,9 @@ impl Changelog {
         let result = !path.exists();
 
         if result || force {
-            path.truncate(Box::new(Self::new(message, references).to_ron(2)?))?;
+            Self::new(message, references)
+                .to_ron(2)?
+                .truncate_loudly(path)?;
         }
 
         Ok(result)
@@ -210,7 +210,9 @@ impl Logic {
             section.changes.sort();
             ronlog.add_section(section);
 
-            self.cli.output_file.truncate(Box::new(ronlog.to_ron(2)?))
+            ronlog
+                .to_ron(2)?
+                .truncate_loudly(self.cli.output_file.clone())
         } else {
             eprintln!("No `--version` information provided for this mode.");
             Err(ExitCode::Usage)
