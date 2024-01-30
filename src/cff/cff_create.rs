@@ -19,8 +19,8 @@
 
 #![cfg(feature = "cff-create")]
 
-use crate::{AppendAsLine, PatternWriter};
-use aeruginous_io::OptionReader;
+use crate::AppendAsLine;
+use aeruginous_io::{OptionReader, OptionTruncation};
 use std::{cmp::Ordering, fmt::Display, path::PathBuf};
 use sysexits::{ExitCode, Result};
 
@@ -250,10 +250,7 @@ impl Create {
     ///
     /// # Errors
     ///
-    /// See
-    ///
-    /// - [`aeruginous_io::OptionReader::read_loudly`]
-    /// - [`sysexits::ExitCode::DataErr`]
+    /// See [`sysexits::ExitCode`].
     pub fn main(&self) -> Result<()> {
         self.wrap().main()
     }
@@ -316,9 +313,10 @@ impl Logic {
             self.cff.date_released = None;
         }
 
-        self.cli
-            .output_file
-            .truncate(Box::new(self.cff.to_string()))
+        self.cff.to_string().truncate_loudly(
+            self.cli.output_file.clone(),
+            std::io::stdout().lock(),
+        )
     }
 
     fn read(&mut self) -> Result<()> {
