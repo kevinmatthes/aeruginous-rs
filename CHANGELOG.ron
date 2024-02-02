@@ -9,6 +9,25 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 6,
+      ),
+      released: "2024-02-02T15:27:49.280761568Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Deprecated": [
+            "PatternWriter::truncate",
+            "PatternWriter::truncate_silently",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 5,
       ),
       released: "2024-01-23T21:04:53.333304765Z",
