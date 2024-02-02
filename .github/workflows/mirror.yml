@@ -48,7 +48,7 @@ jobs:
     if: github.repository == 'kevinmatthes/aeruginous-rs'
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/install-action@v2.26.7
+      - uses: taiki-e/install-action@v2.26.10
         with:
           tool: cargo-llvm-cov
 
@@ -84,7 +84,7 @@ jobs:
           git commit --allow-empty -m \
             "[GitHub Actions] Mirror README.md from src/lib.rs"
 
-      - uses: peter-evans/create-pull-request@v5.0.2
+      - uses: peter-evans/create-pull-request@v6.0.0
         with:
           assignees: |
             kevinmatthes
