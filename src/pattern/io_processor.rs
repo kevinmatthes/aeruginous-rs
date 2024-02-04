@@ -67,21 +67,6 @@ pub trait IOProcessor {
         truncate: bool,
     ) -> Result<()>;
 
-    /// Truncate the output stream and write error messages.
-    ///
-    /// # Errors
-    ///
-    /// See [`Self::behaviour`].
-    #[allow(deprecated)]
-    #[deprecated(since = "3.7.7", note = "use `aeruginous_io` instead")]
-    fn io(
-        &self,
-        input: impl ReadFile,
-        output: impl PatternWriter,
-    ) -> Result<()> {
-        self.behaviour(input, output, false, true, true)
-    }
-
     /// Do not truncate the output stream but write error messages.
     ///
     /// # Errors
