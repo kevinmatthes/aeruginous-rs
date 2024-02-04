@@ -90,25 +90,27 @@ impl Rs2md {
     ///
     /// See [`sysexits::ExitCode`].
     pub fn main(&self) -> sysexits::Result<()> {
-        use crate::PatternIOProcessor;
+        use aeruginous_io::{OptionTruncation, VectorReader};
 
-        (|s: String| {
-            s.lines()
-                .map(str::trim_start)
-                .filter(|l| {
-                    (self.extract_inner && l.starts_with("///"))
-                        || (self.extract_outer && l.starts_with("//!"))
-                })
-                .map(|l| {
-                    if l.len() > 3 {
-                        l.split_at(4).1.trim_end().to_string() + "\n"
-                    } else {
-                        "\n".to_string()
-                    }
-                })
-                .collect::<String>()
-        })
-        .io(&self.input_file, &self.output_file)
+        self.input_file
+            .read_loudly(std::io::stdin().lock())
+            .map(|s: String| {
+                s.lines()
+                    .map(str::trim_start)
+                    .filter(|l| {
+                        (self.extract_inner && l.starts_with("///"))
+                            || (self.extract_outer && l.starts_with("//!"))
+                    })
+                    .map(|l| {
+                        if l.len() > 3 {
+                            l.split_at(4).1.trim_end().to_string() + "\n"
+                        } else {
+                            "\n".to_string()
+                        }
+                    })
+                    .collect::<String>()
+            })?
+            .truncate_loudly(self.output_file.clone(), std::io::stdout().lock())
     }
 
     /// Create a new instance.
@@ -163,12 +165,17 @@ impl Uncrlf {
     ///
     /// See [`sysexits::ExitCode`].
     pub fn main(&self) -> sysexits::Result<()> {
-        use crate::{PatternIOProcessor, Prefer};
+        use crate::Prefer;
+        use aeruginous_io::{OptionReader, OptionTruncation};
 
-        (|s: String| s.replace("\r\n", "\n")).io(
-            self.input_file.prefer(self.file_to_edit.clone()),
-            self.output_file.prefer(self.file_to_edit.clone()),
-        )
+        self.input_file
+            .prefer(self.file_to_edit.clone())
+            .read_loudly(std::io::stdin().lock())?
+            .replace("\r\n", "\n")
+            .truncate_loudly(
+                self.output_file.prefer(self.file_to_edit.clone()),
+                std::io::stdout().lock(),
+            )
     }
 
     /// Create a new instance.
