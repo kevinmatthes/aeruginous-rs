@@ -73,6 +73,7 @@ pub trait IOProcessor {
     ///
     /// See [`Self::behaviour`].
     #[allow(deprecated)]
+    #[deprecated(since = "3.7.7", note = "use `aeruginous_io` instead")]
     fn io(
         &self,
         input: impl ReadFile,
@@ -115,6 +116,7 @@ pub trait IOProcessor {
     ///
     /// See [`Self::behaviour`].
     #[allow(deprecated)]
+    #[deprecated(since = "3.7.7", note = "use `aeruginous_io` instead")]
     fn io_silent(
         &self,
         input: impl ReadFile,
