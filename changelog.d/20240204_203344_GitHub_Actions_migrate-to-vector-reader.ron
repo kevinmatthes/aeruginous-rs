@@ -1,0 +1,9 @@
+(
+  references: {},
+  changes: {
+    "Deprecated": [
+      "PatternIOProcessor::io",
+      "PatternIOProcessor::io_silent",
+    ],
+  },
+)
