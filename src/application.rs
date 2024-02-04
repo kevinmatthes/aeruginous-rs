@@ -74,7 +74,7 @@ impl Action {
     ///
     /// # Errors
     ///
-    /// See [`crate::PatternIOProcessor::io`].
+    /// See [`sysexits::ExitCode`].
     pub fn run(&self) -> sysexits::Result<()> {
         match self {
             #[cfg(feature = "cff-create")]
