@@ -90,7 +90,7 @@ impl Action {
     ///
     /// # Errors
     ///
-    /// See [`crate::PatternIOProcessor::io`].
+    /// See [`sysexits::ExitCode`].
     pub fn run(&self) -> Result<()> {
         match self {
             #[cfg(feature = "cff-create")]
