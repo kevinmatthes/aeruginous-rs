@@ -105,6 +105,9 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v1.0.1
+      - run: |
+          npx -p renovate \
+              -c 'renovate-config-validator .renovaterc.json5 --strict' \
+              -y
 
 ################################################################################
