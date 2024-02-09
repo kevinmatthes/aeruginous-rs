@@ -276,7 +276,7 @@
             "uncrlf:  outsource logic to dedicated struct",
           ],
           "Fixed": [
-            "uncrlf:  removing all `\\r` occurrences",
+            "uncrlf:  removing all ``\\r`` occurrences",
           ],
         },
       ),
