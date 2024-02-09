@@ -105,8 +105,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: tj-actions/renovate-config-validator@v2.1
-        with:
-          config_file: .renovaterc.json5
+      - run: |
+          npm install renovate
+          renovate-config-validator .renovaterc.json5 --strict
 
 ################################################################################
