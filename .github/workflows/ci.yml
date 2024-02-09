@@ -106,7 +106,7 @@ jobs:
           persist-credentials: false
 
       - run: |
-          npm install renovate --location=global
-          renovate config-validator .renovaterc.json5 --strict
+          npm install renovate
+          renovate-config-validator .renovaterc.json5 --strict
 
 ################################################################################
