@@ -9,6 +9,28 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 7,
+      ),
+      released: "2024-02-09T15:09:58.904542579Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Changed": [
+            "MSRV:  1.76.0",
+          ],
+          "Deprecated": [
+            "PatternIOProcessor::io",
+            "PatternIOProcessor::io_silent",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 6,
       ),
       released: "2024-02-02T15:27:49.280761568Z",
