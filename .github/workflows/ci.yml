@@ -107,6 +107,6 @@ jobs:
 
       - run: |
           npm install renovate --location=global
-          renovate-config-validator .renovaterc.json5 --strict
+          renovate config-validator .renovaterc.json5 --strict
 
 ################################################################################
