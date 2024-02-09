@@ -105,6 +105,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v1.0.1
+      - uses: tj-actions/renovate-config-validator@v2.1
+        with:
+          config_file: .renovaterc.json5
 
 ################################################################################
