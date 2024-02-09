@@ -1,0 +1,9 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "CI:  call Renovate linter directly",
+      "CI:  migrate to Renovate linting GHA by tj-actions",
+    ],
+  },
+)
