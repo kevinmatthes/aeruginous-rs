@@ -107,6 +107,7 @@ jobs:
 
       - run: |
           npx -p renovate \
-              -c 'renovate-config-validator .renovaterc.json5 --strict'
+              -c 'renovate-config-validator .renovaterc.json5 --strict' \
+              -y
 
 ################################################################################
