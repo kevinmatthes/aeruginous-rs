@@ -35,7 +35,7 @@ default: ci
 # Run all CI steps.
 ci:
     cargo fmt --check
-    cargo r -- complain src/ tests/
+    cargo r -- complain .github/ src/ tests/
     just feature cff
     just feature cff-create
     just feature mkcws

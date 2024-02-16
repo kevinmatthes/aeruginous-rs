@@ -1,0 +1,13 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CI:  run complain linter over .github/ directory; fixes #1222",
+      "complain:  ask for range mercy for rule ÆC-0003",
+      "complain:  further test cases",
+    ],
+    "Changed": [
+      "README:  apply range mercy for URL definition section",
+    ],
+  },
+)
