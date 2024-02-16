@@ -1,4 +1,4 @@
-<!------------------------------------------------------------------------->
+<!------------------- #[aeruginous::mercy::0003::start] ------------------->
 
 [ci]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci/badge.svg
 [crate]:  https://crates.io/crates/aeruginous
@@ -17,7 +17,7 @@
 [repository]:  https://github.com/kevinmatthes/aeruginous-rs
 [tag]:  https://img.shields.io/github/v/tag/kevinmatthes/aeruginous-rs
 
-<!------------------------------------------------------------------------->
+<!-------------------- #[aeruginous::mercy::0003::end] -------------------->
 
 <p align = 'center'>
 <a href = 'https://github.com/kevinmatthes/aeruginous-rs'>
@@ -74,7 +74,7 @@ The Aeruginous Open Source Development Toolbox
    1. [`uncrlf`](#uncrlf)
 -->
 
-The current code coverage is **<!-- cov -->71.66%<!-- cov -->**.
+The current code coverage is **<!-- cov -->71.81%<!-- cov -->**.
 
 ## License
 
