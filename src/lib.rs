@@ -17,7 +17,7 @@
 |                                                                              |
 \******************************************************************************/
 
-//! <!------------------------------------------------------------------------->
+//! <!------------------- #[aeruginous::mercy::0003::start] ------------------->
 //!
 //! [ci]:  https://github.com/kevinmatthes/aeruginous-rs/workflows/ci/badge.svg
 //! [crate]:  https://crates.io/crates/aeruginous
@@ -36,7 +36,7 @@
 //! [repository]:  https://github.com/kevinmatthes/aeruginous-rs
 //! [tag]:  https://img.shields.io/github/v/tag/kevinmatthes/aeruginous-rs
 //!
-//! <!------------------------------------------------------------------------->
+//! <!-------------------- #[aeruginous::mercy::0003::end] -------------------->
 //!
 //! <p align = 'center'>
 //! <a href = 'https://github.com/kevinmatthes/aeruginous-rs'>
