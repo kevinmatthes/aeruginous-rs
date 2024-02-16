@@ -259,8 +259,19 @@ impl Logic {
 
     fn aec_0003(&mut self) -> Result<()> {
         let mut line = 1;
+        let mut mercy = false;
 
         for l in self.data.lines() {
+            if l.contains("#[aeruginous::mercy::0003::start]") {
+                mercy = true;
+            } else if l.contains("#[aeruginous::mercy::0003::end]") {
+                mercy = false;
+            }
+
+            if mercy {
+                continue;
+            }
+
             let c = l.chars().count();
 
             if c > self.cli.line_width

@@ -17,7 +17,8 @@
 |                                                                              |
 \******************************************************************************/
 
-use crate::{FragmentExportFormat, PatternWriter, ToMd, ToRon, ToRst, ToXml};
+use crate::{FragmentExportFormat, ToMd, ToRon, ToRst, ToXml};
+use aeruginous_io::PathBufLikeAppendix;
 use git2::{Oid, Repository};
 use sysexits::{ExitCode, Result};
 
@@ -409,15 +410,14 @@ impl Logic {
         self.get_branch()?;
         self.get_user()?;
 
-        format!(
+        content.append_loudly(format!(
             "{}/{}_{}_{}.{}",
             self.cli.output_directory,
             chrono::Local::now().format("%Y%m%d_%H%M%S"),
             self.user,
             self.branch.split('/').last().unwrap_or("HEAD"),
             self.cli.extension
-        )
-        .append(Box::new(content))
+        ))
     }
 }
 

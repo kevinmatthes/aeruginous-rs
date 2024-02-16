@@ -92,7 +92,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: taiki-e/install-action@v2.26.16
+      - uses: taiki-e/install-action@v2.27.0
         with:
           tool: just
 
@@ -105,6 +105,9 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v1.0.1
+      - run: |
+          npx -p renovate \
+              -c 'renovate-config-validator .renovaterc.json5 --strict' \
+              -y
 
 ################################################################################

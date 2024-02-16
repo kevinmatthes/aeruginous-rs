@@ -1,5 +1,5 @@
 [dependencies]
-aeruginous-io = "0.7.0"
+aeruginous-io = "0.8.0"
 anstyle = "1.0.6"
 cargo-lock = "9.0.0"
 ron = "0.8.1"
@@ -8,11 +8,11 @@ toml = "0.8.10"
 
 [dependencies.chrono]
 features = ["serde"]
-version = "0.4.33"
+version = "0.4.34"
 
 [dependencies.clap]
 features = ["derive"]
-version = "4.4.18"
+version = "4.5.1"
 
 [dependencies.git2]
 default-features = false
@@ -20,7 +20,7 @@ version = "0.18.2"
 
 [dependencies.indexmap]
 features = ["serde"]
-version = "2.2.2"
+version = "2.2.3"
 
 [dependencies.quick-xml]
 features = ["serialize"]
@@ -51,5 +51,5 @@ license = "GPL-3.0"
 name = "aeruginous"
 readme = "README.md"
 repository = "https://github.com/kevinmatthes/aeruginous-rs"
-rust-version = "1.75.0"
-version = "3.7.6"
+rust-version = "1.76.0"
+version = "3.7.8"
