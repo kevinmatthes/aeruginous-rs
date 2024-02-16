@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Changed": [
-      "CI:  call Renovate linter directly",
-    ],
-  },
-)
