@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Changed": [
-      "migrate to aeruginous_io::PathBufLikeAppendix",
-    ],
-  },
-)
