@@ -53,12 +53,66 @@ jobs:
   bors:
     needs:
       - actionlint
+      - cargo
       - cffconvert
-      - just
       - renovate-linter
     runs-on: ubuntu-latest
     steps:
       - run: bash -c 'exit 0'
+
+  cargo:
+    needs:
+      - cargo-features
+      - cargo-general
+    runs-on: ubuntu-latest
+    steps:
+      - run: bash -c 'exit 0'
+
+  cargo-features:
+    runs-on: ubuntu-latest
+    steps:
+      - run: rustup update
+
+      - uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - run: cargo ${{ matrix.subcommand }} ${{ matrix.feature }}
+    strategy:
+      matrix:
+        feature:
+          - ;
+          - --all-features
+          - --no-default-features
+          - --no-default-features -F cff
+          - --no-default-features -F cff-create
+          - --no-default-features -F mkcws
+          - --no-default-features -F rs2md
+          - --no-default-features -F uncrlf
+          - --no-default-features -F utilities
+        subcommand:
+          - b
+          - c
+          - clippy
+          - d
+          - t
+  
+  cargo-general:
+    runs-on: ubuntu-latest
+    steps:
+      - run: rustup update
+
+      - uses: actions/checkout@v4.1.1
+        with:
+          persist-credentials: false
+
+      - run: cargo ${{ matrix.subcommand }}
+    strategy:
+      matrix:
+        subcommand:
+          - fmt --check
+          - r -- complain .github/ src/ tests/
 
   cffconvert:
     runs-on: ubuntu-latest
@@ -82,21 +136,6 @@ jobs:
           - tests/assets/CITATION.cff/input_5.cff
           - tests/assets/CITATION.cff/input_6.cff
           - tests/assets/CITATION.cff/input_7.cff
-
-  just:
-    runs-on: ubuntu-latest
-    steps:
-      - run: rustup update
-
-      - uses: actions/checkout@v4.1.1
-        with:
-          persist-credentials: false
-
-      - uses: taiki-e/install-action@v2.27.2
-        with:
-          tool: just
-
-      - run: just ci
 
   renovate-linter:
     runs-on: ubuntu-latest
