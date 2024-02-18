@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "CI:  speed up CI by defining parallel checks",
+    ],
+  },
+)
