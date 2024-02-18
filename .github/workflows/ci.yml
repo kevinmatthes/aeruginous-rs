@@ -97,7 +97,7 @@ jobs:
           - clippy
           - d
           - t
-  
+
   cargo-general:
     runs-on: ubuntu-latest
     steps:
