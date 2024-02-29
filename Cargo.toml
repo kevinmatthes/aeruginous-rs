@@ -20,7 +20,7 @@ version = "0.18.2"
 
 [dependencies.indexmap]
 features = ["serde"]
-version = "2.2.4"
+version = "2.2.5"
 
 [dependencies.quick-xml]
 features = ["serialize"]
