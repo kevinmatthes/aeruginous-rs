@@ -42,7 +42,7 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/install-action@v2.27.12
+      - uses: taiki-e/install-action@v2.27.14
         with:
           tool: cargo-llvm-cov
 
@@ -55,6 +55,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
           ref: ${{ github.head_ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - run: echo pycobertura >> requirements.txt
       - uses: py-actions/py-dependency-install@v4.1.0
