@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "CI:  error when running coverage workflow on forks",
+    ],
+  },
+)
