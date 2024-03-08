@@ -16,6 +16,9 @@
       changes: (
         references: {},
         changes: {
+          "Added": [
+            "CI:  manual trigger for rustfmt workflow; fixes #1238",
+          ],
           "Changed": [
             "CI:  speed up CI by defining parallel checks",
           ],
