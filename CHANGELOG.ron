@@ -9,6 +9,31 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 9,
+      ),
+      released: "2024-03-08T18:14:39.632052497Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "CI:  manual trigger for rustfmt workflow; fixes #1238",
+          ],
+          "Changed": [
+            "CI:  speed up CI by defining parallel checks",
+          ],
+          "Fixed": [
+            "CI:  error when running coverage workflow on forks",
+            "CI:  simplify PR workflow",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 8,
       ),
       released: "2024-02-16T14:02:18.019660651Z",
