@@ -39,7 +39,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  code:
+  coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: taiki-e/install-action@v2.28.6
@@ -63,53 +63,11 @@ jobs:
       - run: |
           rustup update
           cargo llvm-cov --cobertura --output-path cobertura.xml
-          {
-            echo '```' ;
-            pycobertura show cobertura.xml ;
-            echo '```' ;
-          } >> coverage.md
+          pycobertura show cobertura.xml >> coverage.md
 
-      - uses: thollander/actions-comment-pull-request@v2.5.0
+      - uses: actions/upload-artifact@v4.3.1
         with:
-          comment_tag: coverage
-          filePath: coverage.md
-
-  coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - run: bash -c 'exit 0'
-
-#  mutations:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3.5.3
-#        with:
-#          persist-credentials: false
-#
-#      - uses: baptiste0928/cargo-install@v2.1.0
-#        with:
-#          crate: cargo-mutants
-#
-#      - run: |
-#          rustup update
-#          cargo mutants
-#          {
-#            echo '```' ;
-#            jq '{ \
-#              total: .total_mutants, \
-#              unviable: .unviable, \
-#              missed: .missed, \
-#              caught: .caught, \
-#              timeout: .timeout, \
-#              success: .success, \
-#              failure: .failure \
-#            }' ;
-#            echo '```' ;
-#          } >> mutations.md
-#
-#      - uses: thollander/actions-comment-pull-request@v2.4.2
-#        with:
-#          comment_tag: mutations
-#          filePath: mutations.md
+          name: code-coverage.txt
+          path: code-coverage.txt
 
 ################################################################################
