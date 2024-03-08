@@ -1,4 +1,0 @@
-Added
-.....
-
-- CI:  manual trigger for rustfmt workflow; fixes #1238
