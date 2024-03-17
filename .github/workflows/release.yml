@@ -51,7 +51,7 @@ jobs:
       - id: tag_name
         run: echo "version=$(cat .version)" >> "$GITHUB_OUTPUT"
 
-      - uses: softprops/action-gh-release@v0.1.15
+      - uses: softprops/action-gh-release@v2.0.4
         with:
           generate_release_notes: true
           tag_name: v${{ steps.tag_name.outputs.version }}

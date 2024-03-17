@@ -63,7 +63,7 @@ jobs:
         with:
           python-version: 3.11
 
-      - uses: taiki-e/install-action@v2.28.6
+      - uses: taiki-e/install-action@v2.28.15
         with:
           tool: cargo-llvm-cov
 
@@ -96,7 +96,7 @@ jobs:
           git commit -m \
             '[GitHub Actions] Assemble CHANGELOG and Increment Versions'
 
-      - uses: peter-evans/create-pull-request@v6.0.1
+      - uses: peter-evans/create-pull-request@v6.0.2
         with:
           assignees: |
             kevinmatthes

@@ -4,7 +4,7 @@ anstyle = "1.0.6"
 cargo-lock = "9.0.0"
 ron = "0.8.1"
 sysexits = "0.7.11"
-toml = "0.8.10"
+toml = "0.8.11"
 
 [dependencies.chrono]
 features = ["serde"]
@@ -12,7 +12,7 @@ version = "0.4.35"
 
 [dependencies.clap]
 features = ["derive"]
-version = "4.5.2"
+version = "4.5.3"
 
 [dependencies.git2]
 default-features = false
