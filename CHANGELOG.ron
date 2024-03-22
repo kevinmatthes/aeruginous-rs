@@ -15,7 +15,11 @@
       introduction: None,
       changes: (
         references: {},
-        changes: {},
+        changes: {
+          "Changed": [
+            "MSRV:  1.77.0",
+          ],
+        },
       ),
     ),
     (
