@@ -9,6 +9,20 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 10,
+      ),
+      released: "2024-03-22T03:41:04.335685439Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {},
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 9,
       ),
       released: "2024-03-08T18:14:39.632052497Z",
