@@ -39,8 +39,8 @@ url: https://github.com/kevinmatthes/aeruginous-rs
 version: 3.7.10
 references:
   - type: software
-    date-released: 2024-03-26
-    version: 0.4.36
+    date-released: 2024-03-27
+    version: 0.4.37
     abstract: Date and time library for Rust
     authors:
       - alias: quodlibetor
