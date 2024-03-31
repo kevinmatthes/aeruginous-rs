@@ -9,6 +9,24 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 11,
+      ),
+      released: "2024-03-31T17:17:37.713187202Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Changed": [
+            "MSRV:  1.77.1",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 10,
       ),
       released: "2024-03-22T03:41:04.335685439Z",
