@@ -55,7 +55,7 @@ runs:
     - run: rustup update
       shell: bash
 
-    - uses: baptiste0928/cargo-install@v3.0.1
+    - uses: baptiste0928/cargo-install@v3.1.0
       with:
         crate: aeruginous
 
