@@ -63,7 +63,7 @@ jobs:
       - run: |
           rustup update
           cargo llvm-cov --cobertura --output-path cobertura.xml
-          pycobertura show cobertura.xml >> coverage.md
+          pycobertura show cobertura.xml >> code-coverage.txt
 
       - uses: actions/upload-artifact@v4.3.1
         with:
