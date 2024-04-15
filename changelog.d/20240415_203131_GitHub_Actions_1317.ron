@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Fixed": [
-      "CI:  code coverage report asset upload; fixes #1317",
-    ],
-  },
-)
