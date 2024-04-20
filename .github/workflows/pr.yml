@@ -42,7 +42,7 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/install-action@v2.32.20
+      - uses: taiki-e/install-action@v2.33.2
         with:
           tool: cargo-llvm-cov
 
