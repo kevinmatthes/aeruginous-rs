@@ -45,7 +45,7 @@ jobs:
   asymptote:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.1.3
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
