@@ -153,3 +153,21 @@ references:
     title: aeruginous-io
     url: https://github.com/kevinmatthes/aeruginous-io
     version: 0.8.0
+  - type: software
+    date-released: 2024-04-16
+    version: 0.7.13
+    abstract: The system exit codes as defined by <sysexits.h> for Rust
+    authors:
+      - alias: sorairolake
+        family-names: Sakai
+        given-names: Shun
+      - alias: kevinmatthes
+        family-names: Matthes
+        given-names: Kevin
+    license:
+      - Apache-2.0
+      - MIT
+    repository-artifact: https://crates.io/crates/sysexits
+    repository-code: https://github.com/sorairolake/sysexits-rs
+    title: sysexits-rs
+    url: https://docs.rs/sysexits
