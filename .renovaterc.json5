@@ -68,7 +68,7 @@
             matchManagers: [
                 "custom.regex",
             ],
-            matchPackageNames: [
+            matchDepNames: [
                 "actionlint",
                 "cffconvert",
             ],
@@ -96,13 +96,13 @@
             matchManagers: [
                 "custom.regex",
             ],
-            matchPackageNames: [
+            matchDepNames: [
                 "rust",
             ],
         },
         {
             extractVersion: "^v(?<version>.*)$",
-            matchPackageNames: [
+            matchDepNames: [
                 "actionlint",
             ],
         },
