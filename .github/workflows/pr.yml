@@ -42,7 +42,7 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/install-action@v2.32.17
+      - uses: taiki-e/install-action@v2.33.34
         with:
           tool: cargo-llvm-cov
 
@@ -50,7 +50,7 @@ jobs:
         with:
           python-version: 3.11
 
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.1.6
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -65,7 +65,7 @@ jobs:
           cargo llvm-cov --cobertura --output-path cobertura.xml
           pycobertura show cobertura.xml >> code-coverage.txt
 
-      - uses: actions/upload-artifact@v4.3.1
+      - uses: actions/upload-artifact@v4.3.3
         with:
           name: code-coverage.txt
           path: code-coverage.txt

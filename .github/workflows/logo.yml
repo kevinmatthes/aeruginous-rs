@@ -45,14 +45,14 @@ jobs:
   asymptote:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.1.6
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
 
       - uses: fregante/setup-git-user@v2.0.1
 
-      - uses: taiki-e/install-action@v2.32.17
+      - uses: taiki-e/install-action@v2.33.34
         with:
           tool: just
 

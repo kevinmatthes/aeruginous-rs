@@ -46,12 +46,12 @@ jobs:
     if: github.repository == 'kevinmatthes/aeruginous-rs'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.1.6
 
       - id: tag_name
         run: echo "version=$(cat .version)" >> "$GITHUB_OUTPUT"
 
-      - uses: softprops/action-gh-release@v2.0.4
+      - uses: softprops/action-gh-release@v2.0.5
         with:
           generate_release_notes: true
           tag_name: v${{ steps.tag_name.outputs.version }}

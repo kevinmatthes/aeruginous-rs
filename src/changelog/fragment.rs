@@ -113,7 +113,7 @@ impl Fragment {
         for (link, target) in references {
             self.references
                 .entry(link)
-                .and_modify(|t| *t = target.clone())
+                .and_modify(|t| t.clone_from(&target))
                 .or_insert(target);
         }
     }
