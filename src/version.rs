@@ -23,13 +23,13 @@ use sysexits::ExitCode;
 /// The range to increment a [`Version`] by.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Range {
-    /// Create a SemVer major release.
+    /// Create a [`SemVer`] major release.
     Major,
 
-    /// Create a SemVer minor release.
+    /// Create a [`SemVer`] minor release.
     Minor,
 
-    /// Create a SemVer patch release.
+    /// Create a [`SemVer`] patch release.
     Patch,
 }
 
