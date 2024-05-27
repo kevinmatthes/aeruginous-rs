@@ -203,7 +203,7 @@ impl Logic {
                 ronlog
                     .references
                     .entry(link)
-                    .and_modify(|t| *t = target.clone())
+                    .and_modify(|t| t.clone_from(&target))
                     .or_insert(target);
             }
 
@@ -319,7 +319,7 @@ impl Section {
         for (link, target) in self.changes.move_references() {
             self.references
                 .entry(link)
-                .and_modify(|t| *t = target.clone())
+                .and_modify(|t| t.clone_from(&target))
                 .or_insert(target);
         }
     }
@@ -346,7 +346,7 @@ impl Section {
             for (link, target) in other.move_references() {
                 self.references
                     .entry(link)
-                    .and_modify(|t| *t = target.clone())
+                    .and_modify(|t| t.clone_from(&target))
                     .or_insert(target);
             }
 
@@ -378,7 +378,7 @@ impl Section {
         for (link, target) in changes.move_references() {
             references
                 .entry(link)
-                .and_modify(|t| *t = target.clone())
+                .and_modify(|t| t.clone_from(&target))
                 .or_insert(target);
         }
 
