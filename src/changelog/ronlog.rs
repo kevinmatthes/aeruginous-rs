@@ -340,7 +340,7 @@ impl Section {
                         self.introduction = Some(introduction_1);
                     }
                 }
-                None => self.introduction = other.introduction.clone(),
+                None => self.introduction.clone_from(&other.introduction),
             }
 
             for (link, target) in other.move_references() {
