@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "Renovate:  use ``matchDepNames`` instead of ``matchPackageNames``",
+    ],
+  },
+)
