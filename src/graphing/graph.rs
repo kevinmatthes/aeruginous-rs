@@ -384,7 +384,7 @@ where
 
     /// Define a new vertex.
     pub fn add_vertex(&mut self, label: &str) -> bool {
-        if self.vertices.get(label).is_some() {
+        if self.vertices.contains_key(label) {
             false
         } else {
             self.vertices
@@ -451,7 +451,7 @@ where
 
         if result {
             for (label, vertex) in &self.vertices {
-                if other.vertices.get(label).is_none() {
+                if !other.vertices.contains_key(label) {
                     result = false;
                     break;
                 }
