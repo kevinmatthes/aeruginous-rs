@@ -22,9 +22,9 @@ dependencies = [
 
 [[package]]
 name = "aeruginous-io"
-version = "0.8.0"
+version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "62ac238e3f13f5cd677b42808d10c72251a59bc21a6700c916b51d825100d91d"
+checksum = "319e371528c96e050b02d8f108f3e664c5632cbec644b3f69340684480e8d776"
 dependencies = [
  "sysexits",
 ]
@@ -76,9 +76,9 @@ dependencies = [
 
 [[package]]
 name = "anstyle-query"
-version = "1.0.3"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a64c907d4e79225ac72e2a354c9ce84d50ebb4586dee56c82b3ee73004f537f5"
+checksum = "ad186efb764318d35165f1758e7dcef3b10628e26d41a44bc5550652e6804391"
 dependencies = [
  "windows-sys",
 ]
@@ -490,9 +490,9 @@ dependencies = [
 
 [[package]]
 name = "sysexits"
-version = "0.7.14"
+version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5b86c78a4dc8f92a6c34c96eea37290389c40fe3ffe8a4dd9898cf8a1f14282"
+checksum = "aaeada5433f30b34f25f70784cfc22b05d06a32eaa7e598b1433ecffb27e9499"
 
 [[package]]
 name = "tinyvec"
@@ -565,7 +565,7 @@ dependencies = [
  "serde",
  "serde_spanned",
  "toml_datetime",
- "winnow 0.6.9",
+ "winnow 0.6.11",
 ]
 
 [[package]]
@@ -759,9 +759,9 @@ dependencies = [
 
 [[package]]
 name = "winnow"
-version = "0.6.9"
+version = "0.6.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "86c949fede1d13936a99f14fafd3e76fd642b556dd2ce96287fbe2e0151bfac6"
+checksum = "56c52728401e1dc672a56e81e593e912aa54c78f40246869f78359a2bf24d29d"
 dependencies = [
  "memchr",
 ]
