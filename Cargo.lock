@@ -16,17 +16,17 @@ dependencies = [
  "quick-xml",
  "ron",
  "serde",
- "sysexits",
+ "sysexits 0.7.14",
  "toml 0.8.14",
 ]
 
 [[package]]
 name = "aeruginous-io"
-version = "0.8.0"
+version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "62ac238e3f13f5cd677b42808d10c72251a59bc21a6700c916b51d825100d91d"
+checksum = "319e371528c96e050b02d8f108f3e664c5632cbec644b3f69340684480e8d776"
 dependencies = [
- "sysexits",
+ "sysexits 0.8.0",
 ]
 
 [[package]]
@@ -493,6 +493,12 @@ name = "sysexits"
 version = "0.7.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b5b86c78a4dc8f92a6c34c96eea37290389c40fe3ffe8a4dd9898cf8a1f14282"
+
+[[package]]
+name = "sysexits"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aaeada5433f30b34f25f70784cfc22b05d06a32eaa7e598b1433ecffb27e9499"
 
 [[package]]
 name = "tinyvec"
