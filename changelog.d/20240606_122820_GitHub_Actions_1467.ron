@@ -1,8 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Fixed": [
-      "issues related to ``sysexits`` update",
-    ],
-  },
-)
