@@ -4,7 +4,7 @@ authors:
     family-names: Matthes
     given-names: Kevin
 cff-version: 1.2.0
-date-released: 2024-05-27
+date-released: 2024-06-06
 keywords:
   - Rust
   - aeruginous
@@ -36,7 +36,7 @@ repository-artifact: https://crates.io/crates/aeruginous
 repository-code: https://github.com/kevinmatthes/aeruginous-rs
 title: Aeruginous
 url: https://github.com/kevinmatthes/aeruginous-rs
-version: 3.7.13
+version: 3.7.14
 references:
   - type: software
     date-released: 2024-04-15
@@ -143,7 +143,7 @@ references:
       - alias: kevinmatthes
         family-names: Matthes
         given-names: Kevin
-    date-released: 2024-02-11
+    date-released: 2024-06-06
     keywords:
       - Rust
       - aeruginous
@@ -152,10 +152,10 @@ references:
     repository-code: https://github.com/kevinmatthes/aeruginous-io
     title: aeruginous-io
     url: https://github.com/kevinmatthes/aeruginous-io
-    version: 0.8.0
+    version: 0.8.1
   - type: software
-    date-released: 2024-05-19
-    version: 0.7.14
+    date-released: 2024-06-05
+    version: 0.8.0
     abstract: The system exit codes as defined by <sysexits.h> for Rust
     authors:
       - alias: sorairolake
