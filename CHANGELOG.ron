@@ -9,6 +9,24 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 15,
+      ),
+      released: "2024-06-14T11:18:07.554915233Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Changed": [
+            "MSRV:  1.79.0",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 14,
       ),
       released: "2024-06-06T12:46:42.506325516Z",
