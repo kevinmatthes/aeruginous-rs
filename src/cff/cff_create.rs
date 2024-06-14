@@ -17,8 +17,6 @@
 |                                                                              |
 \******************************************************************************/
 
-#![cfg(feature = "cff-create")]
-
 use crate::AppendAsLine;
 use aeruginous_io::{OptionReader, OptionTruncation};
 use std::{cmp::Ordering, fmt::Display, path::PathBuf};
