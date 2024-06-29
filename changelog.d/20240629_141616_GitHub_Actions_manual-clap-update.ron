@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "update Clap library manually",
+    ],
+  },
+)
