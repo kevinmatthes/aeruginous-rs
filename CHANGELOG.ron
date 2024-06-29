@@ -9,6 +9,24 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 16,
+      ),
+      released: "2024-06-29T14:29:25.748116470Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Changed": [
+            "update Clap library manually",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 15,
       ),
       released: "2024-06-14T11:18:07.554915233Z",
