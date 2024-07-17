@@ -67,7 +67,7 @@ jobs:
         with:
           tool: cargo-llvm-cov
 
-      - uses: fregante/setup-git-user@v2.0.1
+      - uses: fregante/setup-git-user@v2.0.2
       - run: echo pycobertura >> requirements.txt
       - uses: py-actions/py-dependency-install@v4.1.0
 

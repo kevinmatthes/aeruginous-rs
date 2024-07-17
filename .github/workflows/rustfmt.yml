@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
 
-      - uses: fregante/setup-git-user@v2.0.1
+      - uses: fregante/setup-git-user@v2.0.2
 
       - run: |
           cargo fmt

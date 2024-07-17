@@ -64,7 +64,7 @@ jobs:
           persist-credentials: false
 
       - run: echo pycobertura >> requirements.txt
-      - uses: fregante/setup-git-user@v2.0.1
+      - uses: fregante/setup-git-user@v2.0.2
       - uses: py-actions/py-dependency-install@v4.1.0
 
       - run: |
