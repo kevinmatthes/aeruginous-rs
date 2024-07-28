@@ -1,10 +1,10 @@
 [dependencies]
 aeruginous-io = "0.8.1"
-anstyle = "1.0.7"
+anstyle = "1.0.8"
 cargo-lock = "9.0.0"
 ron = "0.8.1"
-sysexits = "0.8.0"
-toml = "0.8.14"
+sysexits = "0.8.1"
+toml = "0.8.16"
 
 [dependencies.chrono]
 features = ["serde"]
@@ -12,7 +12,7 @@ version = "0.4.38"
 
 [dependencies.clap]
 features = ["derive"]
-version = "4.5.8"
+version = "4.5.11"
 
 [dependencies.git2]
 default-features = false
@@ -24,11 +24,11 @@ version = "2.2.6"
 
 [dependencies.quick-xml]
 features = ["serialize"]
-version = "0.36.0"
+version = "0.36.1"
 
 [dependencies.serde]
 features = ["derive"]
-version = "1.0.203"
+version = "1.0.204"
 
 [features]
 cff = ["cff-create"]
