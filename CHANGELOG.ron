@@ -9,6 +9,25 @@
       version: (
         major: 3,
         minor: 7,
+        patch: 17,
+      ),
+      released: "2024-07-28T21:28:02.152505335Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Changed": [
+            "MSRV:  1.80.0",
+            "update all dependencies manually",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 3,
+        minor: 7,
         patch: 16,
       ),
       released: "2024-06-29T14:29:25.748116470Z",

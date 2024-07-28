@@ -1,9 +1,0 @@
-(
-  references: {},
-  changes: {
-    "Changed": [
-      "MSRV:  1.80.0",
-      "update all dependencies manually",
-    ],
-  },
-)
