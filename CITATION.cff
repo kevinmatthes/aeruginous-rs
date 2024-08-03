@@ -121,7 +121,7 @@ references:
     doi: 10.5281/zenodo.5171937
   - type: software
     date-released: 2024-07-31
-    version: 4.5.12
+    version: 4.5.13
     abstract: A full featured, fast Command Line Argument Parser for Rust
     authors:
       - alias: kbknapp
