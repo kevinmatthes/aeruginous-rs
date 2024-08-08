@@ -76,11 +76,6 @@ jobs:
           branch: main
           repository: kevinmatthes/aeruginous-io
 
-      - uses: ./curl-cffref
-        with:
-          branch: develop
-          repository: sorairolake/sysexits-rs
-
       - uses: peter-evans/create-pull-request@v6.1.0
         with:
           assignees: |
