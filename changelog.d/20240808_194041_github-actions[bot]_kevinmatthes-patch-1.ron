@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Removed": [
+      "CI:  CFF fetch of sysexits-rs which appears to have stopped existing",
+    ],
+  },
+)
