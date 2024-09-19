@@ -76,7 +76,7 @@ jobs:
           branch: main
           repository: kevinmatthes/aeruginous-io
 
-      - uses: peter-evans/create-pull-request@v7.0.3
+      - uses: peter-evans/create-pull-request@v7.0.5
         with:
           assignees: |
             kevinmatthes
