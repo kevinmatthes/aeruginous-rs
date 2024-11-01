@@ -131,7 +131,7 @@ impl Complain {
 
     /// Create a new instance.
     #[must_use]
-    pub fn new(files: Vec<PathBuf>) -> Self {
+    pub const fn new(files: Vec<PathBuf>) -> Self {
         Self {
             files,
             ignore_carriage_return_line_feeds: false,
