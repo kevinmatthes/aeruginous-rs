@@ -80,6 +80,10 @@
             matchManagers: [
                 "cargo",
             ],
+            matchPackagePatterns: [
+                "*",
+            ],
+            rangeStrategy: "bump",
         },
         {
             addLabels: [
