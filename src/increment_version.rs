@@ -59,7 +59,7 @@ impl IncrementVersion {
 
     /// Construct a new instance.
     #[must_use]
-    pub fn new(
+    pub const fn new(
         file_to_edit: Vec<PathBuf>,
         file_to_rewrite: Vec<PathBuf>,
         old_version: String,
