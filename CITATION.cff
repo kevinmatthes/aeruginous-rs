@@ -153,3 +153,5 @@ references:
     title: aeruginous-io
     url: https://github.com/kevinmatthes/aeruginous-io
     version: 0.8.1
+  - type: software
+    404: Not Found
