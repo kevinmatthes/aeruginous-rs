@@ -37,7 +37,8 @@ jobs:
 
       - run: |
           # Find all JSON files and format them in-place
-          find . -type f -name "*.json" -exec jq . -S {} \;
+          find . -type f -name "*.json" -exec sh -c \
+            'jq . -S "$1" > tmp.json && mv tmp.json "$1"' _ {} \;
 
           # Check if there are any changes after formatting
           if ! git diff --exit-code; then
