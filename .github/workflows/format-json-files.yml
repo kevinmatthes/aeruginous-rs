@@ -27,13 +27,18 @@ on:
       - '**/*.json'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   format-json:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.2
+        with:
+          ref: ${{ github.head_ref }}
+
       - uses: fregante/setup-git-user@v2.0.2
-      - run: sudo apt-get update && sudo apt-get install -y jq
 
       - run: |
           # Find all JSON files and format them in-place
