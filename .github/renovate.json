@@ -1,71 +1,116 @@
 {
-         "assignees": ["kevinmatthes"],
-         "automerge": false,
-         "commitMessageLowerCase": "never",
-         "commitMessagePrefix": "[Renovate]",
-         "customManagers": [
-           {
-             "customType": "regex",
-             "datasourceTemplate": "github-releases",
-             "depNameTemplate": "actionlint",
-             "fileMatch": ["^\\.github/workflows/ci\\.yml$"],
-             "matchStrings": ["rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
-             "packageNameTemplate": "rhysd/actionlint"
-           },
-           {
-             "customType": "regex",
-             "datasourceTemplate": "github-releases",
-             "depNameTemplate": "cffconvert",
-             "fileMatch": ["^\\.github/workflows/ci\\.yml$"],
-             "matchStrings": [
-               "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)"
-             ],
-             "packageNameTemplate": "citation-file-format/cffconvert"
-           },
-           {
-             "customType": "regex",
-             "datasourceTemplate": "github-releases",
-             "depNameTemplate": "rust",
-             "fileMatch": [
-               "^\\.clippy\\.toml$",
-               "^Cargo\\.toml$",
-               "^README\\.md$",
-               "^src/lib\\.rs$"
-             ],
-             "matchStrings": [
-               "msrv =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-               "rust-version =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-               "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-brightgreen"
-             ],
-             "packageNameTemplate": "rust-lang/rust"
-           }
-         ],
-         "dependencyDashboard": true,
-         "dependencyDashboardAutoclose": true,
-         "dependencyDashboardLabels": ["dependencies"],
-         "dependencyDashboardTitle": "[Renovate] Dependency Dashboard",
-         "labels": ["dependencies"],
-         "lockFileMaintenance": {"enabled": true},
-         "packageRules": [
-           {
-             "addLabels": ["github_actions"],
-             "matchManagers": ["custom.regex"],
-             "matchDepNames": ["actionlint", "cffconvert"]
-           },
-           {
-             "addLabels": ["rust"],
-             "matchManagers": ["cargo"],
-             "rangeStrategy": "bump",
-             "matchPackageNames": ["*"]
-           },
-           {"addLabels": ["github_actions"], "matchManagers": ["github-actions"]},
-           {
-             "addLabels": ["documentation"],
-             "matchManagers": ["custom.regex"],
-             "matchDepNames": ["rust"]
-           },
-           {"extractVersion": "^v(?<version>.*)$", "matchDepNames": ["actionlint"]}
-         ],
-         "prHourlyLimit": null,
-         "schedule": null
-       }
+  "assignees": [
+    "kevinmatthes"
+  ],
+  "automerge": false,
+  "commitMessageLowerCase": "never",
+  "commitMessagePrefix": "[Renovate]",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "actionlint",
+      "fileMatch": [
+        "^\\.github/workflows/ci\\.yml$"
+      ],
+      "matchStrings": [
+        "rhysd/actionlint:(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "packageNameTemplate": "rhysd/actionlint"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "cffconvert",
+      "fileMatch": [
+        "^\\.github/workflows/ci\\.yml$"
+      ],
+      "matchStrings": [
+        "citationcff/cffconvert:(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "packageNameTemplate": "citation-file-format/cffconvert"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "rust",
+      "fileMatch": [
+        "^\\.clippy\\.toml$",
+        "^Cargo\\.toml$",
+        "^README\\.md$",
+        "^src/lib\\.rs$"
+      ],
+      "matchStrings": [
+        "msrv =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+        "rust-version =.*(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+        "MSRV-(?<currentValue>\\d+\\.\\d+\\.\\d+)-brightgreen"
+      ],
+      "packageNameTemplate": "rust-lang/rust"
+    }
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": true,
+  "dependencyDashboardLabels": [
+    "dependencies"
+  ],
+  "dependencyDashboardTitle": "[Renovate] Dependency Dashboard",
+  "labels": [
+    "dependencies"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "addLabels": [
+        "github_actions"
+      ],
+      "matchDepNames": [
+        "actionlint",
+        "cffconvert"
+      ],
+      "matchManagers": [
+        "custom.regex"
+      ]
+    },
+    {
+      "addLabels": [
+        "rust"
+      ],
+      "matchManagers": [
+        "cargo"
+      ],
+      "matchPackageNames": [
+        "*"
+      ],
+      "rangeStrategy": "bump"
+    },
+    {
+      "addLabels": [
+        "github_actions"
+      ],
+      "matchManagers": [
+        "github-actions"
+      ]
+    },
+    {
+      "addLabels": [
+        "documentation"
+      ],
+      "matchDepNames": [
+        "rust"
+      ],
+      "matchManagers": [
+        "custom.regex"
+      ]
+    },
+    {
+      "extractVersion": "^v(?<version>.*)$",
+      "matchDepNames": [
+        "actionlint"
+      ]
+    }
+  ],
+  "prHourlyLimit": null,
+  "schedule": null
+}
