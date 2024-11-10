@@ -17,78 +17,36 @@
 ##                                                                            ##
 ################################################################################
 
-################################################################################
-##
-##  AUTHOR      Kevin Matthes
-##  BRIEF       Assemble the main CITATION.cff from its updated fragments.
-##  COPYRIGHT   GPL-3.0
-##  DATE        2023
-##  FILE        cff.yml
-##  NOTE        See `LICENSE' for full license.
-##              See `README.md' for project details.
-##
-################################################################################
-
-name: cff
+name: Format JSON Files
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
     paths:
-      - Cargo.lock
-      - Cargo.toml
+      - '**/*.json'
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
-  main:
-    if: github.repository == 'kevinmatthes/aeruginous-rs'
+  format-json:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.2
+      - uses: fregante/setup-git-user@v2.0.2
+      - run: sudo apt-get update && sudo apt-get install -y jq
 
       - run: |
-          rustup update
-          cat .github/aeruginous.cff > CITATION.cff
-          echo references: >> CITATION.cff
+          # Find all JSON files and format them in-place
+          find . -type f -name "*.json" -exec jq . -S {} \;
 
-      - uses: ./curl-cffref
-        with:
-          branch: main
-          repository: chronotope/chrono
-
-      - uses: ./curl-cffref
-        with:
-          branch: main
-          repository: citation-file-format/citation-file-format
-
-      - uses: ./curl-cffref
-        with:
-          branch: master
-          repository: clap-rs/clap
-
-      - uses: ./curl-cffref
-        with:
-          branch: main
-          repository: kevinmatthes/aeruginous-io
-
-      - uses: ./curl-cffref
-        with:
-          branch: develop
-          repository: sorairolake/sysexits-rs
-
-      - uses: peter-evans/create-pull-request@v7.0.5
-        with:
-          assignees: |
-            kevinmatthes
-          branch: documentation/cff-update
-          branch-suffix: timestamp
-          labels: documentation
-          milestone: 6
-          title: '[GitHub Actions] Update CITATION.cff'
+          # Check if there are any changes after formatting
+          if ! git diff --exit-code; then
+            echo "JSON files have been modified."
+            git add .
+            git commit -m "[GitHub Actions] Format JSON files with jq"
+            git push
+          else
+            echo "No changes in JSON formatting."
+          fi
 
 ################################################################################

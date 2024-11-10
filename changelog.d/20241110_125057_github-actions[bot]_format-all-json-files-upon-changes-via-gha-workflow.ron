@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CI:  workflow to automatically reformat JSON files on push",
+    ],
+  },
+)
