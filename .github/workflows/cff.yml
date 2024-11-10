@@ -78,7 +78,7 @@ jobs:
 
       - uses: ./curl-cffref
         with:
-          branch: main
+          branch: develop
           repository: sorairolake/sysexits-rs
 
       - uses: peter-evans/create-pull-request@v7.0.5
