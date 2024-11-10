@@ -27,6 +27,9 @@ on:
       - '**/*.json'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   format-json:
     runs-on: ubuntu-latest
