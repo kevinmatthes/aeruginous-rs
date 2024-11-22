@@ -52,7 +52,7 @@ jobs:
 
       - uses: fregante/setup-git-user@v2.0.2
 
-      - uses: taiki-e/install-action@v2.45.4
+      - uses: taiki-e/install-action@v2.45.5
         with:
           tool: just
 
