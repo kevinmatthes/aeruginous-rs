@@ -28,7 +28,7 @@ version = "0.37.1"
 
 [dependencies.serde]
 features = ["derive"]
-version = "1.0.215"
+version = "1.0.216"
 
 [features]
 cff = ["cff-create"]
