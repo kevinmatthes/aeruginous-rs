@@ -81,7 +81,7 @@ jobs:
           branch: develop
           repository: sorairolake/sysexits-rs
 
-      - uses: peter-evans/create-pull-request@v7.0.6
+      - uses: peter-evans/create-pull-request@v7.0.7
         with:
           assignees: |
             kevinmatthes
