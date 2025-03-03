@@ -39,8 +39,8 @@ url: https://github.com/kevinmatthes/aeruginous-rs
 version: 3.7.17
 references:
   - type: software
-    date-released: 2024-04-15
-    version: 0.4.38
+    date-released: 2025-02-26
+    version: 0.4.40
     abstract: Date and time library for Rust
     authors:
       - alias: quodlibetor
@@ -120,8 +120,8 @@ references:
     license: "CC-BY-4.0"
     doi: 10.5281/zenodo.5171937
   - type: software
-    date-released: 2025-02-17
-    version: 4.5.30
+    date-released: 2025-02-24
+    version: 4.5.31
     abstract: A full featured, fast Command Line Argument Parser for Rust
     authors:
       - alias: kbknapp
@@ -154,8 +154,8 @@ references:
     url: https://github.com/kevinmatthes/aeruginous-io
     version: 0.8.1
   - type: software
-    date-released: 2024-11-08
-    version: 0.8.5
+    date-released: 2025-02-26
+    version: 0.9.0
     abstract: The system exit codes as defined by <sysexits.h> for Rust
     authors:
       - alias: sorairolake
