@@ -46,7 +46,7 @@ jobs:
         with:
           tool: cargo-llvm-cov
 
-      - uses: actions/setup-python@v5.4.0
+      - uses: actions/setup-python@v5.6.0
         with:
           python-version: 3.11
 
@@ -65,7 +65,7 @@ jobs:
           cargo llvm-cov --cobertura --output-path cobertura.xml
           pycobertura show cobertura.xml >> code-coverage.txt
 
-      - uses: actions/upload-artifact@v4.6.1
+      - uses: actions/upload-artifact@v4.6.2
         with:
           name: code-coverage.txt
           path: code-coverage.txt
