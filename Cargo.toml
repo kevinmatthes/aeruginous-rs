@@ -3,7 +3,7 @@ aeruginous-io = "0.8.1"
 anstyle = "1.0.14"
 cargo-lock = "10.1.0"
 ron = "0.12.2"
-sysexits = "0.8.5"
+sysexits = "0.13.0"
 toml = "0.8.20"
 
 [dependencies.chrono]
