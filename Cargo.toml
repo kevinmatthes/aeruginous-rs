@@ -4,7 +4,7 @@ anstyle = "1.0.14"
 cargo-lock = "10.1.0"
 ron = "0.12.2"
 sysexits = "0.8.5"
-toml = "0.8.20"
+toml = "0.9.12"
 
 [dependencies.chrono]
 features = ["serde"]
