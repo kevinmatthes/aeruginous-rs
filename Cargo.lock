@@ -16,7 +16,7 @@ dependencies = [
  "quick-xml",
  "ron",
  "serde",
- "sysexits",
+ "sysexits 0.13.0",
  "toml",
 ]
 
@@ -26,7 +26,7 @@ version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "319e371528c96e050b02d8f108f3e664c5632cbec644b3f69340684480e8d776"
 dependencies = [
- "sysexits",
+ "sysexits 0.8.5",
 ]
 
 [[package]]
@@ -687,6 +687,12 @@ name = "sysexits"
 version = "0.8.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3a70e00b0ea6c3e7154dfc48fee004bf61bdc154fd99b7e17c05318503b9660b"
+
+[[package]]
+name = "sysexits"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5dffab7eaf1889aaff43c92ee7ffaeeb0d34de8214867c41c6e7587361f867f7"
 
 [[package]]
 name = "tinystr"
