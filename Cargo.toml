@@ -24,7 +24,7 @@ version = "2.14.0"
 
 [dependencies.quick-xml]
 features = ["serialize"]
-version = "0.37.2"
+version = "0.41.0"
 
 [dependencies.serde]
 features = ["derive"]
