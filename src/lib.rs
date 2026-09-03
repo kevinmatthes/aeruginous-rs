@@ -30,7 +30,7 @@
 //! [gpl3]:  https://github.com/kevinmatthes/aeruginous-rs/blob/main/LICENSE
 //! [lcns]:  https://img.shields.io/github/license/kevinmatthes/aeruginous-rs
 //! [lst]:  https://img.shields.io/github/last-commit/kevinmatthes/aeruginous-rs
-//! [msrv]:  https://img.shields.io/badge/MSRV-1.97.1-brightgreen
+//! [msrv]:  https://img.shields.io/badge/MSRV-1.98.0-brightgreen
 //! [release]:  https://github.com/kevinmatthes/aeruginous-rs/releases/latest
 //! [renovate]:  https://img.shields.io/badge/renovate-enabled-brightgreen.svg
 //! [repository]:  https://github.com/kevinmatthes/aeruginous-rs
@@ -93,7 +93,7 @@
 //!    1. [`uncrlf`](#uncrlf)
 //! -->
 //!
-//! The current code coverage is **<!-- cov -->71.52%<!-- cov -->**.
+//! The current code coverage is **<!-- cov -->73.11%<!-- cov -->**.
 //!
 //! ## License
 //!
