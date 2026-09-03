@@ -42,7 +42,7 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/install-action@v2.49.17
+      - uses: taiki-e/install-action@v2.86.3
         with:
           tool: cargo-llvm-cov
 
@@ -50,7 +50,7 @@ jobs:
         with:
           python-version: 3.14
 
-      - uses: actions/checkout@v4.4.0
+      - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
