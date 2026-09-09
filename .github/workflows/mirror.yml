@@ -48,11 +48,11 @@ jobs:
     if: github.repository == 'kevinmatthes/aeruginous-rs'
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/install-action@v2.86.3
+      - uses: taiki-e/install-action@v2.87.8
         with:
           tool: cargo-llvm-cov
 
-      - uses: actions/setup-python@v5.6.0
+      - uses: actions/setup-python@v7.0.0
         with:
           python-version: 3.14
 
