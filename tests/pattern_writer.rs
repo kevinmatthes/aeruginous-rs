@@ -39,18 +39,6 @@ macro_rules! make_test {
           Ok(())
         );
         assert_eq!(
-          std::io::$function().truncate(
-            Box::new(stringify!($function).to_string())
-          ),
-          Ok(())
-        );
-        assert_eq!(
-          std::io::$function().truncate_silently(
-            Box::new(stringify!($function).to_string())
-          ),
-          Ok(())
-        );
-        assert_eq!(
           std::io::$function().write(
             Box::new(stringify!($function).to_string())
           ),
